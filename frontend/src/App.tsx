@@ -724,12 +724,16 @@ export function App() {
               onTagClick={(tag) => handleSearch(tag)}
             />
 
-            {/* One-Touch Quick Service Grid (8 Civic Pillars) */}
+            {/* Live Village Action Hub & Real-Time Pulse */}
             <CivicHubGrid
               onSelectModule={(moduleId) => {
                 setActiveNav(moduleId);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
+              onOpenGrievance={() => setGrievanceModalOpen(true)}
+              onOpenRegisterShop={() => setRegisterShopOpen(true)}
+              onOpenPostJob={() => setPostJobOpen(true)}
+              mandiPrices={mandiPrices}
             />
 
             {/* Live Mandi Bhaav Ticker */}

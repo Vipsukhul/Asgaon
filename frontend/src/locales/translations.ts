@@ -71,9 +71,17 @@ export const translations = {
   hero_stat_businesses: { MR: 'स्थानिक व्यवसाय', EN: 'Local Businesses' },
   hero_stat_helpline: { MR: 'आपत्कालीन मदत', EN: '24/7 Helpline' },
 
-  // Civic Hub
-  hub_title: { MR: 'ग्राम डिजिटल सेवा व माहिती दालन', EN: 'Village Digital Services & Civic Hub' },
-  hub_subtitle: { MR: 'गावातील सर्व सेवा व माहिती मिळवण्यासाठी खालील पर्यायांवर क्लिक करा', EN: 'Click any module below to access live information and services' },
+  // Civic Hub & Live Village Action Pulse
+  hub_title: { MR: 'थेट ग्राम कृती केंद्र व चालू घडामोडी', EN: 'Live Village Action Hub & Real-Time Pulse' },
+  hub_subtitle: { MR: 'आजचे बाजारभाव, एसटी बस वेळापत्रक, पाणी-वीज स्थिती आणि १-क्लिक जलद नागरी सेवा.', EN: 'Real-time mandi rates, ST bus departures, utility schedules & 1-click citizen actions.' },
+  hub_action_grievance: { MR: 'तक्रार नोंदवा', EN: 'Lodge Grievance' },
+  hub_action_grievance_sub: { MR: 'थेट ग्रामपंचायत निवारण', EN: 'Direct Civic Resolution' },
+  hub_action_register_shop: { MR: 'दुकान नोंदवा', EN: 'Register Business' },
+  hub_action_register_shop_sub: { MR: 'मोफत स्थानिक व्यापारी नोंदणी', EN: 'Free Merchant Listing' },
+  hub_action_post_job: { MR: 'कामगार / नोकरी टाका', EN: 'Post Job / Work' },
+  hub_action_post_job_sub: { MR: 'स्थानिक मजुरी व रोजगार', EN: 'Local Wages & Openings' },
+  hub_action_emergency: { MR: 'आपत्कालीन थेट संपर्क', EN: 'Emergency Speed-Dial' },
+  hub_action_emergency_sub: { MR: '१०८ रुग्णवाहिका व ११२ पोलीस', EN: '108 Ambulance & 112 Police' },
 
   // Modals & Forms
   modal_login_title: { MR: 'नागरिक लॉगिन / नोंदणी', EN: 'Citizen Sign In / Register' },
