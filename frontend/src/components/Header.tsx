@@ -25,6 +25,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({
   onOpenLogin,
+  onOpenGrievance,
   activeNav,
   setActiveNav,
   onSearch,
@@ -35,11 +36,29 @@ export const Header: React.FC<HeaderProps> = ({
   const { lang, setLang, t } = useLanguage();
   const [searchVal, setSearchVal] = useState('');
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [pushActive, setPushActive] = useState(false);
   const [pushLoading, setPushLoading] = useState(false);
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
   const [recentAlerts, setRecentAlerts] = useState<any[]>([]);
   const [hasUrgent, setHasUrgent] = useState(false);
+
+  // Lock body scroll when mobile drawer is open & support Escape key
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     isPushSubscribed().then(setPushActive);
@@ -72,17 +91,17 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   const navItems = [
-    { id: 'businesses', label: lang === 'MR' ? 'स्थानिक दुकाने' : 'Businesses' },
-    { id: 'jobs', label: lang === 'MR' ? 'रोजगार / नोकऱ्या' : 'Jobs' },
-    { id: 'schemes', label: lang === 'MR' ? 'शासकीय योजना' : 'Govt Schemes' },
-    { id: 'krishi', label: lang === 'MR' ? 'कृषी व बाजारभाव' : 'Krishi / Mandi' },
-    { id: 'shiksha', label: lang === 'MR' ? 'शिक्षण व शाळा' : 'Education' },
-    { id: 'transport', label: lang === 'MR' ? 'वाहतूक व बस' : 'ST Bus / Transport' },
-    { id: 'marketplace', label: lang === 'MR' ? 'ग्राम बाजार' : 'Marketplace' },
-    { id: 'announcements', label: lang === 'MR' ? 'सूचना व परिपत्रके' : 'Announcements' },
-    { id: 'events', label: lang === 'MR' ? 'गावातील कार्यक्रम' : 'Events' },
-    { id: 'blogs', label: lang === 'MR' ? 'ग्राम वार्ता' : 'Stories' },
-    { id: 'emergency', label: lang === 'MR' ? 'आपत्कालीन सेवा' : 'Emergency' }
+    { id: 'businesses', label: lang === 'MR' ? 'स्थानिक दुकाने' : 'Businesses', icon: 'storefront' },
+    { id: 'jobs', label: lang === 'MR' ? 'रोजगार / नोकऱ्या' : 'Jobs', icon: 'work' },
+    { id: 'schemes', label: lang === 'MR' ? 'शासकीय योजना' : 'Govt Schemes', icon: 'assured_workload' },
+    { id: 'krishi', label: lang === 'MR' ? 'कृषी व बाजारभाव' : 'Krishi / Mandi', icon: 'agriculture' },
+    { id: 'shiksha', label: lang === 'MR' ? 'शिक्षण व शाळा' : 'Education', icon: 'school' },
+    { id: 'transport', label: lang === 'MR' ? 'वाहतूक व बस' : 'ST Bus / Transport', icon: 'directions_bus' },
+    { id: 'marketplace', label: lang === 'MR' ? 'ग्राम बाजार' : 'Marketplace', icon: 'local_mall' },
+    { id: 'announcements', label: lang === 'MR' ? 'सूचना व परिपत्रके' : 'Announcements', icon: 'campaign' },
+    { id: 'events', label: lang === 'MR' ? 'गावातील कार्यक्रम' : 'Events', icon: 'event' },
+    { id: 'blogs', label: lang === 'MR' ? 'ग्राम वार्ता' : 'Stories', icon: 'article' },
+    { id: 'emergency', label: lang === 'MR' ? 'आपत्कालीन सेवा' : 'Emergency', icon: 'emergency' }
   ];
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -260,7 +279,7 @@ export const Header: React.FC<HeaderProps> = ({
                 )}
               </div>
             )}
-            {/* Language Switcher - Desktop only (hidden on mobile, accessed via profile dropdown) */}
+            {/* Language Switcher - Desktop only */}
             <div className="hidden md:flex items-center rounded-lg bg-[#f9f3ea] p-0.5 border border-[#e8e2d9]">
               {(['EN', 'MR'] as const).map((l) => (
                 <button
@@ -275,115 +294,130 @@ export const Header: React.FC<HeaderProps> = ({
               ))}
             </div>
 
-            {/* User status / Login */}
-            {currentUser?.isLoggedIn ? (
-              <div className="relative">
+            {/* Desktop User status / Login (Hidden on mobile; on mobile it is inside Hamburger Menu at top) */}
+            <div className="hidden md:flex items-center">
+              {currentUser?.isLoggedIn ? (
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                    className={`flex items-center gap-2 pl-2 pr-2.5 py-1.5 rounded-xl text-[12px] font-bold transition-all border ${activeNav === 'profile'
+                        ? 'bg-[#003629] text-[#baeed9] border-[#003629] shadow-xs'
+                        : 'bg-white hover:bg-[#f3ede4] text-[#003629] border-[#e8e2d9] shadow-xs'
+                      }`}
+                    title="Citizen Profile & Settings"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-[#003629] text-[#baeed9] flex items-center justify-center text-[10px] font-black">
+                      {currentUser?.avatarInitials || (userRole ? userRole.substring(0, 2) : 'AC')}
+                    </div>
+                    <span className="hidden sm:inline">
+                      {currentUser?.fullName || (userRole ? `${userRole} Portal` : 'Asgaon Citizen')}
+                    </span>
+                    <span className="material-symbols-outlined text-[16px] text-[#707974]">expand_more</span>
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {userDropdownOpen && (
+                    <div className="absolute right-0 top-full mt-1.5 w-64 bg-white rounded-xl shadow-xl border border-[#e8e2d9] p-2 z-50 animate-fadeIn text-[12px]">
+                      <div className="p-2.5 bg-[#f9f3ea] rounded-lg border border-[#e8e2d9] mb-1.5">
+                        <div className="flex items-center gap-2 mb-1">
+                          <div className="w-7 h-7 rounded-full bg-[#003629] text-[#baeed9] flex items-center justify-center text-[10px] font-bold shrink-0">
+                            {currentUser?.avatarInitials || (userRole ? userRole.substring(0, 2) : 'AC')}
+                          </div>
+                          <div className="truncate">
+                            <strong className="text-[#003629] block leading-tight truncate">
+                              {currentUser?.fullName || 'Asgaon Resident'}
+                            </strong>
+                            <span className="text-[10px] text-[#006a4e] font-semibold">
+                              {currentUser?.role || userRole || 'CITIZEN'} • {currentUser?.phone ? `+91 ${currentUser.phone}` : 'PIN 441910'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Language Switcher in Dropdown */}
+                      <div className="p-2 bg-[#f9f3ea] rounded-lg border border-[#e8e2d9] mb-1.5 flex items-center justify-between">
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#003629]">
+                          <span className="material-symbols-outlined text-[15px] text-[#006a4e]">translate</span>
+                          <span>भाषा / Lang:</span>
+                        </div>
+                        <div className="flex items-center rounded-md bg-white p-0.5 border border-[#e8e2d9]">
+                          {(['EN', 'MR'] as const).map((l) => (
+                            <button
+                              key={l}
+                              type="button"
+                              onClick={() => setLang(l)}
+                              className={`px-2.5 py-0.5 rounded text-[10px] font-bold transition-all ${lang === l ? 'bg-[#003629] text-white shadow-xs' : 'text-[#707974] hover:text-[#1d1b16]'
+                                }`}
+                            >
+                              {l === 'EN' ? 'English' : 'मराठी'}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => { setActiveNav('profile'); setUserDropdownOpen(false); }}
+                        className="w-full flex items-center gap-2 px-2.5 py-2 hover:bg-[#f3ede4] rounded-lg text-[#003629] font-bold transition-colors text-left"
+                      >
+                        <span className="material-symbols-outlined text-[18px] text-[#a63b00]">badge</span>
+                        <span>My Citizen Profile</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => { setActiveNav('profile'); setUserDropdownOpen(false); }}
+                        className="w-full flex items-center gap-2 px-2.5 py-2 hover:bg-[#f3ede4] rounded-lg text-[#404945] font-medium transition-colors text-left"
+                      >
+                        <span className="material-symbols-outlined text-[18px] text-[#006a4e]">support_agent</span>
+                        <span>My Grievances &amp; Tracking</span>
+                      </button>
+
+                      <div className="h-px bg-[#f3ede4] my-1" />
+
+                      <button
+                        type="button"
+                        onClick={() => { onLogout?.(); setUserDropdownOpen(false); }}
+                        className="w-full flex items-center gap-2 px-2.5 py-2 hover:bg-[#ffdad6]/40 text-[#ba1a1a] rounded-lg font-bold transition-colors text-left"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">logout</span>
+                        <span>Logout / Exit Session</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
                 <button
                   type="button"
-                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className={`flex items-center gap-2 pl-2 pr-2.5 py-1.5 rounded-xl text-[12px] font-bold transition-all border ${activeNav === 'profile'
-                      ? 'bg-[#003629] text-[#baeed9] border-[#003629] shadow-xs'
-                      : 'bg-white hover:bg-[#f3ede4] text-[#003629] border-[#e8e2d9] shadow-xs'
-                    }`}
-                  title="Citizen Profile & Settings"
+                  onClick={onOpenLogin}
+                  className="flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-[#003629] text-white hover:bg-[#1b4d3e] active:scale-95 transition-all text-[12px] sm:text-[13px] font-bold shadow-xs whitespace-nowrap"
+                  title={t('header_login')}
                 >
-                  <div className="w-6 h-6 rounded-full bg-[#003629] text-[#baeed9] flex items-center justify-center text-[10px] font-black">
-                    {currentUser?.avatarInitials || (userRole ? userRole.substring(0, 2) : 'AC')}
-                  </div>
-                  <span className="hidden sm:inline">
-                    {currentUser?.fullName || (userRole ? `${userRole} Portal` : 'Asgaon Citizen')}
-                  </span>
-                  <span className="material-symbols-outlined text-[16px] text-[#707974]">expand_more</span>
+                  <span className="material-symbols-outlined text-[18px]">login</span>
+                  <span>{t('header_login')}</span>
                 </button>
+              )}
+            </div>
 
-                {/* Dropdown Menu */}
-                {userDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-1.5 w-64 bg-white rounded-xl shadow-xl border border-[#e8e2d9] p-2 z-50 animate-fadeIn text-[12px]">
-                    <div className="p-2.5 bg-[#f9f3ea] rounded-lg border border-[#e8e2d9] mb-1.5">
-                      <div className="flex items-center gap-2 mb-1">
-                        <div className="w-7 h-7 rounded-full bg-[#003629] text-[#baeed9] flex items-center justify-center text-[10px] font-bold shrink-0">
-                          {currentUser?.avatarInitials || (userRole ? userRole.substring(0, 2) : 'AC')}
-                        </div>
-                        <div className="truncate">
-                          <strong className="text-[#003629] block leading-tight truncate">
-                            {currentUser?.fullName || 'Asgaon Resident'}
-                          </strong>
-                          <span className="text-[10px] text-[#006a4e] font-semibold">
-                            {currentUser?.role || userRole || 'CITIZEN'} • {currentUser?.phone ? `+91 ${currentUser.phone}` : 'PIN 441910'}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Language Switcher in Dropdown */}
-                    <div className="p-2 bg-[#f9f3ea] rounded-lg border border-[#e8e2d9] mb-1.5 flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#003629]">
-                        <span className="material-symbols-outlined text-[15px] text-[#006a4e]">translate</span>
-                        <span>भाषा / Lang:</span>
-                      </div>
-                      <div className="flex items-center rounded-md bg-white p-0.5 border border-[#e8e2d9]">
-                        {(['EN', 'MR'] as const).map((l) => (
-                          <button
-                            key={l}
-                            type="button"
-                            onClick={() => setLang(l)}
-                            className={`px-2.5 py-0.5 rounded text-[10px] font-bold transition-all ${lang === l ? 'bg-[#003629] text-white shadow-xs' : 'text-[#707974] hover:text-[#1d1b16]'
-                              }`}
-                          >
-                            {l === 'EN' ? 'English' : 'मराठी'}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => { setActiveNav('profile'); setUserDropdownOpen(false); }}
-                      className="w-full flex items-center gap-2 px-2.5 py-2 hover:bg-[#f3ede4] rounded-lg text-[#003629] font-bold transition-colors text-left"
-                    >
-                      <span className="material-symbols-outlined text-[18px] text-[#a63b00]">badge</span>
-                      <span>My Citizen Profile</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => { setActiveNav('profile'); setUserDropdownOpen(false); }}
-                      className="w-full flex items-center gap-2 px-2.5 py-2 hover:bg-[#f3ede4] rounded-lg text-[#404945] font-medium transition-colors text-left"
-                    >
-                      <span className="material-symbols-outlined text-[18px] text-[#006a4e]">support_agent</span>
-                      <span>My Grievances &amp; Tracking</span>
-                    </button>
-
-                    <div className="h-px bg-[#f3ede4] my-1" />
-
-                    <button
-                      type="button"
-                      onClick={() => { onLogout?.(); setUserDropdownOpen(false); }}
-                      className="w-full flex items-center gap-2 px-2.5 py-2 hover:bg-[#ffdad6]/40 text-[#ba1a1a] rounded-lg font-bold transition-colors text-left"
-                    >
-                      <span className="material-symbols-outlined text-[18px]">logout</span>
-                      <span>Logout / Exit Session</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={onOpenLogin}
-                className="flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-[#003629] text-white hover:bg-[#1b4d3e] active:scale-95 transition-all text-[12px] sm:text-[13px] font-bold shadow-xs whitespace-nowrap"
-                title={t('header_login')}
-              >
-                <span className="material-symbols-outlined text-[18px]">login</span>
-                <span>{t('header_login')}</span>
-              </button>
-            )}
+            {/* Mobile Hamburger Menu Toggle Button */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-white border border-[#e8e2d9] text-[#003629] hover:bg-[#f3ede4] active:scale-95 transition-all shadow-2xs"
+              aria-label={mobileMenuOpen ? 'मेनू बंद करा' : 'मेनू उघडा'}
+              title={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
+            >
+              <span className="material-symbols-outlined text-[22px]">
+                {mobileMenuOpen ? 'close' : 'menu'}
+              </span>
+            </button>
           </div>
         </div>
 
-        {/* Civic Sub-Navigation Bar (Hidden in Admin Mode) */}
+        {/* Civic Sub-Navigation Bar (Desktop only, mobile accesses via hamburger drawer) */}
         {activeNav !== 'admin' && (
-          <div className="flex items-center justify-between pt-1 border-t border-[#f3ede4] overflow-hidden">
+          <div className="hidden md:flex items-center justify-between pt-1 border-t border-[#f3ede4] overflow-hidden">
             <nav className="flex items-center gap-2 overflow-x-auto py-1 scrollbar-none w-full">
               <button
                 onClick={() => setActiveNav('home')}
@@ -410,6 +444,252 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         )}
       </div>
+
+      {/* Mobile Hamburger Slide-in Drawer */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          {/* Backdrop Blur Overlay */}
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+
+          {/* Drawer Panel */}
+          <div className="fixed top-0 right-0 bottom-0 w-[86%] max-w-[340px] bg-[#fff8f0] shadow-2xl flex flex-col z-10 border-l border-[#e8e2d9] animate-slide-drawer">
+            {/* Drawer Header */}
+            <div className="p-3.5 border-b border-[#e8e2d9] bg-white flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-[#003629] text-[#baeed9] flex items-center justify-center font-black text-sm">
+                  आ
+                </div>
+                <div>
+                  <div className="font-bold text-[#003629] text-xs leading-tight">
+                    {lang === 'MR' ? 'डिजिटल आसगाव मेनू' : 'Digital Asgaon Menu'}
+                  </div>
+                  <div className="text-[10px] text-[#707974] leading-tight">
+                    {lang === 'MR' ? 'नागरिक सेवा दालन' : 'Civic Services Hub'}
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-[#707974] hover:text-[#1d1b16] hover:bg-[#f3ede4] transition-colors"
+                aria-label="Close Menu"
+              >
+                <span className="material-symbols-outlined text-[20px]">close</span>
+              </button>
+            </div>
+
+            {/* Drawer Body (Scrollable) */}
+            <div className="flex-1 overflow-y-auto p-3 space-y-3">
+              {/* 1. Login / Citizen Profile Card at TOP (Under Menu Header) */}
+              {currentUser?.isLoggedIn ? (
+                <div className="bg-white p-3 rounded-2xl border border-[#e8e2d9] shadow-2xs">
+                  <div className="flex items-center gap-2.5 mb-2.5">
+                    <div className="w-10 h-10 rounded-full bg-[#003629] text-[#baeed9] flex items-center justify-center text-xs font-black shrink-0">
+                      {currentUser?.avatarInitials || (userRole ? userRole.substring(0, 2) : 'AC')}
+                    </div>
+                    <div className="truncate flex-1">
+                      <div className="font-bold text-[#003629] text-[13px] truncate">
+                        {currentUser?.fullName || 'Asgaon Citizen'}
+                      </div>
+                      <div className="text-[10px] text-[#707974] truncate">
+                        {currentUser?.ward || 'Ward 2'} • {currentUser?.role || userRole || 'CITIZEN'}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#f3ede4]">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveNav('profile');
+                        setMobileMenuOpen(false);
+                      }}
+                      className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-[#f9f3ea] text-[#003629] font-bold text-xs hover:bg-[#f3ede4] transition-colors"
+                    >
+                      <span className="material-symbols-outlined text-[16px] text-[#006a4e]">badge</span>
+                      <span>{lang === 'MR' ? 'माझे प्रोफाइल' : 'Profile'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        onLogout?.();
+                      }}
+                      className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-[#ffdad6]/40 text-[#ba1a1a] font-bold text-xs hover:bg-[#ffdad6] transition-colors"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">logout</span>
+                      <span>{lang === 'MR' ? 'बाहेर पडा' : 'Logout'}</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-white p-3.5 rounded-2xl border border-[#e8e2d9] shadow-2xs">
+                  <div className="flex items-center gap-2 mb-2 text-[#707974] text-[11px]">
+                    <span className="material-symbols-outlined text-[17px] text-[#006a4e]">account_circle</span>
+                    <span className="font-semibold">{lang === 'MR' ? 'नागरिक सेवा खाते' : 'Citizen Civic Portal'}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onOpenLogin();
+                    }}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#003629] text-white hover:bg-[#1b4d3e] font-bold text-[13px] shadow-xs active:scale-95 transition-all"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">login</span>
+                    <span>{lang === 'MR' ? 'लॉगिन / नोंदणी करा' : 'Login / Register'}</span>
+                  </button>
+                </div>
+              )}
+
+              {/* 2. Language Switcher (Marathi & English Separate Buttons with Marathi as Preferred Default) */}
+              <div className="bg-white p-3 rounded-2xl border border-[#e8e2d9] shadow-2xs">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#003629]">
+                    <span className="material-symbols-outlined text-[16px] text-[#006a4e]">translate</span>
+                    <span>{lang === 'MR' ? 'भाषा निवडा' : 'Select Language'}</span>
+                  </div>
+                  <span className="text-[10px] text-[#006a4e] font-bold bg-[#baeed9] px-2 py-0.5 rounded-full">
+                    {lang === 'MR' ? 'मराठी सक्रिय ✓' : 'English Active ✓'}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setLang('MR')}
+                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border ${
+                      lang === 'MR'
+                        ? 'bg-[#003629] text-white border-[#003629] shadow-xs ring-2 ring-[#006a4e]/20'
+                        : 'bg-[#f9f3ea] text-[#404945] border-[#e8e2d9] hover:bg-[#f3ede4]'
+                    }`}
+                  >
+                    <span className="text-sm">🇮🇳</span>
+                    <span>मराठी (प्राधान्य)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLang('EN')}
+                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border ${
+                      lang === 'EN'
+                        ? 'bg-[#003629] text-white border-[#003629] shadow-xs ring-2 ring-[#006a4e]/20'
+                        : 'bg-[#f9f3ea] text-[#404945] border-[#e8e2d9] hover:bg-[#f3ede4]'
+                    }`}
+                  >
+                    <span className="text-sm">🌐</span>
+                    <span>English</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* 3. Mobile Quick Search Bar */}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setMobileMenuOpen(false);
+                  onSearch(searchVal);
+                }}
+                className="relative flex items-center w-full h-10 rounded-xl bg-white border border-[#e8e2d9] px-3 shadow-inner"
+              >
+                <span className="material-symbols-outlined text-[19px] text-[#707974] mr-2">search</span>
+                <input
+                  type="text"
+                  value={searchVal}
+                  onChange={(e) => setSearchVal(e.target.value)}
+                  placeholder={lang === 'MR' ? 'योजना, व्यवसाय, बस किंवा सेवा शोधा...' : 'Search shops, bus, schemes...'}
+                  className="w-full bg-transparent text-[#1d1b16] text-[12px] focus:outline-none placeholder:text-[#707974]"
+                />
+                {searchVal && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchVal('')}
+                    className="text-[#707974] hover:text-[#1d1b16] p-0.5"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">close</span>
+                  </button>
+                )}
+              </form>
+
+              {/* 4. Categorized Navigation Hubs List */}
+              <div className="space-y-1">
+                <div className="text-[10px] font-bold text-[#707974] uppercase tracking-wider px-2 pt-1 pb-1">
+                  {lang === 'MR' ? 'नागरिक सेवा व विभाग' : 'Civic Hubs & Departments'}
+                </div>
+
+                {/* All Hub / Home */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveNav('home');
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all text-left ${
+                    activeNav === 'home' || activeNav === 'all'
+                      ? 'bg-[#003629] text-[#baeed9] shadow-xs'
+                      : 'text-[#1d1b16] hover:bg-white hover:text-[#003629]'
+                  }`}
+                >
+                  <span className={`material-symbols-outlined text-[20px] ${
+                    activeNav === 'home' || activeNav === 'all' ? 'text-[#baeed9]' : 'text-[#006a4e]'
+                  }`}>
+                    home
+                  </span>
+                  <span className="flex-1 truncate">{lang === 'MR' ? 'सर्व विभाग (मुख्य दालन)' : 'All Hub (Home)'}</span>
+                  <span className="material-symbols-outlined text-[16px] opacity-40">chevron_right</span>
+                </button>
+
+                {navItems.map((item) => {
+                  const isActive = activeNav === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => {
+                        setActiveNav(item.id);
+                        setMobileMenuOpen(false);
+                      }}
+                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all text-left ${
+                        isActive
+                          ? 'bg-[#003629] text-[#baeed9] shadow-xs'
+                          : 'text-[#1d1b16] hover:bg-white hover:text-[#003629]'
+                      }`}
+                    >
+                      <span className={`material-symbols-outlined text-[20px] ${isActive ? 'text-[#baeed9]' : 'text-[#006a4e]'}`}>
+                        {item.icon}
+                      </span>
+                      <span className="flex-1 truncate">{item.label}</span>
+                      <span className="material-symbols-outlined text-[16px] opacity-40">chevron_right</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Drawer Footer: Grievance and Emergency Services */}
+            <div className="p-3 border-t border-[#e8e2d9] bg-white space-y-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenGrievance();
+                }}
+                className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-[#006a4e]/10 text-[#003629] border border-[#006a4e]/25 text-xs font-bold hover:bg-[#006a4e]/20 transition-all"
+              >
+                <span className="material-symbols-outlined text-[18px] text-[#006a4e]">support_agent</span>
+                <span>{lang === 'MR' ? 'नागरिक तक्रार नोंदवा' : 'Register Citizen Grievance'}</span>
+              </button>
+              <div className="flex items-center justify-between text-[11px] text-[#707974] px-1">
+                <span>{lang === 'MR' ? 'आपत्कालीन मदत:' : 'Emergency Help:'}</span>
+                <a href="tel:108" className="text-[#ba1a1a] font-bold hover:underline flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[14px]">phone_in_talk</span>
+                  <span>१०८ रुग्णवाहिका</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

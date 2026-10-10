@@ -107,3 +107,17 @@ html, body {
   isolation: isolate;
 }
 
+/* Mobile Drawer Slide Animation */
+@keyframes slideDrawerIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-drawer {
+  animation: slideDrawerIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
