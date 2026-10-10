@@ -619,9 +619,9 @@ export function App() {
         </div>
       )}
 
-      {/* Main Container */}
+      {/* Main Container - dynamic top padding matching mobile single-row (pt-16) vs desktop two-row (md:pt-28) header */}
       <main className={`flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 ${
-        activeNav === 'admin' ? 'pt-20 sm:pt-22' : 'pt-28'
+        activeNav === 'admin' ? 'pt-16 md:pt-22' : 'pt-16 sm:pt-20 md:pt-28'
       }`}>
         {/* 2. Marquee Campaign Official Alert Ticker (Hidden in Admin mode) */}
         {activeNav !== 'admin' && (

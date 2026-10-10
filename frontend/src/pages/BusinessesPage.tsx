@@ -161,12 +161,8 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
           <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#003629] leading-tight mb-1">
             Local Business &amp; Service Directory
           </h1>
-          <p className="font-heading font-bold text-[15px] text-[#a63b00] mb-2">
-            स्थानिक व्यवसाय व सेवा निर्देशिका (Khed Shivapur - Asgaon Cluster)
-          </p>
-
-          <p className="text-[13px] text-[#404945] leading-relaxed mb-4">
-            Discover {allBusinesses.length} registered retail outlets, artisanal workshops, tractor mechanics, registered clinics, and village artisans across Asgaon and Pauni tehsil. Officially accredited by Asgaon Gram Panchayat.
+          <p className="font-heading font-bold text-[15px] text-[#a63b00] mb-3">
+            स्थानिक व्यवसाय व सेवा निर्देशिका (Asgaon - Pauni Cluster)
           </p>
 
           <div className="flex flex-wrap items-center gap-4 text-[12px] font-bold text-[#003629]">
@@ -337,7 +333,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 }`}
               >
                 <span className="material-symbols-outlined text-[16px]">view_list</span>
-                <span>सूची (List)</span>
+                <span>सूची</span>
               </button>
 
               <button
@@ -353,7 +349,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 }`}
               >
                 <span className="material-symbols-outlined text-[16px]">map</span>
-                <span>थेट नकाशा (Map)</span>
+                <span>थेट नकाशा</span>
               </button>
 
               <button
@@ -369,7 +365,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 }`}
               >
                 <span className="material-symbols-outlined text-[16px]">vertical_split</span>
-                <span>दोन्ही (Split)</span>
+                <span>दोन्ही</span>
               </button>
             </div>
           </div>
