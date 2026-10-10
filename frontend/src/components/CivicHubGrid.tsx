@@ -1,108 +1,111 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface CivicHubGridProps {
   onSelectModule: (moduleId: string) => void;
 }
 
 export const CivicHubGrid: React.FC<CivicHubGridProps> = ({ onSelectModule }) => {
+  const { lang, t } = useLanguage();
+
   const modules = [
     {
       id: 'businesses',
-      tag: '184 Listings',
+      tag: lang === 'MR' ? 'नोंदणीकृत दुकाने' : '184 Listings',
       tagColor: 'text-[#a63b00]',
-      title: 'Local Vyapar & Shops',
-      desc: 'Kirana, repair shops, seeds, building materials & tailors.',
+      title: lang === 'MR' ? 'स्थानिक दुकाने व सेवा' : 'Local Businesses & Shops',
+      desc: lang === 'MR' ? 'किराणा, कृषी केंद्र, रिपेअरिंग, बांधकाम साहित्य व टेलर्स.' : 'Kirana, repair shops, seeds, building materials & tailors.',
       icon: 'storefront',
       iconBg: 'bg-[#003629]/10 text-[#003629]',
-      linkText: 'Explore Directory',
+      linkText: lang === 'MR' ? 'दुकानांची यादी पहा' : 'Explore Directory',
       linkIcon: 'arrow_forward'
     },
     {
       id: 'jobs',
-      tag: '18 New Openings',
+      tag: lang === 'MR' ? 'रोजगार संधी' : '18 New Openings',
       tagColor: 'text-[#a63b00]',
-      title: 'Rojgar & Berojgari',
-      desc: 'Farm labor, drivers, warehouse staff, vocational trades.',
+      title: lang === 'MR' ? 'रोजगार व कामगार मंच' : 'Rojgar & Jobs Board',
+      desc: lang === 'MR' ? 'शेती मजूर, ड्रायव्हर्स, वेल्डर, मिस्त्री व स्थानिक नोकऱ्या.' : 'Farm labor, drivers, warehouse staff, vocational trades.',
       icon: 'work',
       iconBg: 'bg-[#ff793f]/15 text-[#a63b00]',
-      linkText: 'View Wages & Apply',
+      linkText: lang === 'MR' ? 'नोकऱ्या पहा व अर्ज करा' : 'View Wages & Apply',
       linkIcon: 'arrow_forward'
     },
     {
       id: 'govt-schemes',
-      tag: 'Direct Benefit',
+      tag: lang === 'MR' ? 'थेट शासकीय लाभ' : 'Direct Benefit',
       tagColor: 'text-[#002873]',
-      title: 'Sarkari Yojana Desk',
-      desc: 'PM-Kisan, solar pumps, house subsidies, widow pensions.',
+      title: lang === 'MR' ? 'शासकीय योजना दालन' : 'Sarkari Yojana Desk',
+      desc: lang === 'MR' ? 'घरकुल (PMAY-G, रमाई, शबरी), पीएम किसान, लाडकी बहीण, पेन्शन.' : 'PM-Kisan, solar pumps, house subsidies, widow pensions.',
       icon: 'verified_user',
       iconBg: 'bg-[#dbe1ff] text-[#002873]',
-      linkText: 'Check Eligibility',
+      linkText: lang === 'MR' ? 'पात्रता व अर्ज पहा' : 'Check Eligibility',
       linkIcon: 'arrow_forward'
     },
     {
       id: 'krishi',
-      tag: 'Live Mandi Hub',
+      tag: lang === 'MR' ? 'थेट बाजारभाव' : 'Live Mandi Hub',
       tagColor: 'text-[#004d40]',
-      title: 'Krishi Kendra & APMC',
-      desc: 'Pune & Haveli APMC rates, fertilizer pool, soil health cards.',
+      title: lang === 'MR' ? 'कृषी केंद्र व बाजारभाव (Mandi)' : 'Krishi Kendra & APMC',
+      desc: lang === 'MR' ? 'धान, सोयाबीन व तूर बाजारभाव, खत साठा व हवामान सल्ला.' : 'Pauni & Nagpur APMC rates, fertilizer pool, soil health cards.',
       icon: 'agriculture',
       iconBg: 'bg-[#b2dfdb] text-[#004d40]',
-      linkText: "Check Today's Bhaav",
+      linkText: lang === 'MR' ? 'आजचे दर तपासा' : "Check Today's Bhaav",
       linkIcon: 'arrow_forward'
     },
     {
       id: 'shiksha',
-      tag: 'Students & Youth',
+      tag: lang === 'MR' ? 'विद्यार्थी व तरुण' : 'Students & Youth',
       tagColor: 'text-[#5d4037]',
-      title: 'Shiksha & Skill Center',
-      desc: 'ZP School exams, ITI admissions, scholarships, study rooms.',
+      title: lang === 'MR' ? 'शिक्षण व अभ्यासिका केंद्र' : 'Shiksha & Skill Center',
+      desc: lang === 'MR' ? 'शाळा, शिष्यवृत्ती, मोफत सायकल योजना व ग्राम वाचनालय.' : 'ZP School exams, ITI admissions, scholarships, study rooms.',
       icon: 'school',
       iconBg: 'bg-[#d7ccc8] text-[#5d4037]',
-      linkText: 'Youth Portal',
+      linkText: lang === 'MR' ? 'शिक्षण दालन उघडा' : 'Youth Portal',
       linkIcon: 'arrow_forward'
     },
     {
       id: 'transport',
-      tag: 'MSRTC & Auto Stand',
+      tag: lang === 'MR' ? 'एसटी बस व रिक्षा' : 'MSRTC & Auto Stand',
       tagColor: 'text-[#8c5000]',
-      title: 'ST Bus & Vaahatuk (वाहतूक)',
-      desc: 'Pauni, Bhandara, Nagpur ST buses, fares, 50% Mahila pass & auto contacts.',
+      title: lang === 'MR' ? 'एसटी बस व वाहतूक (Transport)' : 'ST Bus & Transport',
+      desc: lang === 'MR' ? 'पवनी, भंडारा, नागपूर बसेस, ५०% महिला सवलत पास व ऑटो रिक्षा.' : 'Pauni, Bhandara, Nagpur ST buses, fares, 50% Mahila pass & auto contacts.',
       icon: 'directions_bus',
       iconBg: 'bg-[#ffecb3] text-[#8c5000]',
-      linkText: 'Check Bus Timings',
+      linkText: lang === 'MR' ? 'बस वेळापत्रक पहा' : 'Check Bus Timings',
       linkIcon: 'arrow_forward'
     },
     {
       id: 'marketplace',
-      tag: 'P2P & B2B',
+      tag: lang === 'MR' ? 'गावातील खरेदी-विक्री' : 'P2P & B2B',
       tagColor: 'text-[#e65100]',
-      title: 'Gaon Bazaar / Weekly Haat',
-      desc: 'Buy/sell milk cattle, pre-owned tractors, farm harvest.',
+      title: lang === 'MR' ? 'ग्राम बाजार (Village Market)' : 'Gaon Bazaar / Market',
+      desc: lang === 'MR' ? 'गाई-म्हशी, जुने ट्रॅक्टर, शेतीमाल व अवजारे खरेदी-विक्री.' : 'Buy/sell milk cattle, pre-owned tractors, farm harvest.',
       icon: 'shopping_bag',
       iconBg: 'bg-[#ffe0b2] text-[#e65100]',
-      linkText: 'Browse Listings',
+      linkText: lang === 'MR' ? 'खरेदी-विक्री यादी पहा' : 'Browse Listings',
       linkIcon: 'arrow_forward'
     },
     {
       id: 'announcements',
-      tag: 'Governance & Audit',
+      tag: lang === 'MR' ? 'ग्रामपंचायत कारभार' : 'Governance & Audit',
       tagColor: 'text-[#37474f]',
-      title: 'Gram Sabha Minutes',
-      desc: 'Published budget, tenders, tax receipts & Sarpanch decisions.',
+      title: lang === 'MR' ? 'ग्रामसभा व अधिकृत सूचना' : 'Gram Sabha Notices',
+      desc: lang === 'MR' ? 'ग्रामपंचायत ठराव, कर पावती, विकासकामे व सरपंच निर्णय.' : 'Published budget, tenders, tax receipts & Sarpanch decisions.',
       icon: 'description',
       iconBg: 'bg-[#cfd8dc] text-[#37474f]',
-      linkText: 'Download PDF Gazettes',
+      linkText: lang === 'MR' ? 'सूचना फलक पहा' : 'Download Circulars',
       linkIcon: 'arrow_forward'
     },
     {
       id: 'emergency',
-      tag: '108 Immediate Response',
+      tag: lang === 'MR' ? 'तातडीची मदत' : '108 Immediate Response',
       tagColor: 'text-[#ba1a1a]',
-      title: 'Emergency Speed-Dial',
-      desc: 'Ambulance (108), Police Beat Chowki, MSEB Lineman.',
+      title: lang === 'MR' ? 'आपत्कालीन थेट संपर्क' : 'Emergency Speed-Dial',
+      desc: lang === 'MR' ? 'रुग्णवाहिका (१०८), पोलीस (११२), अग्निशामक (१०१) व लाईनमन.' : 'Ambulance (108), Police Beat Chowki, MSEB Lineman.',
       icon: 'e911_emergency',
       iconBg: 'bg-[#ffdad6] text-[#ba1a1a]',
-      linkText: 'Open Hotline Directory',
+      linkText: lang === 'MR' ? 'तातडीचे क्रमांक पहा' : 'Open Hotline Directory',
       linkIcon: 'arrow_forward'
     }
   ];
@@ -113,12 +116,12 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({ onSelectModule }) =>
         <div>
           <h2 className="font-heading font-extrabold text-[22px] text-[#003629] flex items-center gap-2">
             <span className="material-symbols-outlined text-[#a63b00]">grid_view</span>
-            <span>Essential Village Hub Services</span>
+            <span>{t('hub_title')}</span>
           </h2>
-          <p className="text-[13px] text-[#404945]">Instant access to verified civic, agricultural, commerce, and welfare pillars</p>
+          <p className="text-[13px] text-[#404945]">{t('hub_subtitle')}</p>
         </div>
         <span className="text-[11px] font-bold text-[#376757] uppercase tracking-wider bg-[#f3ede4] px-3 py-1 rounded-lg border border-[#e8e2d9]">
-          9 Verified Civic Modules
+          {lang === 'MR' ? '९ प्रमाणित ग्राम विभाग' : '9 Verified Civic Modules'}
         </span>
       </div>
 

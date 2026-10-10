@@ -2,10 +2,17 @@ package com.digitalgaon.service;
 
 import com.digitalgaon.dto.AdminStatsDto;
 import com.digitalgaon.dto.UserAdminDto;
+import com.digitalgaon.model.Business;
 import com.digitalgaon.model.Complaint;
 import com.digitalgaon.model.Role;
 import com.digitalgaon.model.User;
-import com.digitalgaon.repository.*;
+import com.digitalgaon.repository.AnnouncementRepository;
+import com.digitalgaon.repository.BusinessRepository;
+import com.digitalgaon.repository.ComplaintRepository;
+import com.digitalgaon.repository.JobRepository;
+import com.digitalgaon.repository.MarketplaceListingRepository;
+import com.digitalgaon.repository.RoleRepository;
+import com.digitalgaon.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -137,8 +144,8 @@ public class AdminService {
     }
 
     @Transactional
-    public com.digitalgaon.model.Business updateBusinessVerification(UUID businessId, boolean verified, String badge) {
-        com.digitalgaon.model.Business biz = businessRepository.findById(businessId)
+    public Business updateBusinessVerification(UUID businessId, boolean verified, String badge) {
+        Business biz = businessRepository.findById(businessId)
                 .orElseThrow(() -> new RuntimeException("Business not found: " + businessId));
         biz.setIsVerified(verified);
         if (badge != null && !badge.isBlank()) {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { Breadcrumb } from '../components/Breadcrumb';
+import { useLanguage } from '../context/LanguageContext';
 
 export interface KrishiPageProps {
   mandiPrices?: any[];
@@ -8,6 +9,7 @@ export interface KrishiPageProps {
 }
 
 export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavigateHome }) => {
+  const { lang, t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'mandi' | 'machinery' | 'soil' | 'pest'>('mandi');
   const [dbMachinery, setDbMachinery] = useState<any[]>([]);
 
@@ -160,13 +162,13 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
       {/* 2. Breadcrumbs & Accredited Badge */}
       <Breadcrumb
         items={[
-          { label: 'Home', onClick: onNavigateHome },
-          { label: 'Krishi & Agriculture (कृषी आणि शेती केंद्र)', active: true }
+          { label: t('nav_home'), onClick: onNavigateHome },
+          { label: lang === 'MR' ? 'कृषी व शेती केंद्र (Krishi)' : 'Krishi & Agriculture', active: true }
         ]}
         rightBadge={
           <div className="flex items-center gap-1.5 bg-[#baeed9] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
             <span className="material-symbols-outlined text-[15px]">verified</span>
-            <span>ZP Agriculture Directorate Accredited</span>
+            <span>{lang === 'MR' ? 'जि. प. कृषी विभाग अधिकृत' : 'ZP Agriculture Directorate Accredited'}</span>
           </div>
         }
       />
@@ -175,24 +177,28 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
       <div className="bg-white rounded-2xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
         <div className="max-w-2xl">
           <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#003629] leading-tight mb-2">
-            Krishi &amp; Agriculture Hub — कृषी आणि शेती केंद्र
+            {lang === 'MR' ? 'कृषी व शेती केंद्र — बाजारभाव व अवजारे' : 'Krishi & Agriculture Hub — Mandi & Tools'}
           </h1>
           <p className="text-[13px] text-[#404945] leading-relaxed">
-            Live APMC Mandi rates, soil health guidance, crop disease diagnostics, tractor &amp; harvester rental pool, and subsidized agricultural inputs for Asgaon farmers.
+            {lang === 'MR'
+              ? 'थेट एपीएमसी बाजारभाव, माती परीक्षण मार्गदर्शन, ट्रॅक्टर व हार्वेस्टर भाडे आणि आसगावच्या शेतकऱ्यांसाठी शासकीय अनुदानित सेवा.'
+              : 'Live APMC Mandi rates, soil health guidance, crop disease diagnostics, tractor & harvester rental pool, and subsidized agricultural inputs for Asgaon farmers.'}
           </p>
         </div>
 
         {/* Right Kisan Call Center Badge */}
         <div className="bg-[#1b4d3e] text-white p-4 rounded-2xl border border-[#003629] shadow-sm flex items-center justify-between gap-4 w-full lg:w-72 shrink-0">
           <div>
-            <div className="text-[10px] text-[#baeed9] font-bold uppercase tracking-wider">KISAN CALL CENTER (24x7)</div>
+            <div className="text-[10px] text-[#baeed9] font-bold uppercase tracking-wider">
+              {lang === 'MR' ? 'किसान कॉल सेंटर (२४/७)' : 'KISAN CALL CENTER (24x7)'}
+            </div>
             <div className="font-heading font-extrabold text-[17px] text-white mt-0.5">1800-180-1551</div>
           </div>
           <a
             href="tel:18001801551"
             className="px-3.5 py-1.5 rounded-xl bg-[#baeed9] text-[#002117] text-[12px] font-bold hover:bg-white transition-colors"
           >
-            Toll-Free Call
+            {lang === 'MR' ? 'मोफत कॉल' : 'Toll-Free Call'}
           </a>
         </div>
       </div>
@@ -209,9 +215,11 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
         >
           <div>
             <div className={`text-[10px] font-bold uppercase ${activeTab === 'mandi' ? 'text-[#baeed9]' : 'text-[#707974]'}`}>
-              APMC Live Rates
+              {lang === 'MR' ? 'थेट बाजारभाव' : 'APMC Live Rates'}
             </div>
-            <div className="font-heading font-bold text-[14px]">Mandi Bhaav (बाजार भाव)</div>
+            <div className="font-heading font-bold text-[14px]">
+              {lang === 'MR' ? 'मंडी बाजार भाव' : 'Mandi Bhaav'}
+            </div>
           </div>
           <span className="material-symbols-outlined text-[22px]">trending_up</span>
         </button>
@@ -226,9 +234,11 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
         >
           <div>
             <div className={`text-[10px] font-bold uppercase ${activeTab === 'machinery' ? 'text-[#baeed9]' : 'text-[#707974]'}`}>
-              Rent Machinery
+              {lang === 'MR' ? 'अवजारे भाडे' : 'Rent Machinery'}
             </div>
-            <div className="font-heading font-bold text-[14px]">Tractor &amp; Harvester Pool</div>
+            <div className="font-heading font-bold text-[14px]">
+              {lang === 'MR' ? 'ट्रॅक्टर व हार्वेस्टर' : 'Tractor & Pool'}
+            </div>
           </div>
           <span className="material-symbols-outlined text-[22px]">agriculture</span>
         </button>
@@ -243,9 +253,11 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
         >
           <div>
             <div className={`text-[10px] font-bold uppercase ${activeTab === 'soil' ? 'text-[#baeed9]' : 'text-[#707974]'}`}>
-              Check Ward Testing
+              {lang === 'MR' ? 'माती परीक्षण' : 'Ward Testing'}
             </div>
-            <div className="font-heading font-bold text-[14px]">Soil Health Card Roster</div>
+            <div className="font-heading font-bold text-[14px]">
+              {lang === 'MR' ? 'मृदा आरोग्य कार्ड' : 'Soil Health Card'}
+            </div>
           </div>
           <span className="material-symbols-outlined text-[22px]">biotech</span>
         </button>

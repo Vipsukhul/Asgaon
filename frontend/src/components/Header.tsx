@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AsgaonLogo } from './AsgaonLogo';
 import { isPushSubscribed, subscribeUserToPush, unsubscribeUserFromPush } from '../services/pushNotifications';
 import { api } from '../services/api';
+import { useLanguage } from '../context/LanguageContext';
 
 interface HeaderProps {
   onOpenLogin: () => void;
@@ -31,7 +32,7 @@ export const Header: React.FC<HeaderProps> = ({
   currentUser,
   onLogout
 }) => {
-  const [lang, setLang] = useState<'EN' | 'MR'>('EN');
+  const { lang, setLang, t } = useLanguage();
   const [searchVal, setSearchVal] = useState('');
   const [villageOpen, setVillageOpen] = useState(false);
   const [currentVillage, setCurrentVillage] = useState('Asgaon, Pauni (Dist. Bhandara, 441910)');
@@ -73,18 +74,17 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   const navItems = [
-    { id: 'businesses', label: 'Businesses' },
-    { id: 'jobs', label: 'Jobs' },
-    { id: 'schemes', label: 'Govt Schemes' },
-    { id: 'krishi', label: 'Krishi / Agriculture' },
-    { id: 'shiksha', label: 'Shiksha / Education' },
-    { id: 'transport', label: 'ST Bus / वाहतूक' },
-    { id: 'marketplace', label: 'Marketplace' },
-    { id: 'announcements', label: 'Announcements' },
-    { id: 'events', label: 'Events' },
-    { id: 'blogs', label: 'Blogs' },
-    { id: 'emergency', label: 'Emergency Nos' }
-
+    { id: 'businesses', label: lang === 'MR' ? 'स्थानिक दुकाने' : 'Businesses' },
+    { id: 'jobs', label: lang === 'MR' ? 'रोजगार / नोकऱ्या' : 'Jobs' },
+    { id: 'schemes', label: lang === 'MR' ? 'शासकीय योजना' : 'Govt Schemes' },
+    { id: 'krishi', label: lang === 'MR' ? 'कृषी व बाजारभाव' : 'Krishi / Mandi' },
+    { id: 'shiksha', label: lang === 'MR' ? 'शिक्षण व शाळा' : 'Education' },
+    { id: 'transport', label: lang === 'MR' ? 'वाहतूक व बस' : 'ST Bus / Transport' },
+    { id: 'marketplace', label: lang === 'MR' ? 'ग्राम बाजार' : 'Marketplace' },
+    { id: 'announcements', label: lang === 'MR' ? 'सूचना व परिपत्रके' : 'Announcements' },
+    { id: 'events', label: lang === 'MR' ? 'गावातील कार्यक्रम' : 'Events' },
+    { id: 'blogs', label: lang === 'MR' ? 'ग्राम वार्ता' : 'Stories' },
+    { id: 'emergency', label: lang === 'MR' ? 'आपत्कालीन सेवा' : 'Emergency' }
   ];
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -137,19 +137,19 @@ export const Header: React.FC<HeaderProps> = ({
                   type="text"
                   value={searchVal}
                   onChange={(e) => setSearchVal(e.target.value)}
-                  placeholder="Search mandi rates, crop schemes, tractor, clinic, jobs..."
+                  placeholder={t('header_search_placeholder')}
                   className="w-full bg-transparent text-[#1d1b16] text-[13px] focus:outline-none placeholder:text-[#707974]"
                 />
                 <div className="flex items-center gap-2 pl-2 border-l border-[#e8e2d9]">
                   <button
                     type="button"
-                    title="Voice Search (Marathi / Hindi / English)"
-                    onClick={() => alert('Voice search ready! Speak now in Marathi, Hindi, or English.')}
+                    title={t('header_voice_search_title')}
+                    onClick={() => alert(lang === 'MR' ? 'व्हॉइस सर्च तयार आहे! बोला...' : 'Voice search ready! Speak now...')}
                     className="text-[#003629] hover:text-[#1b4d3e] p-0.5"
                   >
                     <span className="material-symbols-outlined text-[19px]">mic</span>
                   </button>
-                  <span className="text-[11px] font-semibold text-[#707974]">All</span>
+                  <span className="text-[11px] font-semibold text-[#707974]">{t('header_all')}</span>
                   <span className="material-symbols-outlined text-[16px] text-[#707974]">expand_more</span>
                 </div>
               </div>
@@ -399,10 +399,10 @@ export const Header: React.FC<HeaderProps> = ({
                 type="button"
                 onClick={onOpenLogin}
                 className="flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-[#003629] text-white hover:bg-[#1b4d3e] active:scale-95 transition-all text-[12px] sm:text-[13px] font-bold shadow-xs whitespace-nowrap"
-                title="Sign In / Register"
+                title={t('header_login')}
               >
                 <span className="material-symbols-outlined text-[18px]">login</span>
-                <span>Sign In / Register</span>
+                <span>{t('header_login')}</span>
               </button>
             )}
           </div>
@@ -419,7 +419,7 @@ export const Header: React.FC<HeaderProps> = ({
                     : 'text-[#404945] hover:text-[#1d1b16] hover:bg-[#f3ede4]'
                   }`}
               >
-                All Hub
+                {lang === 'MR' ? 'सर्व विभाग' : 'All Hub'}
               </button>
               {navItems.map((item) => (
                 <button

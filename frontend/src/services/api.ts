@@ -42,19 +42,67 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  const isGet = !options.method || options.method.toUpperCase() === 'GET';
+  const cacheKey = `dg_cache_${endpoint}`;
 
-  if (!response.ok) {
-    const errorBody = await response.json().catch(() => ({}));
-    throw new Error(errorBody.message || `Request failed with status ${response.status}`);
+  // Emit event if server takes more than 2.5s (e.g. Render free tier cold-start)
+  const wakeTimer = setTimeout(() => {
+    window.dispatchEvent(new CustomEvent('dg:server-waking', { detail: { endpoint } }));
+  }, 2500);
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 20000); // 20s timeout
+
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      ...options,
+      headers,
+      signal: controller.signal,
+    });
+
+    clearTimeout(wakeTimer);
+    clearTimeout(timeoutId);
+    window.dispatchEvent(new CustomEvent('dg:server-ready'));
+
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => ({}));
+      throw new Error(errorBody.message || `Request failed with status ${response.status}`);
+    }
+
+    const json: ApiResponse<T> = await response.json();
+    
+    // Cache successful GET responses in sessionStorage for instant subsequent loads
+    if (isGet && json.data) {
+      try {
+        sessionStorage.setItem(cacheKey, JSON.stringify(json.data));
+      } catch {
+        // Ignore storage quota errors
+      }
+    }
+
+    return json.data;
+  } catch (err: any) {
+    clearTimeout(wakeTimer);
+    clearTimeout(timeoutId);
+    window.dispatchEvent(new CustomEvent('dg:server-ready'));
+
+    // If GET request failed or timed out, try falling back to cached response
+    if (isGet) {
+      const cached = sessionStorage.getItem(cacheKey);
+      if (cached) {
+        try {
+          console.warn(`[API] Network request to ${endpoint} failed (${err.message}). Serving cached data.`);
+          return JSON.parse(cached) as T;
+        } catch {
+          // parse failed, rethrow original error
+        }
+      }
+    }
+
+    throw err;
   }
-
-  const json: ApiResponse<T> = await response.json();
-  return json.data;
 }
+
 
 export const api = {
   // Businesses

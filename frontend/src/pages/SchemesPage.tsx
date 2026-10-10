@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import type { Scheme } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { SEOHead } from '../components/SEOHead';
+import { useLanguage } from '../context/LanguageContext';
 
 interface SchemesPageProps {
   schemes?: Scheme[];
@@ -16,6 +17,8 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
   onNavigateHome,
   onSelectScheme
 }) => {
+  const { lang, t } = useLanguage();
+
   // Read initial category/search from URL params if present
   const getInitialParam = (key: string, fallback: string) => {
     try {
@@ -60,13 +63,13 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
   }, [selectedCat, search]);
 
   const categories = [
-    { id: 'All', label: 'All Schemes (सर्व योजना)', icon: 'apps' },
-    { id: 'housing', label: 'Gharkul & Housing (घरकुल योजना)', icon: 'home' },
-    { id: 'farmer', label: 'Farmers & Krishi (शेती योजना)', icon: 'agriculture' },
-    { id: 'women', label: 'Women & SHGs (महिला व लाडकी बहीण)', icon: 'family_restroom' },
-    { id: 'student', label: 'Students & Youth (विद्यार्थी शिष्यवृत्ती)', icon: 'school' },
-    { id: 'solar', label: 'Solar Energy (सौर कृषी पंप)', icon: 'solar_power' },
-    { id: 'health', label: 'Health & Pension (आरोग्य व पेन्शन)', icon: 'health_and_safety' }
+    { id: 'All', label: lang === 'MR' ? 'सर्व योजना' : 'All Schemes', icon: 'apps' },
+    { id: 'housing', label: lang === 'MR' ? 'घरकुल व आवास योजना' : 'Gharkul & Housing', icon: 'home' },
+    { id: 'farmer', label: lang === 'MR' ? 'शेती व कृषी योजना' : 'Farmers & Krishi', icon: 'agriculture' },
+    { id: 'women', label: lang === 'MR' ? 'महिला व लाडकी बहीण' : 'Women & SHGs', icon: 'family_restroom' },
+    { id: 'student', label: lang === 'MR' ? 'विद्यार्थी व शिष्यवृत्ती' : 'Students & Youth', icon: 'school' },
+    { id: 'solar', label: lang === 'MR' ? 'सौर कृषी पंप (कुसुम)' : 'Solar Energy', icon: 'solar_power' },
+    { id: 'health', label: lang === 'MR' ? 'आरोग्य व पेन्शन' : 'Health & Pension', icon: 'health_and_safety' }
   ];
 
   const dynamicSchemes = (schemes || []).map((s: any, idx: number) => {
@@ -249,13 +252,13 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
       {/* 2. Breadcrumbs & Verified Status */}
       <Breadcrumb
         items={[
-          { label: 'Home', onClick: onNavigateHome },
-          { label: 'Government Schemes & Subsidies (शासकीय योजना व सबसिडी मार्गदर्शक)', active: true }
+          { label: t('nav_home'), onClick: onNavigateHome },
+          { label: lang === 'MR' ? 'शासकीय योजना व सबसिडी मार्गदर्शक' : 'Government Schemes & Subsidies', active: true }
         ]}
         rightBadge={
           <div className="flex items-center gap-1.5 bg-[#baeed9] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
             <span className="material-symbols-outlined text-[15px] text-[#002117]">verified</span>
-            <span>Pauni Tehsil Direct Benefit Transfer (DBT) Helpdesk Verified</span>
+            <span>{lang === 'MR' ? 'पवनी तहसील डीबीटी (DBT) मदत कक्ष प्रमाणित' : 'Pauni Tehsil Direct Benefit Transfer (DBT) Verified'}</span>
           </div>
         }
       />

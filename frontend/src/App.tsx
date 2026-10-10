@@ -132,6 +132,18 @@ export function App() {
   const [mandiPrices, setMandiPrices] = useState<MandiPrice[]>([]);
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [grievances, setGrievances] = useState<Grievance[]>([]);
+  const [isServerWaking, setIsServerWaking] = useState(false);
+
+  useEffect(() => {
+    const handleWaking = () => setIsServerWaking(true);
+    const handleReady = () => setIsServerWaking(false);
+    window.addEventListener('dg:server-waking', handleWaking);
+    window.addEventListener('dg:server-ready', handleReady);
+    return () => {
+      window.removeEventListener('dg:server-waking', handleWaking);
+      window.removeEventListener('dg:server-ready', handleReady);
+    };
+  }, []);
 
   // Fetch live data exclusively from PostgreSQL backend
   useEffect(() => {
@@ -503,6 +515,14 @@ export function App() {
         currentUser={currentUser}
         onLogout={handleLogout}
       />
+
+      {/* Floating Server Wake-up notification */}
+      {isServerWaking && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-amber-500 text-stone-950 text-xs sm:text-sm font-semibold px-4 py-1.5 rounded-full shadow-lg flex items-center gap-2 border border-amber-300">
+          <span className="material-symbols-outlined text-base animate-spin">sync</span>
+          <span>ग्रामपंचायत सर्व्हर जोडत आहे, कृपया क्षणभर प्रतीक्षा करा... (Warming up cloud server)</span>
+        </div>
+      )}
 
       {/* Main Container */}
       <main className={`flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 ${

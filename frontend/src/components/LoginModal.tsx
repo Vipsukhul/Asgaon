@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { api } from '../services/api';
+import { useLanguage } from '../context/LanguageContext';
 
 declare global {
   interface Window {
@@ -14,6 +15,7 @@ interface LoginModalProps {
 }
 
 export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess }) => {
+  const { lang, t } = useLanguage();
   const [selectedRole, setSelectedRole] = useState('CITIZEN');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -25,11 +27,36 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
   const gsiContainerRef = useRef<HTMLDivElement>(null);
 
   const roles = [
-    { id: 'CITIZEN', label: 'Citizen (नागरिक)', icon: 'person', desc: 'General civic services, complaints & schemes' },
-    { id: 'FARMER', label: 'Farmer (शेतकरी)', icon: 'agriculture', desc: 'Mandi prices, KUSUM solar, farm grants' },
-    { id: 'STUDENT', label: 'Student (विद्यार्थी)', icon: 'school', desc: 'MahaDBT scholarships, jobs & exam alerts' },
-    { id: 'BUSINESS_OWNER', label: 'Business (व्यापारी)', icon: 'storefront', desc: 'Directory listing, promotions & trading' },
-    { id: 'SELLER', label: 'Seller (विक्रेता)', icon: 'shopping_bag', desc: 'Weekly bazaar, produce & marketplace sales' }
+    {
+      id: 'CITIZEN',
+      label: lang === 'MR' ? 'नागरिक (Citizen)' : 'Citizen (नागरिक)',
+      icon: 'person',
+      desc: lang === 'MR' ? 'तक्रारी, शासकीय योजना व सार्वजनिक सेवा' : 'General civic services, complaints & schemes'
+    },
+    {
+      id: 'FARMER',
+      label: lang === 'MR' ? 'शेतकरी (Farmer)' : 'Farmer (शेतकरी)',
+      icon: 'agriculture',
+      desc: lang === 'MR' ? 'बाजारभाव, कुसुम सौर पंप व कृषी अनुदान' : 'Mandi prices, KUSUM solar, farm grants'
+    },
+    {
+      id: 'STUDENT',
+      label: lang === 'MR' ? 'विद्यार्थी (Student)' : 'Student (विद्यार्थी)',
+      icon: 'school',
+      desc: lang === 'MR' ? 'महाडीबीटी शिष्यवृत्ती, नोकऱ्या व परीक्षा' : 'MahaDBT scholarships, jobs & exam alerts'
+    },
+    {
+      id: 'BUSINESS_OWNER',
+      label: lang === 'MR' ? 'व्यापारी (Business)' : 'Business (व्यापारी)',
+      icon: 'storefront',
+      desc: lang === 'MR' ? 'दुकान नोंदणी, जाहिरात व व्यापार' : 'Directory listing, promotions & trading'
+    },
+    {
+      id: 'SELLER',
+      label: lang === 'MR' ? 'विक्रेता (Seller)' : 'Seller (विक्रेता)',
+      icon: 'shopping_bag',
+      desc: lang === 'MR' ? 'आठवडी बाजार व शेतीमाल खरेदी-विक्री' : 'Weekly bazaar, produce & marketplace sales'
+    }
   ];
 
   // Initialize Google Identity Services (GIS)
@@ -188,15 +215,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
             </div>
             <div>
               <h3 className="font-heading font-extrabold text-[18px] text-[#1d1b16] leading-tight">
-                Asgaon OAuth
+                {lang === 'MR' ? 'नागरिक व व्यापारी लॉगिन' : 'Asgaon Citizen Login'}
               </h3>
-              <p className="text-[12px] text-[#707974]">Asgaon Village Civic &amp; Commerce Platform</p>
+              <p className="text-[12px] text-[#707974]">{t('village_full_location')}</p>
             </div>
           </div>
           <button
             onClick={onClose}
             className="text-[#707974] hover:text-[#1d1b16] p-1.5 rounded-lg hover:bg-[#f3ede4] transition-colors"
-            title="Close"
+            title={t('header_close')}
           >
             <span className="material-symbols-outlined text-[20px]">close</span>
           </button>
@@ -205,10 +232,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
         {/* Informative Note */}
         <div className="mb-4 bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] text-[12px] text-[#404945]">
           <p className="font-semibold text-[#003629] mb-0.5">
-            Single Sign-On (SSO) with Google
+            {lang === 'MR' ? 'गुगल खात्याद्वारे सुरक्षित प्रवेश (Google Single Sign-On)' : 'Single Sign-On (SSO) with Google'}
           </p>
           <p>
-            New users are automatically registered. Existing accounts are logged in instantly. Browsing without logging in remains freely open across the portal.
+            {lang === 'MR'
+              ? 'नवीन वापरकर्त्यांची स्वयंचलित नोंदणी होते. आधीपासून खाते असल्यास थेट लॉगिन होईल. लॉगिन न करताही सर्व माहिती मोफत वाचता येते.'
+              : 'New users are automatically registered. Existing accounts are logged in instantly. Browsing without logging in remains freely open across the portal.'}
           </p>
         </div>
 
@@ -216,7 +245,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
         <div className="mb-5">
           <label className="block text-[12px] font-bold uppercase tracking-wider text-[#a63b00] mb-2 flex items-center gap-1">
             <span className="material-symbols-outlined text-[15px]">badge</span>
-            <span>Select Your Primary Civic Profile</span>
+            <span>{lang === 'MR' ? 'आपली प्राथमिक भूमिका निवडा:' : 'Select Your Primary Civic Profile:'}</span>
           </label>
           <div className="grid grid-cols-2 gap-2">
             {roles.map((r) => (

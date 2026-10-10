@@ -3,6 +3,7 @@ import { api } from '../services/api';
 import type { UserProfileData } from './ProfilePage';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { sendTestPushNotification } from '../services/pushNotifications';
+import { AdminLogsSection } from '../components/AdminLogsSection';
 import {
   VILLAGE_CONTACTS,
   WATER_SCHEDULE,
@@ -46,7 +47,7 @@ interface AdminPageProps {
 
 export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmin, onExit, onLogout }) => {
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users'
+    'overview' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users' | 'logs'
   >('overview');
 
   // Dashboard Metrics
@@ -1344,7 +1345,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           { id: 'projects', icon: 'construction', label: `विकासकामे (${projects.length})` },
           { id: 'complaints', icon: 'support_agent', label: `गावकऱ्यांच्या तक्रारी (${complaints.length})` },
           { id: 'broadcast', icon: 'cell_tower', label: 'तातडीची दवंडी (Push Alert)' },
-          { id: 'users', icon: 'group', label: 'गावकऱ्यांची यादी' }
+          { id: 'users', icon: 'group', label: 'गावकऱ्यांची यादी' },
+          { id: 'logs', icon: 'manage_history', label: 'ऑडिट नोंदी (Audit Logs)' }
         ].map((t) => (
           <button
             key={t.id}
@@ -4956,6 +4958,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             </table>
           </div>
         </div>
+      )}
+
+      {/* TAB 14: AUDIT LOGS */}
+      {activeTab === 'logs' && (
+        <AdminLogsSection currentUser={currentUser} />
       )}
     </div>
   );
