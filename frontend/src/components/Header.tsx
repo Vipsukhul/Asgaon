@@ -128,136 +128,138 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Actions & Role / Login */}
           <div className="flex items-center gap-2 shrink-0">
-            {/* Live Web Push Notification Bell Popover */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setNotifDropdownOpen(!notifDropdownOpen)}
-                className={`relative h-8 w-8 rounded-lg flex items-center justify-center transition-all border ${
-                  notifDropdownOpen || pushActive
-                    ? 'bg-[#baeed9] text-[#002117] border-[#006a4e]/40 shadow-xs ring-1 ring-[#006a4e]/30'
-                    : 'bg-white hover:bg-[#f3ede4] text-[#55605a] hover:text-[#003629] border-[#e8e2d9] shadow-2xs'
-                }`}
-                title="गाव पातळीवरील सूचना व थेट अलर्ट (Civic Notifications & Push Alerts)"
-              >
-                <span className={`material-symbols-outlined text-[19px] ${pushActive ? 'text-[#006a4e]' : ''}`}>
-                  {pushActive ? 'notifications_active' : 'notifications'}
-                </span>
-                {hasUrgent && (
-                  <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#d9381e] rounded-full ring-2 ring-white animate-pulse" />
-                )}
-              </button>
+            {/* Live Web Push Notification Bell Popover (Visible only when logged in) */}
+            {currentUser?.isLoggedIn && (
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setNotifDropdownOpen(!notifDropdownOpen)}
+                  className={`relative h-8 w-8 rounded-lg flex items-center justify-center transition-all border ${
+                    notifDropdownOpen || pushActive
+                      ? 'bg-[#baeed9] text-[#002117] border-[#006a4e]/40 shadow-xs ring-1 ring-[#006a4e]/30'
+                      : 'bg-white hover:bg-[#f3ede4] text-[#55605a] hover:text-[#003629] border-[#e8e2d9] shadow-2xs'
+                  }`}
+                  title="गाव पातळीवरील सूचना व थेट अलर्ट (Civic Notifications & Push Alerts)"
+                >
+                  <span className={`material-symbols-outlined text-[19px] ${pushActive ? 'text-[#006a4e]' : ''}`}>
+                    {pushActive ? 'notifications_active' : 'notifications'}
+                  </span>
+                  {hasUrgent && (
+                    <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#d9381e] rounded-full ring-2 ring-white animate-pulse" />
+                  )}
+                </button>
 
-              {/* Notification Popover Dropdown */}
-              {notifDropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-[#e8e2d9] p-3 z-50 animate-fadeIn text-[12px]">
-                  {/* Header */}
-                  <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#e8e2d9]">
-                    <div className="flex items-center gap-1.5 font-bold text-[#003629]">
-                      <span className="material-symbols-outlined text-[18px] text-[#006a4e]">campaign</span>
-                      <span>ग्रामपंचायत सूचना व अलर्ट</span>
-                    </div>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#baeed9] text-[#003629]">
-                      {recentAlerts.length} ताज्या सूचना
-                    </span>
-                  </div>
-
-                  {/* Web Push Subscription Action Box */}
-                  <div className={`p-2.5 rounded-xl border mb-3 flex items-center justify-between gap-2 ${
-                    pushActive ? 'bg-[#e6f7f0] border-[#b8ebd5]' : 'bg-[#fff8f0] border-[#f0dfcc]'
-                  }`}>
-                    <div className="flex items-center gap-2">
-                      <span className={`material-symbols-outlined text-[20px] ${pushActive ? 'text-[#006a4e]' : 'text-[#a63b00]'}`}>
-                        {pushActive ? 'check_circle' : 'notifications_paused'}
+                {/* Notification Popover Dropdown */}
+                {notifDropdownOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-[#e8e2d9] p-3 z-50 animate-fadeIn text-[12px]">
+                    {/* Header */}
+                    <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#e8e2d9]">
+                      <div className="flex items-center gap-1.5 font-bold text-[#003629]">
+                        <span className="material-symbols-outlined text-[18px] text-[#006a4e]">campaign</span>
+                        <span>गाव सूचना व थेट अलर्ट</span>
+                      </div>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#baeed9] text-[#003629]">
+                        {recentAlerts.length} ताज्या सूचना
                       </span>
-                      <div>
-                        <div className="font-bold text-[#1d1b16] text-[11px] leading-tight">
-                          {pushActive ? 'मोबाईल सूचना चालू आहेत' : 'थेट सूचना सुरू करा'}
-                        </div>
-                        <div className="text-[10px] text-[#707974] leading-tight mt-0.5">
-                          {pushActive ? 'पाणी, वीज, APMC दर व तक्रार अपडेट्स' : 'पाणी पुरवठा व महत्त्वाच्या सूचना मिळवा'}
-                        </div>
-                      </div>
                     </div>
-                    <button
-                      type="button"
-                      onClick={handleTogglePush}
-                      disabled={pushLoading}
-                      className={`px-2.5 py-1 rounded-lg text-[10px] font-black shrink-0 transition-all ${
-                        pushActive
-                          ? 'bg-white border border-[#b8ebd5] text-[#006a4e] hover:bg-[#d5f3e5]'
-                          : 'bg-[#003629] text-[#baeed9] hover:bg-[#1b4d3e] shadow-2xs'
-                      }`}
-                    >
-                      {pushLoading ? '...' : pushActive ? 'सक्रिय ✓' : 'सुरू करा'}
-                    </button>
-                  </div>
 
-                  {/* Recent Alerts List */}
-                  <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
-                    {recentAlerts.length > 0 ? (
-                      recentAlerts.map((a: any, idx: number) => (
-                        <div
-                          key={a.id || idx}
-                          onClick={() => {
-                            setActiveNav('announcements');
-                            setNotifDropdownOpen(false);
-                          }}
-                          className="p-2 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] transition-colors cursor-pointer border border-[#e8e2d9]/60 text-left"
-                        >
-                          <div className="flex items-center justify-between gap-1 mb-1">
-                            <span className="font-bold text-[#003629] truncate text-[11px]">
-                              {a.title}
-                            </span>
-                            {a.priority === 'URGENT' && (
-                              <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-[#ffdad6] text-[#ba1a1a] shrink-0">
-                                तातडीची
-                              </span>
-                            )}
+                    {/* Web Push Subscription Action Box */}
+                    <div className={`p-2.5 rounded-xl border mb-3 flex items-center justify-between gap-2 ${
+                      pushActive ? 'bg-[#e6f7f0] border-[#b8ebd5]' : 'bg-[#fff8f0] border-[#f0dfcc]'
+                    }`}>
+                      <div className="flex items-center gap-2">
+                        <span className={`material-symbols-outlined text-[20px] ${pushActive ? 'text-[#006a4e]' : 'text-[#a63b00]'}`}>
+                          {pushActive ? 'check_circle' : 'notifications_paused'}
+                        </span>
+                        <div>
+                          <div className="font-bold text-[#1d1b16] text-[11px] leading-tight">
+                            {pushActive ? 'मोबाईल सूचना चालू आहेत' : 'थेट सूचना सुरू करा'}
                           </div>
-                          <p className="text-[11px] text-[#404945] line-clamp-2 leading-relaxed">
-                            {a.message}
-                          </p>
-                          <div className="flex items-center justify-between mt-1 text-[10px] text-[#707974]">
-                            <span>{a.category || 'Panchayat'}</span>
-                            <span className="text-[#006a4e] font-semibold flex items-center gap-0.5">
-                              <span>सविस्तर पहा</span>
-                              <span className="material-symbols-outlined text-[12px]">chevron_right</span>
-                            </span>
+                          <div className="text-[10px] text-[#707974] leading-tight mt-0.5">
+                            {pushActive ? 'पाणी, वीज, APMC दर व तक्रार अपडेट्स' : 'पाणी पुरवथा व महत्त्वाच्या सूचना मिळवा'}
                           </div>
                         </div>
-                      ))
-                    ) : (
-                      <div className="p-4 text-center text-[#707974] text-xs">
-                        सध्या कोणतीही नवीन तातडीची सूचना नाही.
                       </div>
-                    )}
-                  </div>
+                      <button
+                        type="button"
+                        onClick={handleTogglePush}
+                        disabled={pushLoading}
+                        className={`px-2.5 py-1 rounded-lg text-[10px] font-black shrink-0 transition-all ${
+                          pushActive
+                            ? 'bg-white border border-[#b8ebd5] text-[#006a4e] hover:bg-[#d5f3e5]'
+                            : 'bg-[#003629] text-[#baeed9] hover:bg-[#1b4d3e] shadow-2xs'
+                        }`}
+                      >
+                        {pushLoading ? '...' : pushActive ? 'सक्रिय ✓' : 'सुरू करा'}
+                      </button>
+                    </div>
 
-                  {/* Footer */}
-                  <div className="mt-2.5 pt-2 border-t border-[#e8e2d9] flex items-center justify-between">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setActiveNav('announcements');
-                        setNotifDropdownOpen(false);
-                      }}
-                      className="text-[#006a4e] hover:underline font-bold text-[11px] flex items-center gap-1"
-                    >
-                      <span>सर्व सूचना व परिपत्रके पहा</span>
-                      <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setNotifDropdownOpen(false)}
-                      className="text-[#707974] hover:text-[#1d1b16] font-bold text-[11px]"
-                    >
-                      बंद करा
-                    </button>
+                    {/* Recent Alerts List */}
+                    <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                      {recentAlerts.length > 0 ? (
+                        recentAlerts.map((a: any, idx: number) => (
+                          <div
+                            key={a.id || idx}
+                            onClick={() => {
+                              setActiveNav('announcements');
+                              setNotifDropdownOpen(false);
+                            }}
+                            className="p-2 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] transition-colors cursor-pointer border border-[#e8e2d9]/60 text-left"
+                          >
+                            <div className="flex items-center justify-between gap-1 mb-1">
+                              <span className="font-bold text-[#003629] truncate text-[11px]">
+                                {a.title}
+                              </span>
+                              {a.priority === 'URGENT' && (
+                                <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-[#ffdad6] text-[#ba1a1a] shrink-0">
+                                  तातडीची
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-[11px] text-[#404945] line-clamp-2 leading-relaxed">
+                              {a.message}
+                            </p>
+                            <div className="flex items-center justify-between mt-1 text-[10px] text-[#707974]">
+                              <span>{a.category || 'गाव सूचना'}</span>
+                              <span className="text-[#006a4e] font-semibold flex items-center gap-0.5">
+                                <span>सविस्तर पहा</span>
+                                <span className="material-symbols-outlined text-[12px]">chevron_right</span>
+                              </span>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="p-4 text-center text-[#707974] text-xs">
+                          सध्या कोणतीही नवीन तातडीची सूचना नाही.
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Footer */}
+                    <div className="mt-2.5 pt-2 border-t border-[#e8e2d9] flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setActiveNav('announcements');
+                          setNotifDropdownOpen(false);
+                        }}
+                        className="text-[#006a4e] hover:underline font-bold text-[11px] flex items-center gap-1"
+                      >
+                        <span>सर्व सूचना व परिपत्रके पहा</span>
+                        <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setNotifDropdownOpen(false)}
+                        className="text-[#707974] hover:text-[#1d1b16] font-bold text-[11px]"
+                      >
+                        बंद करा
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            )}
             {/* Language Switcher - Desktop only (hidden on mobile, accessed via profile dropdown) */}
             <div className="hidden md:flex items-center rounded-lg bg-[#f9f3ea] p-0.5 border border-[#e8e2d9]">
               {(['EN', 'MR'] as const).map((l) => (
