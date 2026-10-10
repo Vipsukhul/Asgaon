@@ -28,7 +28,7 @@ export const translations = {
   header_no_alerts: { MR: 'सध्या कोणतीही नवीन तातडीची सूचना नाही.', EN: 'No urgent alerts at this moment.' },
   header_urgent: { MR: 'तातडीची', EN: 'Urgent' },
   header_close: { MR: 'बंद करा', EN: 'Close' },
-  header_login: { MR: 'नागरिक लॉगिन / नोंदणी', EN: 'Citizen Sign In / Register' },
+  header_login: { MR: 'लॉगिन/नोंदणी', EN: 'SignIn/SignUp' },
   header_profile: { MR: 'माझी प्रोफाइल', EN: 'My Profile' },
   header_logout: { MR: 'लॉगआउट (बाहेर पडा)', EN: 'Logout' },
   header_guest: { MR: 'पाहुणे नागरिक', EN: 'Guest Citizen' },
@@ -84,7 +84,7 @@ export const translations = {
   hub_action_emergency_sub: { MR: '१०८ रुग्णवाहिका व ११२ पोलीस', EN: '108 Ambulance & 112 Police' },
 
   // Modals & Forms
-  modal_login_title: { MR: 'नागरिक लॉगिन / नोंदणी', EN: 'Citizen Sign In / Register' },
+  modal_login_title: { MR: 'लॉगिन/नोंदणी', EN: 'SignIn/SignUp' },
   modal_login_desc: { MR: 'मोबाईल नंबर किंवा गुगल खात्याद्वारे सुरक्षित प्रवेश करा', EN: 'Secure access via Mobile OTP or Official Google Account' },
   modal_grievance_title: { MR: 'ग्राम तक्रार व अडचण नोंदवा', EN: 'Lodge Village Grievance' },
   modal_grievance_desc: { MR: 'आपली समस्या थेट ग्रामपंचायत व संबंधित अधिकाऱ्यांपर्यंत पोहोचवा', EN: 'Directly reach Gram Panchayat officials and public servants' },

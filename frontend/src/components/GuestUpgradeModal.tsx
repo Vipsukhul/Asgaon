@@ -23,10 +23,10 @@ export const GuestUpgradeModal: React.FC<GuestUpgradeModalProps> = ({
         </div>
 
         <h3 className="font-heading font-extrabold text-[20px] text-[#003629] mb-1">
-          Google OAuth Sign-In Required
+          Sign-In Required
         </h3>
         <p className="text-[13px] text-[#404945] mb-4">
-          To <span className="font-bold text-[#a63b00]">{actionTitle}</span>, please sign in with your Google account.
+          To <span className="font-bold text-[#a63b00]">{actionTitle}</span>, please sign in.
         </p>
 
         <div className="bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9] text-left mb-5 space-y-2">
@@ -54,14 +54,14 @@ export const GuestUpgradeModal: React.FC<GuestUpgradeModalProps> = ({
             className="w-full py-2.5 rounded-xl bg-[#003629] text-white text-[13px] font-bold hover:bg-[#1b4d3e] transition-colors shadow-xs flex items-center justify-center gap-2"
           >
             <span className="material-symbols-outlined text-[18px]">login</span>
-            <span>Sign In with Google (OAuth)</span>
+            <span>Sign In</span>
           </button>
           <button
             type="button"
             onClick={onClose}
             className="w-full py-2 rounded-xl bg-[#f3ede4] text-[#1d1b16] text-[12px] font-bold hover:bg-[#e8e2d9] transition-colors"
           >
-            Close &amp; Continue Surfing
+            Close
           </button>
         </div>
       </div>

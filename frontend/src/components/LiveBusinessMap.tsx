@@ -28,7 +28,7 @@ interface LiveBusinessMapProps {
   onClose?: () => void;
 }
 
-const ASGAON_CENTER: [number, number] = [20.7850, 79.6350];
+const ASGAON_CENTER: [number, number] = [20.8084579, 79.7242461];
 
 export const CATEGORY_COLORS: Record<string, { bg: string; border: string; icon: string }> = {
   seeds: { bg: '#006a4e', border: '#baeed9', icon: 'agriculture' },
@@ -387,7 +387,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
         </div>
 
         <span className="text-[10px] text-[#707974]">
-          आसगाव (पवनी, भंडारा ४४१९१०) 
+          आसगाव (पवनी, भंडारा ४४१९१०)
         </span>
       </div>
     </div>

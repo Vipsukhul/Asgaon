@@ -30,7 +30,7 @@ interface ShopLocationModalProps {
   onOpenInFullVillageMap?: (bizId: string | number) => void;
 }
 
-const ASGAON_PANCHAYAT: [number, number] = [20.7850, 79.6350];
+const ASGAON_PANCHAYAT: [number, number] = [20.8084579, 79.7242461];
 
 const CATEGORY_COLORS: Record<string, { bg: string; icon: string; label: string }> = {
   seeds: { bg: '#006a4e', icon: 'agriculture', label: 'कृषी व बी-बियाणे' },

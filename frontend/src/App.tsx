@@ -433,7 +433,7 @@ export function App() {
   };
 
   const handleBookmark = (item: any) => {
-    requireAuth('bookmark items to your personal village profile', () => {
+    requireAuth('bookmark items to your profile', () => {
       alert(`Item "${item.name || item.title}" bookmarked to your profile!`);
     });
   };
@@ -615,7 +615,7 @@ export function App() {
       {isServerWaking && (
         <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-amber-500 text-stone-950 text-xs sm:text-sm font-semibold px-4 py-1.5 rounded-full shadow-lg flex items-center gap-2 border border-amber-300">
           <span className="material-symbols-outlined text-base animate-spin">sync</span>
-          <span>ग्रामपंचायत सर्व्हर जोडत आहे, कृपया क्षणभर प्रतीक्षा करा... (Warming up cloud server)</span>
+          <span>कृपया क्षणभर प्रतीक्षा करा..</span>
         </div>
       )}
 

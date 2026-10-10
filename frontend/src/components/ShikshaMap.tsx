@@ -23,7 +23,7 @@ export interface EducationMapItem {
 }
 
 // Exact Coordinates of Asgaon: 20°47'06.0"N 79°38'06.0"E
-const ASGAON_CENTER: [number, number] = [20.7850, 79.6350];
+const ASGAON_CENTER: [number, number] = [20.8084579, 79.7242461];
 
 export const EDUCATION_INSTITUTES: EducationMapItem[] = [
   {
@@ -281,11 +281,10 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
                 setActiveCategory(tab.id);
                 setSelectedItem(null);
               }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                activeCategory === tab.id
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeCategory === tab.id
                   ? 'bg-[#003629] text-white shadow-xs'
                   : 'bg-white text-stone-700 hover:bg-stone-100 border border-stone-200'
-              }`}
+                }`}
             >
               {tab.label}
             </button>

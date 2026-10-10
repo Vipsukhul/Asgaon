@@ -7,7 +7,7 @@ import { EDUCATION_INSTITUTES } from './ShikshaMap';
 import type { Business } from '../types';
 
 // Asgaon Gram Panchayat & Village Center: 20°47'06.0"N 79°38'06.0"E
-const ASGAON_CENTER: [number, number] = [20.7850, 79.6350];
+const ASGAON_CENTER: [number, number] = [20.8084579, 79.7242461];
 
 interface MasterMapPin {
   id: string;
@@ -393,11 +393,10 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id as any)}
-              className={`px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shrink-0 transition-all ${
-                activeCategory === cat.id
+              className={`px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shrink-0 transition-all ${activeCategory === cat.id
                   ? 'bg-[#003629] text-white shadow-xs'
                   : 'bg-white text-[#404945] hover:bg-[#e8e2d9] border border-[#d0dcd5]'
-              }`}
+                }`}
             >
               <span className="material-symbols-outlined text-[14px]">{cat.icon}</span>
               <span>{cat.label}</span>

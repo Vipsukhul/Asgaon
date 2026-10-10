@@ -43,7 +43,7 @@ export const AsgaonLogo: React.FC<AsgaonLogoProps> = ({
               Asgaon
             </span>
             <span className="text-[10px] font-bold text-[#006a4e] bg-[#baeed9]/60 px-1.5 py-0.2 rounded-full border border-[#baeed9]">
-              असगाव
+              आसगाव
             </span>
           </div>
           <span className={`uppercase font-bold tracking-wider text-[#a63b00] mt-0.5 ${current.sub}`}>

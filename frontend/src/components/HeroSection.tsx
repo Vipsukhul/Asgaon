@@ -9,7 +9,7 @@ interface HeroSectionProps {
   onNavigate?: (destination: string) => void;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onTagClick, onNavigate }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }) => {
   const { lang, t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [slides, setSlides] = useState<HeroSlide[]>(() => {
@@ -53,18 +53,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onTagClick, 
   const goToPrev = () => {
     setCurrentIndex(prev => (prev - 1 + slides.length) % slides.length);
   };
-
-  const tags = lang === 'MR' ? [
-    { label: '🌾 सोयाबीन व धान बाजारभाव', query: 'mandi' },
-    { label: '🚜 ट्रॅक्टर व शेती अवजारे', query: 'tractor' },
-    { label: '📜 ७/१२ व ८-अ उतारा', query: '7/12' },
-    { label: '🏥 प्राथमिक आरोग्य केंद्र व दवाखाना', query: 'clinic' }
-  ] : [
-    { label: '🌾 Paddy & Soybean Mandi Rate', query: 'mandi' },
-    { label: '🚜 Tractor & Farm Rental', query: 'tractor' },
-    { label: '📜 7/12 & 8A Land Record', query: '7/12' },
-    { label: '🏥 PHC & Village Clinics', query: 'clinic' }
-  ];
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -110,11 +98,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onTagClick, 
               {lang === 'MR' ? 'ग्रामपंचायत, कृषी योजना, पाणी पुरवठा व स्थानिक बाजारपेठेची ताजी माहिती' : 'Gram Panchayat, Crop Schemes, Water Supply & Local Market Updates'}
             </p>
 
-            <p className="text-[13px] text-[#404945] mb-6 max-w-2xl font-medium">
-              {lang === 'MR'
-                ? 'गावकऱ्यांच्या जनजागृतीसाठी सुरू केलेला स्वतंत्र माहिती मंच • थेट ग्रामपंचायत, कृषी विभाग व स्थानिक कार्यालयांकडून संकलित केलेली माहिती • १४,२८० नागरिकांसाठी'
-                : 'Independent civic portal run for citizen empowerment • Sourced directly from Gram Panchayat, Agriculture Department & village administration • For 14,280 residents'}
-            </p>
+            
 
             {/* Universal Search Bar */}
             <form onSubmit={handleSearch} className="w-full bg-white rounded-2xl shadow-md p-2 flex flex-col md:flex-row items-center gap-2 border border-[#e8e2d9]">
@@ -146,24 +130,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onTagClick, 
             </form>
 
             {/* Discovery Tags */}
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
-              <span className="text-[12px] text-[#404945] font-bold mr-1">
-                {lang === 'MR' ? 'वारंवार शोधले जाणारे:' : 'Frequently Searched:'}
-              </span>
-              {tags.map((t, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => {
-                    setSearchTerm(t.query);
-                    onTagClick(t.query);
-                  }}
-                  className="px-3 py-1 rounded-full bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[12px] font-medium transition-colors border border-[#e8e2d9] cursor-pointer"
-                >
-                  {t.label}
-                </button>
-              ))}
-            </div>
+            
           </div>
         </div>
       ) : (
