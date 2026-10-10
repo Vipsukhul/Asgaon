@@ -90,20 +90,32 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
     // Add markers for all businesses
     businesses.forEach((biz) => {
       const catConfig = CATEGORY_COLORS[biz.categoryKey || 'kirana'] || CATEGORY_COLORS.kirana;
-      const isSelected = selectedBusinessId && String(biz.id) === String(selectedBusinessId);
+      const isSelected = (selectedBusinessId && String(biz.id) === String(selectedBusinessId)) || (activeItem && String(biz.id) === String(activeItem.id));
 
-      // Custom HTML Pin Icon
+      // Custom HTML Pin Icon (clean circular icon pin without cluttering text labels)
       const customIcon = L.divIcon({
         className: 'custom-leaflet-marker',
         html: `
           <div style="position: relative; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.2s;">
+            ${isSelected ? `
+              <div style="
+                position: absolute;
+                top: -5px;
+                width: 46px;
+                height: 46px;
+                border-radius: 50%;
+                background: ${catConfig.bg};
+                opacity: 0.3;
+                animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+              "></div>
+            ` : ''}
             <div style="
               width: ${isSelected ? '44px' : '36px'};
               height: ${isSelected ? '44px' : '36px'};
               border-radius: 50%;
               background-color: ${catConfig.bg};
               color: white;
-              border: 3px solid ${isSelected ? '#ffdbce' : 'white'};
+              border: 3px solid ${isSelected ? '#ffffff' : 'white'};
               box-shadow: 0 4px 14px rgba(0,0,0,0.35);
               display: flex;
               align-items: center;
@@ -121,30 +133,11 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
               border-top: 8px solid ${catConfig.bg};
               margin-top: -2px;
             "></div>
-            <div style="
-              position: absolute;
-              bottom: -22px;
-              background: #ffffff;
-              color: #003629;
-              font-family: sans-serif;
-              font-size: 11px;
-              font-weight: 700;
-              padding: 2px 8px;
-              border-radius: 9999px;
-              white-space: nowrap;
-              border: 1px solid #d0dcd5;
-              box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-              pointer-events: none;
-              letter-spacing: 0.1px;
-            ">
-              ${biz.name.length > 20 ? biz.name.substring(0, 18) + '...' : biz.name}
-            </div>
           </div>
-
         `,
-        iconSize: [36, 46],
-        iconAnchor: [18, 46],
-        popupAnchor: [0, -42]
+        iconSize: [36, 44],
+        iconAnchor: [18, 42],
+        popupAnchor: [0, -40]
       });
 
       const marker = L.marker([biz.latitude, biz.longitude], { icon: customIcon });
@@ -174,7 +167,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [businesses, selectedBusinessId]);
+  }, [businesses, selectedBusinessId, activeItem?.id]);
 
   // Handle fly to searched business
   const handleFlyTo = (biz: MapBusinessItem) => {

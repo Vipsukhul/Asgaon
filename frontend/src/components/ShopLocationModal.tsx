@@ -141,30 +141,16 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
             margin-top: -2px;
             z-index: 10;
           "></div>
-          <div style="
-            margin-top: 4px;
-            background: #ffffff;
-            color: #003629;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 9999px;
-            white-space: nowrap;
-            border: 1px solid #d0dcd5;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            letter-spacing: 0.1px;
-          ">
-            ${business.name}
-          </div>
         </div>
       `,
-      iconSize: [42, 60],
-      iconAnchor: [21, 52]
+      iconSize: [42, 48],
+      iconAnchor: [21, 46],
+      popupAnchor: [0, -44]
     });
 
     const shopMarker = L.marker([lat, lng], { icon: shopIcon }).addTo(map);
     shopMarker.bindPopup(`
-      <div style="font-family: sans-serif; font-size: 12px; line-height: 1.4;">
+      <div style="font-family: sans-serif; font-size: 12px; line-height: 1.4; padding: 2px;">
         <strong style="font-size: 13px; color: #003629;">${business.name}</strong><br/>
         <span style="color: #666;">${business.address || 'Asgaon Village'}</span><br/>
         <span style="color: #a63b00; font-weight: bold;">${business.distance || business.landmark || 'Village Area'}</span>
@@ -177,27 +163,32 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
       html: `
         <div style="display: flex; flex-direction: column; align-items: center; cursor: pointer;">
           <div style="
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: #003629;
             color: #baeed9;
             border: 2px solid #ffffff;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
           ">
-            <span class="material-symbols-outlined" style="font-size: 15px;">account_balance</span>
+            <span class="material-symbols-outlined" style="font-size: 16px;">account_balance</span>
           </div>
-          <span style="font-size: 9px; font-weight: 800; background: #ffffff; color: #003629; border: 1px solid #d0dcd5; padding: 1px 5px; border-radius: 4px; margin-top: 2px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
-            ग्रामपंचायत
-          </span>
+          <div style="
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 5px solid #003629;
+            margin-top: -1px;
+          "></div>
         </div>
       `,
-
-      iconSize: [26, 40],
-      iconAnchor: [13, 30]
+      iconSize: [28, 34],
+      iconAnchor: [14, 32],
+      popupAnchor: [0, -30]
     });
 
     L.marker(ASGAON_PANCHAYAT, { icon: gpIcon })

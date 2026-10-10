@@ -40,14 +40,38 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
       const gpIcon = L.divIcon({
         className: 'picker-gp-marker',
         html: `
-          <div style="background: #ffffff; color: #003629; font-size: 10px; font-weight: 800; padding: 2.5px 8px; border-radius: 9999px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); border: 1px solid #d0dcd5; white-space: nowrap;">
-            🏛️ ग्रामपंचायत
+          <div style="display: flex; flex-direction: column; align-items: center; cursor: pointer;">
+            <div style="
+              width: 28px;
+              height: 28px;
+              border-radius: 50%;
+              background: #003629;
+              color: #baeed9;
+              border: 2px solid #ffffff;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            ">
+              <span class="material-symbols-outlined" style="font-size: 16px;">account_balance</span>
+            </div>
+            <div style="
+              width: 0;
+              height: 0;
+              border-left: 4px solid transparent;
+              border-right: 4px solid transparent;
+              border-top: 5px solid #003629;
+              margin-top: -1px;
+            "></div>
           </div>
         `,
-        iconSize: [60, 20],
-        iconAnchor: [30, 10]
+        iconSize: [28, 34],
+        iconAnchor: [14, 32],
+        popupAnchor: [0, -30]
       });
-      L.marker(ASGAON_CENTER, { icon: gpIcon }).addTo(map);
+      L.marker(ASGAON_CENTER, { icon: gpIcon })
+        .bindPopup('<b>ग्रामपंचायत आसगाव (Gram Panchayat HQ)</b>')
+        .addTo(map);
 
       // Main Draggable Pin Icon
       const pinIcon = L.divIcon({

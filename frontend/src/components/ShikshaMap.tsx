@@ -170,10 +170,7 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
     // Add marker for each institute
     filteredItems.forEach(item => {
       const isSelected = selectedItem?.id === item.id;
-      const displayName = lang === 'MR' ? item.name : item.nameEnglish;
-      const shortName = displayName.length > 22 ? displayName.substring(0, 20) + '...' : displayName;
-
-      // Custom Clean HTML Marker: WHITE BACKGROUND BADGE (NO BLACK BG)
+      // Custom Clean HTML Marker: Circular pin icon with active selection effect
       const customIcon = L.divIcon({
         className: 'custom-shiksha-marker',
         html: `
@@ -220,29 +217,11 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
               margin-top: -2px;
             "></div>
 
-            <!-- NAME LABEL: CLEAN WHITE BACKGROUND PILL (NO BLACK BACKGROUND) -->
-            <div style="
-              margin-top: 3px;
-              background: #ffffff;
-              color: #003629;
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-              font-size: 11px;
-              font-weight: 700;
-              padding: 2.5px 8px;
-              border-radius: 9999px;
-              white-space: nowrap;
-              border: 1px solid #d0dcd5;
-              box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-              pointer-events: none;
-              letter-spacing: 0.1px;
-            ">
-              ${shortName}
-            </div>
           </div>
         `,
-        iconSize: [42, 60],
-        iconAnchor: [21, 52],
-        popupAnchor: [0, -48]
+        iconSize: [42, 46],
+        iconAnchor: [21, 44],
+        popupAnchor: [0, -42]
       });
 
       const marker = L.marker([item.latitude, item.longitude], { icon: customIcon }).addTo(map);
