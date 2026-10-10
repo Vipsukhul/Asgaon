@@ -602,8 +602,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
   const [userSearch, setUserSearch] = useState('');
 
   // Login form state
-  const [adminPhone, setAdminPhone] = useState('9604331589');
-  const [adminPassword, setAdminPassword] = useState('Admin@123');
+  const [adminPhone, setAdminPhone] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
@@ -1215,18 +1215,18 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
             <div className="flex items-start justify-between gap-4 relative z-10">
               <div className="flex items-center gap-3.5">
-                <div className="w-13 h-13 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#baeed9] shadow-inner shrink-0">
-                  <span className="material-symbols-outlined text-[32px]">account_balance</span>
+                <div className="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#baeed9] shadow-inner shrink-0">
+                  <span className="material-symbols-outlined text-[30px]">admin_panel_settings</span>
                 </div>
                 <div>
                   <span className="text-[11px] font-bold uppercase tracking-widest text-[#baeed9]/90 block">
-                    महाराष्ट्र शासन • डिजिटल गाव अभियान
+                    आसगाव ग्राम माहिती मंच • स्वतंत्र नागरिक उपक्रम
                   </span>
                   <h1 className="font-heading font-extrabold text-[20px] sm:text-[23px] text-white leading-tight">
-                    ग्रामपंचायत आसगाव
+                    आसगाव ग्राम माहिती मंच
                   </h1>
                   <p className="text-[12px] text-[#baeed9] font-medium">
-                    प्रशासकीय व डेटा व्यवस्थापन केंद्र (Admin Portal)
+                    माहिती व्यवस्थापन व संपादन कक्ष (Admin Desk)
                   </p>
                 </div>
               </div>
@@ -1238,7 +1238,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold transition-all flex items-center gap-1 border border-white/20 shrink-0"
                   title="सार्वजनिक पोर्टलवर परत जा"
                 >
-                  <span className="material-symbols-outlined text-[15px]">arrow_back</span>
                   <span className="hidden sm:inline">मुख्य पोर्टल</span>
                 </button>
               )}
@@ -1248,10 +1247,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <div className="mt-4 pt-3 border-t border-white/15 flex items-center justify-between text-[11px] text-white/80">
               <span className="flex items-center gap-1.5 font-medium">
                 <span className="material-symbols-outlined text-[15px] text-[#baeed9]">lock</span>
-                <span>256-Bit SSL Encrypted Official Gateway</span>
+                <span>सुरक्षित एनक्रिप्टेड प्रवेश (Secure Access)</span>
               </span>
               <span className="bg-[#baeed9]/20 text-[#baeed9] px-2.5 py-0.5 rounded-full font-bold text-[10px] tracking-wider uppercase border border-[#baeed9]/30">
-                अधिकृत प्रवेश
+                व्यवस्थापक प्रवेश
               </span>
             </div>
           </div>
@@ -1260,10 +1259,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           <div className="p-6 sm:p-8 flex flex-col gap-5">
             <div>
               <h2 className="font-heading font-extrabold text-[19px] sm:text-[21px] text-[#003629]">
-                प्रशासकीय लॉगिन (Administrative Sign In)
+                व्यवस्थापक लॉगिन (Admin Sign In)
               </h2>
               <p className="text-[12px] text-[#55605a] mt-0.5 leading-relaxed">
-                ग्रामसेवक, सरपंच किंवा अधिकृत माहिती व्यवस्थापकांसाठी सुरक्षित प्रशासकीय कक्ष.
+                आसगाव ग्राम माहिती मंच व्यवस्थापकांसाठी सुरक्षित प्रवेश.
               </p>
             </div>
 
@@ -1290,7 +1289,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* Phone / Username */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-[12px] font-bold text-[#003629] flex items-center justify-between">
-                  <span>मोबाईल क्र. / अधिकृत आयडी (Phone / ID)</span>
+                  <span>मोबाईल क्र. / युझरनेम (Phone / Username)</span>
                   <span className="text-[10px] text-[#707974] font-normal">आवश्यक</span>
                 </label>
                 <div className="relative">
@@ -1301,7 +1300,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     type="text"
                     value={adminPhone}
                     onChange={(e) => setAdminPhone(e.target.value)}
-                    placeholder="९८२२१०४५०० किंवा ९९९९९९९९९९"
+                    placeholder="आपला मोबाईल नंबर प्रविष्ट करा"
                     autoComplete="username"
                     required
                     className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#f9f3ea]/50 border border-[#c4d6cf] text-[#003629] text-[13px] font-medium placeholder:text-[#88938d] focus:outline-none focus:border-[#003629] focus:ring-2 focus:ring-[#003629]/15 transition-all"
@@ -1312,7 +1311,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* Password */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-[12px] font-bold text-[#003629] flex items-center justify-between">
-                  <span>गोपनीय पासवर्ड (Admin Password)</span>
+                  <span>पासवर्ड (Admin Password)</span>
                   <span className="text-[10px] text-[#707974] font-normal">आवश्यक</span>
                 </label>
                 <div className="relative">
@@ -1341,62 +1340,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </div>
               </div>
 
-              {/* Quick Official Credentials Selection */}
-              <div className="p-3.5 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9] flex flex-col gap-2">
-                <span className="text-[11px] font-bold text-[#003629] flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[15px] text-[#006a4e]">badge</span>
-                  <span>अधिकृत खाती (Quick Official Accounts):</span>
-                </span>
-                <div className="grid grid-cols-2 gap-2 text-[11px]">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAdminPhone('9604331589');
-                      setAdminPassword('Admin@123');
-                      setLoginError('');
-                    }}
-                    className={`p-2 rounded-lg text-left border transition-all ${
-                      adminPhone === '9604331589' || adminPhone === '9822104500'
-                        ? 'bg-[#003629] text-white border-[#003629] shadow-xs'
-                        : 'bg-white text-[#003629] border-[#d0dcd5] hover:bg-[#e8f1ec]'
-                    }`}
-                  >
-                    <div className="font-extrabold flex items-center gap-1">
-                      <span>🏛️ ग्रामसेवक (Admin)</span>
-                    </div>
-                    <div className={`text-[10px] ${adminPhone === '9604331589' || adminPhone === '9822104500' ? 'text-[#baeed9]' : 'text-[#707974]'}`}>
-                      9604331589
-                    </div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAdminPhone('9999999999');
-                      setAdminPassword('Admin@123');
-                      setLoginError('');
-                    }}
-                    className={`p-2 rounded-lg text-left border transition-all ${
-                      adminPhone === '9999999999'
-                        ? 'bg-[#003629] text-white border-[#003629] shadow-xs'
-                        : 'bg-white text-[#003629] border-[#d0dcd5] hover:bg-[#e8f1ec]'
-                    }`}
-                  >
-                    <div className="font-extrabold flex items-center gap-1">
-                      <span>🛡️ मुख्य प्रशासक</span>
-                    </div>
-                    <div className={`text-[10px] ${adminPhone === '9999999999' ? 'text-[#baeed9]' : 'text-[#707974]'}`}>
-                      9999999999 (Super)
-                    </div>
-                  </button>
-                </div>
-              </div>
-
               {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loginLoading}
-                className="w-full mt-1 py-3 px-4 rounded-xl bg-gradient-to-r from-[#003629] to-[#004d3b] hover:from-[#00281e] hover:to-[#003629] text-white font-bold text-[14px] flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-60 cursor-pointer"
+                className="w-full mt-2 py-3 px-4 rounded-xl bg-gradient-to-r from-[#003629] to-[#004d3b] hover:from-[#00281e] hover:to-[#003629] text-white font-bold text-[14px] flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-60 cursor-pointer"
               >
                 {loginLoading ? (
                   <>
@@ -1406,23 +1354,23 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 ) : (
                   <>
                     <span className="material-symbols-outlined text-[19px]">lock_open</span>
-                    <span>सुरक्षित लॉगिन करा (Sign In to Dashboard)</span>
+                    <span>लॉगिन करा (Sign In to Dashboard)</span>
                   </>
                 )}
               </button>
             </form>
 
-            {/* Security Disclaimer & Support */}
+            {/* Disclaimer & Info */}
             <div className="pt-4 border-t border-[#f3ede4] flex flex-col gap-2 text-[11px] text-[#707974]">
               <div className="flex items-start gap-1.5 leading-relaxed text-[#55605a]">
-                <span className="material-symbols-outlined text-[15px] text-[#a63b00] shrink-0 mt-0.5">verified_user</span>
+                <span className="material-symbols-outlined text-[15px] text-[#a63b00] shrink-0 mt-0.5">info</span>
                 <span>
-                  <strong>सुरक्षितता सूचना:</strong> हे व्यासपीठ केवळ अधिकृत ग्रामपंचायत प्रतिनिधी व समन्वयकांसाठी आहे. अनधिकृत प्रवेशास मज्जाव आहे.
+                  <strong>टीप:</strong> हे व्यासपीठ आसगाव ग्रामस्थांसाठी चालवले जाणारे स्वतंत्र माहिती पोर्टल आहे. हा कक्ष केवळ अधिकृत पोर्टल व्यवस्थापकांसाठी आहे.
                 </span>
               </div>
               <div className="flex items-center justify-between text-[10px] text-[#707974] pt-1">
-                <span>हेल्पलाइन: ०७१८५-२२४४१०</span>
-                <span>पवनी, जि. भंडारा (४४१९१०)</span>
+                <span>आसगाव, ता. पवनी, जि. भंडारा (४४१९१०)</span>
+                <span>Admin Support Desk</span>
               </div>
             </div>
           </div>
