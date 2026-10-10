@@ -40,6 +40,7 @@ import { PostJobModal } from './components/PostJobModal';
 import { DetailModal } from './components/DetailModal';
 import type { Business, Job, Scheme, Grievance, MandiPrice } from './types';
 import { api } from './services/api';
+import { useSEO } from './hooks/useSEO';
 
 const DEFAULT_GUEST_USER: UserProfileData = {
   fullName: 'Guest Visitor',
@@ -86,6 +87,98 @@ export function App() {
   const [selectedBusinessSlug, setSelectedBusinessSlug] = useState<string>(() => getInitialSlug('businesses/'));
   const [selectedShikshaSlug, setSelectedShikshaSlug] = useState<string>(() => getInitialSlug('shiksha/'));
   const [selectedBlogSlug, setSelectedBlogSlug] = useState<string>(() => getInitialSlug('blogs/'));
+
+  // Dynamic SEO Configuration for Google Search Console and social bots
+  const getPageSEO = () => {
+    switch (activeNav) {
+      case 'schemes':
+        return {
+          title: 'शासकीय योजना दालन (घरकुल, लाडकी बहीण, पीएम किसान)',
+          description: 'आसगाव - महाराष्ट्र व केंद्र शासनाच्या सर्व सक्रिय योजना, पात्रता व थेट अर्ज लिंक. घरकुल, पीएम किसान व लाडकी बहीण योजना.',
+          canonicalPath: '/schemes'
+        };
+      case 'scheme-detail':
+        return {
+          title: 'शासकीय योजना सविस्तर माहिती',
+          description: 'आसगाव - योजनेचे थेट लाभ, आवश्यक कागदपत्रे व ऑनलाइन अर्ज प्रक्रिया.',
+          canonicalPath: `/schemes/${selectedSchemeSlug || ''}`
+        };
+      case 'krishi':
+        return {
+          title: 'कृषी केंद्र व थेट बाजारभाव (Pauni APMC Mandi)',
+          description: 'पवनी कृषी उत्पन्न बाजार समिती धान, सोयाबीन, कापूस व तूर आजचे थेट बाजारभाव व कृषी सल्ला.',
+          canonicalPath: '/krishi'
+        };
+      case 'transport':
+        return {
+          title: 'एसटी बस वेळापत्रक व वाहतूक (Asgaon MSRTC)',
+          description: 'आसगाव बस थांबा — पवनी, भंडारा व नागपूर एसटी बसेस, ५०% महिला सवलत पास व स्थानिक वाहतूक.',
+          canonicalPath: '/transport'
+        };
+      case 'businesses':
+        return {
+          title: 'स्थानिक दुकाने व सेवा डिरेक्टरी',
+          description: 'आसगाव परिसरातील सर्व प्रमाणित स्थानिक दुकाने, कृषी केंद्र, किराणा, दवाखाने व व्यापारी संपर्क.',
+          canonicalPath: '/businesses'
+        };
+      case 'jobs':
+        return {
+          title: 'ग्राम रोजगार व कामगार मंच (Jobs & Wages)',
+          description: 'आसगाव रोजगार मंच — शेती मजूर, ट्रॅक्टर चालक, कारागीर व स्थानिक रोजगाराच्या संधी.',
+          canonicalPath: '/jobs'
+        };
+      case 'shiksha':
+        return {
+          title: 'शिक्षण, शाळा व ग्राम वाचनालय',
+          description: 'आसगाव जिल्हा परिषद शाळा, शिष्यवृत्ती, स्पर्धा परीक्षा वाचनालय व उच्च शिक्षण मार्गदर्शन.',
+          canonicalPath: '/shiksha'
+        };
+      case 'announcements':
+        return {
+          title: 'ग्रामपंचायत अधिकृत सूचना व परिपत्रके',
+          description: 'आसगाव ग्रामपंचायत अधिकृत सूचना फलक — ग्रामसभा ठराव, कर पावती व विकासकामे.',
+          canonicalPath: '/announcements'
+        };
+      case 'events':
+        return {
+          title: 'गावातील कार्यक्रम व वार्षिक जत्रा',
+          description: 'आसगाव खंडोबा जत्रा, सार्वजनिक उत्सव, पोळा व सांस्कृतिक कार्यक्रम दिनदर्शिका.',
+          canonicalPath: '/events'
+        };
+      case 'marketplace':
+        return {
+          title: 'ग्राम बाजार (खरेदी-विक्री मंच)',
+          description: 'आसगाव शेतीमाल, दुभती जनावरे, ट्रॅक्टर व स्थानिक उत्पादनांची थेट खरेदी-विक्री.',
+          canonicalPath: '/marketplace'
+        };
+      case 'blogs':
+        return {
+          title: 'ग्राम वार्ता व माहिती लेख',
+          description: 'आसगाव गावकऱ्यांचे अनुभव, कृषी यशोगाथा, शासकीय मार्गदर्शन व लोकवार्ता.',
+          canonicalPath: '/blogs'
+        };
+      case 'emergency':
+        return {
+          title: 'आपत्कालीन थेट संपर्क (१०८, ११२)',
+          description: 'आसगाव आपत्कालीन सेवा — रुग्णवाहिका, पोलीस, अग्निशामक, सर्पमित्र व महावितरण २४/७ थेट संपर्क.',
+          canonicalPath: '/emergency'
+        };
+      case 'admin':
+        return {
+          title: 'प्रशासन पॅनेल (Admin Portal)',
+          description: 'आसगाव ग्राम माहिती मंच प्रशासकीय व्यवस्थापन कक्ष.',
+          canonicalPath: '/admin'
+        };
+      default:
+        return {
+          title: 'मुख्यपृष्ठ - ग्राम माहिती व सेवा',
+          description: 'आसगाव गावकऱ्यांसाठी स्वतंत्र माहिती व जनजागृती मंच (पवनी, जि. भंडारा - ४४१९१०). शासकीय योजना, कृषी बाजारभाव, एसटी बस वेळापत्रक व नागरी सेवा एकाच ठिकाणी.',
+          canonicalPath: '/'
+        };
+    }
+  };
+
+  useSEO(getPageSEO());
   const [currentUser, setCurrentUser] = useState<UserProfileData>(() => {
     const savedUser = localStorage.getItem('dg_user');
     const token = localStorage.getItem('dg_auth_token');

@@ -11,9 +11,6 @@ interface CivicHubGridProps {
 
 export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
   onSelectModule,
-  onOpenGrievance,
-  onOpenRegisterShop,
-  onOpenPostJob,
   mandiPrices = []
 }) => {
   const { lang, t } = useLanguage();
@@ -72,70 +69,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
         </div>
       </div>
 
-      {/* 2. Citizen 1-Click Fast Track Action Bar */}
-      <div className="bg-gradient-to-r from-[#003629] via-[#0b4839] to-[#14532d] rounded-2xl p-4 sm:p-5 text-white shadow-sm border border-[#003629]/20">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center shrink-0 border border-amber-400/30">
-              <span className="material-symbols-outlined text-[22px]">bolt</span>
-            </div>
-            <div>
-              <h3 className="font-heading font-bold text-[15px] sm:text-[16px] text-white">
-                {lang === 'MR' ? 'नागरिक जलद कृती केंद्र' : '1-Click Citizen Quick Actions'}
-              </h3>
-              <p className="text-[12px] text-emerald-100/80">
-                {lang === 'MR' ? 'थेट तक्रार दाखल करा, नवीन दुकान जोडा किंवा नोकरी पोस्ट करा' : 'Lodge complaints, register local shops or post job requirements in 1 click'}
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 w-full md:w-auto">
-            {/* Action 1: Grievance */}
-            <button
-              onClick={() => onOpenGrievance ? onOpenGrievance() : onSelectModule('grievances')}
-              className="px-3.5 py-2.5 bg-white/10 hover:bg-white/20 active:scale-95 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-white/15 backdrop-blur-xs group text-center cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-[17px] text-amber-300 group-hover:rotate-12 transition-transform">
-                report_problem
-              </span>
-              <span>{t('hub_action_grievance')}</span>
-            </button>
-
-            {/* Action 2: Register Shop */}
-            <button
-              onClick={() => onOpenRegisterShop ? onOpenRegisterShop() : onSelectModule('businesses')}
-              className="px-3.5 py-2.5 bg-white/10 hover:bg-white/20 active:scale-95 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-white/15 backdrop-blur-xs group text-center cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-[17px] text-emerald-300 group-hover:scale-110 transition-transform">
-                add_business
-              </span>
-              <span>{t('hub_action_register_shop')}</span>
-            </button>
-
-            {/* Action 3: Post Job */}
-            <button
-              onClick={() => onOpenPostJob ? onOpenPostJob() : onSelectModule('jobs')}
-              className="px-3.5 py-2.5 bg-white/10 hover:bg-white/20 active:scale-95 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-white/15 backdrop-blur-xs group text-center cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-[17px] text-sky-300 group-hover:-translate-y-0.5 transition-transform">
-                work
-              </span>
-              <span>{t('hub_action_post_job')}</span>
-            </button>
-
-            {/* Action 4: Emergency */}
-            <button
-              onClick={() => onSelectModule('emergency')}
-              className="px-3.5 py-2.5 bg-rose-600/90 hover:bg-rose-600 active:scale-95 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-rose-400/40 shadow-xs group text-center cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-[17px] text-white animate-pulse">
-                e911_emergency
-              </span>
-              <span>{lang === 'MR' ? 'तातडीची मदत (१०८)' : 'Emergency 108'}</span>
-            </button>
-          </div>
-        </div>
-      </div>
+      
 
       {/* 3. Real-Time Interactive Village Widgets Grid (4 Pillars) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
