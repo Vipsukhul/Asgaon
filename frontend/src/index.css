@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #003629;
+  --color-primary-container: #1b4d3e;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #8abda9;
+  --color-secondary: #a63b00;
+  --color-secondary-container: #ff793f;
+  --color-on-secondary: #ffffff;
+  --color-surface: #fff8f0;
+  --color-surface-container: #f3ede4;
+  --color-surface-container-low: #f9f3ea;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-high: #ede7df;
+  --color-surface-container-highest: #e8e2d9;
+  --color-surface-variant: #e8e2d9;
+  --color-on-surface: #1d1b16;
+  --color-on-surface-variant: #404945;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+  --color-tertiary: #002873;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #fff8f0;
+  color: #1d1b16;
+  font-family: 'Inter', sans-serif;
+}
+
+.font-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 1;
+}
+
+.material-symbols-outlined.fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f3ede4;
+}
+::-webkit-scrollbar-thumb {
+  background: #c0c9c3;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8abda9;
+}
+
+/* Smooth continuous marquee */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 45s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Fix Leaflet map z-index leaking above fixed navigation headers and modals */
+.leaflet-container {
+  z-index: 0 !important;
+  isolation: isolate;
+}
+

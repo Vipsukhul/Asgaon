@@ -1,0 +1,10 @@
+target/
+.git/
+.gitignore
+.env
+.env.*
+.vscode/
+*.log
+apache-maven-*/
+mvnw*
+GenKey.java

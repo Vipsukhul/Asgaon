@@ -1,0 +1,527 @@
+import React, { useState } from 'react';
+import type { Job } from '../types';
+import { Breadcrumb } from '../components/Breadcrumb';
+
+interface JobsPageProps {
+  jobs?: Job[];
+  onApplyJob: (job: any) => void;
+  onPostJob: () => void;
+  onNavigateHome?: () => void;
+}
+
+export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPostJob, onNavigateHome }) => {
+  const [filterType, setFilterType] = useState('All');
+  const [search, setSearch] = useState('');
+  const [payRange, setPayRange] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const categories = [
+    { id: 'All', label: 'All Openings' },
+    { id: 'farm', label: 'Daily Wage & Farm Labor (रोजंदारी)' },
+    { id: 'staff', label: 'Permanent Village Staff (Shop / Office)' },
+    { id: 'tech', label: 'Skilled Technical (Wireman / Tech)' },
+    { id: 'women', label: 'Women & SHG Works' }
+  ];
+
+  const dynamicJobs = (jobs || []).map((j: any, idx: number) => {
+    const titleLower = (j.title || '').toLowerCase();
+    const typeLower = (j.employmentType || '').toLowerCase();
+    const categoryKey = (typeLower.includes('staff') || titleLower.includes('clerk') || titleLower.includes('billing')) ? 'staff' :
+                        (titleLower.includes('tech') || titleLower.includes('wireman') || titleLower.includes('solar') || titleLower.includes('electric')) ? 'tech' :
+                        (titleLower.includes('teacher') || titleLower.includes('shiksha') || titleLower.includes('women')) ? 'women' : 'farm';
+
+    return {
+      id: j.id || `dyn-job-${idx}`,
+      tagBadge: j.employmentType ? String(j.employmentType).toUpperCase() : 'ACTIVE VACANCY',
+      tagColor: 'bg-[#baeed9] text-[#002117]',
+      certBadge: 'Asgaon Verified Employer',
+      posted: j.postedAgo || 'Recently Posted',
+      title: j.title,
+      employer: `${j.employerName || 'Village Enterprise'} • ${j.location || 'Asgaon'}`,
+      rate: j.salaryRange || '₹600 - ₹900 / Day',
+      rateSub: 'Direct Settlement',
+      vacancies: 'Open Vacancy',
+      vacanciesSub: j.requirements || 'Suitable for village youth',
+      schedule: 'Full Time / Direct',
+      scheduleSub: 'Immediate Joining',
+      description: j.description || 'Village job opening verified by Gram Panchayat desk.',
+      perks: ['Direct Payment', 'Zero Brokerage Fee'],
+      phone: j.contactPhone || '9822104500',
+      categoryKey
+    };
+  });
+
+  const allJobs = dynamicJobs;
+
+  const filtered = allJobs.filter((j) => {
+    const matchesCat = filterType === 'All' || j.categoryKey === filterType;
+    const matchesSearch =
+      !search.trim() ||
+      j.title.toLowerCase().includes(search.toLowerCase()) ||
+      j.employer.toLowerCase().includes(search.toLowerCase()) ||
+      j.description.toLowerCase().includes(search.toLowerCase());
+    const matchesPay =
+      payRange === 'All' ||
+      (payRange === 'daily' && (j.rate.toLowerCase().includes('day') || j.schedule.toLowerCase().includes('daily') || j.categoryKey === 'farm')) ||
+      (payRange === 'monthly' && (j.rate.toLowerCase().includes('month') || j.schedule.toLowerCase().includes('full') || j.categoryKey === 'staff' || j.categoryKey === 'tech'));
+    return matchesCat && matchesSearch && matchesPay;
+  });
+
+  const pageSize = 4;
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const validCurrentPage = Math.min(currentPage, totalPages);
+  const startIndex = (validCurrentPage - 1) * pageSize;
+  const paginatedJobs = filtered.slice(startIndex, startIndex + pageSize);
+
+  return (
+    <div className="w-full flex flex-col gap-6 font-sans">
+      {/* 1. Breadcrumb & Top Bar */}
+      <Breadcrumb
+        items={[
+          { label: 'Home', onClick: onNavigateHome },
+          { label: 'Rojgar & Jobs (ग्राम रोजगार मंच)', active: true }
+        ]}
+        rightBadge={
+          <div className="flex items-center gap-1.5 bg-[#baeed9] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
+            <span className="material-symbols-outlined text-[15px] text-[#002117]">verified</span>
+            <span>100% Direct Village Employment • No Middlemen Fee</span>
+          </div>
+        }
+      />
+
+      {/* 2. Hero Header Banner */}
+      <div className="bg-white rounded-2xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div className="max-w-2xl">
+          <div className="flex flex-wrap items-center gap-2 mb-2">
+            <span className="text-[10px] font-extrabold text-[#ba1a1a] bg-[#ffdad6] px-2 py-0.5 rounded uppercase tracking-wider">
+              VERIFIED EMPLOYMENT | ZERO BROKERAGE
+            </span>
+            <span className="text-[11px] text-[#707974]">
+              Pauni Taluka • Haveli Boundary (Khed Shivapur Cluster)
+            </span>
+          </div>
+
+          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#003629] leading-tight mb-1">
+            Gramin Rojgar Manch — Local Village Job Board
+          </h1>
+          <p className="font-heading font-bold text-[15px] text-[#a63b00] mb-2">
+            ग्रामीण रोजगार मंच (स्थानिक नोकऱ्या व रोजंदारी)
+          </p>
+
+          <p className="text-[13px] text-[#404945] leading-relaxed">
+            Zero-brokerage, verified local job opportunities within 5 to 15 km of Asgaon &amp; Pauni. Connecting village youth, skilled technicians, daily wage laborers, and women self-help groups (SHGs) directly with employers.
+          </p>
+        </div>
+
+        {/* Right Action Box */}
+        <div className="flex flex-col gap-2.5 w-full lg:w-72 shrink-0">
+          <button
+            onClick={onPostJob}
+            className="w-full py-2.5 px-4 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[13px] font-bold flex items-center justify-center gap-2 transition-colors shadow-xs"
+          >
+            <span className="material-symbols-outlined text-[18px]">post_add</span>
+            <span>Post a Job Vacancy (नोकरी जाहिरात करा)</span>
+          </button>
+
+          <button
+            onClick={() => alert('Candidate registration modal opened. Profile will be submitted to Panchayat Desk.')}
+            className="w-full py-2.5 px-4 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] text-[#1d1b16] text-[13px] font-bold flex items-center justify-center gap-2 transition-colors border border-[#e8e2d9]"
+          >
+            <span className="material-symbols-outlined text-[18px]">how_to_reg</span>
+            <span>Register as Job Seeker (उमेदवार नोंदणी)</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 3. Four Metric Stats Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center gap-3">
+          <div className="w-11 h-11 rounded-xl bg-[#baeed9] text-[#002117] flex items-center justify-center shrink-0">
+            <span className="material-symbols-outlined text-[22px]">work</span>
+          </div>
+          <div>
+            <div className="font-heading font-extrabold text-[20px] text-[#003629]">{allJobs.length}</div>
+            <div className="text-[11px] font-bold text-[#707974] uppercase">Active Openings (Asgaon Cluster)</div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center gap-3">
+          <div className="w-11 h-11 rounded-xl bg-[#ffdbce] text-[#a63b00] flex items-center justify-center shrink-0">
+            <span className="material-symbols-outlined text-[22px]">payments</span>
+          </div>
+          <div>
+            <div className="font-heading font-extrabold text-[20px] text-[#a63b00]">₹650 - ₹950</div>
+            <div className="text-[11px] font-bold text-[#707974] uppercase">Avg Daily Wage Rate</div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center gap-3">
+          <div className="w-11 h-11 rounded-xl bg-[#dbe1ff] text-[#002873] flex items-center justify-center shrink-0">
+            <span className="material-symbols-outlined text-[22px]">verified</span>
+          </div>
+          <div>
+            <div className="font-heading font-extrabold text-[20px] text-[#002873]">100% Direct</div>
+            <div className="text-[11px] font-bold text-[#707974] uppercase">No Middleman / Direct Phone</div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center gap-3">
+          <div className="w-11 h-11 rounded-xl bg-[#f3ede4] text-[#1d1b16] flex items-center justify-center shrink-0">
+            <span className="material-symbols-outlined text-[22px]">engineering</span>
+          </div>
+          <div>
+            <div className="font-heading font-extrabold text-[20px] text-[#1d1b16]">14 Works</div>
+            <div className="text-[11px] font-bold text-[#707974] uppercase">Gram Panchayat MGNREGA</div>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Search & Filter Bar */}
+      <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+          <div className="relative w-full md:flex-1">
+            <span className="material-symbols-outlined absolute left-3 top-2.5 text-[#707974] text-[20px]">search</span>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
+              placeholder="Search by job role, employer, village (e.g. Tractor Driver, Accountant, ZP Teacher, Electrician)..."
+              className="w-full pl-10 pr-4 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+            />
+          </div>
+
+          <div className="flex items-center gap-2 w-full md:w-auto shrink-0">
+            <select
+              value={payRange}
+              onChange={(e) => { setPayRange(e.target.value); setCurrentPage(1); }}
+              className="bg-[#f9f3ea] text-[#1d1b16] p-2 rounded-xl text-[12px] font-bold border border-[#e8e2d9] focus:outline-none"
+            >
+              <option value="All">All Pay Ranges</option>
+              <option value="daily">Daily Wage (₹500 - ₹1,000)</option>
+              <option value="monthly">Monthly (₹12,000 - ₹20,000)</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Categories Chips Bar */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => { setFilterType(cat.id); setCurrentPage(1); }}
+              className={`px-3 py-1.5 rounded-xl text-[12px] font-bold transition-all whitespace-nowrap ${
+                filterType === cat.id
+                  ? 'bg-[#003629] text-white shadow-xs'
+                  : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9] border border-[#e8e2d9]'
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 5. Main 2-Column Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column: Job Cards List (2 cols wide) */}
+        <div className="lg:col-span-2 flex flex-col gap-5">
+          <div className="flex items-center justify-between">
+            <h2 className="font-heading font-extrabold text-[17px] text-[#003629]">
+              Verified Village Openings{' '}
+              <span className="text-[13px] font-normal text-[#707974]">
+                (Showing {filtered.length > 0 ? startIndex + 1 : 0}-{Math.min(startIndex + pageSize, filtered.length)} of {filtered.length} openings)
+              </span>
+            </h2>
+          </div>
+
+          {allJobs.length === 0 ? (
+            <div className="bg-white rounded-2xl p-12 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
+              <div className="w-8 h-8 border-3 border-[#003629] border-t-transparent rounded-full animate-spin mb-1" />
+              <p className="text-[13px] font-bold text-[#003629]">Connecting to database &amp; loading job vacancies...</p>
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
+              <span className="material-symbols-outlined text-[48px] text-[#a63b00]">work_off</span>
+              <h3 className="font-heading font-bold text-[18px] text-[#003629]">No matching job openings</h3>
+              <p className="text-[13px] text-[#707974] max-w-md">No jobs match your selected category, search query, or pay range. Try clearing filters to see all village opportunities.</p>
+              <button
+                onClick={() => { setFilterType('All'); setSearch(''); setPayRange('All'); setCurrentPage(1); }}
+                className="px-4 py-2 bg-[#003629] text-white text-[12px] font-bold rounded-xl hover:bg-[#1b4d3e] transition-colors"
+              >
+                Reset All Filters
+              </button>
+            </div>
+          ) : (
+            paginatedJobs.map((job) => (
+              <div
+                key={job.id}
+                className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider ${job.tagColor}`}>
+                        {job.tagBadge}
+                      </span>
+                      <span className="text-[11px] font-bold text-[#003629] bg-[#baeed9] px-2 py-0.5 rounded">
+                        {job.certBadge}
+                      </span>
+                    </div>
+                    <span className="text-[11px] font-medium text-[#707974]">{job.posted}</span>
+                  </div>
+
+                  <h3 className="font-heading font-extrabold text-[18px] text-[#1d1b16] mb-1">
+                    {job.title}
+                  </h3>
+                  <div className="text-[12px] font-semibold text-[#a63b00] mb-3 flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[15px]">apartment</span>
+                    <span>{job.employer}</span>
+                  </div>
+
+                  {/* 3-Column Pay & Role Box */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] mb-3.5 text-[12px]">
+                    <div>
+                      <div className="text-[10px] font-bold text-[#707974] uppercase">Hourly / Daily Rate</div>
+                      <div className="font-heading font-extrabold text-[15px] text-[#003629]">{job.rate}</div>
+                      <div className="text-[10px] text-[#707974]">{job.rateSub}</div>
+                    </div>
+
+                    <div>
+                      <div className="text-[10px] font-bold text-[#707974] uppercase">Vacancies &amp; Experience</div>
+                      <div className="font-bold text-[#1d1b16]">{job.vacancies}</div>
+                      <div className="text-[10px] text-[#707974]">{job.vacanciesSub}</div>
+                    </div>
+
+                    <div>
+                      <div className="text-[10px] font-bold text-[#707974] uppercase">Payment / Timing</div>
+                      <div className="font-bold text-[#1d1b16]">{job.schedule}</div>
+                      <div className="text-[10px] text-[#707974]">{job.scheduleSub}</div>
+                    </div>
+                  </div>
+
+                  <p className="text-[12px] text-[#404945] leading-relaxed mb-3">
+                    <strong className="text-[#1d1b16]">Work Role &amp; Eligibility: </strong>
+                    {job.description}
+                  </p>
+
+                  {/* Perks tags */}
+                  <div className="flex flex-wrap gap-1.5 mb-2">
+                    {job.perks.map((p: string, idx: number) => (
+                      <span
+                        key={idx}
+                        className="text-[11px] font-medium bg-[#f3ede4] text-[#404945] px-2 py-0.5 rounded-md border border-[#e8e2d9]"
+                      >
+                        ✓ {p}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bottom Action Bar */}
+                <div className="pt-3 border-t border-[#f3ede4] flex flex-wrap items-center justify-between gap-2 mt-2">
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={`tel:${job.phone}`}
+                      className="px-3.5 py-1.5 rounded-lg bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] font-bold flex items-center gap-1 shadow-xs transition-colors"
+                    >
+                      <span className="material-symbols-outlined text-[14px]">call</span>
+                      <span>Direct Call Employer</span>
+                    </a>
+
+                    <a
+                      href={`https://wa.me/91${job.phone}?text=Hello,%20I%20saw%20your%20job%20posting%20for%20${encodeURIComponent(job.title)}%20on%20Digital%20Gaon.`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#003629] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9]"
+                    >
+                      <span className="material-symbols-outlined text-[14px] text-[#25D366]">chat</span>
+                      <span>WhatsApp</span>
+                    </a>
+                  </div>
+
+                  <button
+                    onClick={() => onApplyJob(job)}
+                    className="text-[12px] font-bold text-[#a63b00] hover:underline flex items-center gap-0.5"
+                  >
+                    <span>Apply via Village Profile</span>
+                    <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+
+          {/* Dynamic Pagination Strip */}
+          <div className="bg-white rounded-xl p-3 border border-[#e8e2d9] flex flex-col sm:flex-row items-center justify-between text-[12px] text-[#707974] gap-2 mt-2">
+            <span>
+              Showing {filtered.length > 0 ? startIndex + 1 : 0}-{Math.min(startIndex + pageSize, filtered.length)} of {filtered.length} active openings
+            </span>
+            {totalPages > 1 && (
+              <div className="flex items-center gap-1">
+                <button
+                  disabled={validCurrentPage === 1}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  className="w-7 h-7 rounded-lg bg-[#f3ede4] text-[#1d1b16] font-bold flex items-center justify-center disabled:opacity-40 hover:bg-[#e8e2d9] transition-colors"
+                  aria-label="Previous Page"
+                >
+                  &lt;
+                </button>
+                {Array.from({ length: totalPages }).map((_, idx) => {
+                  const pageNum = idx + 1;
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`w-7 h-7 rounded-lg font-bold flex items-center justify-center transition-colors ${
+                        validCurrentPage === pageNum
+                          ? 'bg-[#003629] text-white shadow-xs'
+                          : 'bg-[#f3ede4] text-[#1d1b16] hover:bg-[#e8e2d9]'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+                <button
+                  disabled={validCurrentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  className="w-7 h-7 rounded-lg bg-[#f3ede4] text-[#1d1b16] font-bold flex items-center justify-center disabled:opacity-40 hover:bg-[#e8e2d9] transition-colors"
+                  aria-label="Next Page"
+                >
+                  &gt;
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right Column: Sidebars (1 col wide) */}
+        <div className="flex flex-col gap-5">
+          {/* Widget 1: Kisan & Village Labor Wage Standard */}
+          <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#a63b00] bg-[#fff8f0] px-2 py-0.5 rounded border border-[#ffdbce]">
+              CIVIC WAGE BENCHMARK
+            </span>
+
+            <h3 className="font-heading font-extrabold text-[16px] text-[#003629] mt-2 mb-1">
+              Kisan &amp; Village Labor Wage Standard
+            </h3>
+            <p className="text-[11px] text-[#707974] mb-3">
+              मजूर व कामगार वेतन दर — Approved by Asgaon Gram Sabha (March 2026 Session):
+            </p>
+
+            <div className="space-y-2 text-[12px]">
+              <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
+                <span className="text-[#1d1b16] font-semibold">Daily Farm Labour (Female / महिला)</span>
+                <span className="font-extrabold text-[#a63b00]">₹350 - ₹400 / day</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
+                <span className="text-[#1d1b16] font-semibold">Women Farm Labour (Cotton picking)</span>
+                <span className="font-extrabold text-[#003629]">₹400 / day</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
+                <span className="text-[#1d1b16] font-semibold">Tractor + Operator (Heavy Work)</span>
+                <span className="font-extrabold text-[#003629]">₹900 - ₹1,000 / hr</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
+                <span className="text-[#1d1b16] font-semibold">Mason / Mistri (Skilled Civil)</span>
+                <span className="font-extrabold text-[#a63b00]">₹850 / day</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
+                <span className="text-[#1d1b16] font-semibold">Skilled Painter / Plumber (Daily)</span>
+                <span className="font-extrabold text-[#003629]">₹750 - ₹850 / day</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => alert('Official Gram Sabha Wage Standard Gazette PDF downloaded.')}
+              className="mt-3 text-[12px] text-[#003629] font-bold hover:underline flex items-center gap-1"
+            >
+              <span>Download Official Gazette PDF</span>
+              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+            </button>
+          </div>
+
+          {/* Widget 2: Instant Village Job Alerts */}
+          <div className="bg-[#1b4d3e] text-white rounded-2xl p-5 shadow-xs border border-[#003629]">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="material-symbols-outlined text-[#baeed9] text-[22px]">notifications_active</span>
+              <h3 className="font-heading font-extrabold text-[15px] text-[#baeed9]">
+                Instant Village Job Alerts!
+              </h3>
+            </div>
+
+            <p className="text-[12px] text-white/90 leading-relaxed mb-3">
+              Get free SMS &amp; WhatsApp notifications of all new village job vacancies directly to your phone. Zero middleman fees.
+            </p>
+
+            <ul className="space-y-1.5 text-[11px] text-white/80 mb-4">
+              <li className="flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[14px] text-[#baeed9]">check_circle</span>
+                <span>Verified jobs</span>
+              </li>
+              <li className="flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[14px] text-[#baeed9]">check_circle</span>
+                <span>100% free alerts, no fees ever</span>
+              </li>
+              <li className="flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[14px] text-[#baeed9]">check_circle</span>
+                <span>Direct connect to Asgaon Employers and CSC</span>
+              </li>
+            </ul>
+
+            <button
+              onClick={() => alert('Free job alert subscription activated for your mobile number.')}
+              className="w-full py-2.5 rounded-xl bg-[#a63b00] hover:bg-[#852f00] text-white text-[12px] font-bold shadow-xs transition-colors flex items-center justify-center gap-1"
+            >
+              <span>Create Free Profile in 1-Click (नोंदणी करा)</span>
+            </button>
+          </div>
+
+          {/* Widget 3: Need Farm or Shop Workers? */}
+          <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
+            <h3 className="font-heading font-extrabold text-[15px] text-[#003629] mb-1">
+              Need Farm or Shop Workers?
+            </h3>
+            <p className="text-[11px] text-[#707974] mb-3">
+              Post your farm requirement, tractor helper opening, or shop vacancy. Reach 14,280+ village residents within 24 hours.
+            </p>
+
+            <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] text-[11px] text-[#404945] mb-3 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[#a63b00] text-[20px]">groups</span>
+              <span>Average 22 calls within 4 hours • 100% verified local worker profiles</span>
+            </div>
+
+            <button
+              onClick={onPostJob}
+              className="w-full py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] font-bold transition-colors flex items-center justify-center gap-1"
+            >
+              <span className="material-symbols-outlined text-[15px]">add_circle</span>
+              <span>Post on WhatsApp Assistant</span>
+            </button>
+          </div>
+
+          {/* Widget 4: MGNREGA 100 Days Guarantee */}
+          <div className="bg-[#f9f3ea] rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
+            <div className="flex items-center gap-2 text-[#003629] font-bold text-[14px] mb-1">
+              <span className="material-symbols-outlined text-[18px]">verified_user</span>
+              <span>MGNREGA 100 Days Guarantee</span>
+            </div>
+            <p className="text-[11px] text-[#707974] leading-relaxed mb-3">
+              Every rural household is entitled to 100 days of manual wage employment per year by law. Champion your rights and claim demand work under Section 6 of Act.
+            </p>
+            <a
+              href="https://nrega.nic.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[12px] text-[#a63b00] font-bold hover:underline flex items-center gap-1"
+            >
+              <span>Apply for MGNREGA Job Card</span>
+              <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

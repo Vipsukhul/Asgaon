@@ -1,0 +1,543 @@
+import React, { useMemo } from 'react';
+import type { Scheme } from '../types';
+import { Breadcrumb } from '../components/Breadcrumb';
+import { SEOHead } from '../components/SEOHead';
+
+interface SchemeDetailPageProps {
+  slug: string;
+  schemes: Scheme[];
+  onNavigateBack: () => void;
+  onSelectScheme: (slug: string) => void;
+  onNavigateHome: () => void;
+}
+
+export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
+  slug,
+  schemes,
+  onNavigateBack,
+  onSelectScheme,
+  onNavigateHome
+}) => {
+  // Find current scheme by slug or id
+  const scheme = useMemo(() => {
+    return schemes.find(
+      (s) => s.slug === slug || s.id === slug || s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-') === slug
+    ) || schemes[0];
+  }, [slug, schemes]);
+
+  if (!scheme) {
+    if (schemes.length === 0) {
+      return (
+        <div className="w-full py-28 text-center flex flex-col items-center justify-center gap-3">
+          <div className="w-9 h-9 border-3 border-[#003629] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[13px] font-bold text-[#003629]">Loading scheme details from database...</p>
+        </div>
+      );
+    }
+    return (
+      <div className="w-full py-16 text-center">
+        <h2 className="text-xl font-bold text-[#003629]">Scheme not found</h2>
+        <button
+          onClick={onNavigateBack}
+          className="mt-4 px-4 py-2 bg-[#003629] text-white rounded-xl font-bold text-sm"
+        >
+          Back to Schemes Directory
+        </button>
+      </div>
+    );
+  }
+
+  const category = (scheme.category || 'farmer').toLowerCase();
+  const isGharkul =
+    category === 'housing' ||
+    scheme.title.toLowerCase().includes('gharkul') ||
+    scheme.title.toLowerCase().includes('awas');
+
+  // Related schemes in same category
+  const relatedSchemes = schemes
+    .filter((s) => s.slug !== scheme.slug && (s.category || '').toLowerCase() === category)
+    .slice(0, 3);
+
+  // SEO dynamic metadata
+  const pageUrl = `${window.location.origin}/schemes/${scheme.slug}`;
+  const seoTitle = `${scheme.title} — पात्रता, कागदपत्रे व अनुदान माहिती | Asgaon Portal`;
+  const seoDescription = `अधिकृत माहिती: ${scheme.title}. ${scheme.benefits}. पात्रता निकष, आवश्यक कागदपत्रे, व अर्ज करण्याची पद्धत. Pauni, Asgaon, Bhandara DBT Desk.`;
+
+  // Application Steps customized for category
+  const applicationSteps = isGharkul
+    ? [
+        {
+          step: 1,
+          title: 'नमुना ८-अ व जागेची कागदपत्रे गोळा करा (Gather Property Documents)',
+          desc: 'ग्रामपंचायत कार्यालयातून नमुना ८-अ मालमत्ता पत्रक किंवा ७/१२ जमिनीचा उतारा मिळवा. जागा स्वतःच्या नावावर किंवा वडिलोपार्जित असणे आवश्यक आहे.'
+        },
+        {
+          step: 2,
+          title: 'उत्पन्न व जात प्रमाणपत्र तयार ठेवा (Income & Caste Certificates)',
+          desc: 'तहसीलदार कार्यालयाचा चालू आर्थिक वर्षाचा उत्पन्नाचा दाखला (वार्षिक उत्पन्न मर्यादा ₹१.२० लाखांपर्यंत) आणि सक्षम प्राधिकाऱ्याचा जातीचा दाखला जोडा.'
+        },
+        {
+          step: 3,
+          title: 'ग्रामसेवक किंवा CSC केंद्रात अर्ज सादर करा (Submit at Gram Panchayat / CSC)',
+          desc: 'ग्रामपंचायतीच्या घरकुल कक्षात ग्रामसेवक यांच्याकडे किंवा अधिकृत महा-ई-सेवा केंद्रात ऑनलाइन Awaas+ पोर्टलवर नोंदणी करा.'
+        },
+        {
+          step: 4,
+          title: 'जिओ-टॅगिंग व टप्प्याटप्प्याने बँक खात्यात अनुदान (Geo-tagging & DBT Milestones)',
+          desc: 'पाया (Plinth), भिंती (Lintel), छत (Slab) व पूर्ण बांधकाम झाल्यावर जिओ-टॅग फोटो तपासणीनंतर अनुदान थेट बँक खात्यात जमा होते.'
+        }
+      ]
+    : [
+        {
+          step: 1,
+          title: 'कागदपत्रांची पडताळणी (Verify Eligibility & Documents)',
+          desc: 'आधार कार्ड, बँक पासबुक (NPCI आधार संलग्न) आणि जमिनीचा अद्ययावत ७/१२ उतारा किंवा शैक्षणिक कागदपत्रे तयार ठेवा.'
+        },
+        {
+          step: 2,
+          title: 'अधिकृत पोर्टलवर ऑनलाइन नोंदणी (Online Portal Registration)',
+          desc: 'अधिकृत शासकीय पोर्टलवर (MahaDBT / PM-Kisan) नवीन वापरकर्ता म्हणून नोंदणी करून अर्ज भरा.'
+        },
+        {
+          step: 3,
+          title: 'बायोमेट्रिक e-KYC किंवा कागदपत्र अपलोड (Biometric e-KYC Verification)',
+          desc: 'जवळच्या आसगाव CSC डिजिटल सेवा केंद्रात जाऊन आधार बायोमेट्रिक e-KYC पूर्ण करा.'
+        },
+        {
+          step: 4,
+          title: 'थेट बँक खात्यात DBT लाभ हस्तांतरण (Direct Benefit Transfer in Bank)',
+          desc: 'अर्जाची पडताळणी पूर्ण झाल्यावर अनुदानाची रक्कम थेट तुमच्या आधार-लिंक्ड बँक खात्यात जमा केली जाते.'
+        }
+      ];
+
+  // Tailored FAQs per scheme
+  const schemeFaqs = [
+    {
+      q: `Who is eligible for ${scheme.title}? (पात्रता निकष काय आहेत?)`,
+      a: scheme.eligibility
+    },
+    {
+      q: `What financial benefit or subsidy is provided? (किती अनुदान मिळते?)`,
+      a: scheme.benefits
+    },
+    {
+      q: `What documents are mandatory? (कोणती कागदपत्रे आवश्यक आहेत?)`,
+      a: Array.isArray(scheme.documentsRequired)
+        ? scheme.documentsRequired.join(', ')
+        : 'Aadhaar Card, 7/12 or 8A property extract, Income Certificate, Active Bank Passbook.'
+    },
+    {
+      q: `Are there any application charges or fees? (काही शुल्क किंवा फी आहे का?)`,
+      a: 'Zero fee! Government welfare schemes in Asgaon Gram Panchayat are 100% free of cost. Never pay any fee or bribe to agents.'
+    }
+  ];
+
+  // Schema.org Structured Data (GovernmentService + HowTo + FAQPage + BreadcrumbList)
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: window.location.origin
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Government Schemes',
+            item: `${window.location.origin}/schemes`
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: scheme.title,
+            item: pageUrl
+          }
+        ]
+      },
+      {
+        '@type': 'GovernmentService',
+        name: scheme.title,
+        serviceType: scheme.category,
+        provider: {
+          '@type': 'GovernmentOrganization',
+          name: scheme.sponsoringAgency
+        },
+        areaServed: {
+          '@type': 'AdministrativeArea',
+          name: 'Asgaon, Pauni, Bhandara, Maharashtra'
+        },
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'INR',
+          description: scheme.benefits
+        },
+        url: pageUrl
+      },
+      {
+        '@type': 'HowTo',
+        name: `How to apply for ${scheme.title}`,
+        step: applicationSteps.map((s, idx) => ({
+          '@type': 'HowToStep',
+          position: idx + 1,
+          name: s.title,
+          text: s.desc
+        }))
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: schemeFaqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.q,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: faq.a
+          }
+        }))
+      }
+    ]
+  };
+
+  const handleShareWhatsApp = () => {
+    const text = encodeURIComponent(
+      `*${scheme.title}*\n${scheme.benefits}\n\nसविस्तर माहिती, पात्रता व कागदपत्रे पाहण्यासाठी खालील लिंक उघडा:\n${pageUrl}`
+    );
+    window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+  };
+
+  return (
+    <div className="w-full flex flex-col gap-6 font-sans">
+      {/* 1. Dedicated SEO Head Injection */}
+      <SEOHead
+        title={seoTitle}
+        description={seoDescription}
+        keywords={`${scheme.title}, ${category}, Asgaon, Pauni, Bhandara, Maharashtra DBT, सरकारी योजना, कागदपत्रे, पात्रता, अनुदान`}
+        canonicalUrl={pageUrl}
+        ogType="article"
+        structuredData={structuredData}
+      />
+
+      {/* 2. Breadcrumbs & Return Navigation */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <Breadcrumb
+          items={[
+            { label: 'Home', onClick: onNavigateHome },
+            { label: 'Government Schemes Directory', onClick: onNavigateBack },
+            { label: scheme.title, active: true }
+          ]}
+        />
+
+        <button
+          onClick={onNavigateBack}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[12px] font-bold transition-colors border border-[#e8e2d9]"
+        >
+          <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+          <span>Back to All Schemes</span>
+        </button>
+      </div>
+
+      {/* 3. Hero Header Section */}
+      <header className="bg-white rounded-2xl p-6 sm:p-8 border border-[#e8e2d9] shadow-xs">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <div className="flex items-center gap-2">
+            <span className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#dbe1ff] text-[#002873]">
+              {scheme.category} {isGharkul ? '• GHARKUL SCHEME' : '• GOVT SCHEME'}
+            </span>
+            <span className="text-[12px] font-bold text-[#ba1a1a] bg-[#ffdad6] px-2.5 py-0.5 rounded-md">
+              {scheme.deadlineText}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleShareWhatsApp}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#25d366] hover:bg-[#20ba5a] text-white text-[12px] font-bold transition-colors shadow-xs"
+            >
+              <span className="material-symbols-outlined text-[16px]">share</span>
+              <span>WhatsApp Share</span>
+            </button>
+          </div>
+        </div>
+
+        <h1 className="font-heading font-extrabold text-[24px] sm:text-[32px] text-[#003629] leading-tight mb-2">
+          {scheme.title}
+        </h1>
+
+        <div className="flex items-center gap-2 text-[14px] font-bold text-[#a63b00] mb-4">
+          <span className="material-symbols-outlined text-[18px]">account_balance</span>
+          <span>{scheme.sponsoringAgency}</span>
+        </div>
+
+        <p className="text-[14px] text-[#404945] leading-relaxed max-w-4xl">
+          {scheme.description}
+        </p>
+
+        {/* Highlight Metrics Strip */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 pt-6 border-t border-[#f3ede4]">
+          <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+            <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
+              <span className="material-symbols-outlined text-[16px] text-[#a63b00]">payments</span>
+              <span>Direct Benefit / Subsidy</span>
+            </div>
+            <div className="font-heading font-extrabold text-[17px] text-[#003629] mt-1">
+              {scheme.benefits.split('.')[0] || '100% Direct DBT'}
+            </div>
+          </div>
+
+          <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+            <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
+              <span className="material-symbols-outlined text-[16px] text-[#002873]">verified</span>
+              <span>Application Fee</span>
+            </div>
+            <div className="font-heading font-extrabold text-[17px] text-[#002873] mt-1">
+              ₹0 Free (Zero Fee)
+            </div>
+          </div>
+
+          <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+            <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
+              <span className="material-symbols-outlined text-[16px] text-[#376757]">how_to_reg</span>
+              <span>Approval Desk</span>
+            </div>
+            <div className="font-heading font-extrabold text-[16px] text-[#376757] mt-1">
+              Gram Panchayat &amp; CSC
+            </div>
+          </div>
+
+          <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+            <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
+              <span className="material-symbols-outlined text-[16px] text-[#a63b00]">timer</span>
+              <span>Disbursement Mode</span>
+            </div>
+            <div className="font-heading font-extrabold text-[16px] text-[#a63b00] mt-1">
+              Aadhaar DBT to Bank
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* 4. Main 2-Column Content Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column: Deep Details (2 cols wide) */}
+        <div className="lg:col-span-2 flex flex-col gap-6">
+          {/* Eligibility Section */}
+          <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
+            <h2 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2 mb-3">
+              <span className="material-symbols-outlined text-[#376757]">checklist_rtl</span>
+              <span>Who is Eligible? (सविस्तर पात्रता निकष)</span>
+            </h2>
+            <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9] text-[13px] text-[#1d1b16] leading-relaxed mb-4 font-medium">
+              {scheme.eligibility}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[12px]">
+              <div className="bg-[#f3ede4] p-3 rounded-xl border border-[#e8e2d9]">
+                <strong className="text-[#003629] block mb-1">Eligible Categories (पात्र लाभार्थी):</strong>
+                <p className="text-[#404945]">
+                  {isGharkul
+                    ? 'Houseless families, Kutcha/mud hut dwellers, Rural residents with approved village 8A extract.'
+                    : 'Rural residents, cultivators, students, or women meeting official income criteria.'}
+                </p>
+              </div>
+              <div className="bg-[#f3ede4] p-3 rounded-xl border border-[#e8e2d9]">
+                <strong className="text-[#ba1a1a] block mb-1">Ineligible (अपात्र निकष):</strong>
+                <p className="text-[#404945]">
+                  Government salaried employees, income tax payees, or families already owning concrete pukka houses.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Mandatory Documents Checklist */}
+          <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
+            <h2 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2 mb-3">
+              <span className="material-symbols-outlined text-[#002873]">task_alt</span>
+              <span>Mandatory Documents Checklist (आवश्यक कागदपत्रांची यादी)</span>
+            </h2>
+            <p className="text-[12px] text-[#707974] mb-4">
+              Please carry both original and self-attested photocopies to the Asgaon CSC desk or Gram Panchayat office:
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {(Array.isArray(scheme.documentsRequired) ? scheme.documentsRequired : []).map(
+                (doc: string, idx: number) => (
+                  <div
+                    key={idx}
+                    className="p-3 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9] flex items-start gap-2 text-[13px]"
+                  >
+                    <span className="material-symbols-outlined text-[18px] text-[#376757] shrink-0 mt-0.5">
+                      check_circle
+                    </span>
+                    <div>
+                      <div className="font-bold text-[#1d1b16]">{doc}</div>
+                      <div className="text-[11px] text-[#707974] mt-0.5">Original &amp; 1 Xerox copy required</div>
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+          </section>
+
+          {/* How to Apply: Step-by-Step Roadmap */}
+          <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
+            <h2 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2 mb-4">
+              <span className="material-symbols-outlined text-[#a63b00]">route</span>
+              <span>Step-by-Step Application Guide (अर्ज करण्याची पद्धत)</span>
+            </h2>
+
+            <div className="space-y-4">
+              {applicationSteps.map((st) => (
+                <div key={st.step} className="flex items-start gap-3.5">
+                  <div className="w-8 h-8 rounded-full bg-[#003629] text-white flex items-center justify-center font-bold text-[13px] shrink-0">
+                    {st.step}
+                  </div>
+                  <div className="flex-1 bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
+                    <h3 className="font-bold text-[14px] text-[#003629] mb-1">{st.title}</h3>
+                    <p className="text-[12px] text-[#404945] leading-relaxed">{st.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Scheme Specific FAQs */}
+          <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
+            <h2 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2 mb-4">
+              <span className="material-symbols-outlined text-[#002873]">help_outline</span>
+              <span>Frequently Asked Questions (वारंवार विचारले जाणारे प्रश्न)</span>
+            </h2>
+
+            <div className="space-y-3 text-[13px]">
+              {schemeFaqs.map((faq, idx) => (
+                <details key={idx} className="group bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
+                  <summary className="font-bold text-[#003629] cursor-pointer flex items-center justify-between list-none">
+                    <span>{faq.q}</span>
+                    <span className="material-symbols-outlined text-[20px] transition-transform group-open:rotate-180">
+                      expand_more
+                    </span>
+                  </summary>
+                  <p className="mt-2 text-[#404945] leading-relaxed pt-2 border-t border-[#e8e2d9]/60">
+                    {faq.a}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          {/* Related Schemes Carousel/Grid */}
+          {relatedSchemes.length > 0 && (
+            <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
+              <h2 className="font-heading font-extrabold text-[17px] text-[#003629] mb-3">
+                Related {scheme.category} Schemes (इतर संबंधित योजना)
+              </h2>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {relatedSchemes.map((rel) => (
+                  <button
+                    key={rel.id}
+                    onClick={() => {
+                      onSelectScheme(rel.slug);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="p-3.5 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] border border-[#e8e2d9] text-left transition-colors flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="text-[10px] font-bold uppercase text-[#002873] bg-[#dbe1ff] px-2 py-0.5 rounded">
+                        {rel.category}
+                      </span>
+                      <h3 className="font-heading font-bold text-[13px] text-[#1d1b16] mt-2 line-clamp-2">
+                        {rel.title}
+                      </h3>
+                    </div>
+                    <div className="mt-3 text-[11px] font-bold text-[#a63b00] flex items-center gap-1">
+                      <span>View Details</span>
+                      <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+
+        {/* Right Sidebar: Quick Actions & Helpdesk (1 col wide) */}
+        <aside className="flex flex-col gap-5">
+          {/* Action Box */}
+          <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
+            <h3 className="font-heading font-extrabold text-[16px] text-[#003629]">
+              Apply for this Scheme
+            </h3>
+            <p className="text-[12px] text-[#707974] leading-relaxed">
+              Official Maharashtra State / Central portal link with verified Aadhaar DBT integration:
+            </p>
+
+            <a
+              href={scheme.officialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3 px-4 rounded-xl bg-[#002873] hover:bg-[#00174b] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
+            >
+              <span>{scheme.actionLabel || 'Apply on Official Portal'}</span>
+              <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+            </a>
+
+            <button
+              onClick={handleShareWhatsApp}
+              className="w-full py-2.5 px-4 rounded-xl bg-[#25d366] hover:bg-[#20ba5a] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors"
+            >
+              <span className="material-symbols-outlined text-[16px]">share</span>
+              <span>Share on WhatsApp</span>
+            </button>
+          </div>
+
+          {/* Asgaon Physical Helpdesk Desk */}
+          <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#002873] bg-[#dbe1ff] px-2 py-0.5 rounded">
+              PHYSICAL ASSISTANCE DESK
+            </span>
+
+            <h3 className="font-heading font-extrabold text-[16px] text-[#003629] mt-2 mb-1">
+              Asgaon CSC Digital Seva Kendra
+            </h3>
+            <p className="text-[12px] text-[#404945] leading-relaxed mb-3">
+              Get assistance with scanning 8A / 7/12 land records, biometric e-KYC, and online form submission.
+            </p>
+
+            <div className="space-y-1 text-[12px] text-[#707974] mb-3">
+              <div>VLE Operator: <strong className="text-[#1d1b16]">Ramesh Shinde</strong></div>
+              <div>Office: <strong className="text-[#1d1b16]">Ground Floor, Gram Panchayat Bhawan</strong></div>
+              <div>Timing: <strong className="text-[#1d1b16]">8:30 AM - 6:30 PM</strong></div>
+            </div>
+
+            <a
+              href="tel:9822104500"
+              className="w-full py-2.5 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] font-bold flex items-center justify-center gap-1 mb-2 transition-colors"
+            >
+              <span className="material-symbols-outlined text-[15px]">call</span>
+              <span>Call Operator: +91 98221 04500</span>
+            </a>
+          </div>
+
+          {/* Zero Bribery & Anti Corruption */}
+          <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
+            <div className="flex items-center gap-1.5 text-[#ba1a1a] font-bold text-[13px] mb-1">
+              <span className="material-symbols-outlined text-[18px]">verified_user</span>
+              <span>Zero Middlemen Guarantee</span>
+            </div>
+            <p className="text-[12px] text-[#404945] leading-relaxed mb-2">
+              Government schemes in Asgaon are 100% free of charge. If anyone demands a cut, report immediately.
+            </p>
+            <div className="text-[12px] font-bold text-[#ba1a1a]">
+              ACB Anti-Corruption Helpline: Toll-Free 1064
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+};

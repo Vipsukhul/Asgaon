@@ -1,0 +1,51 @@
+# Robots.txt for Asgaon Village Knowledge & Civic Portal
+# https://asgaon.digital/
+
+# General search engines (Google, Bing, Yahoo, DuckDuckGo)
+User-agent: *
+Allow: /
+Allow: /blogs
+Allow: /blogs/*
+Allow: /schemes
+Allow: /schemes/*
+Allow: /businesses
+Allow: /businesses/*
+Allow: /shiksha
+Allow: /transport
+Disallow: /admin
+Disallow: /profile
+Disallow: /api/
+
+# AI Search & LLM Crawlers (Perplexity, ChatGPT Search, Gemini, Claude, Apple Intelligence)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+# Sitemap reference
+Sitemap: https://asgaon.digital/sitemap.xml

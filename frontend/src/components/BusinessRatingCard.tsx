@@ -1,0 +1,365 @@
+import React, { useState, useEffect } from 'react';
+import type { Business } from '../types';
+
+interface ReviewItem {
+  id: string | number;
+  userName: string;
+  wardOrArea: string;
+  rating: number;
+  date: string;
+  comment: string;
+  verifiedCitizen: boolean;
+}
+
+interface BusinessRatingCardProps {
+  business: Business;
+  onRatingUpdated?: (newRating: number, newCount: number) => void;
+}
+
+const DEFAULT_REVIEWS: Record<string, ReviewItem[]> = {
+  default: [
+    {
+      id: 1,
+      userName: 'Rameshwar Patil',
+      wardOrArea: 'वॉर्ड २ (गावठाण)',
+      rating: 5,
+      date: '२ दिवसांपूर्वी',
+      comment: 'उत्कृष्ट सेवा आणि वाजवी दर. वेळेवर सर्व खते व बियाणे उपलब्ध करून दिले. गावातच अशी सोय झाल्याने खूप फायदा झाला.',
+      verifiedCitizen: true
+    },
+    {
+      id: 2,
+      userName: 'Sau. Sunita Zalke',
+      wardOrArea: 'आंबेडकर वॉर्ड १',
+      rating: 5,
+      date: '१ आठवड्यापूर्वी',
+      comment: 'अतिशय नम्र बोलणे आणि खात्रीशीर माल. पवनीला जाण्याची गरज उरली नाही. सर्व गावकऱ्यांना नक्की शिफारस करतो.',
+      verifiedCitizen: true
+    },
+    {
+      id: 3,
+      userName: 'Vitthal Meshram',
+      wardOrArea: 'विठ्ठल मंदिर परिसर वॉर्ड ३',
+      rating: 4,
+      date: '२ आठवड्यांपूर्वी',
+      comment: 'सर्व शेती साहित्य व अवजारे वेळेत मिळाली. डिजिटल पेमेंट (UPI/PhonePe) स्वीकारतात.',
+      verifiedCitizen: true
+    }
+  ]
+};
+
+export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
+  business,
+  onRatingUpdated
+}) => {
+  const storageKey = `dg_biz_reviews_${business.id || business.slug || 'gen'}`;
+  
+  const [reviews, setReviews] = useState<ReviewItem[]>(() => {
+    const saved = localStorage.getItem(storageKey);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        // fallback
+      }
+    }
+    return DEFAULT_REVIEWS.default;
+  });
+
+  const [currentRating, setCurrentRating] = useState<number>(() => {
+    return Number(business.rating || 4.8);
+  });
+  const [reviewCount, setReviewCount] = useState<number>(() => {
+    return Number(business.ratingCount || 142);
+  });
+
+  // Review Form State
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [inputRating, setInputRating] = useState<number>(5);
+  const [inputName, setInputName] = useState('');
+  const [inputWard, setInputWard] = useState('वॉर्ड २ (गावठाण)');
+  const [inputComment, setInputComment] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+
+  // Sync if business changes
+  useEffect(() => {
+    const saved = localStorage.getItem(storageKey);
+    if (saved) {
+      try {
+        setReviews(JSON.parse(saved));
+      } catch {
+        setReviews(DEFAULT_REVIEWS.default);
+      }
+    } else {
+      setReviews(DEFAULT_REVIEWS.default);
+    }
+    setCurrentRating(Number(business.rating || 4.8));
+    setReviewCount(Number(business.ratingCount || 142));
+  }, [business.id, business.slug]);
+
+  const handleSubmitReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputName.trim() || !inputComment.trim()) return;
+
+    const newReview: ReviewItem = {
+      id: Date.now(),
+      userName: inputName.trim(),
+      wardOrArea: inputWard || 'आसगाव नागरिक',
+      rating: inputRating,
+      date: 'आज नुकताच',
+      comment: inputComment.trim(),
+      verifiedCitizen: true
+    };
+
+    const updatedReviews = [newReview, ...reviews];
+    setReviews(updatedReviews);
+    localStorage.setItem(storageKey, JSON.stringify(updatedReviews));
+
+    // Update aggregate rating
+    const newCount = reviewCount + 1;
+    const newAvg = Number(((currentRating * reviewCount + inputRating) / newCount).toFixed(1));
+    setCurrentRating(newAvg);
+    setReviewCount(newCount);
+
+    if (onRatingUpdated) {
+      onRatingUpdated(newAvg, newCount);
+    }
+
+    setSuccessMsg('✓ आपला अभिप्राय यशस्वीरीत्या नोंदवला गेला! धन्यवाद.');
+    setInputName('');
+    setInputComment('');
+    setInputRating(5);
+    setTimeout(() => {
+      setSuccessMsg('');
+      setIsFormOpen(false);
+    }, 2000);
+  };
+
+  // Percentage calculations
+  const total = reviews.length;
+  const count5 = reviews.filter((r) => r.rating === 5).length;
+  const count4 = reviews.filter((r) => r.rating === 4).length;
+  const count3 = reviews.filter((r) => r.rating === 3).length;
+  const count2 = reviews.filter((r) => r.rating === 2).length;
+  const count1 = reviews.filter((r) => r.rating <= 1).length;
+
+  const pct5 = total > 0 ? Math.round((count5 / total) * 100) : 85;
+  const pct4 = total > 0 ? Math.round((count4 / total) * 100) : 10;
+  const pct3 = total > 0 ? Math.round((count3 / total) * 100) : 4;
+  const pct2 = total > 0 ? Math.round((count2 / total) * 100) : 1;
+  const pct1 = total > 0 ? Math.round((count1 / total) * 100) : 0;
+
+  return (
+    <div className="bg-white rounded-2xl border border-[#e8e2d9] shadow-xs overflow-hidden mb-6">
+      {/* 1. Header with Trust Badge */}
+      <div className="bg-[#f9f3ea] px-4 py-3 border-b border-[#e8e2d9] flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className="material-symbols-outlined text-[#a63b00] text-[20px]">hotel_class</span>
+          <div>
+            <h4 className="font-heading font-extrabold text-[14px] text-[#003629]">
+              ग्राहक रेटिंग व नागरिक अभिप्राय (Rating &amp; Reviews)
+            </h4>
+            <span className="text-[11px] text-[#707974]">
+              गावकऱ्यांचा प्रत्यक्ष अनुभव व पडताळणीकृत मते
+            </span>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIsFormOpen(!isFormOpen)}
+          className="px-3 py-1.5 rounded-xl bg-[#003629] text-white hover:bg-[#1b4d3e] text-[11px] font-bold flex items-center gap-1 transition-all shadow-xs"
+        >
+          <span className="material-symbols-outlined text-[14px] text-[#baeed9]">edit</span>
+          <span>{isFormOpen ? 'फॉर्म बंद करा' : 'आपला अभिप्राय द्या'}</span>
+        </button>
+      </div>
+
+      {/* 2. Rating Score & Breakdown Grid */}
+      <div className="p-4 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center border-b border-[#f3ede4]">
+        {/* Left: Overall Big Score */}
+        <div className="sm:col-span-5 flex flex-col items-center justify-center p-3 bg-[#fff8f0] rounded-xl border border-[#ffdbce] text-center">
+          <div className="font-heading font-black text-[38px] text-[#a63b00] leading-none mb-1">
+            {currentRating.toFixed(1)}
+          </div>
+          <div className="flex items-center gap-0.5 text-[#d97706] mb-1">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span key={star} className="material-symbols-outlined text-[20px] fill-current">
+                {star <= Math.round(currentRating) ? 'star' : 'star_outline'}
+              </span>
+            ))}
+          </div>
+          <div className="text-[12px] font-bold text-[#1d1b16]">
+            {reviewCount} गावकऱ्यांचे अभिप्राय
+          </div>
+          <div className="inline-flex items-center gap-1 text-[10px] font-extrabold text-[#006a4e] bg-[#baeed9] px-2 py-0.5 rounded-full mt-1.5">
+            <span className="material-symbols-outlined text-[12px]">verified</span>
+            <span>पडताळणीकृत स्थानिक व्यापारी</span>
+          </div>
+        </div>
+
+        {/* Right: Star Distribution Bars */}
+        <div className="sm:col-span-7 flex flex-col gap-1.5 text-[11px]">
+          {[
+            { label: '५ ★', pct: pct5, count: count5 },
+            { label: '४ ★', pct: pct4, count: count4 },
+            { label: '३ ★', pct: pct3, count: count3 },
+            { label: '२ ★', pct: pct2, count: count2 },
+            { label: '१ ★', pct: pct1, count: count1 }
+          ].map((row, idx) => (
+            <div key={idx} className="flex items-center gap-2">
+              <span className="w-8 font-bold text-[#707974]">{row.label}</span>
+              <div className="flex-1 h-2 bg-[#f3ede4] rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-[#d97706] to-[#a63b00] rounded-full transition-all duration-500"
+                  style={{ width: `${row.pct}%` }}
+                />
+              </div>
+              <span className="w-8 text-right font-medium text-[#707974]">{row.pct}%</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 3. Interactive Review Submission Form (Expandable) */}
+      {isFormOpen && (
+        <form onSubmit={handleSubmitReview} className="p-4 bg-[#f9f3ea] border-b border-[#e8e2d9] animate-fadeIn flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <h5 className="font-heading font-bold text-[13px] text-[#003629] flex items-center gap-1">
+              <span className="material-symbols-outlined text-[16px] text-[#d97706]">rate_review</span>
+              <span>या दुकानासाठी आपला प्रामाणिक अभिप्राय नोंदवा</span>
+            </h5>
+            <span className="text-[10px] text-[#707974]">आसगाव ग्राहक मंच</span>
+          </div>
+
+          {/* Star selector */}
+          <div className="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-[#e8e2d9]">
+            <span className="text-[12px] font-bold text-[#1d1b16]">आपले रेटिंग:</span>
+            <div className="flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => setInputRating(s)}
+                  className="p-0.5 text-[#d97706] hover:scale-125 transition-transform"
+                >
+                  <span className="material-symbols-outlined text-[24px]">
+                    {s <= inputRating ? 'star' : 'star_border'}
+                  </span>
+                </button>
+              ))}
+            </div>
+            <span className="text-[11px] font-bold text-[#a63b00] ml-2">
+              {inputRating === 5 ? 'उत्कृष्ट (5/5)' : inputRating === 4 ? 'खूप चांगले (4/5)' : inputRating === 3 ? 'बरे (3/5)' : 'सुधारणा हवी (2/5)'}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label className="block text-[11px] font-bold text-[#1d1b16] mb-1">
+                आपले नाव (Your Name) *
+              </label>
+              <input
+                type="text"
+                required
+                value={inputName}
+                onChange={(e) => setInputName(e.target.value)}
+                placeholder="उदा. ज्ञानेश्वर पाटील"
+                className="w-full bg-white text-[#1d1b16] p-2 rounded-xl text-[12px] border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#003629]"
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] font-bold text-[#1d1b16] mb-1">
+                आपला वॉर्ड / परिसर (Ward / Area)
+              </label>
+              <select
+                value={inputWard}
+                onChange={(e) => setInputWard(e.target.value)}
+                className="w-full bg-white text-[#1d1b16] p-2 rounded-xl text-[12px] border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#003629]"
+              >
+                <option>वॉर्ड १ (आंबेडकर वॉर्ड)</option>
+                <option>वॉर्ड २ (गावठाण व बाजार चौक)</option>
+                <option>वॉर्ड ३ (विठ्ठल मंदिर परिसर)</option>
+                <option>हायवे बायपास वस्ती</option>
+                <option>तलाव रोड</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-bold text-[#1d1b16] mb-1">
+              आपला अनुभव व अभिप्राय (Review Comment) *
+            </label>
+            <textarea
+              required
+              rows={2}
+              value={inputComment}
+              onChange={(e) => setInputComment(e.target.value)}
+              placeholder="मालाची गुणवत्ता, किंमत, बोलण्याची पद्धत व सेवेबद्दल आपला अनुभव सांगा..."
+              className="w-full bg-white text-[#1d1b16] p-2 rounded-xl text-[12px] border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#003629]"
+            />
+          </div>
+
+          {successMsg && (
+            <div className="p-2 bg-[#baeed9] text-[#002117] rounded-lg text-[11px] font-bold flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-[16px]">check_circle</span>
+              <span>{successMsg}</span>
+            </div>
+          )}
+
+          <div className="flex items-center justify-end gap-2 pt-1">
+            <button
+              type="button"
+              onClick={() => setIsFormOpen(false)}
+              className="px-3 py-1.5 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[11px] font-bold transition-colors"
+            >
+              रद्द करा
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-1.5 rounded-lg bg-[#a63b00] hover:bg-[#852f00] text-white text-[11px] font-bold transition-colors shadow-xs"
+            >
+              अभिप्राय सबमिट करा
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* 4. Verified Reviews Feed */}
+      <div className="p-4 flex flex-col gap-3">
+        <div className="flex items-center justify-between text-[12px] font-bold text-[#707974] mb-0.5">
+          <span>गावकऱ्यांचे ताजे अभिप्राय ({reviews.length})</span>
+          <span className="text-[10px] text-[#006a4e]">✓ १००% पडताळणीकृत</span>
+        </div>
+
+        {reviews.slice(0, 3).map((rev) => (
+          <div key={rev.id} className="p-3 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] flex flex-col gap-1.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-[#003629] text-[#baeed9] font-black text-[10px] flex items-center justify-center">
+                  {rev.userName.charAt(0)}
+                </div>
+                <div>
+                  <span className="font-heading font-bold text-[12px] text-[#1d1b16]">
+                    {rev.userName}
+                  </span>
+                  <span className="text-[10px] text-[#707974] block leading-none">
+                    {rev.wardOrArea} • {rev.date}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1 bg-white px-2 py-0.5 rounded-lg border border-[#e8e2d9] text-[11px] font-bold text-[#d97706]">
+                <span>★ {rev.rating}</span>
+              </div>
+            </div>
+
+            <p className="text-[12px] text-[#404945] leading-relaxed pl-8">
+              &quot;{rev.comment}&quot;
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};

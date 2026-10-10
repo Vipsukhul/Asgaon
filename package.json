@@ -1,0 +1,15 @@
+{
+  "name": "asgaon-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Asgaon Civic Portal - Full-stack Monorepo",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "cd backend && mvnw.cmd spring-boot:run",
+    "build": "npm --prefix frontend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "build:backend": "cd backend && mvnw.cmd compile",
+    "lint": "npm --prefix frontend run lint"
+  }
+}
