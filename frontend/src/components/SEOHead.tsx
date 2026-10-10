@@ -21,7 +21,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
   keywords,
   canonicalUrl,
   ogType = 'website',
-  ogImage = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&h=630&q=80',
+  ogImage = 'https://res.cloudinary.com/dl5bq3ejh/image/upload/v1791660305/asgaon/seo/ccc45725-5d89-44b3-ac8c-a113f34f5df3.png',
   ogImageAlt,
   articleAuthor,
   articlePublishedTime,

@@ -197,18 +197,19 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
     <div className="w-full flex flex-col gap-6 font-sans">
       <SEOHead
         title="नवीन लेख लिहा (Write Blog) | Asgaon Knowledge Studio"
-        description="आसगाव ग्रामस्थांसाठी स्वतःचा शेती अनुभव, शासकीय योजना मार्गदर्शन किंवा माहिती लेख प्रसिद्ध करण्याचे व्यासपीठ. संपूर्ण SEO व OpenGraph सपोर्ट."
+        description="आसगाव ग्रामस्थांसाठी स्वतःचा शेती अनुभव, शासकीय योजना मार्गदर्शन किंवा माहिती लेख प्रसिद्ध करण्याचे व्यासपीठ."
         keywords="Write blog Asgaon, Village article writer Pauni, Asgaon Krishi advisory post, आसगाव लेख लेखन, शेती सल्ला ब्लॉग"
-        canonicalUrl="https://asgaon.digital/blogs/write"
+        canonicalUrl="https://asgaon.vercel.app/blogs/write"
         ogType="website"
-        ogImage={activeCover}
+        ogImage={activeCover || "https://res.cloudinary.com/dl5bq3ejh/image/upload/v1791660305/asgaon/seo/ccc45725-5d89-44b3-ac8c-a113f34f5df3.png"}
         structuredData={{
           '@context': 'https://schema.org',
           '@type': 'WebPage',
           name: 'Asgaon Village Blog Studio | आसगाव माहिती लेख लेखन मंच',
           description: 'आसगाव नागरिकांसाठी लेख प्रसिद्ध करण्याचे डिजिटल पोर्टल.',
-          url: 'https://asgaon.digital/blogs/write'
+          url: 'https://asgaon.vercel.app/blogs/write'
         }}
+
       />
 
       {/* 1. Breadcrumbs & Return Navigation */}
