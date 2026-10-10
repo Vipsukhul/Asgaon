@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { AsgaonLogo } from './AsgaonLogo';
 import { isPushSubscribed, subscribeUserToPush, unsubscribeUserFromPush } from '../services/pushNotifications';
 import { api } from '../services/api';
@@ -404,7 +405,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-white border border-[#e8e2d9] text-[#003629] hover:bg-[#f3ede4] active:scale-95 transition-all shadow-2xs"
+              className="md:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-white border border-[#e8e2d9] text-[#003629] hover:bg-[#f3ede4] active:scale-95 transition-all shadow-2xs cursor-pointer select-none"
               aria-label={mobileMenuOpen ? 'मेनू बंद करा' : 'मेनू उघडा'}
               title={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
             >
@@ -445,19 +446,19 @@ export const Header: React.FC<HeaderProps> = ({
         )}
       </div>
 
-      {/* Mobile Hamburger Slide-in Drawer */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
+      {/* Mobile Hamburger Slide-in Drawer Portal (Mounted to document.body to break free of header containing block) */}
+      {mobileMenuOpen && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-[99999] md:hidden">
           {/* Backdrop Blur Overlay */}
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity cursor-pointer"
             onClick={() => setMobileMenuOpen(false)}
           />
 
           {/* Drawer Panel */}
-          <div className="fixed top-0 right-0 bottom-0 w-[86%] max-w-[340px] bg-[#fff8f0] shadow-2xl flex flex-col z-10 border-l border-[#e8e2d9] animate-slide-drawer">
+          <div className="fixed top-0 right-0 h-screen h-[100dvh] w-[86%] max-w-[340px] bg-[#fff8f0] shadow-2xl flex flex-col z-[100000] border-l border-[#e8e2d9] animate-slide-drawer">
             {/* Drawer Header */}
-            <div className="p-3.5 border-b border-[#e8e2d9] bg-white flex items-center justify-between">
+            <div className="p-3.5 border-b border-[#e8e2d9] bg-white flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-[#003629] text-[#baeed9] flex items-center justify-center font-black text-sm">
                   आ
@@ -474,7 +475,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-[#707974] hover:text-[#1d1b16] hover:bg-[#f3ede4] transition-colors"
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-[#707974] hover:text-[#1d1b16] hover:bg-[#f3ede4] transition-colors cursor-pointer"
                 aria-label="Close Menu"
               >
                 <span className="material-symbols-outlined text-[20px]">close</span>
@@ -536,7 +537,7 @@ export const Header: React.FC<HeaderProps> = ({
                       setMobileMenuOpen(false);
                       onOpenLogin();
                     }}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#003629] text-white hover:bg-[#1b4d3e] font-bold text-[13px] shadow-xs active:scale-95 transition-all"
+                    className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#003629] text-white hover:bg-[#1b4d3e] font-bold text-[13px] shadow-xs active:scale-95 transition-all cursor-pointer"
                   >
                     <span className="material-symbols-outlined text-[18px]">login</span>
                     <span>{lang === 'MR' ? 'लॉगिन / नोंदणी करा' : 'Login / Register'}</span>
@@ -559,7 +560,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <button
                     type="button"
                     onClick={() => setLang('MR')}
-                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border ${
+                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border cursor-pointer ${
                       lang === 'MR'
                         ? 'bg-[#003629] text-white border-[#003629] shadow-xs ring-2 ring-[#006a4e]/20'
                         : 'bg-[#f9f3ea] text-[#404945] border-[#e8e2d9] hover:bg-[#f3ede4]'
@@ -571,7 +572,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <button
                     type="button"
                     onClick={() => setLang('EN')}
-                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border ${
+                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border cursor-pointer ${
                       lang === 'EN'
                         ? 'bg-[#003629] text-white border-[#003629] shadow-xs ring-2 ring-[#006a4e]/20'
                         : 'bg-[#f9f3ea] text-[#404945] border-[#e8e2d9] hover:bg-[#f3ede4]'
@@ -604,7 +605,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <button
                     type="button"
                     onClick={() => setSearchVal('')}
-                    className="text-[#707974] hover:text-[#1d1b16] p-0.5"
+                    className="text-[#707974] hover:text-[#1d1b16] p-0.5 cursor-pointer"
                   >
                     <span className="material-symbols-outlined text-[16px]">close</span>
                   </button>
@@ -624,7 +625,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setActiveNav('home');
                     setMobileMenuOpen(false);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all text-left ${
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all text-left cursor-pointer ${
                     activeNav === 'home' || activeNav === 'all'
                       ? 'bg-[#003629] text-[#baeed9] shadow-xs'
                       : 'text-[#1d1b16] hover:bg-white hover:text-[#003629]'
@@ -649,7 +650,7 @@ export const Header: React.FC<HeaderProps> = ({
                         setActiveNav(item.id);
                         setMobileMenuOpen(false);
                       }}
-                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all text-left ${
+                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all text-left cursor-pointer ${
                         isActive
                           ? 'bg-[#003629] text-[#baeed9] shadow-xs'
                           : 'text-[#1d1b16] hover:bg-white hover:text-[#003629]'
@@ -667,14 +668,14 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
 
             {/* Drawer Footer: Grievance and Emergency Services */}
-            <div className="p-3 border-t border-[#e8e2d9] bg-white space-y-2">
+            <div className="p-3 border-t border-[#e8e2d9] bg-white space-y-2 shrink-0">
               <button
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onOpenGrievance();
                 }}
-                className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-[#006a4e]/10 text-[#003629] border border-[#006a4e]/25 text-xs font-bold hover:bg-[#006a4e]/20 transition-all"
+                className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-[#006a4e]/10 text-[#003629] border border-[#006a4e]/25 text-xs font-bold hover:bg-[#006a4e]/20 transition-all cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[18px] text-[#006a4e]">support_agent</span>
                 <span>{lang === 'MR' ? 'नागरिक तक्रार नोंदवा' : 'Register Citizen Grievance'}</span>
@@ -688,7 +689,8 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </header>
   );
