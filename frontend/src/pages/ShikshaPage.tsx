@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { SEOHead } from '../components/SEOHead';
+import { ShikshaMap } from '../components/ShikshaMap';
 import type {
   SchoolItem,
   ScholarshipItem,
@@ -243,11 +244,11 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
           <span>ZP Digital Study Room Booking (अभ्यासिका)</span>
         </button>
         <a
-          href="#schools"
+          href="#schools-map"
           className="p-3 bg-white hover:bg-[#f3ede4] text-[#003629] border border-[#e8e2d9] rounded-xl text-[12px] font-bold flex items-center justify-center gap-2 shadow-xs transition-all text-center"
         >
-          <span className="material-symbols-outlined text-[18px]">account_balance</span>
-          <span>Explore Local Schools</span>
+          <span className="material-symbols-outlined text-[18px]">map</span>
+          <span>School &amp; Library Map (नकाशा)</span>
         </a>
         <a
           href="https://wa.me/919422811204"
@@ -258,6 +259,11 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
           <span className="material-symbols-outlined text-[18px]">chat</span>
           <span>WhatsApp Mentor Desk</span>
         </a>
+      </div>
+
+      {/* 4.5 INTERACTIVE EDUCATION & LIBRARY GIS MAP */}
+      <div id="schools-map" className="w-full">
+        <ShikshaMap height="480px" />
       </div>
 
       {/* 5. MAIN 2-COLUMN LAYOUT */}

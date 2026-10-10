@@ -40,7 +40,7 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
       const gpIcon = L.divIcon({
         className: 'picker-gp-marker',
         html: `
-          <div style="background: #003629; color: white; font-size: 9px; font-weight: 800; padding: 2px 5px; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.3); border: 1px solid white; white-space: nowrap;">
+          <div style="background: #ffffff; color: #003629; font-size: 10px; font-weight: 800; padding: 2.5px 8px; border-radius: 9999px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); border: 1px solid #d0dcd5; white-space: nowrap;">
             🏛️ ग्रामपंचायत
           </div>
         `,

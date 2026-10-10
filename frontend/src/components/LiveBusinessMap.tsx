@@ -124,21 +124,23 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
             <div style="
               position: absolute;
               bottom: -22px;
-              background: rgba(0, 33, 23, 0.92);
-              color: #ffffff;
+              background: #ffffff;
+              color: #003629;
               font-family: sans-serif;
               font-size: 11px;
               font-weight: 700;
-              padding: 2px 7px;
+              padding: 2px 8px;
               border-radius: 9999px;
               white-space: nowrap;
-              box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+              border: 1px solid #d0dcd5;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.12);
               pointer-events: none;
-              letter-spacing: 0.2px;
+              letter-spacing: 0.1px;
             ">
               ${biz.name.length > 20 ? biz.name.substring(0, 18) + '...' : biz.name}
             </div>
           </div>
+
         `,
         iconSize: [36, 46],
         iconAnchor: [18, 46],

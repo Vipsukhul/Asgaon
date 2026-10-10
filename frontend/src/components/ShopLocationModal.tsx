@@ -143,15 +143,16 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
           "></div>
           <div style="
             margin-top: 4px;
-            background: rgba(0, 33, 23, 0.94);
-            color: #ffffff;
+            background: #ffffff;
+            color: #003629;
             font-size: 11px;
             font-weight: 700;
             padding: 2px 8px;
             border-radius: 9999px;
             white-space: nowrap;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            letter-spacing: 0.2px;
+            border: 1px solid #d0dcd5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            letter-spacing: 0.1px;
           ">
             ${business.name}
           </div>
@@ -189,11 +190,12 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
           ">
             <span class="material-symbols-outlined" style="font-size: 15px;">account_balance</span>
           </div>
-          <span style="font-size: 9px; font-weight: 800; background: #003629; color: white; padding: 1px 4px; border-radius: 4px; margin-top: 2px;">
+          <span style="font-size: 9px; font-weight: 800; background: #ffffff; color: #003629; border: 1px solid #d0dcd5; padding: 1px 5px; border-radius: 4px; margin-top: 2px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
             ग्रामपंचायत
           </span>
         </div>
       `,
+
       iconSize: [26, 40],
       iconAnchor: [13, 30]
     });
