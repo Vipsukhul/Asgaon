@@ -953,16 +953,13 @@ export function App() {
           aria-label="Open village GIS map"
         >
           {/* Pulsing Beacon Indicator */}
-          <span className="relative flex h-3 w-3 shrink-0">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ffd700] opacity-80"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-[#ffd700]"></span>
-          </span>
+         
 
           <span className="material-symbols-outlined text-[22px] text-[#baeed9] group-hover:rotate-12 transition-transform">
             explore
           </span>
           <span className="font-heading font-extrabold text-[13px] sm:text-[14px] tracking-wide whitespace-nowrap drop-shadow-xs">
-            गाव नकाशा (Village Map)
+            नकाशा
           </span>
         </button>
       )}

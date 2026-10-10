@@ -1215,9 +1215,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
             <div className="flex items-start justify-between gap-4 relative z-10">
               <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#baeed9] shadow-inner shrink-0">
-                  <span className="material-symbols-outlined text-[30px]">admin_panel_settings</span>
-                </div>
+                
                 <div>
                   <span className="text-[11px] font-bold uppercase tracking-widest text-[#baeed9]/90 block">
                     आसगाव ग्राम माहिती मंच • स्वतंत्र नागरिक उपक्रम
@@ -1231,16 +1229,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </div>
               </div>
 
-              {onExit && (
-                <button
-                  type="button"
-                  onClick={onExit}
-                  className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold transition-all flex items-center gap-1 border border-white/20 shrink-0"
-                  title="सार्वजनिक पोर्टलवर परत जा"
-                >
-                  <span className="hidden sm:inline">मुख्य पोर्टल</span>
-                </button>
-              )}
+             
             </div>
 
             {/* Security Pill */}
@@ -1249,9 +1238,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <span className="material-symbols-outlined text-[15px] text-[#baeed9]">lock</span>
                 <span>सुरक्षित एनक्रिप्टेड प्रवेश (Secure Access)</span>
               </span>
-              <span className="bg-[#baeed9]/20 text-[#baeed9] px-2.5 py-0.5 rounded-full font-bold text-[10px] tracking-wider uppercase border border-[#baeed9]/30">
-                व्यवस्थापक प्रवेश
-              </span>
+              
             </div>
           </div>
 
@@ -1289,7 +1276,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* Phone / Username */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-[12px] font-bold text-[#003629] flex items-center justify-between">
-                  <span>मोबाईल क्र. / युझरनेम (Phone / Username)</span>
+                  <span>मोबाईल क्र. / युझरनेम </span>
                   <span className="text-[10px] text-[#707974] font-normal">आवश्यक</span>
                 </label>
                 <div className="relative">
@@ -1311,7 +1298,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* Password */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-[12px] font-bold text-[#003629] flex items-center justify-between">
-                  <span>पासवर्ड (Admin Password)</span>
+                  <span>पासवर्ड </span>
                   <span className="text-[10px] text-[#707974] font-normal">आवश्यक</span>
                 </label>
                 <div className="relative">

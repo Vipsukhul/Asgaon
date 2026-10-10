@@ -310,14 +310,11 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h3 id="village-map-modal-title" className="font-heading font-extrabold text-[17px] sm:text-[19px] text-white leading-tight">
-                  आसगाव समग्र ग्राम नकाशा (Village GIS Map)
+                  आसगाव समग्र ग्राम नकाशा
                 </h3>
-                <span className="hidden sm:inline bg-[#baeed9] text-[#002117] text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
-                  Live GIS
-                </span>
               </div>
               <p className="text-[11px] sm:text-[12px] text-[#baeed9]/90 font-medium">
-                केंद्र बिंदू: ग्रामपंचायत आसगाव (20°47'06.0"N, 79°38'06.0"E) • {allPins.length} नोंदणीकृत ठिकाणे
+                • {allPins.length} नोंदणीकृत ठिकाणे
               </p>
             </div>
           </div>
