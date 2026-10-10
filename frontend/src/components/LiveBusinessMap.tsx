@@ -30,7 +30,7 @@ interface LiveBusinessMapProps {
 
 const ASGAON_CENTER: [number, number] = [20.7850, 79.6350];
 
-const CATEGORY_COLORS: Record<string, { bg: string; border: string; icon: string }> = {
+export const CATEGORY_COLORS: Record<string, { bg: string; border: string; icon: string }> = {
   seeds: { bg: '#006a4e', border: '#baeed9', icon: 'agriculture' },
   clinic: { bg: '#ba1a1a', border: '#ffdad6', icon: 'local_hospital' },
   machinery: { bg: '#a63b00', border: '#ffdbce', icon: 'precision_manufacturing' },

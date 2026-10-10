@@ -602,7 +602,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
   const [userSearch, setUserSearch] = useState('');
 
   // Login form state
-  const [adminPhone, setAdminPhone] = useState('9822104500');
+  const [adminPhone, setAdminPhone] = useState('9604331589');
   const [adminPassword, setAdminPassword] = useState('Admin@123');
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
@@ -739,7 +739,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
     } catch (err: any) {
       // Check for seeded authorized official credentials
       const isSuper = (phone === '9999999999' || phone.toLowerCase() === 'superadmin') && pass === 'Admin@123';
-      const isAdminUser = (phone === '9822104500' || phone.toLowerCase() === 'admin') && pass === 'Admin@123';
+      const isAdminUser = (phone === '9604331589' || phone === '9822104500' || phone.toLowerCase() === 'admin') && pass === 'Admin@123';
 
       if (isSuper || isAdminUser) {
         const role = isSuper ? 'SUPER_ADMIN' : 'ADMIN';
@@ -1351,12 +1351,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   <button
                     type="button"
                     onClick={() => {
-                      setAdminPhone('9822104500');
+                      setAdminPhone('9604331589');
                       setAdminPassword('Admin@123');
                       setLoginError('');
                     }}
                     className={`p-2 rounded-lg text-left border transition-all ${
-                      adminPhone === '9822104500'
+                      adminPhone === '9604331589' || adminPhone === '9822104500'
                         ? 'bg-[#003629] text-white border-[#003629] shadow-xs'
                         : 'bg-white text-[#003629] border-[#d0dcd5] hover:bg-[#e8f1ec]'
                     }`}
@@ -1364,8 +1364,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     <div className="font-extrabold flex items-center gap-1">
                       <span>🏛️ ग्रामसेवक (Admin)</span>
                     </div>
-                    <div className={`text-[10px] ${adminPhone === '9822104500' ? 'text-[#baeed9]' : 'text-[#707974]'}`}>
-                      9822104500
+                    <div className={`text-[10px] ${adminPhone === '9604331589' || adminPhone === '9822104500' ? 'text-[#baeed9]' : 'text-[#707974]'}`}>
+                      9604331589
                     </div>
                   </button>
 

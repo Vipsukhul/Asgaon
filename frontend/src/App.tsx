@@ -38,6 +38,7 @@ import { GuestUpgradeModal } from './components/GuestUpgradeModal';
 import { RegisterShopModal } from './components/RegisterShopModal';
 import { PostJobModal } from './components/PostJobModal';
 import { DetailModal } from './components/DetailModal';
+import { VillageMasterMapModal } from './components/VillageMasterMapModal';
 import type { Business, Job, Scheme, Grievance, MandiPrice } from './types';
 import { api } from './services/api';
 import { useSEO } from './hooks/useSEO';
@@ -377,6 +378,7 @@ export function App() {
   const [upgradeActionTitle, setUpgradeActionTitle] = useState('');
   const [registerShopOpen, setRegisterShopOpen] = useState(false);
   const [postJobOpen, setPostJobOpen] = useState(false);
+  const [villageMapModalOpen, setVillageMapModalOpen] = useState(false);
 
   // Detail Modal state
   const [detailModalOpen, setDetailModalOpen] = useState(false);
@@ -939,6 +941,41 @@ export function App() {
         data={detailData}
         type={detailType}
         onBookmark={handleBookmark}
+      />
+
+      {/* Floating Action Button: Village GIS Master Map (Homepage Only) */}
+      {(activeNav === 'home' || activeNav === 'all') && (
+        <button
+          type="button"
+          onClick={() => setVillageMapModalOpen(true)}
+          className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-[#003629] via-[#004d3b] to-[#003629] hover:from-[#00281e] hover:to-[#003629] text-white px-4 sm:px-5 py-3 rounded-full shadow-2xl hover:shadow-[#003629]/50 flex items-center gap-2.5 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-[#baeed9]/50 group cursor-pointer"
+          title="गाव नकाशा पहा (Open Complete Village GIS Map)"
+          aria-label="Open village GIS map"
+        >
+          {/* Pulsing Beacon Indicator */}
+          <span className="relative flex h-3 w-3 shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ffd700] opacity-80"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-[#ffd700]"></span>
+          </span>
+
+          <span className="material-symbols-outlined text-[22px] text-[#baeed9] group-hover:rotate-12 transition-transform">
+            explore
+          </span>
+          <span className="font-heading font-extrabold text-[13px] sm:text-[14px] tracking-wide whitespace-nowrap drop-shadow-xs">
+            गाव नकाशा (Village Map)
+          </span>
+        </button>
+      )}
+
+      {/* Master Village GIS Map Modal */}
+      <VillageMasterMapModal
+        isOpen={villageMapModalOpen}
+        onClose={() => setVillageMapModalOpen(false)}
+        businesses={businesses}
+        onSelectBusiness={(biz) => {
+          setVillageMapModalOpen(false);
+          navigateToBusiness(biz.slug || biz.id);
+        }}
       />
     </div>
   );
