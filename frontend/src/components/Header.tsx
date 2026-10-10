@@ -34,8 +34,6 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const { lang, setLang, t } = useLanguage();
   const [searchVal, setSearchVal] = useState('');
-  const [villageOpen, setVillageOpen] = useState(false);
-  const [currentVillage, setCurrentVillage] = useState('Asgaon, Pauni (Dist. Bhandara, 441910)');
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [pushActive, setPushActive] = useState(false);
   const [pushLoading, setPushLoading] = useState(false);
@@ -97,36 +95,9 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-col gap-2">
         {/* Top Bar */}
         <div className="flex items-center justify-between gap-3">
-          {/* Logo & Village Selector */}
+          {/* Logo */}
           <div className="flex items-center gap-3 shrink-0">
             <AsgaonLogo onClick={() => setActiveNav('home')} size="md" />
-
-            {/* Village Selector Dropdown */}
-            <div className="relative hidden md:block">
-              <button
-                type="button"
-                onClick={() => setVillageOpen(!villageOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#f9f3ea] text-[#1d1b16] hover:bg-[#f3ede4] transition-colors border border-[#e8e2d9]"
-              >
-                <span className="material-symbols-outlined text-[18px] text-[#a63b00]">location_on</span>
-                <span className="text-[12px] font-semibold truncate max-w-[230px]">{currentVillage}</span>
-                <span className="material-symbols-outlined text-[16px] text-[#707974]">arrow_drop_down</span>
-              </button>
-
-              {villageOpen && (
-                <div className="absolute left-0 mt-1 w-72 bg-white rounded-xl shadow-xl border border-[#e8e2d9] py-2 z-50">
-                  <div className="px-3 py-1.5 text-[11px] font-bold text-[#707974] uppercase">Select Digital Gram Panchayat</div>
-                  <button
-                    onClick={() => { setCurrentVillage('Asgaon, Pauni (Dist. Bhandara, 441910)'); setVillageOpen(false); }}
-                    className="w-full text-left px-3 py-2 text-[13px] hover:bg-[#f9f3ea] font-medium flex items-center justify-between"
-                  >
-                    <span>Asgaon, Pauni (441910)</span>
-                    <span className="text-[10px] bg-[#baeed9] text-[#002117] font-bold px-1.5 py-0.5 rounded">Active</span>
-                  </button>
-
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Center Search Bar */}
