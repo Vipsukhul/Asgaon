@@ -718,10 +718,14 @@ export function App() {
 
         {(activeNav === 'home' || activeNav === 'all') && (
           <div className="flex flex-col gap-10">
-            {/* Hero & Universal Discovery Hub */}
+            {/* Hero & Universal Discovery Hub Slider */}
             <HeroSection
               onSearch={handleSearch}
               onTagClick={(tag) => handleSearch(tag)}
+              onNavigate={(destination) => {
+                setActiveNav(destination);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             />
 
             {/* Live Village Action Hub & Real-Time Pulse */}

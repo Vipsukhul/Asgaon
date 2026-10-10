@@ -4,6 +4,7 @@ import type { UserProfileData } from './ProfilePage';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { sendTestPushNotification } from '../services/pushNotifications';
 import { AdminLogsSection } from '../components/AdminLogsSection';
+import { AdminBannerManager } from '../components/AdminBannerManager';
 import {
   VILLAGE_CONTACTS,
   WATER_SCHEDULE,
@@ -47,7 +48,7 @@ interface AdminPageProps {
 
 export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmin, onExit, onLogout }) => {
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users' | 'logs'
+    'overview' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users' | 'logs' | 'banners'
   >('overview');
 
   // Dashboard Metrics
@@ -1334,6 +1335,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-[#e8e2d9] scrollbar-none">
         {[
           { id: 'overview', icon: 'analytics', label: 'आढावा (Overview)' },
+          { id: 'banners', icon: 'view_carousel', label: 'हिरो स्लायडर व बॅनर' },
           { id: 'events', icon: 'event', label: `कार्यक्रम व जत्रा (${events.length})` },
           { id: 'shiksha', icon: 'school', label: `शिक्षण व शाळा (${shikshaSchools.length})` },
           { id: 'transport', icon: 'directions_bus', label: `वाहतूक व बसेस (${transportBuses.length})` },
@@ -4963,6 +4965,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {/* TAB 14: AUDIT LOGS */}
       {activeTab === 'logs' && (
         <AdminLogsSection currentUser={currentUser} />
+      )}
+
+      {/* TAB 15: HERO BANNERS & SLIDER CAROUSEL */}
+      {activeTab === 'banners' && (
+        <AdminBannerManager />
       )}
     </div>
   );

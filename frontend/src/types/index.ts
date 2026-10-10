@@ -120,3 +120,20 @@ export interface VillageProject {
   targetDate: string;
 }
 
+export interface HeroSlide {
+  id: string;
+  type: 'welcome' | 'custom';
+  imageUrl?: string;
+  showTextOverlay: boolean;
+  titleMarathi?: string;
+  titleEnglish?: string;
+  subtitleMarathi?: string;
+  subtitleEnglish?: string;
+  badgeMarathi?: string;
+  badgeEnglish?: string;
+  ctaTextMarathi?: string;
+  ctaTextEnglish?: string;
+  ctaLink?: string;
+  isActive: boolean;
+  order: number;
+}
