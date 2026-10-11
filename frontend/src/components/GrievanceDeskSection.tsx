@@ -1,4 +1,6 @@
+import React from 'react';
 import type { Grievance } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface GrievanceDeskSectionProps {
   grievances: Grievance[];
@@ -11,6 +13,8 @@ export const GrievanceDeskSection: React.FC<GrievanceDeskSectionProps> = ({
   onOpenReportModal,
   onTrackComplaint
 }) => {
+  const { lang} = useLanguage();
+
   return (
     <section id="complaints" className="w-full mb-12 scroll-mt-28">
       {/* Header */}
@@ -18,10 +22,12 @@ export const GrievanceDeskSection: React.FC<GrievanceDeskSectionProps> = ({
         <div>
           <h2 className="font-heading font-extrabold text-[22px] text-[#003629] flex items-center gap-2">
             <span className="material-symbols-outlined text-[#a63b00]">report_problem</span>
-            <span>Public Grievance &amp; Ward Resolution Desk</span>
+            <span>{lang === 'MR' ? 'नागरी तक्रार निवारण व प्रभाग मंच' : 'Public Grievance & Ward Resolution Desk'}</span>
           </h2>
           <p className="text-[13px] text-[#404945]">
-            Track community issues in real-time. Notice boards are updated every 24 hours by the Gram Sevak Office.
+            {lang === 'MR'
+              ? 'गावपातळीवरील समस्यांची थेट स्थिती तपासा. २४ तासांत ग्रामसेवक कार्यालयाकडून अद्यतन केले जाते.'
+              : 'Track community issues in real-time. Notice boards are updated every 24 hours.'}
           </p>
         </div>
 
@@ -31,7 +37,7 @@ export const GrievanceDeskSection: React.FC<GrievanceDeskSectionProps> = ({
             onClick={onTrackComplaint}
             className="px-3.5 py-2 rounded-xl bg-white border border-[#e8e2d9] text-[#1d1b16] text-[13px] font-bold hover:bg-[#f3ede4] transition-colors"
           >
-            Track Status
+            {lang === 'MR' ? 'स्थिती तपासा' : 'Track Status'}
           </button>
           <button
             type="button"
@@ -39,7 +45,7 @@ export const GrievanceDeskSection: React.FC<GrievanceDeskSectionProps> = ({
             className="px-4 py-2 rounded-xl bg-[#a63b00] text-white text-[13px] font-bold hover:bg-[#852f00] transition-colors flex items-center gap-1.5 shadow-xs"
           >
             <span className="material-symbols-outlined text-[18px]">campaign</span>
-            <span>Report a Village Issue / समस्या नोंदवा</span>
+            <span>{lang === 'MR' ? 'समस्या / तक्रार नोंदवा' : 'Report a Village Issue'}</span>
           </button>
         </div>
       </div>
@@ -61,10 +67,10 @@ export const GrievanceDeskSection: React.FC<GrievanceDeskSectionProps> = ({
                       : 'bg-[#ffdad6] text-[#93000a]'
                   }`}
                 >
-                  {item.statusBadge}
+                  {item.status === 'RESOLVED' && lang === 'MR' ? 'निवारण झाले' : item.statusBadge}
                 </span>
                 <span className="text-[11px] font-mono font-bold text-[#707974] bg-[#f3ede4] px-2 py-0.5 rounded">
-                  Token: {item.trackingNumber}
+                  {lang === 'MR' ? 'टोकन:' : 'Token:'} {item.trackingNumber}
                 </span>
               </div>
 
@@ -81,7 +87,7 @@ export const GrievanceDeskSection: React.FC<GrievanceDeskSectionProps> = ({
 
             {/* Bottom Status Trail */}
             <div className="pt-3 border-t border-[#f3ede4] flex items-center justify-between text-[11px] text-[#707974]">
-              <span className="truncate">Reported: {item.reportedBy}</span>
+              <span className="truncate">{lang === 'MR' ? 'नोंदवणारे:' : 'Reported:'} {item.reportedBy}</span>
               <span
                 className={`font-bold ${
                   item.status === 'RESOLVED' ? 'text-[#003629]' : 'text-[#a63b00]'

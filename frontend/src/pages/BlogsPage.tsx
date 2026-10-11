@@ -4,6 +4,7 @@ import { SEOHead } from '../components/SEOHead';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { WriteBlogModal } from '../components/WriteBlogModal';
 import { api } from '../services/api';
+import { useLanguage } from '../context/LanguageContext';
 
 interface BlogsPageProps {
   onSelectBlogSlug: (slug: string) => void;
@@ -25,6 +26,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
   currentUser,
   onRequireLogin
 }) => {
+  const { lang } = useLanguage();
   const [posts, setPosts] = useState<BlogPost[]>(() => {
     const saved = localStorage.getItem('dg_village_blogs');
     if (saved) {
@@ -64,10 +66,10 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
               contentMarathi: b.contentMarathi || b.content_marathi || b.content || '',
               category: b.category || 'General',
               categoryMarathi: b.categoryMarathi || b.category_marathi || 'सामान्य / इतर',
-              author: b.author || 'आसगाव ग्रामस्थ',
+              author: b.author || (lang === 'MR' ? 'आसगाव ग्रामस्थ' : 'Asgaon Resident'),
               authorRole: b.authorRole || b.author_role || 'Contributor',
               authorRoleMarathi: b.authorRoleMarathi || b.author_role_marathi || 'स्थानिक नागरिक',
-              publishDate: b.publishDate || b.publish_date || 'ऑक्टोबर २०२६',
+              publishDate: b.publishDate || b.publish_date || (lang === 'MR' ? 'ऑक्टोबर २०२६' : 'October 2026'),
               publishDateISO: b.publishDateISO || b.publish_date_iso || new Date().toISOString(),
               readTimeMinutes: b.readTimeMinutes || b.read_time_minutes || 3,
               coverImage: b.coverImage || b.cover_image || 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80',
@@ -96,16 +98,16 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
       window.removeEventListener('dg_blogs_updated', fetchBlogs);
       window.removeEventListener('storage', fetchBlogs);
     };
-  }, []);
+  }, [lang]);
 
   const categories = [
-    { id: 'all', label: 'सर्व लेख (All Blogs)', count: posts.length },
-    { id: 'General', label: 'सामान्य / इतर', count: posts.filter((p) => p.category === 'General').length },
-    { id: 'Schemes', label: 'शासकीय योजना', count: posts.filter((p) => p.category === 'Schemes').length },
-    { id: 'Agriculture', label: 'कृषी व शेती', count: posts.filter((p) => p.category === 'Agriculture').length },
-    { id: 'Governance', label: 'प्रशासन व सेवा', count: posts.filter((p) => p.category === 'Governance').length },
-    { id: 'Education', label: 'शिक्षण व करिअर', count: posts.filter((p) => p.category === 'Education').length },
-    { id: 'Health', label: 'आरोग्य व पोषण', count: posts.filter((p) => p.category === 'Health').length }
+    { id: 'all', label: lang === 'MR' ? 'सर्व लेख' : 'All Blogs', count: posts.length },
+    { id: 'General', label: lang === 'MR' ? 'सामान्य / इतर' : 'General / Civic', count: posts.filter((p) => p.category === 'General').length },
+    { id: 'Schemes', label: lang === 'MR' ? 'शासकीय योजना' : 'Govt Schemes', count: posts.filter((p) => p.category === 'Schemes').length },
+    { id: 'Agriculture', label: lang === 'MR' ? 'कृषी व शेती' : 'Agriculture', count: posts.filter((p) => p.category === 'Agriculture').length },
+    { id: 'Governance', label: lang === 'MR' ? 'प्रशासन व सेवा' : 'Civic Services', count: posts.filter((p) => p.category === 'Governance').length },
+    { id: 'Education', label: lang === 'MR' ? 'शिक्षण व करिअर' : 'Education & Career', count: posts.filter((p) => p.category === 'Education').length },
+    { id: 'Health', label: lang === 'MR' ? 'आरोग्य व पोषण' : 'Health & Nutrition', count: posts.filter((p) => p.category === 'Health').length }
   ];
 
   const filteredPosts = useMemo(() => {
@@ -199,13 +201,13 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
       {/* 1. Breadcrumbs */}
       <Breadcrumb
         items={[
-          { label: 'Home', onClick: onNavigateHome },
-          { label: 'आसगाव माहिती लेख व ब्लॉग्स', active: true }
+          { label: lang === 'MR' ? 'मुख्यपृष्ठ' : 'Home', onClick: onNavigateHome },
+          { label: lang === 'MR' ? 'माहिती लेख व नागरिक ब्लॉग' : 'Village Blogs & Knowledge Hub', active: true }
         ]}
         rightBadge={
           <div className="flex items-center gap-1.5 bg-[#baeed9] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
             <span className="material-symbols-outlined text-[15px] text-[#002117]">verified</span>
-            <span>नागरिक व ग्राम अधिकृत व्यासपीठ</span>
+            <span>{lang === 'MR' ? 'नागरिक व ग्राम माहिती व्यासपीठ' : 'Civic Knowledge Platform'}</span>
           </div>
         }
       />
@@ -219,26 +221,28 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-[#baeed9] text-xs font-bold border border-white/10">
               <span className="material-symbols-outlined text-[15px]">auto_stories</span>
-              <span>नागरिक ज्ञानपीठ • Community Blog</span>
+              <span>{lang === 'MR' ? 'नागरिक ज्ञानपीठ • Community Blog' : 'COMMUNITY BLOG & KNOWLEDGE HUB'}</span>
             </div>
 
             <h1 className="font-heading font-extrabold text-[22px] sm:text-[28px] text-white leading-tight">
-              आसगाव माहिती लेख व नागरिक ब्लॉग्स
+              {lang === 'MR' ? 'आसगाव माहिती लेख व नागरिक ब्लॉग' : 'Asgaon Village Blogs & Knowledge Hub'}
             </h1>
 
             <p className="text-xs sm:text-[13px] text-[#d6eee4] leading-relaxed">
-              गावातील शेतकरी, युवक, महिला व ग्रामपंचायत प्रतिनिधी यांनी प्रत्यक्ष अनुभवातून लिहिलेले मार्गदर्शन, पीक सल्ले, शासकीय योजना आणि गाव विकासाचे विचार.
+              {lang === 'MR'
+                ? 'गावातील शेतकरी, युवक, महिला व प्रतिनिधी यांनी प्रत्यक्ष अनुभवातून लिहिलेले मार्गदर्शन, पीक सल्ले, शासकीय योजना आणि गाव विकासाचे विचार.'
+                : 'Guides, agricultural tips, government scheme walk-throughs, and community development thoughts written by Asgaon villagers, farmers, and youths.'}
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-[#baeed9] font-medium">
               <span className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-[16px]">menu_book</span>
-                <span>{posts.length} एकूण लेख</span>
+                <span>{posts.length} {lang === 'MR' ? 'एकूण लेख' : 'Total Articles'}</span>
               </span>
               <span>•</span>
               <span className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-[16px]">group</span>
-                <span>सर्व नागरिकांसाठी खुले व्यासपीठ</span>
+                <span>{lang === 'MR' ? 'सर्व नागरिकांसाठी खुले व्यासपीठ' : 'Open platform for all citizens'}</span>
               </span>
             </div>
           </div>
@@ -250,7 +254,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
               className="px-6 py-3.5 rounded-2xl bg-[#baeed9] hover:bg-[#a0e4c8] text-[#002117] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5"
             >
               <span className="material-symbols-outlined text-[20px]">edit_note</span>
-              <span>नवीन लेख लिहा (Write Blog)</span>
+              <span>{lang === 'MR' ? 'नवीन लेख लिहा (Write Blog)' : 'Write New Article'}</span>
             </button>
           </div>
         </div>
@@ -265,7 +269,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
           <div className="lg:w-1/2 rounded-2xl overflow-hidden bg-stone-100 max-h-[280px] w-full">
             <img
               src={featuredPost.coverImage}
-              alt={featuredPost.titleMarathi}
+              alt={lang === 'MR' ? (featuredPost.titleMarathi || featuredPost.title) : featuredPost.title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
           </div>
@@ -274,25 +278,28 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-2.5 py-0.5 rounded-full bg-[#003629] text-[#baeed9] text-[10px] font-black uppercase">
-                  ठळक लेख • Featured Spotlight
+                  {lang === 'MR' ? 'ठळक लेख • Featured Spotlight' : 'Featured Spotlight'}
                 </span>
                 <span className="text-xs text-[#707974] font-medium">{featuredPost.publishDate}</span>
                 <span className="text-xs text-[#707974]">•</span>
-                <span className="text-xs text-[#707974] font-medium">{featuredPost.readTimeMinutes} मि. वाचन</span>
+                <span className="text-xs text-[#707974] font-medium">
+                  {featuredPost.readTimeMinutes} {lang === 'MR' ? 'मि. वाचन' : 'min read'}
+                </span>
               </div>
 
               <h2 className="font-heading font-extrabold text-[20px] sm:text-[24px] text-[#003629] leading-tight group-hover:text-[#a63b00] transition-colors">
-                {featuredPost.titleMarathi}
+                {lang === 'MR' ? (featuredPost.titleMarathi || featuredPost.title) : featuredPost.title}
               </h2>
 
               <p className="text-xs sm:text-sm text-[#404945] mt-2 leading-relaxed line-clamp-3">
-                {featuredPost.excerptMarathi}
+                {lang === 'MR' ? (featuredPost.excerptMarathi || featuredPost.excerpt) : featuredPost.excerpt}
               </p>
             </div>
 
             <div className="flex items-center justify-between pt-3 border-t border-[#f0eee8]">
               <div className="text-xs text-[#707974]">
-                लेखक: <strong className="text-[#1d1b16]">{featuredPost.author}</strong>
+                {lang === 'MR' ? 'लेखक: ' : 'Author: '}
+                <strong className="text-[#1d1b16]">{featuredPost.author}</strong>
               </div>
 
               <div className="flex items-center gap-2">
@@ -301,10 +308,10 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                   className="px-3 py-1.5 rounded-xl bg-[#e6f7f0] hover:bg-[#d0f0e3] text-[#006a4e] text-xs font-bold transition-all border border-[#b8ebd5] flex items-center gap-1"
                 >
                   <span className="material-symbols-outlined text-[16px]">share</span>
-                  <span>शेअर</span>
+                  <span>{lang === 'MR' ? 'शेअर' : 'Share'}</span>
                 </button>
                 <span className="px-4 py-1.5 rounded-xl bg-[#003629] text-[#baeed9] group-hover:bg-[#00261d] text-xs font-bold flex items-center gap-1 transition-colors">
-                  <span>वाचा</span>
+                  <span>{lang === 'MR' ? 'वाचा' : 'Read'}</span>
                   <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                 </span>
               </div>
@@ -322,7 +329,11 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="शोध: शीर्षक, योजना, पीक किंवा लेखक (उदा. घरकुल, सातबारा, एसटी, कापूस)..."
+              placeholder={
+                lang === 'MR'
+                  ? 'शोध: शीर्षक, योजना, पीक किंवा लेखक (उदा. घरकुल, सातबारा, एसटी, कापूस)...'
+                  : 'Search: title, scheme, crop or author (e.g. Gharkul, 7/12, ST, Cotton)...'
+              }
               className="w-full pl-10 pr-10 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
             />
             {searchQuery && (
@@ -331,7 +342,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                 onClick={() => setSearchQuery('')}
                 className="absolute right-3 top-2.5 text-xs text-[#707974] hover:text-[#1d1b16]"
               >
-                Clear
+                {lang === 'MR' ? 'साफ करा' : 'Clear'}
               </button>
             )}
           </div>
@@ -339,23 +350,25 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
           <div className="flex items-center gap-2 w-full md:w-auto shrink-0">
             <span className="text-[12px] font-bold text-[#707974] flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px]">sort</span>
-              <span>Sort By:</span>
+              <span>{lang === 'MR' ? 'क्रमवारी:' : 'Sort By:'}</span>
             </span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
               className="bg-[#f9f3ea] text-[#1d1b16] p-2 rounded-xl text-[12px] font-bold border border-[#e8e2d9] focus:outline-none"
             >
-              <option value="latest">नवीनतम लेख (Latest First)</option>
-              <option value="popular">सर्वाधिक पसंती (Most Liked)</option>
-              <option value="views">सर्वाधिक वाचलेले (Most Viewed)</option>
+              <option value="latest">{lang === 'MR' ? 'नवीनतम लेख (Latest First)' : 'Latest First'}</option>
+              <option value="popular">{lang === 'MR' ? 'सर्वाधिक पसंती (Most Liked)' : 'Most Liked'}</option>
+              <option value="views">{lang === 'MR' ? 'सर्वाधिक वाचलेले (Most Viewed)' : 'Most Viewed'}</option>
             </select>
           </div>
         </div>
 
         {/* Category Pills */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 border-t border-[#f0eee8]">
-          <span className="text-xs font-bold text-[#707974] whitespace-nowrap mr-1">विभाग:</span>
+          <span className="text-xs font-bold text-[#707974] whitespace-nowrap mr-1">
+            {lang === 'MR' ? 'विभाग:' : 'Category:'}
+          </span>
           {categories.map((cat) => (
             <button
               key={cat.id}
@@ -376,9 +389,13 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
       {filteredPosts.length === 0 ? (
         <div className="bg-white rounded-3xl p-12 text-center border border-[#e8e2d9] shadow-xs">
           <span className="material-symbols-outlined text-[48px] text-[#707974] mb-3 block">menu_book</span>
-          <h3 className="font-heading font-extrabold text-lg text-[#1d1b16]">कोणताही लेख आढळला नाही</h3>
+          <h3 className="font-heading font-extrabold text-lg text-[#1d1b16]">
+            {lang === 'MR' ? 'कोणताही लेख आढळला नाही' : 'No articles found'}
+          </h3>
           <p className="text-xs text-[#707974] mt-1">
-            शोध शब्द बदला किंवा सर्व विभाग निवडून पुन्हा प्रयत्न करा.
+            {lang === 'MR'
+              ? 'शोध शब्द बदला किंवा सर्व विभाग निवडून पुन्हा प्रयत्न करा.'
+              : 'Try changing search keywords or select all categories.'}
           </p>
           <button
             onClick={() => {
@@ -387,7 +404,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
             }}
             className="mt-4 px-4 py-2 rounded-xl bg-[#003629] text-white text-xs font-bold"
           >
-            सर्व लेख दाखवा
+            {lang === 'MR' ? 'सर्व लेख दाखवा' : 'Show All Blogs'}
           </button>
         </div>
       ) : (
@@ -403,13 +420,13 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                 <div className="relative h-48 w-full overflow-hidden bg-stone-100">
                   <img
                     src={post.coverImage}
-                    alt={post.titleMarathi}
+                    alt={lang === 'MR' ? (post.titleMarathi || post.title) : post.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
                   <div className="absolute top-3 left-3 flex items-center gap-1.5">
                     <span className="px-2.5 py-0.5 rounded-md bg-[#003629]/95 text-[#baeed9] text-[11px] font-bold shadow-sm">
-                      {post.categoryMarathi}
+                      {lang === 'MR' ? (post.categoryMarathi || post.category) : post.category}
                     </span>
                     <span className="px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-[#baeed9] text-[10px] font-mono font-bold shadow-sm">
                       #{post.id}
@@ -417,7 +434,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                   </div>
                   <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-xs text-white text-[11px] px-2 py-0.5 rounded-md font-mono flex items-center gap-1">
                     <span className="material-symbols-outlined text-[13px]">schedule</span>
-                    <span>{post.readTimeMinutes} मि.</span>
+                    <span>{post.readTimeMinutes} {lang === 'MR' ? 'मि.' : 'min'}</span>
                   </div>
                 </div>
 
@@ -445,15 +462,15 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                     }}
                     className="block font-heading font-extrabold text-[16px] text-[#003629] group-hover:text-[#a63b00] leading-snug line-clamp-2 mb-2 transition-colors"
                   >
-                    {post.titleMarathi}
+                    {lang === 'MR' ? (post.titleMarathi || post.title) : post.title}
                   </a>
 
                   <p className="text-xs text-[#404945] leading-relaxed line-clamp-2 mb-3">
-                    {post.excerptMarathi}
+                    {lang === 'MR' ? (post.excerptMarathi || post.excerpt) : post.excerpt}
                   </p>
 
                   <div className="flex flex-wrap gap-1">
-                    {(post.tagsMarathi || []).slice(0, 2).map((t, idx) => (
+                    {((lang === 'MR' ? post.tagsMarathi : post.tags) || post.tagsMarathi || []).slice(0, 2).map((t, idx) => (
                       <span key={idx} className="text-[10px] px-2 py-0.5 rounded bg-[#f4efe8] text-[#555]">
                         #{t}
                       </span>
@@ -465,14 +482,15 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
               {/* Card Footer */}
               <div className="px-5 pb-5 pt-3 border-t border-[#f0eee8] flex items-center justify-between gap-2">
                 <div className="text-[11px] text-[#707974] truncate">
-                  लेखक: <strong className="text-[#1d1b16]">{post.author}</strong>
+                  {lang === 'MR' ? 'लेखक: ' : 'Author: '}
+                  <strong className="text-[#1d1b16]">{post.author}</strong>
                 </div>
 
                 <div className="flex items-center gap-1.5 shrink-0">
                   <button
                     onClick={(e) => handleShare(e, post)}
                     className="p-1.5 rounded-lg bg-[#e6f7f0] text-[#006a4e] hover:bg-[#d0f0e3] transition-colors"
-                    title="WhatsApp वर पाठवा"
+                    title={lang === 'MR' ? 'WhatsApp वर पाठवा' : 'Share on WhatsApp'}
                   >
                     <span className="material-symbols-outlined text-[16px]">share</span>
                   </button>

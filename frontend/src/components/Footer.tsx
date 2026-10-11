@@ -1,10 +1,13 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FooterProps {
   onNavigate?: (nav: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const { lang} = useLanguage();
+
   const handleNav = (nav: string, e?: React.MouseEvent) => {
     if (e) e.preventDefault();
     if (onNavigate) {
@@ -27,7 +30,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <span className="material-symbols-outlined text-[18px] text-[#ff7043] animate-pulse">
               emergency
             </span>
-            <span>२४x७ तातडीचे आपत्कालीन संपर्क (24x7 Emergency Helplines):</span>
+            <span>{lang === 'MR' ? '२४x७ तातडीचे आपत्कालीन संपर्क (Emergency Speed-Dial):' : '24x7 Emergency Helplines & Speed-Dial:'}</span>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-2 font-mono">
@@ -85,39 +88,41 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <div className="flex items-center gap-3.5">
               <img
                 src="/asgaon-logo.png"
-                alt="Asgaon Gram Panchayat Seal"
+                alt="Asgaon Village Civic Seal"
                 className="h-14 w-14 rounded-full border-2 border-[#baeed9] shrink-0 object-cover shadow-md ring-2 ring-white/10"
               />
               <div>
                 <h3 className="font-heading font-black text-lg text-white tracking-wide">
-                  आसगाव डिजिटल ग्राम मंच
+                  {lang === 'MR' ? 'आसगाव डिजिटल ग्राम मंच' : 'Asgaon Digital Civic Portal'}
                 </h3>
                 <p className="text-[12px] text-[#baeed9] font-medium">
-                  Asgaon Gram Panchayat (ता. पवनी, जि. भंडारा)
+                  {lang === 'MR' ? 'आसगाव स्वतंत्र नागरिक व ज्ञानपीठ मंच (ता. पवनी, जि. भंडारा)' : 'Independent Village Civic & Information Hub (Pauni, Bhandara)'}
                 </p>
                 <p className="text-[11px] text-[#7ea597] font-mono">
-                  पिन कोड: ४४१ ९१० • नोंदणी: GP-10928/MH
+                  {lang === 'MR' ? 'पिन कोड: ४४१ ९१० • महाराष्ट्र' : 'PIN: 441910 • Maharashtra'}
                 </p>
               </div>
             </div>
 
             <p className="text-xs sm:text-[13px] text-[#a9c9bd] leading-relaxed">
-              गावातील शेतकरी, महिला, युवक व नागरिकांसाठी शासकीय योजनांची पारदर्शक माहिती, चालू बाजारभाव, पीक सल्ले, स्थानिक दुकाने आणि नागरिक सेवा एकाच ठिकाणी उपलब्ध करून देणारा स्वतंत्र डिजिटल मंच.
+              {lang === 'MR'
+                ? 'गावातील शेतकरी, महिला, युवक व नागरिकांसाठी शासकीय योजनांची पारदर्शक माहिती, चालू बाजारभाव, पीक सल्ले, स्थानिक दुकाने आणि नागरिक सेवा एकाच ठिकाणी उपलब्ध करून देणारा स्वतंत्र डिजिटल मंच.'
+                : 'Independent, transparent digital civic platform providing Asgaon farmers, women, students, and citizens with verified welfare schemes, live mandi benchmarks, bus timings, local businesses, and public services.'}
             </p>
 
             {/* Quick Civic Badges */}
             <div className="flex flex-wrap gap-2 pt-1 text-[11px]">
               <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[#baeed9] flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[15px]">location_on</span>
-                <span>प्रभाग १, २ व ३ (गावठाण)</span>
+                <span>{lang === 'MR' ? 'प्रभाग १, २ व ३ (गावठाण)' : 'Wards 1, 2 & 3 (Gaothan)'}</span>
               </span>
               <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[#baeed9] flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[15px]">schedule</span>
-                <span>सोम - शनि (१०:०० ते १७:३०)</span>
+                <span>{lang === 'MR' ? 'सोम - शनि (१०:०० ते १७:३०)' : 'Mon - Sat (10:00 AM - 5:30 PM)'}</span>
               </span>
               <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[#baeed9] flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[15px]">account_balance</span>
-                <span>१५ वा वित्त आयोग पारदर्शकता</span>
+                <span>{lang === 'MR' ? '१५ वा वित्त आयोग पारदर्शकता' : '15th Finance Commission Transparency'}</span>
               </span>
             </div>
           </div>
@@ -126,7 +131,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="space-y-3">
             <h4 className="font-heading font-bold text-[13px] uppercase tracking-wider text-white border-b border-[#00382b] pb-2 flex items-center gap-1.5">
               <span className="material-symbols-outlined text-[16px] text-[#baeed9]">policy</span>
-              <span>नागरिक सेवा व योजना</span>
+              <span>{lang === 'MR' ? 'नागरिक सेवा व योजना' : 'Civic Welfare & Schemes'}</span>
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
@@ -136,7 +141,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>शासकीय योजना दालन (Schemes)</span>
+                  <span>{lang === 'MR' ? 'शासकीय योजना दालन (Schemes)' : 'Govt Schemes Portal'}</span>
                 </a>
               </li>
               <li>
@@ -146,7 +151,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>घरकुल आवास योजना (PMAY/Ramai)</span>
+                  <span>{lang === 'MR' ? 'घरकुल आवास योजना (PMAY/Ramai)' : 'Gharkul Housing Grants'}</span>
                 </a>
               </li>
               <li>
@@ -156,7 +161,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>लाडकी बहीण योजना स्टेटस</span>
+                  <span>{lang === 'MR' ? 'लाडकी बहीण योजना स्टेटस' : 'Ladki Bahin Status & Guide'}</span>
                 </a>
               </li>
               <li>
@@ -166,7 +171,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>पीएम किसान व नमो शेतकरी</span>
+                  <span>{lang === 'MR' ? 'पीएम किसान व नमो शेतकरी' : 'PM-Kisan & Namo Shetkari'}</span>
                 </a>
               </li>
               <li>
@@ -176,7 +181,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>ग्रामसभा ठराव व जाहीर सूचना</span>
+                  <span>{lang === 'MR' ? 'ग्रामसभा ठराव व जाहीर सूचना' : 'Gram Sabha & Village Notices'}</span>
                 </a>
               </li>
             </ul>
@@ -186,7 +191,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="space-y-3">
             <h4 className="font-heading font-bold text-[13px] uppercase tracking-wider text-white border-b border-[#00382b] pb-2 flex items-center gap-1.5">
               <span className="material-symbols-outlined text-[16px] text-[#baeed9]">storefront</span>
-              <span>शेती, व्यवसाय व रोजगार</span>
+              <span>{lang === 'MR' ? 'शेती, व्यवसाय व रोजगार' : 'Agri, Business & Jobs'}</span>
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
@@ -196,7 +201,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>थेट बाजारभाव व कृषी सल्ला (Krishi)</span>
+                  <span>{lang === 'MR' ? 'थेट बाजारभाव व कृषी सल्ला (Krishi)' : 'Live Mandi Rates & Advisory'}</span>
                 </a>
               </li>
               <li>
@@ -206,7 +211,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>स्थानिक दुकाने व सेवा सूची (Directory)</span>
+                  <span>{lang === 'MR' ? 'स्थानिक दुकाने व सेवा सूची (Directory)' : 'Local Business Directory'}</span>
                 </a>
               </li>
               <li>
@@ -216,7 +221,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>गावचा रोजगार व नोकऱ्या (Jobs Board)</span>
+                  <span>{lang === 'MR' ? 'गावचा रोजगार व नोकऱ्या (Jobs Board)' : 'Village Jobs Board'}</span>
                 </a>
               </li>
               <li>
@@ -226,7 +231,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>आठवडी बाजार व खरेदी-विक्री (Market)</span>
+                  <span>{lang === 'MR' ? 'आठवडी बाजार व खरेदी-विक्री (Market)' : 'Weekly Haat & Marketplace'}</span>
                 </a>
               </li>
               <li>
@@ -236,7 +241,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>पवनी-भंडारा एसटी बस वेळापत्रक</span>
+                  <span>{lang === 'MR' ? 'पवनी-भंडारा एसटी बस वेळापत्रक' : 'MSRTC Bus Schedules'}</span>
                 </a>
               </li>
             </ul>
@@ -246,7 +251,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="space-y-3">
             <h4 className="font-heading font-bold text-[13px] uppercase tracking-wider text-white border-b border-[#00382b] pb-2 flex items-center gap-1.5">
               <span className="material-symbols-outlined text-[16px] text-[#baeed9]">menu_book</span>
-              <span>ज्ञानपीठ व शिक्षण</span>
+              <span>{lang === 'MR' ? 'ज्ञानपीठ व शिक्षण' : 'Education & Knowledge'}</span>
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
@@ -256,7 +261,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>माहिती लेख व नागरिक ब्लॉग्स (Blogs)</span>
+                  <span>{lang === 'MR' ? 'माहिती लेख व नागरिक ब्लॉग्स (Blogs)' : 'Village Articles & Guides'}</span>
                 </a>
               </li>
               <li>
@@ -266,7 +271,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all font-bold text-[#baeed9]"
                 >
                   <span className="material-symbols-outlined text-[14px]">edit_note</span>
-                  <span>नवीन लेख लिहा (Write Blog)</span>
+                  <span>{lang === 'MR' ? 'नवीन लेख लिहा (Write Blog)' : 'Write Community Article'}</span>
                 </a>
               </li>
               <li>
@@ -276,7 +281,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>शाळा, वसतिगृह व अभ्यासिका (Education)</span>
+                  <span>{lang === 'MR' ? 'शाळा, वसतिगृह व अभ्यासिका (Education)' : 'Schools, Hostels & Library'}</span>
                 </a>
               </li>
               <li>
@@ -286,7 +291,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>गावचे सण, उत्सव व क्रीडा स्पर्धा</span>
+                  <span>{lang === 'MR' ? 'गावचे सण, उत्सव व क्रीडा स्पर्धा' : 'Festivals & Village Events'}</span>
                 </a>
               </li>
               <li>
@@ -296,7 +301,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#ffb4ab] font-bold"
                 >
                   <span className="material-symbols-outlined text-[14px]">call</span>
-                  <span>सर्व आपत्कालीन संपर्क (Directory)</span>
+                  <span>{lang === 'MR' ? 'सर्व आपत्कालीन संपर्क (Directory)' : 'All Emergency Helplines'}</span>
                 </a>
               </li>
             </ul>
@@ -310,26 +315,26 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4">
             <span className="flex items-center gap-1">
               <span className="material-symbols-outlined text-[15px] text-[#baeed9]">verified</span>
-              <span>डिजिटल ग्रामपंचायत संकल्पना</span>
+              <span>{lang === 'MR' ? 'डिजिटल ग्राम माहिती मंच' : 'Digital Village Civic Portal'}</span>
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
               <span className="material-symbols-outlined text-[15px] text-[#baeed9]">lock</span>
-              <span>१००% सुरक्षित व जाहिरातमुक्त नागरिक व्यासपीठ</span>
+              <span>{lang === 'MR' ? '१००% सुरक्षित व जाहिरातमुक्त नागरिक व्यासपीठ' : '100% Secure & Ad-Free Citizen Platform'}</span>
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
               <span className="material-symbols-outlined text-[15px] text-[#baeed9]">smart_toy</span>
-              <span>AI शोध व क्रॉलर्स अनुपालन (Robots.txt)</span>
+              <span>{lang === 'MR' ? 'AI शोध व क्रॉलर्स अनुपालन (Robots.txt)' : 'AI & Crawler Compliant'}</span>
             </span>
           </div>
 
           <button
             onClick={scrollToTop}
             className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold text-[11px] border border-white/10 transition-colors shrink-0"
-            title="पानाच्या वर जा"
+            title={lang === 'MR' ? "पानाच्या वर जा" : "Scroll to Top"}
           >
-            <span>वर जा (Top)</span>
+            <span>{lang === 'MR' ? 'वर जा (Top)' : 'Top'}</span>
             <span className="material-symbols-outlined text-[15px]">arrow_upward</span>
           </button>
         </div>
@@ -339,10 +344,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       <div className="bg-[#00100c] py-4 px-4 sm:px-6 lg:px-8 border-t border-[#002419]">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-[#6d9182] text-center sm:text-left">
           <div>
-            © २०२६ आसगाव डिजिटल ग्राम मंच. सर्व हक्क सुरक्षित. (Asgaon Gram Panchayat, Pauni, Bhandara - PIN 441910)
+            {lang === 'MR'
+              ? '© २०२६ आसगाव डिजिटल ग्राम मंच. सर्व हक्क सुरक्षित. (आसगाव, ता. पवनी, जि. भंडारा - पिन ४४१९१०)'
+              : '© 2026 Asgaon Village Civic Portal. All Rights Reserved. (Asgaon, Tal. Pauni, Dist. Bhandara - PIN 441910)'}
           </div>
           <div className="text-[10px] text-[#557568]">
-            महाराष्ट्र शासन ग्राम विकास विभाग मार्गदर्शक तत्त्वांवर आधारित नागरिक ज्ञानपीठ मंच
+            {lang === 'MR'
+              ? 'नागरिकांच्या जनजागृती, पारदर्शकता व माहितीसाठी संचलित स्वतंत्र मंच'
+              : 'Independent community platform operated for citizen transparency & awareness'}
           </div>
         </div>
       </div>

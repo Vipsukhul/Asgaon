@@ -1,4 +1,6 @@
+import React from 'react';
 import type { Business } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FeaturedEnterprisesProps {
   businesses: Business[];
@@ -11,6 +13,8 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
   onRegisterShop,
   onSelectBusiness
 }) => {
+  const { lang  } = useLanguage();
+
   return (
     <section id="businesses" className="w-full mb-12 scroll-mt-28">
       {/* Header with Title and Free Listing CTA */}
@@ -18,10 +22,12 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
         <div>
           <h2 className="font-heading font-extrabold text-[22px] text-[#003629] flex items-center gap-2">
             <span className="material-symbols-outlined text-[#a63b00]">storefront</span>
-            <span>Featured Village Enterprises</span>
+            <span>{lang === 'MR' ? 'स्थानिक वैशिष्ट्यपूर्ण दुकाने व व्यवसाय' : 'Featured Village Enterprises'}</span>
           </h2>
           <p className="text-[13px] text-[#404945]">
-            Asgaon&apos;s trusted rural economy • Verified by Gram Panchayat Ward Officers
+            {lang === 'MR'
+              ? 'आसगावची ग्रामीण अर्थव्यवस्था • स्थानिक प्रभाग पडताळणीकृत दुकाने व व्यावसायिक'
+              : "Asgaon's trusted rural economy • Verified by Ward Officers"}
           </p>
         </div>
 
@@ -31,7 +37,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
           className="px-4 py-2 rounded-xl bg-[#a63b00] text-white text-[13px] font-bold hover:bg-[#852f00] transition-colors flex items-center gap-1.5 shadow-xs"
         >
           <span className="material-symbols-outlined text-[18px]">add_business</span>
-          <span>List Your Shop Free (आपला व्यापार)</span>
+          <span>{lang === 'MR' ? 'मोफत दुकान नोंदवा (आपला व्यापार)' : 'List Your Shop Free (आपला व्यापार)'}</span>
         </button>
       </div>
 
@@ -58,17 +64,17 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
                 className="absolute bottom-2.5 left-2.5 bg-black/75 hover:bg-[#003629] backdrop-blur-xs text-white text-[11px] font-medium px-2.5 py-1 rounded-md flex items-center gap-1 transition-colors border border-white/20"
-                title="नकाशावर ठिकाण पहा (View on Map / Directions)"
+                title={lang === 'MR' ? 'नकाशावर ठिकाण पहा' : 'View on Map / Directions'}
               >
                 <span className="material-symbols-outlined text-[13px] text-[#ff793f]">location_on</span>
-                <span>{biz.landmark} • नकाशा ↗</span>
+                <span>{biz.landmark} • {lang === 'MR' ? 'नकाशा ↗' : 'Map ↗'}</span>
               </a>
 
               {/* Verification badge pill */}
               {biz.isVerified && (
                 <div className="absolute top-2.5 right-2.5 bg-[#baeed9] text-[#002117] text-[10px] font-extrabold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs">
                   <span className="material-symbols-outlined text-[12px] text-[#002117]">verified</span>
-                  <span>{biz.verificationBadge}</span>
+                  <span>{lang === 'MR' && biz.verificationBadge === 'VERIFIED MERCHANT' ? 'प्रमाणित व्यावसायिक' : (biz.verificationBadge || 'VERIFIED')}</span>
                 </div>
               )}
             </div>
@@ -101,7 +107,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
                   className="flex-1 flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-[#f3ede4] text-[#1d1b16] hover:bg-[#e8e2d9] transition-colors text-[12px] font-bold border border-[#e8e2d9]"
                 >
                   <span className="material-symbols-outlined text-[15px] text-[#003629]">call</span>
-                  <span>Call</span>
+                  <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
                 </a>
                 <a
                   href={`https://wa.me/91${biz.whatsapp}?text=Hello%20${encodeURIComponent(biz.name)},%20I%20saw%20your%20listing%20on%20Digital%20Gaon%20Asgaon.`}
@@ -110,14 +116,14 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
                   className="flex-1 flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-[#003629] text-white hover:bg-[#1b4d3e] transition-colors text-[12px] font-bold shadow-xs"
                 >
                   <span className="material-symbols-outlined text-[15px] text-[#baeed9]">chat</span>
-                  <span>WhatsApp</span>
+                  <span>{lang === 'MR' ? 'व्हॉट्सॲप' : 'WhatsApp'}</span>
                 </a>
                 <a
                   href={`https://www.google.com/maps/dir/?api=1&destination=${biz.latitude || 20.7850},${biz.longitude || 79.6350}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 rounded-lg bg-[#fff8f0] text-[#a63b00] hover:bg-[#a63b00] hover:text-white transition-colors border border-[#ffdbce]"
-                  title="Google Maps वर ठिकाण पहा (View on Map)"
+                  title={lang === 'MR' ? 'Google Maps वर ठिकाण पहा' : 'View on Map'}
                 >
                   <span className="material-symbols-outlined text-[17px]">location_on</span>
                 </a>

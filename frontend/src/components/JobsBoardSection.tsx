@@ -1,4 +1,6 @@
+import React from 'react';
 import type { Job } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface JobsBoardSectionProps {
   jobs: Job[];
@@ -7,6 +9,8 @@ interface JobsBoardSectionProps {
 }
 
 export const JobsBoardSection: React.FC<JobsBoardSectionProps> = ({ jobs, onPostJob, onApplyJob }) => {
+  const { lang } = useLanguage();
+
   return (
     <section id="jobs" className="w-full mb-12 scroll-mt-28">
       {/* Header */}
@@ -14,10 +18,12 @@ export const JobsBoardSection: React.FC<JobsBoardSectionProps> = ({ jobs, onPost
         <div>
           <h2 className="font-heading font-extrabold text-[22px] text-[#003629] flex items-center gap-2">
             <span className="material-symbols-outlined text-[#a63b00]">work</span>
-            <span>Gramin Rojgar Manch • Village Jobs Board</span>
+            <span>{lang === 'MR' ? 'ग्रामीण रोजगार मंच • स्थानिक काम व नोकऱ्या' : 'Gramin Rojgar Manch • Village Jobs Board'}</span>
           </h2>
           <p className="text-[13px] text-[#404945]">
-            Verified wages &amp; direct employer phone. Zero brokerage or middleman fees.
+            {lang === 'MR'
+              ? 'प्रमाणित मजुरी आणि थेट मालकाचा फोन क्रमांक. शून्य दलाली किंवा कमिशन.'
+              : 'Verified wages & direct employer phone. Zero brokerage or middleman fees.'}
           </p>
         </div>
 
@@ -27,7 +33,7 @@ export const JobsBoardSection: React.FC<JobsBoardSectionProps> = ({ jobs, onPost
           className="px-4 py-2 rounded-xl bg-white text-[#003629] border border-[#003629] text-[13px] font-bold hover:bg-[#003629] hover:text-white transition-colors flex items-center gap-1.5 shadow-xs"
         >
           <span className="material-symbols-outlined text-[18px]">post_add</span>
-          <span>Post Free Job Vacancy</span>
+          <span>{lang === 'MR' ? 'मोफत कामगार / नोकरी जाहिरात टाका' : 'Post Free Job Vacancy'}</span>
         </button>
       </div>
 
@@ -60,7 +66,7 @@ export const JobsBoardSection: React.FC<JobsBoardSectionProps> = ({ jobs, onPost
 
               {/* Compensation Box */}
               <div className="bg-[#f9f3ea] p-2.5 rounded-xl border border-[#e8e2d9] mb-3 flex items-center justify-between">
-                <span className="text-[11px] font-bold text-[#404945]">Compensation</span>
+                <span className="text-[11px] font-bold text-[#404945]">{lang === 'MR' ? 'वेतन / मोबदला' : 'Compensation'}</span>
                 <span className="font-heading font-extrabold text-[15px] text-[#003629]">
                   {job.salaryRange}
                 </span>
@@ -76,7 +82,7 @@ export const JobsBoardSection: React.FC<JobsBoardSectionProps> = ({ jobs, onPost
             <div className="mt-5 pt-3 border-t border-[#f3ede4] flex items-center justify-between gap-2">
               <span className="text-[11px] font-bold text-[#707974] flex items-center gap-1">
                 <span className="material-symbols-outlined text-[14px] text-[#376757]">verified</span>
-                <span>Direct Employer</span>
+                <span>{lang === 'MR' ? 'थेट मालक' : 'Direct Employer'}</span>
               </span>
 
               <div className="flex items-center gap-2">
@@ -85,14 +91,14 @@ export const JobsBoardSection: React.FC<JobsBoardSectionProps> = ({ jobs, onPost
                   className="px-3 py-1.5 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[12px] font-bold transition-colors flex items-center gap-1 border border-[#e8e2d9]"
                 >
                   <span className="material-symbols-outlined text-[14px] text-[#003629]">call</span>
-                  <span>Call</span>
+                  <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
                 </a>
                 <button
                   type="button"
                   onClick={() => onApplyJob(job)}
                   className="px-3 py-1.5 rounded-lg bg-[#003629] text-white hover:bg-[#1b4d3e] text-[12px] font-bold transition-colors flex items-center gap-1 shadow-xs"
                 >
-                  <span>Apply Now</span>
+                  <span>{lang === 'MR' ? 'अर्ज करा' : 'Apply Now'}</span>
                   <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                 </button>
               </div>

@@ -1,4 +1,6 @@
+import React from 'react';
 import type { MandiPrice } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface LiveMandiTickerProps {
   prices: MandiPrice[];
@@ -6,27 +8,29 @@ interface LiveMandiTickerProps {
 }
 
 export const LiveMandiTicker: React.FC<LiveMandiTickerProps> = ({ prices, onViewAllMandi }) => {
+  const { lang } = useLanguage();
+
   return (
     <section className="w-full bg-[#f9f3ea] rounded-2xl p-4 sm:p-5 shadow-xs mb-10 border border-[#e8e2d9]">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-1">
         <div className="flex items-center gap-2">
           <span className="material-symbols-outlined text-[#003629] text-[20px]">trending_up</span>
           <span className="font-heading font-extrabold text-[15px] text-[#003629]">
-            LIVE MANDI BHAAV (पुणे - हवेली बाजार समिती दर)
+            {lang === 'MR' ? 'थेट बाजारभाव (पवनी व भंडारा कृषी उत्पन्न बाजार)' : 'LIVE MANDI BHAAV (Pauni & Bhandara APMC)'}
           </span>
           <span className="text-[12px] text-[#707974] hidden md:inline">
-            • Updated Today, 6:30 AM
+            {lang === 'MR' ? '• आज सकाळी ०६:३० वा. अद्ययावत' : '• Updated Today, 6:30 AM'}
           </span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-[11px] text-[#707974] hidden lg:inline">
-            Official APMC Weights • Rates per Quintal (100 kg)
+            {lang === 'MR' ? 'अधिकृत बाजार समिती दर • प्रति क्विंटल (१०० किलो)' : 'Official APMC Rates • Per Quintal (100 kg)'}
           </span>
           <button
             onClick={onViewAllMandi}
             className="text-[12px] text-[#a63b00] font-bold hover:underline flex items-center"
           >
-            <span>Full APMC Sheet</span>
+            <span>{lang === 'MR' ? 'संपूर्ण बाजारभाव पत्रक' : 'Full APMC Sheet'}</span>
             <span className="material-symbols-outlined text-[16px]">chevron_right</span>
           </button>
         </div>

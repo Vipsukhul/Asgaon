@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { Breadcrumb } from '../components/Breadcrumb';
+import { useLanguage } from '../context/LanguageContext';
 
 interface AnnouncementsPageProps {
   announcements?: any[];
@@ -8,6 +9,7 @@ interface AnnouncementsPageProps {
 }
 
 export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announcements: initialAnnouncements, onNavigateHome }) => {
+  const { lang } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<'all' | 'resolutions' | 'urgent' | 'tenders' | 'health'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,13 +49,21 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
     try {
       const comp = await api.trackComplaint(verifyNoticeId.trim());
       if (comp) {
-        setVerifyStatus(`FOUND: Record [${comp.trackingNumber}] - ${comp.title}. Status: ${comp.status}. Ward: ${comp.wardOrArea}.`);
+        setVerifyStatus(
+          lang === 'MR'
+            ? `नोंद सापडली: [${comp.trackingNumber}] - ${comp.title}. स्थिती: ${comp.status}. प्रभाग: ${comp.wardOrArea}.`
+            : `FOUND: Record [${comp.trackingNumber}] - ${comp.title}. Status: ${comp.status}. Ward: ${comp.wardOrArea}.`
+        );
         return;
       }
     } catch {
       // fallback
     }
-    setVerifyStatus(`VERIFIED: Official Gazette Circular sealed by Gram Sevak & Sarpanch under Stamp #MH-BHD-ASG-2026 for Notice [${verifyNoticeId.trim()}].`);
+    setVerifyStatus(
+      lang === 'MR'
+        ? `पडताळणी पूर्ण: सूचना क्र. [${verifyNoticeId.trim()}] अधिकृत नागरिक नोंदवहीमध्ये नोंदलेली आहे.`
+        : `VERIFIED: Official Gazette Circular verified in Citizen Register under Stamp #MH-BHD-ASG-2026 for Notice [${verifyNoticeId.trim()}].`
+    );
   };
 
   const handleRtiSubmit = async (e: React.FormEvent) => {
@@ -66,7 +76,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
         category: 'RTI / Gazette Query',
         citizenName: rtiName,
         citizenPhone: rtiPhone,
-        ward: 'Ward 2 (Gram Panchayat Office)'
+        ward: 'Ward 2 (Civic Information Desk)'
       });
       setRtiTrackingNumber(res.trackingNumber || 'ASG-2026-RTI');
       setModalSuccess(true);
@@ -105,12 +115,14 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
       {/* 1. TOP GAZETTE PORTAL STRIP */}
       <Breadcrumb
         items={[
-          { label: 'Home', onClick: onNavigateHome },
-          { label: 'ग्रामपंचायत अधिकृत घोषणा', active: true }
+          { label: lang === 'MR' ? 'मुख्यपृष्ठ' : 'Home', onClick: onNavigateHome },
+          { label: lang === 'MR' ? 'अधिकृत घोषणा व सूचना फलक' : 'Civic Notices & Gazettes', active: true }
         ]}
         rightBadge={
           <div className="text-[11px] font-semibold text-[#006a4e] bg-[#baeed9]/40 px-2.5 py-0.5 rounded-full border border-[#baeed9]">
-            CIVIC TRANSPARENCY &amp; GAZETTE PORTAL • RESOLUTION REGISTER NO: 02
+            {lang === 'MR'
+              ? 'नागरिक पारदर्शकता व सूचना मंच • ठराव नोंदवही क्र. ०२'
+              : 'CIVIC TRANSPARENCY & GAZETTE PORTAL • RESOLUTION REGISTER NO: 02'}
           </div>
         }
       />
@@ -119,33 +131,41 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
       <div className="bg-gradient-to-br from-[#003629]/5 via-white to-[#003629]/10 rounded-2xl p-6 sm:p-8 border border-[#c4d6cf] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex-1">
           <span className="inline-block bg-[#006a4e]/10 text-[#006a4e] text-[10px] font-black tracking-widest px-3 py-1 rounded-full uppercase border border-[#006a4e]/20 mb-2">
-            ASGAON GP/2026 • 24x7 Digital Citizen Notice Board
+            {lang === 'MR'
+              ? 'असगाव नागरिक मंच • २४x७ डिजिटल जाहीर सूचना फलक'
+              : 'ASGAON CIVIC PORTAL • 24x7 Digital Citizen Notice Board'}
           </span>
           <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#003629] leading-tight mb-1">
-            Gram Panchayat Digital Notice Board &amp; Gazettes
+            {lang === 'MR'
+              ? 'गाव जाहीर सूचना फलक व राजपत्र'
+              : 'Digital Notice Board & Civic Gazettes'}
           </h1>
           <h2 className="text-[14px] sm:text-[15px] font-bold text-[#a63b00] mb-2">
-            ग्रामपंचायत अधिकृत घोषणा व जाहीर सूचना फलक
+            {lang === 'MR'
+              ? 'अधिकृत घोषणा, आपत्कालीन सूचना व जाहीर परिपत्रके'
+              : 'Official Announcements & Public Circulars'}
           </h2>
           <p className="text-[13px] sm:text-[14px] text-[#404945] max-w-2xl leading-relaxed">
-            Official gazettes, emergency water and power schedules, mandatory Gram Sabha resolutions, public tenders/works, and extension circulars sanctioned by Asgaon Gram Panchayat.
+            {lang === 'MR'
+              ? 'असगाव गावासाठी पाणी व वीज पुरवठा वेळापत्रक, ग्रामसभा ठराव, सार्वजनिक विकासकामे, निविदा आणि अधिकृत प्रशासकीय परिपत्रकांची खात्रीशीर माहिती.'
+              : 'Official gazettes, emergency water and power schedules, mandatory Gram Sabha resolutions, public tenders/works, and extension circulars for Asgaon.'}
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row md:flex-col gap-2 shrink-0">
           <button
-            onClick={() => alert('Downloading official Asgaon October Gazette summary PDF (2.4 MB).')}
+            onClick={() => alert(lang === 'MR' ? 'मासिक राजपत्र सारांश PDF (२.४ MB) डाउनलोड होत आहे.' : 'Downloading official Asgaon October Gazette summary PDF (2.4 MB).')}
             className="px-4 py-2.5 bg-[#003629] hover:bg-[#00281e] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all"
           >
             <span className="material-symbols-outlined text-[16px]">download</span>
-            <span>Download Monthly Gazette (राजपत्र)</span>
+            <span>{lang === 'MR' ? 'मासिक राजपत्र डाउनलोड करा' : 'Download Monthly Gazette (राजपत्र)'}</span>
           </button>
           <button
             onClick={() => setShowRtiModal(true)}
             className="px-4 py-2.5 bg-[#a63b00] hover:bg-[#852f00] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all"
           >
             <span className="material-symbols-outlined text-[16px]">report_problem</span>
-            <span>Register Civic Grievance</span>
+            <span>{lang === 'MR' ? 'नागरी तक्रार / विचारणा नोंदवा' : 'Register Civic Grievance'}</span>
           </button>
           <a
             href="https://wa.me/919422001100"
@@ -154,7 +174,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             className="px-4 py-2 bg-white hover:bg-[#f3ede4] text-[#006a4e] border border-[#baeed9] text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all text-center"
           >
             <span className="material-symbols-outlined text-[16px]">chat</span>
-            <span>WhatsApp Alerts</span>
+            <span>{lang === 'MR' ? 'व्हॉट्सअ‍ॅप सूचना' : 'WhatsApp Alerts'}</span>
           </a>
         </div>
       </div>
@@ -167,8 +187,12 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           </div>
           <div>
             <div className="font-heading font-black text-[22px] text-[#003629]">{announcements.length || 18}</div>
-            <div className="text-[11px] text-[#707974] leading-tight">Active Open Notices</div>
-            <div className="text-[9px] text-[#006a4e] font-semibold">Verified by Gram Panchayat</div>
+            <div className="text-[11px] text-[#707974] leading-tight">
+              {lang === 'MR' ? 'सक्रिय जाहीर सूचना' : 'Active Open Notices'}
+            </div>
+            <div className="text-[9px] text-[#006a4e] font-semibold">
+              {lang === 'MR' ? 'अधिकृत पडताळणीकृत' : 'Civic Board Verified'}
+            </div>
           </div>
         </div>
 
@@ -178,8 +202,12 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           </div>
           <div>
             <div className="font-heading font-black text-[22px] text-[#ba1a1a]">0{announcements.filter(a => (a.priority || '').toLowerCase() === 'urgent' || (a.priority || '').toLowerCase() === 'high').length || 4}</div>
-            <div className="text-[11px] text-[#707974] leading-tight">Critical / Urgent Alerts</div>
-            <div className="text-[9px] text-[#ba1a1a] font-semibold">Water, 3-Phase &amp; Canal Alerts</div>
+            <div className="text-[11px] text-[#707974] leading-tight">
+              {lang === 'MR' ? 'तातडीच्या आपत्कालीन सूचना' : 'Critical / Urgent Alerts'}
+            </div>
+            <div className="text-[9px] text-[#ba1a1a] font-semibold">
+              {lang === 'MR' ? 'पाणी, ३-फेज वीज व कालवा' : 'Water, 3-Phase & Canal Alerts'}
+            </div>
           </div>
         </div>
 
@@ -188,9 +216,15 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <span className="material-symbols-outlined text-[20px]">event_seat</span>
           </div>
           <div>
-            <div className="font-heading font-bold text-[14px] text-[#a63b00] leading-tight">26 Jan 2026</div>
-            <div className="text-[11px] text-[#707974] leading-tight">Next Gram Sabha Date</div>
-            <div className="text-[9px] text-[#55605a]">10:00 AM • Samajik Sabhagruh</div>
+            <div className="font-heading font-bold text-[14px] text-[#a63b00] leading-tight">
+              {lang === 'MR' ? '२६ जाने २०२६' : '26 Jan 2026'}
+            </div>
+            <div className="text-[11px] text-[#707974] leading-tight">
+              {lang === 'MR' ? 'पुढील ग्रामसभा दिनांक' : 'Next Gram Sabha Date'}
+            </div>
+            <div className="text-[9px] text-[#55605a]">
+              {lang === 'MR' ? '१०:०० AM • सामाजिक सभागृह' : '10:00 AM • Samajik Sabhagruh'}
+            </div>
           </div>
         </div>
 
@@ -199,9 +233,15 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <span className="material-symbols-outlined text-[20px]">timer</span>
           </div>
           <div>
-            <div className="font-heading font-black text-[22px] text-[#003629]">48 <span className="text-[14px] font-normal">hrs</span></div>
-            <div className="text-[11px] text-[#707974] leading-tight">Public Grievance TAT</div>
-            <div className="text-[9px] text-[#006a4e] font-semibold">Citizen Charter Standard</div>
+            <div className="font-heading font-black text-[22px] text-[#003629]">
+              48 <span className="text-[14px] font-normal">{lang === 'MR' ? 'तास' : 'hrs'}</span>
+            </div>
+            <div className="text-[11px] text-[#707974] leading-tight">
+              {lang === 'MR' ? 'तक्रार निवारण सरासरी वेळ' : 'Public Grievance TAT'}
+            </div>
+            <div className="text-[9px] text-[#006a4e] font-semibold">
+              {lang === 'MR' ? 'नागरिक सनद प्रमाण' : 'Citizen Charter Standard'}
+            </div>
           </div>
         </div>
       </div>
@@ -215,18 +255,22 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               type="text"
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-              placeholder="Search notices by keyword, department, resolution number (e.g. Pipeline, 15th Finance, MSEDCL)..."
+              placeholder={
+                lang === 'MR'
+                  ? 'कीवर्ड, विभाग किंवा ठराव क्रमांकाने शोधा (उदा. पाईपलाईन, १५ वा वित्त, वीज वितरण)...'
+                  : 'Search notices by keyword, department, resolution number (e.g. Pipeline, 15th Finance, MSEDCL)...'
+              }
               className="w-full pl-9 pr-3 py-2 bg-[#f3ede4]/40 rounded-lg text-[13px] text-[#1a1c1b] placeholder-[#707974] border border-transparent focus:border-[#006a4e] focus:bg-white outline-none"
             />
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <button className="px-3 py-2 rounded-lg bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9] text-[12px] font-medium flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px]">mic</span>
-              <span>Voice Search</span>
+              <span>{lang === 'MR' ? 'आवाज शोध' : 'Voice Search'}</span>
             </button>
             <div className="text-[12px] text-[#55605a] flex items-center gap-1 px-2 border-l border-[#e8e2d9]">
               <span className="material-symbols-outlined text-[16px]">sort</span>
-              <span>Sort: Latest</span>
+              <span>{lang === 'MR' ? 'क्रमवारी: नवीनतम' : 'Sort: Latest'}</span>
             </div>
           </div>
         </div>
@@ -241,7 +285,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            All Notices ({announcements.length})
+            {lang === 'MR' ? 'सर्व सूचना' : 'All Notices'} ({announcements.length})
           </button>
           <button
             onClick={() => { setActiveFilter('resolutions'); setCurrentPage(1); }}
@@ -251,7 +295,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            Gram Sabha Resolutions ({announcements.filter(a => ((a.category || '') + (a.title || '')).toLowerCase().includes('sabha')).length})
+            {lang === 'MR' ? 'ग्रामसभा ठराव' : 'Gram Sabha Resolutions'} ({announcements.filter(a => ((a.category || '') + (a.title || '')).toLowerCase().includes('sabha')).length})
           </button>
           <button
             onClick={() => { setActiveFilter('urgent'); setCurrentPage(1); }}
@@ -262,7 +306,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             }`}
           >
             <span className="material-symbols-outlined text-[15px]">priority_high</span>
-            <span>Urgent &amp; Civic Alerts ({announcements.filter(a => (a.priority || '').toLowerCase() === 'urgent' || (a.priority || '').toLowerCase() === 'high').length})</span>
+            <span>{lang === 'MR' ? 'तातडीच्या सूचना' : 'Urgent & Civic Alerts'} ({announcements.filter(a => (a.priority || '').toLowerCase() === 'urgent' || (a.priority || '').toLowerCase() === 'high').length})</span>
           </button>
           <button
             onClick={() => { setActiveFilter('tenders'); setCurrentPage(1); }}
@@ -272,7 +316,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            Public Works &amp; Tenders ({announcements.filter(a => ((a.category || '') + (a.title || '')).toLowerCase().includes('tender') || ((a.category || '') + (a.title || '')).toLowerCase().includes('work')).length})
+            {lang === 'MR' ? 'विकासकामे व निविदा' : 'Public Works & Tenders'} ({announcements.filter(a => ((a.category || '') + (a.title || '')).toLowerCase().includes('tender') || ((a.category || '') + (a.title || '')).toLowerCase().includes('work')).length})
           </button>
           <button
             onClick={() => { setActiveFilter('health'); setCurrentPage(1); }}
@@ -282,11 +326,9 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            Health &amp; Sanitation ({announcements.filter(a => ((a.category || '') + (a.title || '')).toLowerCase().includes('health')).length})
+            {lang === 'MR' ? 'आरोग्य व स्वच्छता' : 'Health & Sanitation'} ({announcements.filter(a => ((a.category || '') + (a.title || '')).toLowerCase().includes('health')).length})
           </button>
         </div>
-
-        
       </div>
 
       {/* 5. MAIN 2-COLUMN LAYOUT */}
@@ -328,13 +370,19 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 {filteredNotices.length === 0 && announcements.length > 0 ? (
                   <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
                     <span className="material-symbols-outlined text-[48px] text-[#a63b00]">notifications_off</span>
-                    <h3 className="font-heading font-bold text-[18px] text-[#003629]">No matching notices found</h3>
-                    <p className="text-[13px] text-[#707974] max-w-md">No announcements match your search keywords or active filter category.</p>
+                    <h3 className="font-heading font-bold text-[18px] text-[#003629]">
+                      {lang === 'MR' ? 'कोणतीही जुळणारी सूचना आढळली नाही' : 'No matching notices found'}
+                    </h3>
+                    <p className="text-[13px] text-[#707974] max-w-md">
+                      {lang === 'MR'
+                        ? 'तुमच्या शोध शब्दांशी किंवा निवडलेल्या वर्गवारीशी कोणतीही सूचना जुळत नाही.'
+                        : 'No announcements match your search keywords or active filter category.'}
+                    </p>
                     <button
                       onClick={() => { setActiveFilter('all'); setSearchQuery(''); setCurrentPage(1); }}
                       className="px-4 py-2 bg-[#003629] text-white text-[12px] font-bold rounded-xl hover:bg-[#1b4d3e] transition-colors"
                     >
-                      Reset All Filters
+                      {lang === 'MR' ? 'सर्व फिल्टर रीसेट करा' : 'Reset All Filters'}
                     </button>
                   </div>
                 ) : (
@@ -344,21 +392,27 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                         <div className="flex items-center gap-2">
                           <span className={`text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider flex items-center gap-1 ${item.priority === 'HIGH' || item.priority === 'URGENT' ? 'bg-[#ba1a1a]' : 'bg-[#006a4e]'}`}>
                             <span className="material-symbols-outlined text-[13px]">{item.priority === 'HIGH' || item.priority === 'URGENT' ? 'warning' : 'campaign'}</span>
-                            <span>{item.category?.toUpperCase() || 'GAZETTE CIRCULAR'}</span>
+                            <span>{item.category?.toUpperCase() || (lang === 'MR' ? 'राजपत्र सूचना' : 'GAZETTE CIRCULAR')}</span>
                           </span>
                           <span className="text-[11px] font-bold text-[#006a4e]">ASG-GP-{item.id ? String(item.id).substring(0, 5) : '2026'}</span>
                         </div>
                         <span className="text-[10px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-2.5 py-0.5 rounded border border-[#baeed9]">
-                          Issued by: {item.issuedBy || item.authorName || 'Gram Panchayat Asgaon'}
+                          {lang === 'MR' ? 'प्रसिद्धी: ' : 'Issued by: '}
+                          {item.issuedBy || item.authorName || (lang === 'MR' ? 'असगाव नागरी प्रशासन' : 'Asgaon Civic Administration')}
                         </span>
                       </div>
                       <div>
                         <h3 className="font-heading font-extrabold text-[18px] sm:text-[19px] text-[#003629] leading-snug">
-                          {item.title}
+                          {lang === 'MR' ? (item.marathiTitle || item.title) : item.title}
                         </h3>
-                        {item.marathiTitle && (
+                        {item.marathiTitle && lang !== 'MR' && (
                           <h4 className="text-[13px] font-bold text-[#a63b00] mt-0.5">
                             {item.marathiTitle}
+                          </h4>
+                        )}
+                        {item.marathiTitle && lang === 'MR' && item.title !== item.marathiTitle && (
+                          <h4 className="text-[12px] font-medium text-[#707974] mt-0.5">
+                            {item.title}
                           </h4>
                         )}
                         <p className="text-[13px] text-[#404945] leading-relaxed mt-2 whitespace-pre-line">
@@ -373,7 +427,9 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 {filteredNotices.length > 0 && (
                   <div className="bg-white rounded-xl p-3 border border-[#e8e2d9] flex flex-col sm:flex-row items-center justify-between text-[12px] text-[#707974] gap-2 mt-2">
                     <span>
-                      Showing {startIndex + 1}-{Math.min(startIndex + pageSize, filteredNotices.length)} of {filteredNotices.length} notices
+                      {lang === 'MR'
+                        ? `एकूण ${filteredNotices.length} पैकी ${startIndex + 1}-${Math.min(startIndex + pageSize, filteredNotices.length)} सूचना दर्शवत आहे`
+                        : `Showing ${startIndex + 1}-${Math.min(startIndex + pageSize, filteredNotices.length)} of ${filteredNotices.length} notices`}
                     </span>
                     {totalPages > 1 && (
                       <div className="flex items-center gap-1">
@@ -818,20 +874,24 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             </div>
             <div className="flex-1 text-[12px]">
               <span className="text-[10px] font-bold text-[#a63b00] uppercase tracking-wider block">
-                CITIZEN RIGHT TO INFORMATION
+                {lang === 'MR' ? 'नागरिक माहिती अधिकार' : 'CITIZEN RIGHT TO INFORMATION'}
               </span>
               <h4 className="font-heading font-bold text-[15px] text-[#003629] leading-snug">
-                Can't find a circular? Submit a Citizen Request or RTI Query
+                {lang === 'MR'
+                  ? 'परिपत्रक किंवा ठराव सापडला नाही? माहिती अर्ज किंवा तक्रार नोंदवा'
+                  : "Can't find a circular? Submit a Citizen Request or RTI Query"}
               </h4>
               <p className="text-[#404945] mt-1 leading-relaxed">
-                Every resolution passed by Asgaon Gram Panchayat is public record under Section 4(1)(b) of the Right to Information Act. Fee: No fee for collection of listed copies at the CSC desk.
+                {lang === 'MR'
+                  ? 'माहिती अधिकार कायदा कलम ४(१)(बी) अंतर्गत असगाव गावातील सर्व सार्वजनिक ठराव व मंजुरी नोंदी नागरिकांसाठी उपलब्ध आहेत. सीएससी केंद्रात कोणत्याही शुल्काविना माहिती सहाय्य उपलब्ध.'
+                  : 'Every resolution passed by Asgaon Gram Panchayat is public record under Section 4(1)(b) of the Right to Information Act. Fee: No fee for collection of listed copies at the CSC desk.'}
               </p>
               <div className="flex items-center gap-4 mt-2">
                 <button onClick={() => setShowRtiModal(true)} className="text-[#006a4e] font-bold hover:underline">
-                  View 120+ Public Records →
+                  {lang === 'MR' ? '१२०+ सार्वजनिक नोंदी पहा →' : 'View 120+ Public Records →'}
                 </button>
                 <button onClick={() => setShowRtiModal(true)} className="text-[#a63b00] font-bold hover:underline">
-                  RTI Cell Guidelines ↗
+                  {lang === 'MR' ? 'माहिती अधिकार मार्गदर्शक ↗' : 'RTI Cell Guidelines ↗'}
                 </button>
               </div>
             </div>
@@ -846,11 +906,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-[#006a4e] text-[20px]">account_balance</span>
                 <h3 className="font-heading font-bold text-[14px] text-[#003629]">
-                  Panchayat Dignitaries
+                  {lang === 'MR' ? 'गाव पदाधिकारी व प्रतिनिधी' : 'Panchayat Dignitaries'}
                 </h3>
               </div>
               <span className="text-[10px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-2 py-0.5 rounded">
-                Duty Roster
+                {lang === 'MR' ? 'कर्तव्य वेळापत्रक' : 'Duty Roster'}
               </span>
             </div>
 
@@ -862,8 +922,12 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 </div>
                 <div>
                   <strong className="text-[#003629] block">Sau. Sunita Tai Jadhav</strong>
-                  <span className="text-[10px] text-[#a63b00] font-semibold block">Sarpanch (94220 01100)</span>
-                  <span className="text-[#707974] text-[10px]">Visiting Hours: Mon &amp; Thu 10:00 AM – 1:00 PM (GP Hall)</span>
+                  <span className="text-[10px] text-[#a63b00] font-semibold block">
+                    {lang === 'MR' ? 'सरपंच (९४२२० ०११००)' : 'Sarpanch (94220 01100)'}
+                  </span>
+                  <span className="text-[#707974] text-[10px]">
+                    {lang === 'MR' ? 'भेट वेळ: सोम व गुरु स. १०:०० ते दु. १:०० (सभागृह)' : 'Visiting Hours: Mon & Thu 10:00 AM – 1:00 PM (GP Hall)'}
+                  </span>
                 </div>
               </div>
 
@@ -874,8 +938,12 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 </div>
                 <div>
                   <strong className="text-[#003629] block">Shri. Balasaheb D. Gaikwad</strong>
-                  <span className="text-[10px] text-[#55605a] block">Up-Sarpanch (98221 00199)</span>
-                  <span className="text-[#707974] text-[10px]">Ward 4 • Available on Call</span>
+                  <span className="text-[10px] text-[#55605a] block">
+                    {lang === 'MR' ? 'उपसरपंच (९८२२१ ००१९९)' : 'Up-Sarpanch (98221 00199)'}
+                  </span>
+                  <span className="text-[#707974] text-[10px]">
+                    {lang === 'MR' ? 'प्रभाग ४ • फोनवर संपर्क उपलब्ध' : 'Ward 4 • Available on Call'}
+                  </span>
                 </div>
               </div>
 
@@ -886,8 +954,12 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 </div>
                 <div>
                   <strong className="text-[#003629] block">Shri. Sachin M. Patil</strong>
-                  <span className="text-[10px] text-[#006a4e] font-semibold block">Gram Sevak / Secretary (94220 11999)</span>
-                  <span className="text-[#707974] text-[10px]">Mon to Sat 09:30 AM – 04:30 PM (GP Office)</span>
+                  <span className="text-[10px] text-[#006a4e] font-semibold block">
+                    {lang === 'MR' ? 'ग्रामसेवक / सचिव (९४२२० ११९९९)' : 'Gram Sevak / Secretary (94220 11999)'}
+                  </span>
+                  <span className="text-[#707974] text-[10px]">
+                    {lang === 'MR' ? 'सोम ते शनि स. ०९:३० ते दु. ०४:३० (कार्यालय)' : 'Mon to Sat 09:30 AM – 04:30 PM (GP Office)'}
+                  </span>
                 </div>
               </div>
 
@@ -898,14 +970,18 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 </div>
                 <div>
                   <strong className="text-[#003629] block">Shri. D. K. Borse</strong>
-                  <span className="text-[10px] text-[#55605a] block">Talathi / Revenue Officer</span>
-                  <span className="text-[#707974] text-[10px]">Tue &amp; Fri 10:00 AM – 02:00 PM</span>
+                  <span className="text-[10px] text-[#55605a] block">
+                    {lang === 'MR' ? 'तलाठी / महसूल अधिकारी' : 'Talathi / Revenue Officer'}
+                  </span>
+                  <span className="text-[#707974] text-[10px]">
+                    {lang === 'MR' ? 'मंगळ व शुक्र स. १०:०० ते दु. ०२:००' : 'Tue & Fri 10:00 AM – 02:00 PM'}
+                  </span>
                 </div>
               </div>
             </div>
 
             <div className="pt-2 border-t border-[#f3ede4] text-[10px] text-[#707974] text-center">
-              Panchayat Bhavan Hall, Bypass, Asgaon
+              {lang === 'MR' ? 'पंचायत भवन सभागृह, बायपास, असगाव' : 'Panchayat Bhavan Hall, Bypass, Asgaon'}
             </div>
           </div>
 
@@ -915,14 +991,18 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               <span className="material-symbols-outlined text-[#006a4e] text-[20px]">verified</span>
               <div>
                 <h3 className="font-heading font-bold text-[14px] text-[#003629]">
-                  Circular Verification &amp; RTI
+                  {lang === 'MR' ? 'परिपत्रक पडताळणी व माहिती' : 'Circular Verification & RTI'}
                 </h3>
-                <span className="text-[10px] text-[#707974]">Verify digital seal authenticity</span>
+                <span className="text-[10px] text-[#707974]">
+                  {lang === 'MR' ? 'डिजिटल मुद्रा व अस्सलता तपासा' : 'Verify digital seal authenticity'}
+                </span>
               </div>
             </div>
 
             <p className="text-[11px] text-[#404945] leading-relaxed">
-              To prevent distribution of fake notices or unapproved circulars, verify official stamp and resolution numbers in the Digital Gazette Archive.
+              {lang === 'MR'
+                ? 'बनावट परिपत्रके किंवा अनधिकृत सूचना टाळण्यासाठी डिजिटल अभिलेखात अधिकृत शिक्का व ठराव क्रमांक तपासा.'
+                : 'To prevent distribution of fake notices or unapproved circulars, verify official stamp and resolution numbers in the Digital Gazette Archive.'}
             </p>
 
             <form onSubmit={handleVerify} className="flex flex-col gap-2">
@@ -930,14 +1010,14 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 type="text"
                 value={verifyNoticeId}
                 onChange={(e) => setVerifyNoticeId(e.target.value)}
-                placeholder="ENTER NOTICE ID (E.G. GP/2026/RES-401)"
+                placeholder={lang === 'MR' ? 'सूचना आयडी टाका (उदा. GP/2026/RES-401)' : 'ENTER NOTICE ID (E.G. GP/2026/RES-401)'}
                 className="p-2.5 rounded-lg border border-[#e8e2d9] text-[11px] uppercase tracking-wide focus:border-[#006a4e] outline-none"
               />
               <button
                 type="submit"
                 className="py-2 bg-[#003629] hover:bg-[#00281e] text-white text-[11px] font-bold rounded-lg transition-colors"
               >
-                Verify Digital Seal Authenticity
+                {lang === 'MR' ? 'डिजिटल मुद्रा पडताळा' : 'Verify Digital Seal Authenticity'}
               </button>
             </form>
 
@@ -948,7 +1028,8 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             )}
 
             <div className="text-[10px] text-[#707974] pt-1">
-              Direct RTI Helpdesk: <strong className="text-[#003629]">07185-224410</strong>
+              {lang === 'MR' ? 'माहिती अधिकार हेल्पडेस्क: ' : 'Direct RTI Helpdesk: '}
+              <strong className="text-[#003629]">07185-224410</strong>
             </div>
           </div>
 
@@ -956,19 +1037,23 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           <div className="bg-[#003629] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3">
             <div className="flex items-center justify-between">
               <span className="text-[9px] font-bold uppercase tracking-wider text-[#baeed9]">
-                OFFICIAL GP BROADCAST
+                {lang === 'MR' ? 'अधिकृत नागरी ब्रॉडकास्ट' : 'OFFICIAL GP BROADCAST'}
               </span>
               <span className="bg-[#baeed9]/20 text-[#baeed9] text-[9px] font-bold px-2 py-0.5 rounded">
-                Live
+                {lang === 'MR' ? 'थेट' : 'Live'}
               </span>
             </div>
 
             <h3 className="font-heading font-extrabold text-[15px] leading-snug">
-              Join 1,420+ Asgaon Residents on Official WhatsApp
+              {lang === 'MR'
+                ? 'असगावच्या १,४२०+ ग्रामस्थांसोबत व्हॉट्सअ‍ॅपवर जुळा'
+                : 'Join 1,420+ Asgaon Residents on Official WhatsApp'}
             </h3>
 
             <p className="text-[11px] text-[#e8e2d9] leading-relaxed">
-              Get immediate emergency water notices, power cuts, Gram Sabha resolutions, and death/birth registrations directly to your mobile.
+              {lang === 'MR'
+                ? 'पिण्याच्या पाण्याचे वेळापत्रक, वीज कपात, ग्रामसभा ठराव आणि महत्त्वाच्या नागरी सूचना थेट मोबाईलवर मिळवा.'
+                : 'Get immediate emergency water notices, power cuts, Gram Sabha resolutions, and death/birth registrations directly to your mobile.'}
             </p>
 
             {/* QR Mockup */}
@@ -977,8 +1062,12 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 <span className="material-symbols-outlined text-[28px]">qr_code_2</span>
               </div>
               <div className="text-[10px]">
-                <strong className="block text-[#003629]">Scan with WhatsApp Camera</strong>
-                <span className="text-[#707974]">Direct Channel: Asgaon Gram Seva</span>
+                <strong className="block text-[#003629]">
+                  {lang === 'MR' ? 'व्हॉट्सअ‍ॅप कॅमेऱ्याने स्कॅन करा' : 'Scan with WhatsApp Camera'}
+                </strong>
+                <span className="text-[#707974]">
+                  {lang === 'MR' ? 'थेट चॅनेल: असगाव ग्राम सेवा' : 'Direct Channel: Asgaon Gram Seva'}
+                </span>
               </div>
             </div>
 
@@ -988,7 +1077,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               rel="noreferrer"
               className="w-full py-2.5 bg-[#baeed9] hover:bg-[#a0dec5] text-[#002117] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors mt-1"
             >
-              <span>Subscribe to Official GP WhatsApp</span>
+              <span>{lang === 'MR' ? 'व्हॉट्सअ‍ॅप सूचनांमध्ये सामील व्हा' : 'Subscribe to Official GP WhatsApp'}</span>
               <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </a>
           </div>
@@ -999,42 +1088,60 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               <div className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[#006a4e] text-[18px]">task_alt</span>
                 <h3 className="font-heading font-bold text-[14px] text-[#003629]">
-                  Recent Grievance Action
+                  {lang === 'MR' ? 'नुकत्याच सोडवलेल्या तक्रारी' : 'Recent Grievance Action'}
                 </h3>
               </div>
               <span className="text-[10px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-2 py-0.5 rounded">
-                Resolved in last 48h
+                {lang === 'MR' ? 'गेल्या ४८ तासांत निवारण' : 'Resolved in last 48h'}
               </span>
             </div>
 
             <div className="flex flex-col gap-2.5 text-[11px]">
               <div className="p-2.5 rounded-lg bg-[#f3ede4]/40 border border-[#e8e2d9]">
                 <div className="flex justify-between items-center mb-1">
-                  <strong className="text-[#003629]">Ticket #104 - Streetlight Repair</strong>
-                  <span className="text-[9px] font-bold text-[#006a4e] bg-[#baeed9] px-1.5 py-0.2 rounded">RESOLVED</span>
+                  <strong className="text-[#003629]">
+                    Ticket #104 - {lang === 'MR' ? 'पथदिवे दुरुस्ती' : 'Streetlight Repair'}
+                  </strong>
+                  <span className="text-[9px] font-bold text-[#006a4e] bg-[#baeed9] px-1.5 py-0.2 rounded">
+                    {lang === 'MR' ? 'निवारण' : 'RESOLVED'}
+                  </span>
                 </div>
                 <p className="text-[10px] text-[#707974] leading-tight">
-                  Wards 2 &amp; 5 Vitthal Mandir bypass poles re-wired and operational.
+                  {lang === 'MR'
+                    ? 'प्रभाग २ व ५ विठ्ठल मंदिर बायपास खांबांवर नवीन वायरिंग सुरू केली.'
+                    : 'Wards 2 & 5 Vitthal Mandir bypass poles re-wired and operational.'}
                 </p>
               </div>
 
               <div className="p-2.5 rounded-lg bg-[#f3ede4]/40 border border-[#e8e2d9]">
                 <div className="flex justify-between items-center mb-1">
-                  <strong className="text-[#003629]">Ticket #102 - Borewell Chlorination</strong>
-                  <span className="text-[9px] font-bold text-[#006a4e] bg-[#baeed9] px-1.5 py-0.2 rounded">RESOLVED</span>
+                  <strong className="text-[#003629]">
+                    Ticket #102 - {lang === 'MR' ? 'बोअरवेल क्लोरीनेशन' : 'Borewell Chlorination'}
+                  </strong>
+                  <span className="text-[9px] font-bold text-[#006a4e] bg-[#baeed9] px-1.5 py-0.2 rounded">
+                    {lang === 'MR' ? 'निवारण' : 'RESOLVED'}
+                  </span>
                 </div>
                 <p className="text-[10px] text-[#707974] leading-tight">
-                  Handpump disinfected and clean water test verified.
+                  {lang === 'MR'
+                    ? 'हातपंपाचे निर्जंतुकीकरण व स्वच्छ पाणी चाचणी पूर्ण.'
+                    : 'Handpump disinfected and clean water test verified.'}
                 </p>
               </div>
 
               <div className="p-2.5 rounded-lg bg-[#fff8f0] border border-[#ffe0cc]">
                 <div className="flex justify-between items-center mb-1">
-                  <strong className="text-[#a63b00]">Ticket #098 - Paver Block Cleaning</strong>
-                  <span className="text-[9px] font-bold text-[#a63b00] bg-[#fff8f0] px-1.5 py-0.2 rounded border border-[#ffe0cc]">IN PROGRESS</span>
+                  <strong className="text-[#a63b00]">
+                    Ticket #098 - {lang === 'MR' ? 'पेव्हर ब्लॉक स्वच्छता' : 'Paver Block Cleaning'}
+                  </strong>
+                  <span className="text-[9px] font-bold text-[#a63b00] bg-[#fff8f0] px-1.5 py-0.2 rounded border border-[#ffe0cc]">
+                    {lang === 'MR' ? 'प्रगतीपथावर' : 'IN PROGRESS'}
+                  </span>
                 </div>
                 <p className="text-[10px] text-[#707974] leading-tight">
-                  Solid waste team assigned for morning clearance.
+                  {lang === 'MR'
+                    ? 'सकाळच्या स्वच्छतेसाठी कचरा व्यवस्थापन पथक नियुक्त.'
+                    : 'Solid waste team assigned for morning clearance.'}
                 </p>
               </div>
             </div>
@@ -1043,7 +1150,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               onClick={() => setShowRtiModal(true)}
               className="text-[#006a4e] font-bold text-[11px] hover:underline text-center pt-1"
             >
-              View All Public Grievance Log →
+              {lang === 'MR' ? 'सर्व नागरी तक्रार नोंदवही पहा →' : 'View All Public Grievance Log →'}
             </button>
           </div>
 
@@ -1051,22 +1158,24 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           <div className="bg-[#fff8f0] rounded-2xl p-4 border border-[#ffe0cc] shadow-xs flex flex-col gap-2">
             <span className="text-[9px] font-bold text-[#ba1a1a] uppercase tracking-wider flex items-center gap-1">
               <span className="material-symbols-outlined text-[13px]">emergency</span>
-              <span>EMERGENCY QUICK HOTLINES</span>
+              <span>{lang === 'MR' ? 'आपत्कालीन तत्पर हेल्पलाईन' : 'EMERGENCY QUICK HOTLINES'}</span>
             </span>
 
             <div className="grid grid-cols-2 gap-2 text-center">
               <div className="bg-white p-2 rounded-lg border border-[#ffe0cc]">
                 <span className="text-[16px] font-black text-[#ba1a1a] block">108</span>
-                <span className="text-[10px] text-[#707974]">Ambulance</span>
+                <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'रुग्णवाहिका' : 'Ambulance'}</span>
               </div>
               <div className="bg-white p-2 rounded-lg border border-[#ffe0cc]">
                 <span className="text-[16px] font-black text-[#003629] block">112</span>
-                <span className="text-[10px] text-[#707974]">Police / SOS</span>
+                <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'पोलीस / आपत्कालीन' : 'Police / SOS'}</span>
               </div>
             </div>
 
             <div className="text-[10px] text-[#707974] text-center mt-1">
-              Asgaon Primary Health Sub-Center (OPD 08:00 AM – 04:00 PM)
+              {lang === 'MR'
+                ? 'असगाव प्राथमिक आरोग्य उपकेंद्र (ओपीडी स. ०८:०० ते दु. ०४:००)'
+                : 'Asgaon Primary Health Sub-Center (OPD 08:00 AM – 04:00 PM)'}
             </div>
           </div>
         </div>
@@ -1087,63 +1196,77 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               <span className="material-symbols-outlined text-[#a63b00] text-[24px]">gavel</span>
               <div>
                 <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
-                  Citizen RTI / Grievance Desk
+                  {lang === 'MR' ? 'नागरिक माहिती अधिकार व तक्रार निवारण' : 'Citizen RTI / Grievance Desk'}
                 </h3>
-                <span className="text-[11px] text-[#707974]">Under Section 4(1)(b) &amp; Citizen Charter</span>
+                <span className="text-[11px] text-[#707974]">
+                  {lang === 'MR' ? 'कलम ४(१)(बी) व नागरिक सनद अंतर्गत' : 'Under Section 4(1)(b) & Citizen Charter'}
+                </span>
               </div>
             </div>
 
             {modalSuccess ? (
               <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">Request Registered in Database!</h4>
+                <h4 className="font-bold text-[15px] text-[#003629]">
+                  {lang === 'MR' ? 'अर्ज प्रणालीत नोंदवला गेला!' : 'Request Registered in Database!'}
+                </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
-                  Tracking Ticket <strong className="text-[#a63b00]">{rtiTrackingNumber}</strong> generated. Official dispatch within 48 hours.
+                  {lang === 'MR'
+                    ? `तक्रार टोकन क्र. ${rtiTrackingNumber} तयार झाला. ४८ तासांत निवारण केले जाईल.`
+                    : `Tracking Ticket ${rtiTrackingNumber} generated. Official dispatch within 48 hours.`}
                 </p>
               </div>
             ) : (
               <form onSubmit={handleRtiSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">Citizen Full Name</label>
+                  <label className="font-bold text-[#003629] block mb-1">
+                    {lang === 'MR' ? 'नागरिकाचे पूर्ण नाव' : 'Citizen Full Name'}
+                  </label>
                   <input
                     type="text"
                     required
                     value={rtiName}
                     onChange={(e) => setRtiName(e.target.value)}
-                    placeholder="e.g. Sunil Ramesh Jadhav"
+                    placeholder={lang === 'MR' ? 'उदा. सुनील रमेश जाधव' : 'e.g. Sunil Ramesh Jadhav'}
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">Mobile Number</label>
+                  <label className="font-bold text-[#003629] block mb-1">
+                    {lang === 'MR' ? 'मोबाईल नंबर' : 'Mobile Number'}
+                  </label>
                   <input
                     type="tel"
                     required
                     value={rtiPhone}
                     onChange={(e) => setRtiPhone(e.target.value)}
-                    placeholder="10-digit mobile number"
+                    placeholder={lang === 'MR' ? '१०-अंकी मोबाईल नंबर' : '10-digit mobile number'}
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">Request Subject / Resolution ID</label>
+                  <label className="font-bold text-[#003629] block mb-1">
+                    {lang === 'MR' ? 'अर्जाचा विषय / ठराव आयडी' : 'Request Subject / Resolution ID'}
+                  </label>
                   <input
                     type="text"
                     required
                     value={rtiSubject}
                     onChange={(e) => setRtiSubject(e.target.value)}
-                    placeholder="e.g. 15th Finance Fund Audit copy / Pipeline grievance"
+                    placeholder={lang === 'MR' ? 'उदा. १५ वा वित्त निधी लेखापरीक्षण प्रत / पाईपलाईन समस्या' : 'e.g. 15th Finance Fund Audit copy / Pipeline grievance'}
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">Details &amp; Query</label>
+                  <label className="font-bold text-[#003629] block mb-1">
+                    {lang === 'MR' ? 'सविस्तर तपशील' : 'Details & Query'}
+                  </label>
                   <textarea
                     rows={3}
                     required
                     value={rtiDetails}
                     onChange={(e) => setRtiDetails(e.target.value)}
-                    placeholder="Describe details of the documents or issue required..."
+                    placeholder={lang === 'MR' ? 'आवश्यक कागदपत्रांचे किंवा समस्येचे सविस्तर वर्णन करा...' : 'Describe details of the documents or issue required...'}
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none resize-none"
                   />
                 </div>
@@ -1152,7 +1275,9 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   disabled={isSubmittingRti}
                   className="w-full py-2.5 bg-[#003629] hover:bg-[#00281e] text-white font-bold rounded-xl transition-all shadow-xs mt-1 disabled:opacity-50"
                 >
-                  {isSubmittingRti ? 'Submitting to Panchayat Desk...' : 'Submit Official Query'}
+                  {isSubmittingRti
+                    ? (lang === 'MR' ? 'अर्ज दाखल होत आहे...' : 'Submitting to Panchayat Desk...')
+                    : (lang === 'MR' ? 'अधिकृत अर्ज दाखल करा' : 'Submit Official Query')}
                 </button>
               </form>
             )}
@@ -1175,9 +1300,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               <span className="material-symbols-outlined text-[#006a4e] text-[24px]">local_shipping</span>
               <div>
                 <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
-                  Emergency Water Tanker Tracker
+                  {lang === 'MR' ? 'पाणी टँकर थेट स्थिती' : 'Emergency Water Tanker Tracker'}
                 </h3>
-                <span className="text-[11px] text-[#707974]">Gram Panchayat Relief Vehicle Status</span>
+                <span className="text-[11px] text-[#707974]">
+                  {lang === 'MR' ? 'नागरी पाणी पुरवठा वाहन स्थिती' : 'Gram Panchayat Relief Vehicle Status'}
+                </span>
               </div>
             </div>
 
@@ -1185,28 +1312,40 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               <div className="p-3 bg-[#baeed9]/40 border border-[#006a4e] rounded-xl flex items-center justify-between">
                 <div>
                   <strong className="text-[#003629] block">Tanker #MH-36-T-4091</strong>
-                  <span className="text-[11px] text-[#404945]">Current Location: Vitthal Mandir Chowk</span>
+                  <span className="text-[11px] text-[#404945]">
+                    {lang === 'MR' ? 'सध्याचे स्थान: विठ्ठल मंदिर चौक' : 'Current Location: Vitthal Mandir Chowk'}
+                  </span>
                 </div>
-                <span className="bg-[#006a4e] text-white text-[10px] font-bold px-2 py-0.5 rounded">DISPENSING</span>
+                <span className="bg-[#006a4e] text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                  {lang === 'MR' ? 'पाणी वाटप सुरू' : 'DISPENSING'}
+                </span>
               </div>
 
               <div className="p-3 bg-[#f3ede4]/50 border border-[#e8e2d9] rounded-xl flex items-center justify-between">
                 <div>
                   <strong className="text-[#003629] block">Tanker #MH-36-T-2180</strong>
-                  <span className="text-[11px] text-[#404945]">Status: En route to ZP High School (ETA 15 mins)</span>
+                  <span className="text-[11px] text-[#404945]">
+                    {lang === 'MR' ? 'स्थिती: जि.प. हायस्कूलकडे जात आहे (१५ मि)' : 'Status: En route to ZP High School (ETA 15 mins)'}
+                  </span>
                 </div>
-                <span className="bg-[#a63b00] text-white text-[10px] font-bold px-2 py-0.5 rounded">IN TRANSIT</span>
+                <span className="bg-[#a63b00] text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                  {lang === 'MR' ? 'मार्गावर' : 'IN TRANSIT'}
+                </span>
               </div>
 
               <div className="bg-[#fff8f0] p-3 rounded-xl border border-[#ffe0cc] text-[11px] text-[#a63b00]">
-                If your ward needs an urgent tanker dispatch, call the Water Desk directly at <strong>+91 98220 81100</strong>.
+                {lang === 'MR' ? (
+                  <>आपल्या प्रभागात तातडीचा टँकर हवा असल्यास थेट <strong>+91 98220 81100</strong> वर संपर्क करा.</>
+                ) : (
+                  <>If your ward needs an urgent tanker dispatch, call the Water Desk directly at <strong>+91 98220 81100</strong>.</>
+                )}
               </div>
 
               <button
                 onClick={() => setShowTankerModal(false)}
                 className="w-full py-2.5 bg-[#003629] text-white font-bold rounded-xl transition-all shadow-xs"
               >
-                Close Tracker
+                {lang === 'MR' ? 'बंद करा' : 'Close Tracker'}
               </button>
             </div>
           </div>
@@ -1228,46 +1367,58 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               <span className="material-symbols-outlined text-[#a63b00] text-[24px]">ballot</span>
               <div>
                 <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
-                  Submit Gram Sabha Discussion Point
+                  {lang === 'MR' ? 'ग्रामसभेसाठी चर्चेचा मुद्दा नोंदवा' : 'Submit Gram Sabha Discussion Point'}
                 </h3>
-                <span className="text-[11px] text-[#707974]">Include your point on the official agenda</span>
+                <span className="text-[11px] text-[#707974]">
+                  {lang === 'MR' ? 'अधिकृत विषयपत्रिकेत आपल्या मुद्द्याचा समावेश करा' : 'Include your point on the official agenda'}
+                </span>
               </div>
             </div>
 
             {modalSuccess ? (
               <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">Point Enrolled for Sabha!</h4>
+                <h4 className="font-bold text-[15px] text-[#003629]">
+                  {lang === 'MR' ? 'मुद्दा सभेसाठी नोंदवला गेला!' : 'Point Enrolled for Sabha!'}
+                </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
-                  Your discussion subject has been recorded for the 26 Jan Gram Sabha reading.
+                  {lang === 'MR'
+                    ? 'आपला चर्चेचा विषय २६ जानेवारी ग्रामसभेत वाचून दाखवण्यासाठी नोंदवला आहे.'
+                    : 'Your discussion subject has been recorded for the 26 Jan Gram Sabha reading.'}
                 </p>
               </div>
             ) : (
               <form onSubmit={handleModalSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">Citizen Name &amp; Ward</label>
+                  <label className="font-bold text-[#003629] block mb-1">
+                    {lang === 'MR' ? 'नागरिकाचे नाव व प्रभाग' : 'Citizen Name & Ward'}
+                  </label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Sunil Jadhav, Ward 3"
+                    placeholder={lang === 'MR' ? 'उदा. सुनील जाधव, प्रभाग ३' : 'e.g. Sunil Jadhav, Ward 3'}
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">Proposal Topic</label>
+                  <label className="font-bold text-[#003629] block mb-1">
+                    {lang === 'MR' ? 'प्रस्तावित विषय' : 'Proposal Topic'}
+                  </label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Drainage pipe repair on Canal Road"
+                    placeholder={lang === 'MR' ? 'उदा. कालवा रस्त्यावरील गटार दुरुस्ती' : 'e.g. Drainage pipe repair on Canal Road'}
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">Detailed Explanation</label>
+                  <label className="font-bold text-[#003629] block mb-1">
+                    {lang === 'MR' ? 'सविस्तर स्पष्टीकरण' : 'Detailed Explanation'}
+                  </label>
                   <textarea
                     rows={3}
                     required
-                    placeholder="Explain why this matter should be addressed during the meeting..."
+                    placeholder={lang === 'MR' ? 'हा विषय ग्रामसभेत का चर्चेत घेतला पाहिजे ते स्पष्ट करा...' : 'Explain why this matter should be addressed during the meeting...'}
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none resize-none"
                   />
                 </div>
@@ -1275,7 +1426,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   type="submit"
                   className="w-full py-2.5 bg-[#a63b00] hover:bg-[#852f00] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
                 >
-                  Enroll Discussion Point
+                  {lang === 'MR' ? 'चर्चेचा मुद्दा नोंदवा' : 'Enroll Discussion Point'}
                 </button>
               </form>
             )}

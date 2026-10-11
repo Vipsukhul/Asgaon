@@ -17,7 +17,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
   onNavigateHome,
   onSelectScheme
 }) => {
-  const { lang, t } = useLanguage();
+  const { lang,setLang, t } = useLanguage();
 
   // Read initial category/search from URL params if present
   const getInitialParam = (key: string, fallback: string) => {
@@ -267,18 +267,20 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
       <header className="bg-white rounded-2xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
         <div className="max-w-2xl">
           <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#baeed9] text-[#002117] text-[10px] font-extrabold uppercase tracking-wider mb-2">
-            DBT VERIFIED | ZERO FEE | DIRECT WELFARE ASSISTANCE
+            {lang === 'MR' ? 'डीबीटी पडताळणीकृत • मोफत नागरी सेवा • थेट शासकीय लाभ' : 'DBT VERIFIED | ZERO FEE | DIRECT WELFARE ASSISTANCE'}
           </span>
 
           <h1 className="font-heading font-extrabold text-[24px] sm:text-[28px] text-[#003629] leading-tight mb-1">
-            Sarkari Yojana &amp; Gharkul Guidance Portal
+            {lang === 'MR' ? 'शासकीय योजना व घरकुल मार्गदर्शन दालन' : 'Sarkari Yojana & Gharkul Guidance Portal'}
           </h1>
           <p className="font-heading font-bold text-[14px] sm:text-[15px] text-[#a63b00] mb-2">
-            सर्व शासकीय योजना, ग्रामीण घरकुल योजना व कृषी अनुदान — अधिकृत माहिती व थेट अर्ज
+            {lang === 'MR' ? 'सर्व शासकीय योजना, ग्रामीण घरकुल योजना व कृषी अनुदान — अधिकृत माहिती व थेट अर्ज' : 'Central & Maharashtra Govt Welfare Schemes, Housing Grants & Farm Subsidies'}
           </p>
 
           <p className="text-[13px] text-[#404945] leading-relaxed">
-            100% authenticated government welfare programs from Central &amp; Maharashtra governments including <strong>Gharkul Housing (रमाई, शबरी, मोदी आवास, PMAY-G)</strong>, PM-Kisan, Ladki Bahin, Solar Pumps, and MahaDBT scholarships. Direct official portals, zero middlemen, zero fee.
+            {lang === 'MR'
+              ? 'केंद्र व महाराष्ट्र शासनाच्या १००% अधिकृत जनकल्याणकारी योजना: घरकुल आवास (रमाई, शबरी, मोदी आवास, PMAY-G), पीएम किसान, लाडकी बहीण, सौर कृषी पंप आणि महाडीबीटी शिष्यवृत्ती. थेट अधिकृत पोर्टल, शून्य दलाली, मोफत अर्ज.'
+              : '100% authenticated government welfare programs from Central & Maharashtra governments including Gharkul Housing (Ramai, Shabari, Modi Awas, PMAY-G), PM-Kisan, Ladki Bahin, Solar Pumps, and MahaDBT scholarships. Direct official portals, zero middlemen, zero fee.'}
           </p>
         </div>
 
@@ -292,16 +294,28 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
             className="w-full py-2.5 px-4 rounded-xl bg-[#a63b00] hover:bg-[#852f00] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
           >
             <span className="material-symbols-outlined text-[18px]">home</span>
-            <span>View All Gharkul Schemes (घरकुल यादी)</span>
+            <span>{lang === 'MR' ? 'सर्व घरकुल योजना पहा (घरकुल यादी)' : 'View All Gharkul Schemes'}</span>
           </button>
 
-          <a
-            href="tel:9822104500"
-            className="w-full py-2 px-4 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] text-[#1d1b16] text-[12px] font-bold flex items-center justify-center gap-1.5 transition-colors border border-[#e8e2d9]"
-          >
-            <span className="material-symbols-outlined text-[16px]">support_agent</span>
-            <span>Asgaon CSC Desk Helpline</span>
-          </a>
+          <div className="flex items-center gap-2">
+            <a
+              href="tel:9822104500"
+              className="flex-1 py-2 px-3 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] text-[#1d1b16] text-[12px] font-bold flex items-center justify-center gap-1.5 transition-colors border border-[#e8e2d9]"
+            >
+              <span className="material-symbols-outlined text-[16px]">support_agent</span>
+              <span>{lang === 'MR' ? 'सीएससी मदत कक्ष' : 'CSC Desk Helpline'}</span>
+            </a>
+
+            <button
+              type="button"
+              onClick={() => setLang(lang === 'MR' ? 'EN' : 'MR')}
+              className="px-3 py-2 rounded-xl bg-[#f9f3ea] hover:bg-[#e8e2d9] text-[#003629] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9] transition-all"
+              title={lang === 'MR' ? 'Switch to English' : 'मराठीत बदला'}
+            >
+              <span className="material-symbols-outlined text-[15px]">translate</span>
+              <span>{lang === 'MR' ? 'EN' : 'मराठी'}</span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -314,10 +328,10 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
             </div>
             <div>
               <div className="text-[11px] font-bold uppercase tracking-wider text-[#baeed9]">
-                MAHARASHTRA RURAL HOUSING MISSION | महाराष्ट्र ग्रामीण घरकुल अभियान
+                {lang === 'MR' ? 'महाराष्ट्र ग्रामीण घरकुल अभियान • आसगाव' : 'MAHARASHTRA RURAL HOUSING MISSION | ASGAON'}
               </div>
               <h2 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-white">
-                Gharkul Yojanas at a Glance (घरकुल योजनांची संपूर्ण माहिती)
+                {lang === 'MR' ? 'घरकुल योजनांची संपूर्ण माहिती व अनुदान' : 'Gharkul Yojanas at a Glance'}
               </h2>
             </div>
           </div>
@@ -329,7 +343,9 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
             }}
             className="px-3.5 py-1.5 rounded-xl bg-[#baeed9] text-[#002117] hover:bg-white text-[12px] font-bold shrink-0 transition-colors"
           >
-            Filter Housing Schemes ({allSchemes.filter((s) => s.categoryKey === 'housing').length})
+            {lang === 'MR'
+              ? `घरकुल योजना फिल्टर करा (${allSchemes.filter((s) => s.categoryKey === 'housing').length})`
+              : `Filter Housing Schemes (${allSchemes.filter((s) => s.categoryKey === 'housing').length})`}
           </button>
         </div>
 
@@ -338,39 +354,39 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
           <div className="bg-white/10 p-3 rounded-xl border border-white/10 flex flex-col justify-between">
             <div>
               <div className="font-bold text-[#baeed9] text-[13px] flex items-center gap-1">
-                <span>PMAY-G (केंद्र सरकार)</span>
+                <span>PMAY-G ({lang === 'MR' ? 'केंद्र सरकार' : 'Central Govt'})</span>
               </div>
-              <div className="font-bold text-white text-[15px] my-1">₹1.57 Lakhs Total</div>
-              <p className="text-white/80 text-[11px]">For houseless families in SECC / Awaas+ permanent waitlist.</p>
+              <div className="font-bold text-white text-[15px] my-1">{lang === 'MR' ? '₹१.५७ लाख एकूण' : '₹1.57 Lakhs Total'}</div>
+              <p className="text-white/80 text-[11px]">{lang === 'MR' ? 'SECC / आवास+ प्रतीक्षा यादीतील बेघर कुटुंबांसाठी.' : 'For houseless families in SECC / Awaas+ waitlist.'}</p>
             </div>
-            <div className="mt-2 text-[10px] text-[#baeed9] font-medium">All Castes (SECC List)</div>
+            <div className="mt-2 text-[10px] text-[#baeed9] font-medium">{lang === 'MR' ? 'सर्व प्रवर्ग (SECC यादी)' : 'All Castes (SECC List)'}</div>
           </div>
 
           <div className="bg-white/10 p-3 rounded-xl border border-white/10 flex flex-col justify-between">
             <div>
-              <div className="font-bold text-[#baeed9] text-[13px]">रमाई आवास (Ramai Awas)</div>
-              <div className="font-bold text-white text-[15px] my-1">₹1.30L + MGNREGA</div>
-              <p className="text-white/80 text-[11px]">Dedicated pukka house grant for rural SC &amp; Neo-Buddhist families.</p>
+              <div className="font-bold text-[#baeed9] text-[13px]">{lang === 'MR' ? 'रमाई आवास योजना' : 'Ramai Awas Yojana'}</div>
+              <div className="font-bold text-white text-[15px] my-1">{lang === 'MR' ? '₹१.३० लाख + मनरेगा' : '₹1.30L + MGNREGA'}</div>
+              <p className="text-white/80 text-[11px]">{lang === 'MR' ? 'ग्रामीण भागातील अनुसूचित जाती (SC) व नवबौद्ध कुटुंबांसाठी.' : 'Dedicated grant for rural SC & Neo-Buddhist families.'}</p>
             </div>
-            <div className="mt-2 text-[10px] text-[#baeed9] font-medium">SC / Nav-Bouddha</div>
+            <div className="mt-2 text-[10px] text-[#baeed9] font-medium">{lang === 'MR' ? 'अनुसूचित जाती (SC) प्रवर्ग' : 'SC / Nav-Bouddha'}</div>
           </div>
 
           <div className="bg-white/10 p-3 rounded-xl border border-white/10 flex flex-col justify-between">
             <div>
-              <div className="font-bold text-[#baeed9] text-[13px]">शबरी आवास (Shabari Awas)</div>
-              <div className="font-bold text-white text-[15px] my-1">₹1.30L + MGNREGA</div>
-              <p className="text-white/80 text-[11px]">Free pukka house financial aid for Scheduled Tribe (ST) families.</p>
+              <div className="font-bold text-[#baeed9] text-[13px]">{lang === 'MR' ? 'शबरी आवास योजना' : 'Shabari Awas Yojana'}</div>
+              <div className="font-bold text-white text-[15px] my-1">{lang === 'MR' ? '₹१.३० लाख + मनरेगा' : '₹1.30L + MGNREGA'}</div>
+              <p className="text-white/80 text-[11px]">{lang === 'MR' ? 'अनुसूचित जमाती (ST) आदिवासी कुटुंबांसाठी पक्के घर अनुदान.' : 'Pukka house financial aid for Scheduled Tribe (ST) families.'}</p>
             </div>
-            <div className="mt-2 text-[10px] text-[#baeed9] font-medium">ST / Tribal Families</div>
+            <div className="mt-2 text-[10px] text-[#baeed9] font-medium">{lang === 'MR' ? 'अनुसूचित जमाती (ST) प्रवर्ग' : 'ST / Tribal Families'}</div>
           </div>
 
           <div className="bg-white/10 p-3 rounded-xl border border-white/10 flex flex-col justify-between">
             <div>
-              <div className="font-bold text-[#baeed9] text-[13px]">मोदी आवास (Modi Awas)</div>
-              <div className="font-bold text-white text-[15px] my-1">₹1.20L + MGNREGA</div>
-              <p className="text-white/80 text-[11px]">Special Maharashtra housing scheme for rural OBC / SBC / VJNT.</p>
+              <div className="font-bold text-[#baeed9] text-[13px]">{lang === 'MR' ? 'मोदी आवास योजना' : 'Modi Awas Yojana'}</div>
+              <div className="font-bold text-white text-[15px] my-1">{lang === 'MR' ? '₹१.२० लाख + मनरेगा' : '₹1.20L + MGNREGA'}</div>
+              <p className="text-white/80 text-[11px]">{lang === 'MR' ? 'ग्रामीण भागातील इतर मागासवर्ग (OBC/SBC/VJNT) कुटुंबांसाठी.' : 'Special housing scheme for rural OBC / SBC / VJNT.'}</p>
             </div>
-            <div className="mt-2 text-[10px] text-[#baeed9] font-medium">OBC / SBC / VJNT</div>
+            <div className="mt-2 text-[10px] text-[#baeed9] font-medium">{lang === 'MR' ? 'इतर मागास प्रवर्ग (OBC/VJNT)' : 'OBC / SBC / VJNT'}</div>
           </div>
         </div>
       </section>
@@ -386,7 +402,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               setSearch(e.target.value);
               setCurrentPage(1);
             }}
-            placeholder="Search schemes by name, category (e.g. Gharkul, Ramai, Modi Awas, PM-Kisan, Ladki Bahin, Solar Pump)..."
+            placeholder={lang === 'MR' ? "योजना शोधा (उदा. घरकुल, रमाई, मोदी आवास, पीएम किसान, लाडकी बहीण, सौर कृषी पंप)..." : "Search schemes by name, category (e.g. Gharkul, Ramai, Modi Awas, PM-Kisan, Ladki Bahin, Solar Pump)..."}
             className="w-full pl-10 pr-10 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
             aria-label="Search schemes"
           />
@@ -451,7 +467,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               }}
               className="w-4 h-4 accent-[#003629]"
             />
-            <span>Applications Active Now</span>
+            <span>{lang === 'MR' ? 'सध्या अर्ज सुरू' : 'Applications Active Now'}</span>
           </label>
 
           <label className="flex items-center gap-1.5 cursor-pointer select-none">
@@ -464,7 +480,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               }}
               className="w-4 h-4 accent-[#003629]"
             />
-            <span>Direct Benefit Transfer (DBT) Cash</span>
+            <span>{lang === 'MR' ? 'थेट बँक खात्यात (DBT)' : 'Direct Benefit Transfer (DBT) Cash'}</span>
           </label>
 
           <label className="flex items-center gap-1.5 cursor-pointer select-none">
@@ -477,7 +493,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               }}
               className="w-4 h-4 accent-[#003629]"
             />
-            <span>100% Free / Full Subsidy</span>
+            <span>{lang === 'MR' ? '१००% मोफत / पूर्ण अनुदान' : '100% Free / Full Subsidy'}</span>
           </label>
 
           <label className="flex items-center gap-1.5 cursor-pointer select-none">
@@ -490,7 +506,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               }}
               className="w-4 h-4 accent-[#003629]"
             />
-            <span>Land / Property Record (7/12 or 8A)</span>
+            <span>{lang === 'MR' ? 'जमीन / घर नमुना (७/१२ किंवा ८-अ)' : 'Land / Property Record (7/12 or 8A)'}</span>
           </label>
         </div>
       </section>
@@ -502,10 +518,12 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
           <div className="flex items-center justify-between">
             <h2 className="font-heading font-extrabold text-[17px] text-[#003629]">
               {selectedCat === 'housing'
-                ? 'Gharkul & Rural Housing Schemes (घरकुल योजना दालन)'
-                : 'Government Schemes & Subsidies (शासकीय योजना व सबसिडी)'}{' '}
+                ? (lang === 'MR' ? 'घरकुल व ग्रामीण गृहनिर्माण योजना दालन' : 'Gharkul & Rural Housing Schemes')
+                : (lang === 'MR' ? 'शासकीय योजना व थेट सबसिडी सहाय्य' : 'Government Schemes & Subsidies')}{' '}
               <span className="text-[13px] font-normal text-[#707974]">
-                (Showing {filtered.length > 0 ? startIndex + 1 : 0}-{Math.min(startIndex + pageSize, filtered.length)} of {filtered.length} verified schemes)
+                ({lang === 'MR'
+                  ? `दाखवत आहे ${filtered.length > 0 ? startIndex + 1 : 0}-${Math.min(startIndex + pageSize, filtered.length)} / एकूण ${filtered.length} योजना`
+                  : `Showing ${filtered.length > 0 ? startIndex + 1 : 0}-${Math.min(startIndex + pageSize, filtered.length)} of ${filtered.length} verified schemes`})
               </span>
             </h2>
           </div>
@@ -513,14 +531,20 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
           {allSchemes.length === 0 ? (
             <div className="bg-white rounded-2xl p-12 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
               <div className="w-8 h-8 border-3 border-[#003629] border-t-transparent rounded-full animate-spin mb-1" />
-              <p className="text-[13px] font-bold text-[#003629]">Connecting to database &amp; loading government welfare schemes...</p>
+              <p className="text-[13px] font-bold text-[#003629]">
+                {lang === 'MR' ? 'माहिती लोड होत आहे, कृपया प्रतीक्षा करा...' : 'Connecting to database & loading government welfare schemes...'}
+              </p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
               <span className="material-symbols-outlined text-[48px] text-[#a63b00]">policy</span>
-              <h3 className="font-heading font-bold text-[18px] text-[#003629]">No matching schemes found</h3>
+              <h3 className="font-heading font-bold text-[18px] text-[#003629]">
+                {lang === 'MR' ? 'एकही योजना आढळली नाही' : 'No matching schemes found'}
+              </h3>
               <p className="text-[13px] text-[#707974] max-w-md">
-                No government initiatives match your current filters. Try selecting "All Schemes" or clear your keyword search.
+                {lang === 'MR'
+                  ? 'तुमच्या निवडलेल्या फिल्टरनुसार कोणतीही योजना उपलब्ध नाही. कृपया "सर्व योजना" निवडा किंवा शोध शब्द बदला.'
+                  : 'No government initiatives match your current filters. Try selecting "All Schemes" or clear your keyword search.'}
               </p>
               <button
                 onClick={() => {
@@ -531,7 +555,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                 }}
                 className="px-4 py-2 bg-[#003629] text-white text-[12px] font-bold rounded-xl hover:bg-[#1b4d3e] transition-colors"
               >
-                Reset All Filters
+                {lang === 'MR' ? 'सर्व फिल्टर्स रीसेट करा' : 'Reset All Filters'}
               </button>
             </div>
           ) : (
@@ -597,7 +621,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                     <div>
                       <div className="text-[10px] uppercase font-bold text-[#003629] mb-1 flex items-center gap-1">
                         <span className="material-symbols-outlined text-[14px]">account_balance_wallet</span>
-                        <span>Financial Assistance / Subsidy</span>
+                        <span>{lang === 'MR' ? 'आर्थिक सहाय्य / सबसिडी' : 'Financial Assistance / Subsidy'}</span>
                       </div>
                       <p className="text-[#404945] leading-relaxed font-medium">{item.financialAssistance}</p>
                     </div>
@@ -605,7 +629,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                     <div>
                       <div className="text-[10px] uppercase font-bold text-[#003629] mb-1 flex items-center gap-1">
                         <span className="material-symbols-outlined text-[14px]">checklist</span>
-                        <span>Eligibility Criteria</span>
+                        <span>{lang === 'MR' ? 'पात्रता निकष' : 'Eligibility Criteria'}</span>
                       </div>
                       <p className="text-[#404945] leading-relaxed">{item.eligibility}</p>
                     </div>
@@ -615,7 +639,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                   <div className="bg-white p-3 rounded-xl border border-[#e8e2d9] mb-3">
                     <div className="text-[10px] font-bold uppercase tracking-wider text-[#707974] mb-2 flex items-center gap-1">
                       <span className="material-symbols-outlined text-[14px] text-[#376757]">task_alt</span>
-                      <span>Required Documents Checklist (आवश्यक कागदपत्रे)</span>
+                      <span>{lang === 'MR' ? 'आवश्यक कागदपत्रे सूची' : 'Required Documents Checklist'}</span>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[12px] text-[#1d1b16]">
                       {item.documents.map((doc, idx) => (
@@ -651,7 +675,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                       rel="noopener noreferrer"
                       className="px-4 py-2 rounded-xl bg-[#002873] hover:bg-[#00174b] text-white text-[12px] font-bold flex items-center gap-1 shadow-xs transition-colors"
                     >
-                      <span>{item.actionLabel}</span>
+                      <span>{item.actionLabel || (lang === 'MR' ? 'पोर्टलवर अर्ज करा' : 'Apply on Portal')}</span>
                       <span className="material-symbols-outlined text-[14px]">open_in_new</span>
                     </a>
 
@@ -660,7 +684,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                         onClick={() => onSelectScheme(item.slug)}
                         className="px-3.5 py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] font-bold transition-colors shadow-xs flex items-center gap-1"
                       >
-                        <span>Full Scheme Page</span>
+                        <span>{lang === 'MR' ? 'संपूर्ण तपशील पहा' : 'Full Scheme Page'}</span>
                         <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                       </button>
                     ) : (
@@ -668,14 +692,14 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                         onClick={() => setSelectedModalScheme(item)}
                         className="px-3 py-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[12px] font-bold transition-colors border border-[#e8e2d9]"
                       >
-                        <span>View Details</span>
+                        <span>{lang === 'MR' ? 'तपशील पहा' : 'View Details'}</span>
                       </button>
                     )}
 
                     {onBookmarkScheme && (
                       <button
                         onClick={() => onBookmarkScheme(item)}
-                        title="Bookmark Scheme"
+                        title={lang === 'MR' ? 'योजना सेव्ह करा' : 'Bookmark Scheme'}
                         className="p-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#707974] hover:text-[#003629] transition-colors"
                       >
                         <span className="material-symbols-outlined text-[18px]">bookmark_border</span>
@@ -688,7 +712,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                     className="text-[12px] font-bold text-[#a63b00] hover:underline flex items-center gap-1"
                   >
                     <span className="material-symbols-outlined text-[15px]">storefront</span>
-                    <span>Book at Asgaon CSC Desk</span>
+                    <span>{lang === 'MR' ? 'आसगाव CSC केंद्रावर अर्ज करा' : 'Book at Asgaon CSC Desk'}</span>
                   </a>
                 </div>
               </article>
@@ -701,7 +725,9 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
             className="bg-white rounded-xl p-3 border border-[#e8e2d9] flex flex-col sm:flex-row items-center justify-between text-[12px] text-[#707974] gap-2 mt-2"
           >
             <span>
-              Showing {filtered.length > 0 ? startIndex + 1 : 0}-{Math.min(startIndex + pageSize, filtered.length)} of {filtered.length} verified schemes
+              {lang === 'MR'
+                ? `दाखवत आहे ${filtered.length > 0 ? startIndex + 1 : 0}-${Math.min(startIndex + pageSize, filtered.length)} / एकूण ${filtered.length} योजना`
+                : `Showing ${filtered.length > 0 ? startIndex + 1 : 0}-${Math.min(startIndex + pageSize, filtered.length)} of ${filtered.length} verified schemes`}
             </span>
             {totalPages > 1 && (
               <div className="flex items-center gap-1">
@@ -756,10 +782,12 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               <span className="material-symbols-outlined text-[24px] text-[#003629]">help_outline</span>
               <div>
                 <h2 className="font-heading font-extrabold text-[17px] text-[#003629]">
-                  Frequently Asked Questions (वारंवार विचारले जाणारे प्रश्न - FAQ)
+                  {lang === 'MR' ? 'वारंवार विचारले जाणारे प्रश्न (FAQ)' : 'Frequently Asked Questions (FAQ)'}
                 </h2>
                 <p className="text-[12px] text-[#707974]">
-                  Key guidelines for Gharkul housing and DBT subsidies in Asgaon Gram Panchayat
+                  {lang === 'MR'
+                    ? 'आसगाव परिसरातील घरकुल व थेट सबसिडी (DBT) योजनांविषयी महत्त्वाची माहिती'
+                    : 'Key guidelines for Gharkul housing and DBT subsidies in Asgaon area'}
                 </p>
               </div>
             </div>
@@ -767,54 +795,99 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
             <div className="space-y-3 text-[13px]">
               <details className="group bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
                 <summary className="font-bold text-[#003629] cursor-pointer flex items-center justify-between list-none">
-                  <span>१. आसगावमध्ये घरकुल योजनेसाठी (Gharkul Yojana) कोणती कागदपत्रे लागतात?</span>
+                  <span>{lang === 'MR' ? '१. आसगावमध्ये घरकुल योजनेसाठी कोणती कागदपत्रे लागतात?' : '1. Which documents are required for Gharkul Yojana in Asgaon?'}</span>
                   <span className="material-symbols-outlined text-[20px] transition-transform group-open:rotate-180">expand_more</span>
                 </summary>
                 <div className="mt-2 text-[#404945] leading-relaxed pt-2 border-t border-[#e8e2d9]/60">
-                  घरकुल योजनेसाठी खालील कागदपत्रे आवश्यक आहेत:
-                  <ul className="list-disc pl-5 mt-1 space-y-1">
-                    <li>ग्रामपंचायतीचा नमुना ८-अ किंवा ७/१२ जमिनीचा उतारा (जागा स्वतःच्या नावावर असणे आवश्यक).</li>
-                    <li>तहसीलदार कार्यालयाचा वार्षिक उत्पन्नाचा दाखला (वार्षिक उत्पन्न मर्यादा ₹१.२० लाखांपर्यंत).</li>
-                    <li>सक्षम प्राधिकाऱ्याचा जातीचा दाखला (रमाईसाठी SC, शबरीसाठी ST, मोदी आवाससाठी OBC).</li>
-                    <li>आधार कार्ड, शिधापत्रिका (रेशन कार्ड) व आधार संलग्न बँक खाते पासबुक.</li>
-                    <li>ग्रामसभेचा मंजुरी ठराव किंवा SECC / Awaas+ प्रतीक्षा यादीतील नाव.</li>
-                  </ul>
+                  {lang === 'MR' ? (
+                    <>
+                      घरकुल योजनेसाठी खालील कागदपत्रे आवश्यक आहेत:
+                      <ul className="list-disc pl-5 mt-1 space-y-1">
+                        <li>नमुना ८-अ किंवा ७/१२ जमिनीचा उतारा (जागा स्वतःच्या नावावर असणे आवश्यक).</li>
+                        <li>तहसीलदार कार्यालयाचा वार्षिक उत्पन्नाचा दाखला (वार्षिक उत्पन्न मर्यादा ₹१.२० लाखांपर्यंत).</li>
+                        <li>सक्षम प्राधिकाऱ्याचा जातीचा दाखला (रमाईसाठी SC, शबरीसाठी ST, मोदी आवाससाठी OBC).</li>
+                        <li>आधार कार्ड, शिधापत्रिका (रेशन कार्ड) व आधार संलग्न बँक खाते पासबुक.</li>
+                        <li>ग्रामसभेचा मंजुरी ठराव किंवा SECC / Awaas+ प्रतीक्षा यादीतील नाव.</li>
+                      </ul>
+                    </>
+                  ) : (
+                    <>
+                      The following documents are required for Gharkul housing schemes:
+                      <ul className="list-disc pl-5 mt-1 space-y-1">
+                        <li>Form 8A or 7/12 Land Record (Plot must be registered in applicant's name).</li>
+                        <li>Income Certificate from Tehsildar (Annual limit up to ₹1.20 Lakh).</li>
+                        <li>Caste Certificate (SC for Ramai, ST for Shabari, OBC for Modi Awas).</li>
+                        <li>Aadhaar Card, Ration Card &amp; Aadhaar-linked Bank Passbook.</li>
+                        <li>Gram Sabha recommendation resolution or name in SECC / Awaas+ waitlist.</li>
+                      </ul>
+                    </>
+                  )}
                 </div>
               </details>
 
               <details className="group bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
                 <summary className="font-bold text-[#003629] cursor-pointer flex items-center justify-between list-none">
-                  <span>2. How is the financial grant disbursed in Gharkul Yojana?</span>
+                  <span>{lang === 'MR' ? '२. घरकुल योजनेत अनुदानाची रक्कम कशी वितरित केली जाते?' : '2. How is the financial grant disbursed in Gharkul Yojana?'}</span>
                   <span className="material-symbols-outlined text-[20px] transition-transform group-open:rotate-180">expand_more</span>
                 </summary>
                 <div className="mt-2 text-[#404945] leading-relaxed pt-2 border-t border-[#e8e2d9]/60">
-                  The subsidy amount (₹1,20,000 to ₹1,30,000) is released in direct DBT milestone installments upon geo-tagged photo verification:
-                  <ol className="list-decimal pl-5 mt-1 space-y-1">
-                    <li>1st Installment (20%): Plinth level excavation foundation.</li>
-                    <li>2nd Installment (45%): Lintel & wall masonry completion.</li>
-                    <li>3rd Installment (25%): Roof slab completion.</li>
-                    <li>4th Installment (10%): Door, window, plaster, and toilet completion + ₹12,000 SBM toilet incentive + ₹25,000 (90 days MGNREGA wages).</li>
-                  </ol>
+                  {lang === 'MR' ? (
+                    <>
+                      अनुदान रक्कम (₹१,२०,००० ते ₹१,३०,०००) जिओ-टॅग केलेल्या फोटो पडताळणीनंतर थेट बँक खात्यात (DBT) टप्प्याटप्प्याने जमा केली जाते:
+                      <ol className="list-decimal pl-5 mt-1 space-y-1">
+                        <li>१ ला हप्ता (२०%): जोत्याचे बांधकाम (Plinth level foundation).</li>
+                        <li>२ रा हप्ता (४५%): खिडकी व भिंतीचे बांधकाम पूर्ण झाल्यावर.</li>
+                        <li>३ रा हप्ता (२५%): स्लॅब (छत) टाकल्यावर.</li>
+                        <li>४ था हप्ता (१०%): दरवाजे, खिडक्या, प्लास्टर व शौचालय पूर्ण झाल्यावर + स्वच्छ भारत अभियान अंतर्गत ₹१२,००० प्रोत्साहन अनुदान + मनरेगा अंतर्गत ९० दिवसांची मजुरी (सुमारे ₹२५,०००).</li>
+                      </ol>
+                    </>
+                  ) : (
+                    <>
+                      The subsidy amount (₹1,20,000 to ₹1,30,000) is released in direct DBT milestone installments upon geo-tagged photo verification:
+                      <ol className="list-decimal pl-5 mt-1 space-y-1">
+                        <li>1st Installment (20%): Plinth level excavation foundation.</li>
+                        <li>2nd Installment (45%): Lintel &amp; wall masonry completion.</li>
+                        <li>3rd Installment (25%): Roof slab completion.</li>
+                        <li>4th Installment (10%): Door, window, plaster, and toilet completion + ₹12,000 SBM toilet incentive + ₹25,000 (90 days MGNREGA wages).</li>
+                      </ol>
+                    </>
+                  )}
                 </div>
               </details>
 
               <details className="group bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
                 <summary className="font-bold text-[#003629] cursor-pointer flex items-center justify-between list-none">
-                  <span>३. मुख्यमंत्री माझी लाडकी बहीण योजनेचा लाभ कोणाला मिळतो?</span>
+                  <span>{lang === 'MR' ? '३. मुख्यमंत्री माझी लाडकी बहीण योजनेचा लाभ कोणाला मिळतो?' : '3. Who is eligible for Majhi Ladki Bahin Yojana?'}</span>
                   <span className="material-symbols-outlined text-[20px] transition-transform group-open:rotate-180">expand_more</span>
                 </summary>
                 <div className="mt-2 text-[#404945] leading-relaxed pt-2 border-t border-[#e8e2d9]/60">
-                  महाराष्ट्रातील २१ ते ६५ वयोगटातील विवाहित, विधवा, घटस्फोटित, परित्यक्ता आणि निराधार महिला ज्यांच्या कुटुंबाचे वार्षिक उत्पन्न ₹२.५ लाखांपेक्षा कमी आहे (किंवा पिवळे/केशरी रेशन कार्डधारक), त्यांना दरमहा ₹१,५०० (वार्षिक ₹१८,०००) थेट बँक खात्यात दिले जातात.
+                  {lang === 'MR' ? (
+                    <>
+                      महाराष्ट्रातील २१ ते ६५ वयोगटातील विवाहित, विधवा, घटस्फोटित, परित्यक्ता आणि निराधार महिला ज्यांच्या कुटुंबाचे वार्षिक उत्पन्न ₹२.५ लाखांपेक्षा कमी आहे (किंवा पिवळे/केशरी रेशन कार्डधारक), त्यांना दरमहा ₹१,५०० (वार्षिक ₹१८,०००) थेट बँक खात्यात दिले जातात.
+                    </>
+                  ) : (
+                    <>
+                      Married, widowed, divorced, and destitute women of Maharashtra aged 21 to 65 years whose family annual income is below ₹2.5 lakh (or having yellow/orange ration card) receive ₹1,500 monthly directly into their bank account.
+                    </>
+                  )}
                 </div>
               </details>
 
               <details className="group bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
                 <summary className="font-bold text-[#003629] cursor-pointer flex items-center justify-between list-none">
-                  <span>4. Are there any application fees or agent commissions?</span>
+                  <span>{lang === 'MR' ? '४. अर्जासाठी कोणतेही शुल्क किंवा मध्यस्थांची फी लागते का?' : '4. Are there any application fees or agent commissions?'}</span>
                   <span className="material-symbols-outlined text-[20px] transition-transform group-open:rotate-180">expand_more</span>
                 </summary>
                 <div className="mt-2 text-[#404945] leading-relaxed pt-2 border-t border-[#e8e2d9]/60">
-                  <strong>Zero fees!</strong> All central and state government schemes in Asgaon Gram Panchayat are 100% free of charge. Never pay any bribe or commission to middlemen. In case of bribery demands, report immediately to Anti-Corruption Bureau toll-free 1064.
+                  {lang === 'MR' ? (
+                    <>
+                      <strong>शून्य शुल्क!</strong> शासनाच्या सर्व योजनांचे अर्ज नागरिकांसाठी १००% मोफत आहेत. कोणत्याही मध्यस्थ अथवा दलालाला लाच देऊ नका. गैरव्यवहाराची तक्रार लाचलुचपत प्रतिबंधक विभाग (ACB) टोल-फ्री १०६४ वर तात्काळ नोंदवा.
+                    </>
+                  ) : (
+                    <>
+                      <strong>Zero fees!</strong> All central and state government schemes are 100% free of charge. Never pay any bribe or commission to middlemen. In case of bribery demands, report immediately to Anti-Corruption Bureau toll-free 1064.
+                    </>
+                  )}
                 </div>
               </details>
             </div>
@@ -826,29 +899,31 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
           {/* Widget 1: Asgaon CSC Digital Seva Kendra */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#002873] bg-[#dbe1ff] px-2 py-0.5 rounded">
-              GOVERNMENT SERVICES DESK
+              {lang === 'MR' ? 'नागरिक सेवा केंद्र' : 'GOVERNMENT SERVICES DESK'}
             </span>
 
             <h3 className="font-heading font-extrabold text-[16px] text-[#003629] mt-2 mb-1">
-              Asgaon CSC Digital Seva Kendra
+              {lang === 'MR' ? 'आसगाव सीएससी डिजिटल सेवा केंद्र' : 'Asgaon CSC Digital Seva Kendra'}
             </h3>
             <p className="text-[12px] text-[#404945] leading-relaxed mb-3">
-              Official physical assistance desk for online DBT registrations, document scanning, 7/12 &amp; 8A downloads, and biometric e-KYC.
+              {lang === 'MR'
+                ? 'ऑनलाइन डीबीटी नोंदणी, कागदपत्र स्कॅनिंग, ७/१२ व ८-अ डाऊनलोड आणि बायोमेट्रिक ई-केवायसीसाठी मदत केंद्र.'
+                : 'Assistance desk for online DBT registrations, document scanning, 7/12 & 8A downloads, and biometric e-KYC.'}
             </p>
 
             <div className="space-y-1 text-[12px] text-[#707974] mb-3">
-              <div>Operator: <strong className="text-[#1d1b16]">Ramesh Shinde (CSC VLE)</strong></div>
-              <div>Location: <strong className="text-[#1d1b16]">Ground Floor, Gram Panchayat Bhawan, Ward No. 2</strong></div>
-              <div>Hours: <strong className="text-[#1d1b16]">8:30 AM - 6:30 PM (Mon-Sat)</strong></div>
+              <div>{lang === 'MR' ? 'ऑपरेटर:' : 'Operator:'} <strong className="text-[#1d1b16]">Ramesh Shinde (CSC VLE)</strong></div>
+              <div>{lang === 'MR' ? 'पत्ता:' : 'Location:'} <strong className="text-[#1d1b16]">{lang === 'MR' ? 'वॉर्ड क्र. २, आसगाव' : 'Ward No. 2, Asgaon'}</strong></div>
+              <div>{lang === 'MR' ? 'वेळ:' : 'Hours:'} <strong className="text-[#1d1b16]">{lang === 'MR' ? 'सकाळी ८:३० - संध्याकाळी ६:३० (सोम-शनि)' : '8:30 AM - 6:30 PM (Mon-Sat)'}</strong></div>
             </div>
 
             <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] mb-4 flex items-center justify-between text-[12px]">
               <div>
-                <div className="text-[10px] text-[#707974] uppercase font-bold">Current Desk Queue</div>
-                <div className="font-heading font-extrabold text-[15px] text-[#003629]">4 People Ahead</div>
+                <div className="text-[10px] text-[#707974] uppercase font-bold">{lang === 'MR' ? 'रांगेतील स्थिती' : 'Current Desk Queue'}</div>
+                <div className="font-heading font-extrabold text-[15px] text-[#003629]">{lang === 'MR' ? '४ नागरिक पुढे आहेत' : '4 People Ahead'}</div>
               </div>
               <span className="text-[11px] font-bold text-[#a63b00] bg-white px-2 py-1 rounded-md border border-[#e8e2d9]">
-                Estimated Wait: ~8 min
+                {lang === 'MR' ? 'अंदाजे वेळ: ~८ मि.' : 'Estimated Wait: ~8 min'}
               </span>
             </div>
 
@@ -857,42 +932,40 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               className="w-full py-2.5 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] font-bold flex items-center justify-center gap-1 mb-2 shadow-xs transition-colors"
             >
               <span className="material-symbols-outlined text-[15px]">call</span>
-              <span>Call Operator: +91 98221 04500</span>
+              <span>{lang === 'MR' ? 'ऑपरेटरशी संपर्क साधा: +९१ ९८२२१ ०४५००' : 'Call Operator: +91 98221 04500'}</span>
             </a>
 
             <button
-              onClick={() => alert('Digital Queue Token #DG-48 generated! Please visit Asgaon CSC desk.')}
+              onClick={() => alert(lang === 'MR' ? 'डिजिटल टोकन #DG-48 तयार झाले! कृपया आसगाव CSC केंद्राला भेट द्या.' : 'Digital Queue Token #DG-48 generated! Please visit Asgaon CSC desk.')}
               className="w-full py-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[12px] font-bold transition-colors border border-[#e8e2d9]"
             >
-              Get Instant Queue Token
+              {lang === 'MR' ? 'झटपट रांग टोकन मिळवा' : 'Get Instant Queue Token'}
             </button>
           </div>
 
-          {/* Widget 2: Gram Panchayat Gharkul Desk */}
+          {/* Widget 2: Housing Guidance Desk */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#a63b00] bg-[#fff8f0] px-2 py-0.5 rounded border border-[#ffdbce]">
-              GHARKUL DESK (घरकुल कक्ष)
+              {lang === 'MR' ? 'घरकुल कक्ष' : 'GHARKUL DESK'}
             </span>
 
             <h3 className="font-heading font-extrabold text-[15px] text-[#003629] mt-2 mb-1">
-              Gram Panchayat Housing Cell
+              {lang === 'MR' ? 'घरकुल व आवास मार्गदर्शन' : 'Housing & Gharkul Guidance Desk'}
             </h3>
             <p className="text-[12px] text-[#404945] leading-relaxed mb-3">
-              Submit your property 8A extract, Awaas+ registration, and Gram Sabha resolution directly to Gram Sevak.
+              {lang === 'MR'
+                ? 'तुमचा ८-अ उतारा, आवास+ नोंदणी आणि आवश्यक अर्जाच्या मदतीसाठी स्थानिक माहिती.'
+                : 'Submit property 8A extract, Awaas+ registration details and obtain local scheme guidance.'}
             </p>
 
             <div className="space-y-1.5 text-[12px] text-[#404945]">
               <div className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[16px] text-[#003629]">badge</span>
-                <span>Gram Sevak: <strong>S. N. Jadhav</strong></span>
-              </div>
-              <div className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[16px] text-[#003629]">schedule</span>
-                <span>Office Time: <strong>10:00 AM - 5:00 PM</strong></span>
+                <span>{lang === 'MR' ? 'कार्यालय वेळ:' : 'Office Time:'} <strong>{lang === 'MR' ? 'सकाळी १०:०० - संध्याकाळी ५:००' : '10:00 AM - 5:00 PM'}</strong></span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[16px] text-[#003629]">location_on</span>
-                <span>Gram Sachivalaya, Asgaon</span>
+                <span>{lang === 'MR' ? 'आसगाव गाव परिसर' : 'Asgaon Village Area'}</span>
               </div>
             </div>
           </div>
@@ -901,20 +974,22 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
             <div className="flex items-center gap-1.5 text-[#ba1a1a] font-bold text-[13px] mb-1">
               <span className="material-symbols-outlined text-[18px]">verified_user</span>
-              <span>Grievance &amp; Zero Bribery (तक्रार निवारण)</span>
+              <span>{lang === 'MR' ? 'तक्रार निवारण व लाचलुचपत प्रतिबंध' : 'Grievance & Zero Bribery'}</span>
             </div>
             <p className="text-[12px] text-[#404945] leading-relaxed mb-3">
-              All government schemes in Asgaon are 100% free of charge. Demanding bribe or commission is a punishable offense under the Prevention of Corruption Act.
+              {lang === 'MR'
+                ? 'शासकीय योजनांचे सर्व अर्ज १००% मोफत आहेत. लाच मागणे किंवा दलाली करणे हा कायद्याने दंडनीय गुन्हा आहे.'
+                : 'All government scheme applications are 100% free. Demanding bribe or commission is a punishable offense.'}
             </p>
 
             <div className="bg-[#ffdad6] text-[#93000a] p-3 rounded-xl border border-[#ffb4ab] text-[12px] mb-3">
-              <div className="font-bold">Citizen Anti-Corruption Bureau (ACB)</div>
-              <div className="font-extrabold text-[15px] mt-0.5">Toll-Free 1064</div>
-              <div className="text-[10px]">Anonymous and confidential reporting</div>
+              <div className="font-bold">{lang === 'MR' ? 'लाचलुचपत प्रतिबंधक विभाग (ACB)' : 'Citizen Anti-Corruption Bureau (ACB)'}</div>
+              <div className="font-extrabold text-[15px] mt-0.5">{lang === 'MR' ? 'टोल-फ्री १०६४' : 'Toll-Free 1064'}</div>
+              <div className="text-[10px]">{lang === 'MR' ? 'गोपनीय तक्रार नोंदणी' : 'Anonymous and confidential reporting'}</div>
             </div>
 
             <div className="text-[11px] text-[#707974] flex items-center justify-between">
-              <span>Taluka Lokpal Desk:</span>
+              <span>{lang === 'MR' ? 'तालुका लोकपाल हेल्पलाईन:' : 'Taluka Lokpal Desk:'}</span>
               <a href="tel:02162233400" className="font-bold text-[#ba1a1a] hover:underline">
                 02162-233400
               </a>
@@ -925,34 +1000,34 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
           <div className="bg-[#f9f3ea] rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
             <h3 className="font-heading font-bold text-[14px] text-[#003629] mb-2 flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px] text-[#a63b00]">description</span>
-              <span>Official Affidavit Formats (महत्वाचे नमुने)</span>
+              <span>{lang === 'MR' ? 'महत्वाचे अर्ज नमुने व प्रतिज्ञापत्रे' : 'Official Affidavit Formats'}</span>
             </h3>
             <ul className="space-y-2 text-[12px]">
               <li>
                 <button
-                  onClick={() => alert('Downloading Gram Panchayat 8A Property Self-Affidavit Format (PDF)')}
+                  onClick={() => alert(lang === 'MR' ? 'घरकुल ८-अ स्वयंघोषणापत्र नमुना डाउनलोड होत आहे (PDF)' : 'Downloading Gharkul 8A Property Self-Affidavit Format (PDF)')}
                   className="text-[#003629] hover:underline flex items-center gap-1 text-left"
                 >
                   <span className="material-symbols-outlined text-[14px]">download</span>
-                  <span>1. Gharkul 8A Property Self-Affidavit (PDF)</span>
+                  <span>{lang === 'MR' ? '१. घरकुल ८-अ मालमत्ता स्वयंघोषणापत्र (PDF)' : '1. Gharkul 8A Property Self-Affidavit (PDF)'}</span>
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => alert('Downloading 7/12 Sowing Declaration Format (PDF)')}
+                  onClick={() => alert(lang === 'MR' ? '७/१२ पीक पाहणी घोषणापत्र नमुना डाउनलोड होत आहे (PDF)' : 'Downloading 7/12 Sowing Declaration Format (PDF)')}
                   className="text-[#003629] hover:underline flex items-center gap-1 text-left"
                 >
                   <span className="material-symbols-outlined text-[14px]">download</span>
-                  <span>2. 7/12 Land Sowing Declaration (PDF)</span>
+                  <span>{lang === 'MR' ? '२. ७/१२ पीक पाहणी स्वयंघोषणापत्र (PDF)' : '2. 7/12 Land Sowing Declaration (PDF)'}</span>
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => alert('Downloading Ladki Bahin Hamipatra Format (PDF)')}
+                  onClick={() => alert(lang === 'MR' ? 'लाडकी बहीण हमीपत्र नमुना डाउनलोड होत आहे (PDF)' : 'Downloading Ladki Bahin Hamipatra Format (PDF)')}
                   className="text-[#003629] hover:underline flex items-center gap-1 text-left"
                 >
                   <span className="material-symbols-outlined text-[14px]">download</span>
-                  <span>3. Ladki Bahin Hamipatra Declaration (PDF)</span>
+                  <span>{lang === 'MR' ? '३. लाडकी बहीण योजना हमीपत्र (PDF)' : '3. Ladki Bahin Hamipatra Declaration (PDF)'}</span>
                 </button>
               </li>
             </ul>
@@ -988,17 +1063,23 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
             </div>
 
             <div className="bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9] text-[13px]">
-              <strong className="text-[#003629] block text-[11px] uppercase mb-0.5">Assistance &amp; Benefit:</strong>
+              <strong className="text-[#003629] block text-[11px] uppercase mb-0.5">
+                {lang === 'MR' ? 'आर्थिक सहाय्य व लाभ:' : 'Assistance & Benefit:'}
+              </strong>
               <p className="text-[#1d1b16]">{selectedModalScheme.financialAssistance}</p>
             </div>
 
             <div className="text-[13px]">
-              <strong className="text-[#003629] block text-[11px] uppercase mb-0.5">Eligibility:</strong>
+              <strong className="text-[#003629] block text-[11px] uppercase mb-0.5">
+                {lang === 'MR' ? 'पात्रता निकष:' : 'Eligibility:'}
+              </strong>
               <p className="text-[#404945]">{selectedModalScheme.eligibility}</p>
             </div>
 
             <div className="bg-white p-3 rounded-xl border border-[#e8e2d9]">
-              <strong className="text-[#003629] block text-[11px] uppercase mb-1.5">Required Documents:</strong>
+              <strong className="text-[#003629] block text-[11px] uppercase mb-1.5">
+                {lang === 'MR' ? 'आवश्यक कागदपत्रे:' : 'Required Documents:'}
+              </strong>
               <div className="space-y-1.5 text-[12px]">
                 {selectedModalScheme.documents.map((d: string, idx: number) => (
                   <div key={idx} className="flex items-center gap-1.5 text-[#1d1b16]">
@@ -1014,7 +1095,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                 onClick={() => setSelectedModalScheme(null)}
                 className="px-4 py-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[12px] font-bold"
               >
-                Close
+                {lang === 'MR' ? 'बंद करा' : 'Close'}
               </button>
               <a
                 href={selectedModalScheme.portalUrl}
@@ -1022,7 +1103,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                 rel="noopener noreferrer"
                 className="px-4 py-2 rounded-xl bg-[#002873] hover:bg-[#00174b] text-white text-[12px] font-bold flex items-center gap-1"
               >
-                <span>{selectedModalScheme.actionLabel}</span>
+                <span>{selectedModalScheme.actionLabel || (lang === 'MR' ? 'पोर्टलवर अर्ज करा' : 'Apply on Portal')}</span>
                 <span className="material-symbols-outlined text-[14px]">open_in_new</span>
               </a>
             </div>

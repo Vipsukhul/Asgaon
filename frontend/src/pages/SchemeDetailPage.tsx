@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import type { Scheme } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { SEOHead } from '../components/SEOHead';
+import { useLanguage } from '../context/LanguageContext';
 
 interface SchemeDetailPageProps {
   slug: string;
@@ -18,6 +19,8 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
   onSelectScheme,
   onNavigateHome
 }) => {
+  const { lang, t } = useLanguage();
+
   // Find current scheme by slug or id
   const scheme = useMemo(() => {
     return schemes.find(
@@ -30,18 +33,22 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
       return (
         <div className="w-full py-28 text-center flex flex-col items-center justify-center gap-3">
           <div className="w-9 h-9 border-3 border-[#003629] border-t-transparent rounded-full animate-spin" />
-          <p className="text-[13px] font-bold text-[#003629]">Loading scheme details from database...</p>
+          <p className="text-[13px] font-bold text-[#003629]">
+            {lang === 'MR' ? 'माहिती लोड होत आहे, कृपया प्रतीक्षा करा...' : 'Loading scheme details from database...'}
+          </p>
         </div>
       );
     }
     return (
       <div className="w-full py-16 text-center">
-        <h2 className="text-xl font-bold text-[#003629]">Scheme not found</h2>
+        <h2 className="text-xl font-bold text-[#003629]">
+          {lang === 'MR' ? 'योजना आढळली नाही' : 'Scheme not found'}
+        </h2>
         <button
           onClick={onNavigateBack}
           className="mt-4 px-4 py-2 bg-[#003629] text-white rounded-xl font-bold text-sm"
         >
-          Back to Schemes Directory
+          {lang === 'MR' ? 'सर्व योजनांकडे परत जा' : 'Back to Schemes Directory'}
         </button>
       </div>
     );
@@ -226,8 +233,8 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <Breadcrumb
           items={[
-            { label: 'Home', onClick: onNavigateHome },
-            { label: 'Government Schemes Directory', onClick: onNavigateBack },
+            { label: t('nav_home'), onClick: onNavigateHome },
+            { label: lang === 'MR' ? 'शासकीय योजना दालन' : 'Government Schemes Directory', onClick: onNavigateBack },
             { label: scheme.title, active: true }
           ]}
         />
@@ -237,7 +244,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[12px] font-bold transition-colors border border-[#e8e2d9]"
         >
           <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-          <span>Back to All Schemes</span>
+          <span>{lang === 'MR' ? 'सर्व योजनांकडे परत जा' : 'Back to All Schemes'}</span>
         </button>
       </div>
 
@@ -246,7 +253,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#dbe1ff] text-[#002873]">
-              {scheme.category} {isGharkul ? '• GHARKUL SCHEME' : '• GOVT SCHEME'}
+              {scheme.category} {isGharkul ? (lang === 'MR' ? '• घरकुल योजना' : '• GHARKUL SCHEME') : (lang === 'MR' ? '• शासकीय योजना' : '• GOVT SCHEME')}
             </span>
             <span className="text-[12px] font-bold text-[#ba1a1a] bg-[#ffdad6] px-2.5 py-0.5 rounded-md">
               {scheme.deadlineText}
@@ -259,7 +266,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#25d366] hover:bg-[#20ba5a] text-white text-[12px] font-bold transition-colors shadow-xs"
             >
               <span className="material-symbols-outlined text-[16px]">share</span>
-              <span>WhatsApp Share</span>
+              <span>{lang === 'MR' ? 'व्हाट्सॲपवर शेअर करा' : 'WhatsApp Share'}</span>
             </button>
           </div>
         </div>
@@ -282,40 +289,40 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px] text-[#a63b00]">payments</span>
-              <span>Direct Benefit / Subsidy</span>
+              <span>{lang === 'MR' ? 'थेट लाभ / अनुदान' : 'Direct Benefit / Subsidy'}</span>
             </div>
             <div className="font-heading font-extrabold text-[17px] text-[#003629] mt-1">
-              {scheme.benefits.split('.')[0] || '100% Direct DBT'}
+              {scheme.benefits.split('.')[0] || (lang === 'MR' ? '१००% थेट डीबीटी' : '100% Direct DBT')}
             </div>
           </div>
 
           <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px] text-[#002873]">verified</span>
-              <span>Application Fee</span>
+              <span>{lang === 'MR' ? 'अर्ज शुल्क' : 'Application Fee'}</span>
             </div>
             <div className="font-heading font-extrabold text-[17px] text-[#002873] mt-1">
-              ₹0 Free (Zero Fee)
+              {lang === 'MR' ? '₹० मोफत (शून्य शुल्क)' : '₹0 Free (Zero Fee)'}
             </div>
           </div>
 
           <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px] text-[#376757]">how_to_reg</span>
-              <span>Approval Desk</span>
+              <span>{lang === 'MR' ? 'नोंदणी व मदत कक्ष' : 'Approval Desk'}</span>
             </div>
             <div className="font-heading font-extrabold text-[16px] text-[#376757] mt-1">
-              Gram Panchayat &amp; CSC
+              {lang === 'MR' ? 'आसगाव सीएससी केंद्र' : 'Asgaon CSC Desk'}
             </div>
           </div>
 
           <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px] text-[#a63b00]">timer</span>
-              <span>Disbursement Mode</span>
+              <span>{lang === 'MR' ? 'वितरण पद्धत' : 'Disbursement Mode'}</span>
             </div>
             <div className="font-heading font-extrabold text-[16px] text-[#a63b00] mt-1">
-              Aadhaar DBT to Bank
+              {lang === 'MR' ? 'थेट बँक खात्यात (DBT)' : 'Aadhaar DBT to Bank'}
             </div>
           </div>
         </div>
@@ -329,7 +336,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2 mb-3">
               <span className="material-symbols-outlined text-[#376757]">checklist_rtl</span>
-              <span>Who is Eligible? (सविस्तर पात्रता निकष)</span>
+              <span>{lang === 'MR' ? 'सविस्तर पात्रता निकष' : 'Who is Eligible? (Eligibility Criteria)'}</span>
             </h2>
             <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9] text-[13px] text-[#1d1b16] leading-relaxed mb-4 font-medium">
               {scheme.eligibility}
@@ -337,17 +344,23 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[12px]">
               <div className="bg-[#f3ede4] p-3 rounded-xl border border-[#e8e2d9]">
-                <strong className="text-[#003629] block mb-1">Eligible Categories (पात्र लाभार्थी):</strong>
+                <strong className="text-[#003629] block mb-1">
+                  {lang === 'MR' ? 'पात्र लाभार्थी:' : 'Eligible Categories:'}
+                </strong>
                 <p className="text-[#404945]">
                   {isGharkul
-                    ? 'Houseless families, Kutcha/mud hut dwellers, Rural residents with approved village 8A extract.'
-                    : 'Rural residents, cultivators, students, or women meeting official income criteria.'}
+                    ? (lang === 'MR' ? 'घर नसलेले कुटुंब, कच्च्या घराचे रहिवासी, गावात मंजूर नमुना ८-अ असलेले नागरिक.' : 'Houseless families, Kutcha/mud hut dwellers, Rural residents with approved village 8A extract.')
+                    : (lang === 'MR' ? 'ग्रामीण रहिवासी, शेतकरी, विद्यार्थी किंवा उत्पन्न मर्यादा पूर्ण करणाऱ्या महिला.' : 'Rural residents, cultivators, students, or women meeting official income criteria.')}
                 </p>
               </div>
               <div className="bg-[#f3ede4] p-3 rounded-xl border border-[#e8e2d9]">
-                <strong className="text-[#ba1a1a] block mb-1">Ineligible (अपात्र निकष):</strong>
+                <strong className="text-[#ba1a1a] block mb-1">
+                  {lang === 'MR' ? 'अपात्र निकष:' : 'Ineligible:'}
+                </strong>
                 <p className="text-[#404945]">
-                  Government salaried employees, income tax payees, or families already owning concrete pukka houses.
+                  {lang === 'MR'
+                    ? 'शासकीय नोकरदार, आयकर भरणारे किंवा स्वतःच्या मालकीचे पक्के सिमेंट घर असलेले कुटुंब.'
+                    : 'Government salaried employees, income tax payees, or families already owning concrete pukka houses.'}
                 </p>
               </div>
             </div>
@@ -357,10 +370,12 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2 mb-3">
               <span className="material-symbols-outlined text-[#002873]">task_alt</span>
-              <span>Mandatory Documents Checklist (आवश्यक कागदपत्रांची यादी)</span>
+              <span>{lang === 'MR' ? 'आवश्यक कागदपत्रांची यादी' : 'Mandatory Documents Checklist'}</span>
             </h2>
             <p className="text-[12px] text-[#707974] mb-4">
-              Please carry both original and self-attested photocopies to the Asgaon CSC desk or Gram Panchayat office:
+              {lang === 'MR'
+                ? 'कृपया मूळ प्रत व स्वसाक्षांकित झेरॉक्स प्रती आसगाव सीएससी डेस्क किंवा संबंधित कार्यालयात घेऊन जा:'
+                : 'Please carry both original and self-attested photocopies to the Asgaon CSC desk:'}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -375,7 +390,9 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
                     </span>
                     <div>
                       <div className="font-bold text-[#1d1b16]">{doc}</div>
-                      <div className="text-[11px] text-[#707974] mt-0.5">Original &amp; 1 Xerox copy required</div>
+                      <div className="text-[11px] text-[#707974] mt-0.5">
+                        {lang === 'MR' ? 'मूळ प्रत व १ झेरॉक्स आवश्यक' : 'Original & 1 Xerox copy required'}
+                      </div>
                     </div>
                   </div>
                 )
@@ -387,7 +404,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined text-[#a63b00]">route</span>
-              <span>Step-by-Step Application Guide (अर्ज करण्याची पद्धत)</span>
+              <span>{lang === 'MR' ? 'अर्ज करण्याची सोपी पद्धत' : 'Step-by-Step Application Guide'}</span>
             </h2>
 
             <div className="space-y-4">
@@ -409,7 +426,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined text-[#002873]">help_outline</span>
-              <span>Frequently Asked Questions (वारंवार विचारले जाणारे प्रश्न)</span>
+              <span>{lang === 'MR' ? 'वारंवार विचारले जाणारे प्रश्न (FAQ)' : 'Frequently Asked Questions (FAQ)'}</span>
             </h2>
 
             <div className="space-y-3 text-[13px]">
@@ -433,7 +450,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           {relatedSchemes.length > 0 && (
             <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
               <h2 className="font-heading font-extrabold text-[17px] text-[#003629] mb-3">
-                Related {scheme.category} Schemes (इतर संबंधित योजना)
+                {lang === 'MR' ? `इतर संबंधित ${scheme.category} योजना` : `Related ${scheme.category} Schemes`}
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -455,7 +472,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
                       </h3>
                     </div>
                     <div className="mt-3 text-[11px] font-bold text-[#a63b00] flex items-center gap-1">
-                      <span>View Details</span>
+                      <span>{lang === 'MR' ? 'तपशील पहा' : 'View Details'}</span>
                       <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
                     </div>
                   </button>
@@ -470,10 +487,12 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           {/* Action Box */}
           <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
             <h3 className="font-heading font-extrabold text-[16px] text-[#003629]">
-              Apply for this Scheme
+              {lang === 'MR' ? 'या योजनेसाठी अर्ज करा' : 'Apply for this Scheme'}
             </h3>
             <p className="text-[12px] text-[#707974] leading-relaxed">
-              Official Maharashtra State / Central portal link with verified Aadhaar DBT integration:
+              {lang === 'MR'
+                ? 'अधिकृत महाराष्ट्र शासन / केंद्र शासन पोर्टल लिंक (आधार डीबीटी संलग्न):'
+                : 'Official Maharashtra State / Central portal link with verified Aadhaar DBT integration:'}
             </p>
 
             <a
@@ -482,7 +501,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
               rel="noopener noreferrer"
               className="w-full py-3 px-4 rounded-xl bg-[#002873] hover:bg-[#00174b] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
             >
-              <span>{scheme.actionLabel || 'Apply on Official Portal'}</span>
+              <span>{scheme.actionLabel || (lang === 'MR' ? 'अधिकृत पोर्टलवर अर्ज करा' : 'Apply on Official Portal')}</span>
               <span className="material-symbols-outlined text-[16px]">open_in_new</span>
             </a>
 
@@ -491,27 +510,29 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
               className="w-full py-2.5 px-4 rounded-xl bg-[#25d366] hover:bg-[#20ba5a] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors"
             >
               <span className="material-symbols-outlined text-[16px]">share</span>
-              <span>Share on WhatsApp</span>
+              <span>{lang === 'MR' ? 'व्हाट्सॲपवर शेअर करा' : 'Share on WhatsApp'}</span>
             </button>
           </div>
 
           {/* Asgaon Physical Helpdesk Desk */}
           <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#002873] bg-[#dbe1ff] px-2 py-0.5 rounded">
-              PHYSICAL ASSISTANCE DESK
+              {lang === 'MR' ? 'नागरिक मदत कक्ष' : 'PHYSICAL ASSISTANCE DESK'}
             </span>
 
             <h3 className="font-heading font-extrabold text-[16px] text-[#003629] mt-2 mb-1">
-              Asgaon CSC Digital Seva Kendra
+              {lang === 'MR' ? 'आसगाव सीएससी डिजिटल सेवा केंद्र' : 'Asgaon CSC Digital Seva Kendra'}
             </h3>
             <p className="text-[12px] text-[#404945] leading-relaxed mb-3">
-              Get assistance with scanning 8A / 7/12 land records, biometric e-KYC, and online form submission.
+              {lang === 'MR'
+                ? '८-अ / ७/१२ उतारा स्कॅनिंग, बायोमेट्रिक ई-केवायसी आणि ऑनलाइन फॉर्म भरण्यासाठी मदत केंद्र.'
+                : 'Get assistance with scanning 8A / 7/12 land records, biometric e-KYC, and online form submission.'}
             </p>
 
             <div className="space-y-1 text-[12px] text-[#707974] mb-3">
-              <div>VLE Operator: <strong className="text-[#1d1b16]">Ramesh Shinde</strong></div>
-              <div>Office: <strong className="text-[#1d1b16]">Ground Floor, Gram Panchayat Bhawan</strong></div>
-              <div>Timing: <strong className="text-[#1d1b16]">8:30 AM - 6:30 PM</strong></div>
+              <div>{lang === 'MR' ? 'ऑपरेटर:' : 'VLE Operator:'} <strong className="text-[#1d1b16]">Ramesh Shinde</strong></div>
+              <div>{lang === 'MR' ? 'स्थान:' : 'Office:'} <strong className="text-[#1d1b16]">{lang === 'MR' ? 'वॉर्ड क्र. २, आसगाव' : 'Ward No. 2, Asgaon'}</strong></div>
+              <div>{lang === 'MR' ? 'वेळ:' : 'Timing:'} <strong className="text-[#1d1b16]">{lang === 'MR' ? '८:३० सकाळी - ६:३० संध्याकाळी' : '8:30 AM - 6:30 PM'}</strong></div>
             </div>
 
             <a
@@ -519,7 +540,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
               className="w-full py-2.5 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] font-bold flex items-center justify-center gap-1 mb-2 transition-colors"
             >
               <span className="material-symbols-outlined text-[15px]">call</span>
-              <span>Call Operator: +91 98221 04500</span>
+              <span>{lang === 'MR' ? 'ऑपरेटरशी संपर्क: ९८२२१०४५००' : 'Call Operator: +91 98221 04500'}</span>
             </a>
           </div>
 
@@ -527,13 +548,15 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
             <div className="flex items-center gap-1.5 text-[#ba1a1a] font-bold text-[13px] mb-1">
               <span className="material-symbols-outlined text-[18px]">verified_user</span>
-              <span>Zero Middlemen Guarantee</span>
+              <span>{lang === 'MR' ? 'शून्य दलाली हमी' : 'Zero Middlemen Guarantee'}</span>
             </div>
             <p className="text-[12px] text-[#404945] leading-relaxed mb-2">
-              Government schemes in Asgaon are 100% free of charge. If anyone demands a cut, report immediately.
+              {lang === 'MR'
+                ? 'शासकीय योजनांचे अर्ज १००% मोफत आहेत. कोणत्याही व्यक्तीला लाच देऊ नका.'
+                : 'Government schemes in Asgaon are 100% free of charge. If anyone demands a cut, report immediately.'}
             </p>
             <div className="text-[12px] font-bold text-[#ba1a1a]">
-              ACB Anti-Corruption Helpline: Toll-Free 1064
+              {lang === 'MR' ? 'लाचलुचपत प्रतिबंधक हेल्पलाईन (ACB): १०६४' : 'ACB Anti-Corruption Helpline: Toll-Free 1064'}
             </div>
           </div>
         </aside>

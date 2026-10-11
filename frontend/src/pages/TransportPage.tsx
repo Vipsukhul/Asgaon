@@ -9,6 +9,7 @@ import {
   type DepotContact
 } from '../data/transportData';
 import { SEOHead } from '../components/SEOHead';
+import { useLanguage } from '../context/LanguageContext';
 import {
   Clock,
   ArrowRight,
@@ -29,6 +30,7 @@ interface TransportPageProps {
 }
 
 export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, onNavigateToAdmin }) => {
+  const { lang, t } = useLanguage();
   const [selectedRouteFilter, setSelectedRouteFilter] = useState<'all' | 'pauni' | 'bhandara' | 'nagpur' | 'other' | 'incoming'>('all');
   const [timeFilter, setTimeFilter] = useState<'all' | 'morning' | 'afternoon' | 'evening' | 'night'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -232,7 +234,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold backdrop-blur-md transition-all border border-white/15"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>मुख्य पृष्ठ (Home)</span>
+              <span>{t('nav_home')}</span>
             </button>
 
             <div className="flex items-center gap-2">
@@ -243,12 +245,12 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
                   title="ॲडमिन पॅनेलमधून बसेस व्यवस्थापित करा"
                 >
                   <Settings className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">प्रशासक संपादन (Admin)</span>
+                  <span className="hidden sm:inline">{lang === 'MR' ? 'प्रशासक संपादन' : 'Admin'}</span>
                 </button>
               )}
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#baeed9]/20 text-[#baeed9] border border-[#baeed9]/30 text-xs font-semibold">
                 <span className="w-2 h-2 rounded-full bg-[#baeed9] animate-pulse" />
-                दैनिक अद्ययावत (Daily Updated)
+                {lang === 'MR' ? 'दैनिक अद्ययावत' : 'Daily Updated'}
               </span>
             </div>
           </div>
@@ -256,14 +258,16 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
           <div className="max-w-3xl">
             <div className="flex items-center gap-2 text-[#baeed9] text-xs font-bold uppercase tracking-wider mb-2">
               <Compass className="w-4 h-4 text-[#baeed9]" />
-              <span>MSRTC & स्थानिक वाहतूक केंद्र • आसगाव (पवनी)</span>
+              <span>{lang === 'MR' ? 'MSRTC व स्थानिक वाहतूक केंद्र • आसगाव (पवनी)' : 'MSRTC & Local Transit Hub • Asgaon (Pauni)'}</span>
             </div>
+
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              आसगाव एसटी बस वेळापत्रक व वाहतूक
+              {lang === 'MR' ? 'आसगाव एसटी बस वेळापत्रक व वाहतूक' : 'Asgaon ST Bus Timetable & Transport'}
             </h1>
             <p className="mt-2.5 text-[#d6eee4]/90 text-sm sm:text-base leading-relaxed">
-              पवनी, भंडारा, नागपूर, साकोली व ब्रह्मपुरी मार्गावरील सर्व एसटी बसेस, महिला सन्मान ५०% सवलत,
-              गावातील रिक्षा चालक संपर्क आणि एसटी आगार दूरध्वनी क्रमांक.
+              {lang === 'MR'
+                ? 'पवनी, भंडारा, नागपूर, साकोली व ब्रह्मपुरी मार्गावरील सर्व एसटी बसेस, महिला सन्मान ५०% सवलत, गावातील रिक्षा चालक संपर्क आणि एसटी आगार दूरध्वनी क्रमांक.'
+                : 'MSRTC buses connecting Pauni, Bhandara, Nagpur, Sakoli, and Bramhapuri, 50% Mahila Sanman concession, local auto rickshaw contacts, and bus depot inquiry numbers.'}
             </p>
           </div>
 
@@ -277,20 +281,24 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="px-2.5 py-0.5 rounded text-[11px] font-black bg-[#baeed9] text-[#002117] uppercase tracking-wide">
-                      पुढील बस (NEXT BUS)
+                      {lang === 'MR' ? 'पुढील बस' : 'NEXT BUS'}
                     </span>
                     <span className="text-xs text-[#baeed9] font-medium">
-                      निघण्यास अंदाजे {getMinutesDifferenceText(nextBus.departureTime24)}
+                      {lang === 'MR'
+                        ? `निघण्यास अंदाजे ${getMinutesDifferenceText(nextBus.departureTime24)}`
+                        : `Departs in approx ${getMinutesDifferenceText(nextBus.departureTime24)}`}
                     </span>
                   </div>
                   <div className="text-lg sm:text-xl font-bold text-white mt-1 flex items-center gap-2">
-                    <span>{nextBus.sourceMarathi}</span>
+                    <span>{lang === 'MR' ? nextBus.sourceMarathi : nextBus.source}</span>
                     <ArrowRight className="w-4 h-4 text-[#baeed9]" />
-                    <span>{nextBus.destinationMarathi}</span>
-                    <span className="text-xs font-normal text-[#baeed9]/90">({nextBus.busTypeMarathi})</span>
+                    <span>{lang === 'MR' ? nextBus.destinationMarathi : nextBus.destination}</span>
+                    <span className="text-xs font-normal text-[#baeed9]/90">
+                      ({lang === 'MR' ? nextBus.busTypeMarathi : nextBus.busType})
+                    </span>
                   </div>
                   <div className="text-xs text-[#d6eee4]/80 mt-0.5">
-                    वेळ: <strong className="text-white font-mono">{nextBus.departureTime}</strong> • थांबा: {nextBus.boardingPointMarathi}
+                    {lang === 'MR' ? 'वेळ:' : 'Time:'} <strong className="text-white font-mono">{nextBus.departureTime}</strong> • {lang === 'MR' ? 'थांबा:' : 'Stop:'} {lang === 'MR' ? nextBus.boardingPointMarathi : nextBus.boardingPointAtAsgaon}
                   </div>
                 </div>
               </div>
@@ -301,14 +309,14 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
                   className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#006a4e] hover:bg-[#00523e] text-white text-xs font-bold transition-all shadow-md border border-[#baeed9]/30"
                 >
                   <Share2 className="w-3.5 h-3.5" />
-                  <span>वेळ शेअर करा</span>
+                  <span>{lang === 'MR' ? 'वेळ शेअर करा' : 'Share Timing'}</span>
                 </button>
                 <a
                   href={`tel:${depots[0]?.phone || '07185-255342'}`}
                   className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/20 transition-all"
                 >
                   <Phone className="w-3.5 h-3.5" />
-                  <span>आगार चौकशी</span>
+                  <span>{lang === 'MR' ? 'आगार चौकशी' : 'Depot Inquiry'}</span>
                 </a>
               </div>
             </div>
@@ -328,7 +336,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
               }`}
           >
             <Navigation className="w-4 h-4" />
-            <span>एसटी वेळापत्रक ({buses.length})</span>
+            <span>{lang === 'MR' ? `एसटी वेळापत्रक (${buses.length})` : `ST Bus Schedule (${buses.length})`}</span>
           </button>
 
           <button
@@ -339,7 +347,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
               }`}
           >
             <Compass className="w-4 h-4" />
-            <span>गावातील रिक्षा स्टँड ({autos.length})</span>
+            <span>{lang === 'MR' ? `गावातील रिक्षा स्टँड (${autos.length})` : `Auto Stand (${autos.length})`}</span>
           </button>
 
           <button
@@ -350,7 +358,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
               }`}
           >
             <Phone className="w-4 h-4" />
-            <span>आगार दूरध्वनी संपर्क ({depots.length})</span>
+            <span>{lang === 'MR' ? `आगार संपर्क (${depots.length})` : `Depot Contacts (${depots.length})`}</span>
           </button>
 
           <button
@@ -361,7 +369,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
               }`}
           >
             <HelpCircle className="w-4 h-4" />
-            <span>५०% सवलत व पास माहिती</span>
+            <span>{lang === 'MR' ? '५०% सवलत व पास माहिती' : 'Concessions & Pass Guide'}</span>
           </button>
         </div>
 
@@ -377,7 +385,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="गाव, शहर, आगार किंवा थांबा शोधा (उदा. पवनी, भंडारा, नागपूर)..."
+                    placeholder={lang === 'MR' ? 'गाव, शहर, आगार किंवा थांबा शोधा (उदा. पवनी, भंडारा, नागपूर)...' : 'Search destination, city, depot or stop...'}
                     className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#e8e2d9] text-sm focus:outline-none focus:border-[#003629] focus:ring-2 focus:ring-[#003629]/20 bg-[#f9f3ea]"
                   />
                   <Navigation className="w-4 h-4 text-[#707974] absolute left-3.5 top-3.5" />
@@ -393,14 +401,16 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
 
                 {/* Time Filter */}
                 <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
-                  <span className="text-xs font-bold text-[#707974] whitespace-nowrap mr-1">वेळ:</span>
+                  <span className="text-xs font-bold text-[#707974] whitespace-nowrap mr-1">
+                    {lang === 'MR' ? 'वेळ:' : 'Time:'}
+                  </span>
                   {(
                     [
-                      { id: 'all', label: 'सर्व' },
-                      { id: 'morning', label: 'सकाळ (६-१२)' },
-                      { id: 'afternoon', label: 'दुपार (१२-४)' },
-                      { id: 'evening', label: 'सायंकाळ (४-९)' },
-                      { id: 'night', label: 'रात्र (९ नंतर)' }
+                      { id: 'all', label: lang === 'MR' ? 'सर्व' : 'All' },
+                      { id: 'morning', label: lang === 'MR' ? 'सकाळ (६-१२)' : 'Morning' },
+                      { id: 'afternoon', label: lang === 'MR' ? 'दुपार (१२-४)' : 'Afternoon' },
+                      { id: 'evening', label: lang === 'MR' ? 'सायंकाळ (४-९)' : 'Evening' },
+                      { id: 'night', label: lang === 'MR' ? 'रात्र (९ नंतर)' : 'Night' }
                     ] as const
                   ).map((t) => (
                     <button
@@ -419,15 +429,17 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
 
               {/* Route Destination Quick Tabs */}
               <div className="mt-4 pt-4 border-t border-[#f0eee8] flex items-center gap-2 overflow-x-auto">
-                <span className="text-xs font-bold text-[#707974] whitespace-nowrap mr-1">मार्ग निवडा:</span>
+                <span className="text-xs font-bold text-[#707974] whitespace-nowrap mr-1">
+                  {lang === 'MR' ? 'मार्ग:' : 'Route:'}
+                </span>
                 {(
                   [
-                    { id: 'all', label: 'सर्व मार्ग (All Routes)' },
-                    { id: 'pauni', label: 'पवनी (Pauni)' },
-                    { id: 'bhandara', label: 'भंडारा (Bhandara)' },
-                    { id: 'nagpur', label: 'नागपूर (Nagpur)' },
-                    { id: 'other', label: 'साकोली / इतर' },
-                    { id: 'incoming', label: 'आसगावात येणाऱ्या (Return)' }
+                    { id: 'all', label: lang === 'MR' ? 'सर्व मार्ग' : 'All Routes' },
+                    { id: 'pauni', label: lang === 'MR' ? 'पवनी' : 'Pauni' },
+                    { id: 'bhandara', label: lang === 'MR' ? 'भंडारा' : 'Bhandara' },
+                    { id: 'nagpur', label: lang === 'MR' ? 'नागपूर' : 'Nagpur' },
+                    { id: 'other', label: lang === 'MR' ? 'साकोली / इतर' : 'Other' },
+                    { id: 'incoming', label: lang === 'MR' ? 'आसगावात येणाऱ्या' : 'Incoming' }
                   ] as const
                 ).map((r) => (
                   <button

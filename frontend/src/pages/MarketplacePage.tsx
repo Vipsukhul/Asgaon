@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { Breadcrumb } from '../components/Breadcrumb';
+import { useLanguage } from '../context/LanguageContext';
 
 interface MarketplacePageProps {
   onNavigateHome?: () => void;
 }
 
 export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome }) => {
+  const { lang } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<'all' | 'harvest' | 'livestock' | 'machinery' | 'household'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [verifiedOnly, setVerifiedOnly] = useState(false);
@@ -217,14 +219,14 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
         <div className="flex items-center gap-2">
           <span className="material-symbols-outlined text-[18px] text-[#ffdad6]">campaign</span>
           <span>
-            <strong className="font-bold">Weekly Haat Reminder:</strong> Asgaon Budhwar Bazaar opens this Friday at 08:00 AM at Old Bus Stand Ground • Zero stall fee for local registered farmers
+            <strong className="font-bold">{lang === 'MR' ? 'साप्ताहिक आठवडी बाजार सूचना:' : 'Weekly Haat Reminder:'}</strong> {lang === 'MR' ? 'आसगाव शुक्रवार आठवडी बाजार जुना बस स्टँड मैदानावर सकाळी ०८:०० वाजता सुरू होतो • स्थानिक शेतकऱ्यांसाठी मोफत जागा' : 'Asgaon Weekly Bazaar opens this Friday at 08:00 AM at Old Bus Stand Ground • Zero stall fee for local registered farmers'}
           </span>
         </div>
         <button
           onClick={() => setShowStallModal(true)}
           className="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-md text-[11px] font-bold transition-all shrink-0 flex items-center gap-1 border border-white/30"
         >
-          <span>View Haat Map</span>
+          <span>{lang === 'MR' ? 'बाजार नकाशा पहा' : 'View Haat Map'}</span>
           <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
         </button>
       </div>
@@ -232,12 +234,12 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
       {/* 2. BREADCRUMB & PLATFORM BADGE */}
       <Breadcrumb
         items={[
-          { label: 'Home', onClick: onNavigateHome },
-          { label: 'स्थानिक बाजारपेठ', active: true }
+          { label: lang === 'MR' ? 'मुख्यपृष्ठ' : 'Home', onClick: onNavigateHome },
+          { label: lang === 'MR' ? 'स्थानिक बाजारपेठ' : 'Local Marketplace', active: true }
         ]}
         rightBadge={
           <div className="text-[11px] font-semibold text-[#006a4e] bg-[#baeed9]/40 px-2.5 py-0.5 rounded-full border border-[#baeed9]">
-            98.3% Direct Sellers • 100% Zero-Middlemen
+            {lang === 'MR' ? '९८.३% थेट शेतकरी व विक्रेते • शून्य दलाली' : '98.3% Direct Sellers • 100% Zero-Middlemen'}
           </div>
         }
       />
@@ -246,13 +248,15 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
       <div className="bg-gradient-to-br from-[#003629]/5 via-white to-[#003629]/10 rounded-2xl p-6 sm:p-8 border border-[#c4d6cf] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex-1">
           <span className="inline-block bg-[#006a4e]/10 text-[#006a4e] text-[10px] font-black tracking-widest px-3 py-1 rounded-full uppercase border border-[#006a4e]/20 mb-2">
-            स्थानिक खरेदी-विक्री — ASGAON BAZAAR PLATFORM
+            {lang === 'MR' ? 'स्थानिक खरेदी-विक्री — आसगाव बाजारपेठ' : 'LOCAL COMMERCE — ASGAON BAZAAR PLATFORM'}
           </span>
           <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#003629] leading-tight mb-2">
-            Gaon Marketplace — Local Farm Produce &amp; Village Bazar
+            {lang === 'MR' ? 'गाव बाजारपेठ — शेतमाल, पशुधन व अवजारे' : 'Gaon Marketplace — Local Farm Produce & Village Bazar'}
           </h1>
           <p className="text-[13px] sm:text-[14px] text-[#404945] max-w-2xl leading-relaxed">
-            Buy, sell, and rent directly within Asgaon and neighboring villages. Farm crops, perched cattle, tractors, seed batches, and pre-owned tools with zero broker cuts and verified direct phone/WhatsApp connect.
+            {lang === 'MR'
+              ? 'आसगाव व परिसरातील गावांमधील थेट शेतमाल, जनावरे, ट्रॅक्टर, बियाणे आणि शेती अवजारे खरेदी-विक्री मंच. शून्य मध्यस्थ आणि थेट शेतकरी संपर्क.'
+              : 'Buy, sell, and rent directly within Asgaon and neighboring villages. Farm crops, livestock, tractors, seed batches, and tools with zero broker cuts.'}
           </p>
         </div>
 
@@ -262,9 +266,11 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             className="px-5 py-3 rounded-xl bg-[#003629] hover:bg-[#00281e] text-white text-[13px] font-bold flex items-center gap-2 shadow-md hover:shadow-lg transition-all"
           >
             <span className="material-symbols-outlined text-[18px]">add_circle</span>
-            <span>+ Post a Free Village Listing</span>
+            <span>{lang === 'MR' ? '+ मोफत शेतमाल/वस्तू नोंदवा' : '+ Post a Free Village Listing'}</span>
           </button>
-          <span className="text-[10px] text-[#55605a]">SMS &amp; OTP Verified • Instant WhatsApp Notification</span>
+          <span className="text-[10px] text-[#55605a]">
+            {lang === 'MR' ? 'थेट व्हॉट्सअ‍ॅप व फोन संपर्क • १००% मोफत' : 'SMS & Verified • Instant Direct Connect'}
+          </span>
         </div>
       </div>
 
@@ -278,7 +284,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               type="text"
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-              placeholder="Search by item (e.g. JS335 Soybean, Buffalo, 150Ah Solar, Shaktiman Rotavator)..."
+              placeholder={lang === 'MR' ? 'वस्तू किंवा शेतमाल शोधा (उदा. सोयाबीन, गाय, ट्रॅक्टर, रोटाव्हेटर)...' : 'Search by item (e.g. JS335 Soybean, Buffalo, 150Ah Solar, Shaktiman Rotavator)...'}
               className="w-full pl-9 pr-3 py-2 bg-[#f3ede4]/40 rounded-lg text-[13px] text-[#1a1c1b] placeholder-[#707974] border border-transparent focus:border-[#006a4e] focus:bg-white outline-none"
             />
           </div>
@@ -290,14 +296,14 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               }`}
             >
               <span className="material-symbols-outlined text-[16px]">verified</span>
-              <span>Verified Sellers</span>
+              <span>{lang === 'MR' ? 'प्रमाणित विक्रेते' : 'Verified Sellers'}</span>
             </button>
             <div className="text-[12px] text-[#55605a] hidden sm:flex items-center gap-1 px-2">
               <span className="material-symbols-outlined text-[16px]">sort</span>
-              <span>Sort: Newest Listed First</span>
+              <span>{lang === 'MR' ? 'क्रम: नवीन नोंदी प्रथम' : 'Sort: Newest First'}</span>
             </div>
             <div className="text-[11px] font-bold text-[#006a4e] bg-[#f3ede4] px-2.5 py-1.5 rounded-lg border border-[#e8e2d9]">
-              PIN: 441910 Only (Pauni)
+              {lang === 'MR' ? 'पिन: ४४१९१० (पवनी)' : 'PIN: 441910 Only (Pauni)'}
             </div>
           </div>
         </div>
@@ -312,7 +318,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            ALL LISTINGS ({extraItems.length})
+            {lang === 'MR' ? `सर्व नोंदी (${extraItems.length})` : `ALL LISTINGS (${extraItems.length})`}
           </button>
           <button
             onClick={() => { setActiveFilter('harvest'); setCurrentPage(1); }}
@@ -323,7 +329,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             }`}
           >
             <span className="material-symbols-outlined text-[16px] text-[#a63b00]">eco</span>
-            <span>Direct Farm Harvest ({harvestCount})</span>
+            <span>{lang === 'MR' ? `थेट शेतमाल (${harvestCount})` : `Direct Farm Harvest (${harvestCount})`}</span>
           </button>
           <button
             onClick={() => { setActiveFilter('livestock'); setCurrentPage(1); }}
@@ -334,7 +340,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             }`}
           >
             <span className="material-symbols-outlined text-[16px] text-[#006a4e]">cruelty_free</span>
-            <span>Cattle &amp; Livestock (पशुधन) ({livestockCount})</span>
+            <span>{lang === 'MR' ? `पशुधन व जनावरे (${livestockCount})` : `Cattle & Livestock (${livestockCount})`}</span>
           </button>
           <button
             onClick={() => { setActiveFilter('machinery'); setCurrentPage(1); }}
@@ -345,7 +351,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             }`}
           >
             <span className="material-symbols-outlined text-[16px] text-[#006a4e]">agriculture</span>
-            <span>Tractors &amp; Implements (अवजारे) ({machineryCount})</span>
+            <span>{lang === 'MR' ? `ट्रॅक्टर व शेती अवजारे (${machineryCount})` : `Tractors & Implements (${machineryCount})`}</span>
           </button>
           <button
             onClick={() => { setActiveFilter('household'); setCurrentPage(1); }}
@@ -356,7 +362,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             }`}
           >
             <span className="material-symbols-outlined text-[16px] text-[#707974]">handyman</span>
-            <span>Household &amp; Small Goods ({householdCount})</span>
+            <span>{lang === 'MR' ? `घरगुती वस्तू व साधने (${householdCount})` : `Household & Small Goods (${householdCount})`}</span>
           </button>
         </div>
       </div>
@@ -367,9 +373,9 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
         <div className="lg:col-span-8 flex flex-col gap-8">
           <div className="flex items-center justify-between">
             <h2 className="font-heading font-extrabold text-[17px] text-[#003629]">
-              Marketplace Catalog{' '}
+              {lang === 'MR' ? 'बाजारपेठ सूची' : 'Marketplace Catalog'}{' '}
               <span className="text-[13px] font-normal text-[#707974]">
-                (Showing {totalVisible} listings)
+                ({lang === 'MR' ? `एकूण ${totalVisible} नोंदी` : `Showing ${totalVisible} listings`})
               </span>
             </h2>
           </div>
@@ -377,13 +383,17 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
           {totalVisible === 0 && (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
               <span className="material-symbols-outlined text-[48px] text-[#a63b00]">storefront</span>
-              <h3 className="font-heading font-bold text-[18px] text-[#003629]">No matching marketplace listings</h3>
-              <p className="text-[13px] text-[#707974] max-w-md">No agricultural produce, livestock, or machinery matches your search query or seller filter.</p>
+              <h3 className="font-heading font-bold text-[18px] text-[#003629]">
+                {lang === 'MR' ? 'कोणतीही नोंद सापडली नाही' : 'No matching marketplace listings'}
+              </h3>
+              <p className="text-[13px] text-[#707974] max-w-md">
+                {lang === 'MR' ? 'तुमच्या शोधानुसार किंवा फिल्टरनुसार कोणताही शेतमाल किंवा वस्तू उपलब्ध नाही.' : 'No agricultural produce, livestock, or machinery matches your search query.'}
+              </p>
               <button
                 onClick={() => { setActiveFilter('all'); setSearchQuery(''); setVerifiedOnly(false); setCurrentPage(1); }}
                 className="px-4 py-2 bg-[#003629] text-white text-[12px] font-bold rounded-xl hover:bg-[#1b4d3e] transition-colors"
               >
-                Reset All Filters
+                {lang === 'MR' ? 'सर्व फिल्टर रीसेट करा' : 'Reset All Filters'}
               </button>
             </div>
           )}
@@ -394,20 +404,20 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-4">
                 <div>
                   <span className="text-[10px] font-bold text-[#006a4e] tracking-wider uppercase">
-                    DIRECT HARVEST • NO MIDDLEMAN SPREAD
+                    {lang === 'MR' ? 'थेट शेतमाल • शून्य मध्यस्थ' : 'DIRECT HARVEST • NO MIDDLEMAN SPREAD'}
                   </span>
                   <h2 className="font-heading font-extrabold text-[20px] text-[#003629]">
-                    Fresh Farm Harvest Direct from Growers
+                    {lang === 'MR' ? 'थेट शेतकऱ्यांकडून ताजा शेतमाल' : 'Fresh Farm Harvest Direct from Growers'}
                   </h2>
                   <p className="text-[12px] text-[#707974]">
-                    827 qtl total harvested produce ready for bulk &amp; retail pickup in the region
+                    {lang === 'MR' ? 'आसगाव व परिसरातील शेतातील थेट उत्पादन व बियाणे' : 'Harvested produce ready for bulk & retail pickup in the region'}
                   </p>
                 </div>
                 <button
                   onClick={() => setActiveFilter('harvest')}
                   className="text-[12px] font-bold text-[#006a4e] hover:underline flex items-center gap-1 self-start sm:self-auto"
                 >
-                  <span>View 18 Harvest Lots</span>
+                  <span>{lang === 'MR' ? `सर्व शेतमाल पहा (${allHarvest.length})` : `View ${allHarvest.length} Lots`}</span>
                   <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                 </button>
               </div>
@@ -464,7 +474,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         className="py-2 px-3 bg-[#003629] hover:bg-[#00281e] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">call</span>
-                        <span>Call Seller</span>
+                        <span>{lang === 'MR' ? 'कॉल करा' : 'Call Seller'}</span>
                       </a>
                       <a
                         href={`https://wa.me/91${item.phone}`}
@@ -473,7 +483,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         className="py-2 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#baeed9]/20 text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">chat</span>
-                        <span>WhatsApp</span>
+                        <span>{lang === 'MR' ? 'व्हॉट्सअ‍ॅप' : 'WhatsApp'}</span>
                       </a>
                     </div>
                   </div>
@@ -488,17 +498,17 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-4">
                 <div>
                   <span className="text-[10px] font-bold text-[#a63b00] tracking-wider uppercase">
-                    VET-INSPECTED &amp; VET CHECKED • Safe for Farmer Transfer
+                    {lang === 'MR' ? 'तपासणी केलेले पशुधन • थेट शेतकरी व्यवहार' : 'VET-INSPECTED • Safe for Farmer Transfer'}
                   </span>
                   <h2 className="font-heading font-extrabold text-[20px] text-[#003629]">
-                    Village Livestock &amp; Cattle Bazar
+                    {lang === 'MR' ? 'स्थानिक पशुधन व जनावरे बाजार' : 'Village Livestock & Cattle Bazar'}
                   </h2>
                   <p className="text-[12px] text-[#707974]">
-                    Cows, bulls, buffaloes, and backyard poultry with verified health certificates
+                    {lang === 'MR' ? 'गाय, म्हैस, बैल आणि शेळी खरेदी-विक्री' : 'Cows, bulls, buffaloes, and backyard livestock'}
                   </p>
                 </div>
                 <span className="text-[11px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-3 py-1 rounded-full border border-[#baeed9] self-start sm:self-auto">
-                  {allLivestock.length} Live Cattle Records
+                  {allLivestock.length} {lang === 'MR' ? 'पशुधन नोंदी' : 'Live Cattle Records'}
                 </span>
               </div>
 
@@ -547,7 +557,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         className="w-full py-2 bg-[#003629] hover:bg-[#00281e] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">call</span>
-                        <span>Contact Owner</span>
+                        <span>{lang === 'MR' ? 'मालकाशी संपर्क' : 'Contact Owner'}</span>
                       </a>
                     </div>
                   </div>
@@ -561,13 +571,13 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
               <div className="border-b border-[#f3ede4] pb-4">
                 <span className="text-[10px] font-bold text-[#006a4e] tracking-wider uppercase">
-                  HEAVY MACHINERY • No Dealer Commissions
+                  {lang === 'MR' ? 'कृषी यंत्रे • थेट शेतकरी व्यवहार' : 'HEAVY MACHINERY • No Dealer Commissions'}
                 </span>
                 <h2 className="font-heading font-extrabold text-[20px] text-[#003629]">
-                  Pre-Owned Tractors &amp; Implements
+                  {lang === 'MR' ? 'वापरलेले ट्रॅक्टर व शेती अवजारे' : 'Pre-Owned Tractors & Implements'}
                 </h2>
                 <p className="text-[12px] text-[#707974]">
-                  कृषी अवजारे बाजार — Inspected machinery with authentic ownership records
+                  {lang === 'MR' ? 'रोटाव्हेटर, नांगर, ट्रॉली व पेरणी यंत्रे — अधिकृत मालकी' : 'Inspected machinery with authentic ownership records'}
                 </p>
               </div>
 
@@ -610,7 +620,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         className="w-full py-2 bg-[#003629] hover:bg-[#00281e] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">call</span>
-                        <span>Connect Seller</span>
+                        <span>{lang === 'MR' ? 'मालकाशी बोला' : 'Connect Seller'}</span>
                       </a>
                     </div>
                   </div>
@@ -624,13 +634,13 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
               <div className="border-b border-[#f3ede4] pb-4">
                 <span className="text-[10px] font-bold text-[#a63b00] tracking-wider uppercase">
-                  VILLAGE RESALE • Verified Local Owners
+                  {lang === 'MR' ? 'स्थानिक खरेदी-विक्री' : 'VILLAGE RESALE • Verified Local Owners'}
                 </span>
                 <h2 className="font-heading font-extrabold text-[20px] text-[#003629]">
-                  Household &amp; Small Enterprise Goods
+                  {lang === 'MR' ? 'घरगुती वस्तू व लघुउद्योग साधने' : 'Household & Small Enterprise Goods'}
                 </h2>
                 <p className="text-[12px] text-[#707974]">
-                  घरगुती वस्तू आणि लघुउद्योग साधने
+                  {lang === 'MR' ? 'गावपातळीवरील उपयुक्त वस्तू, उपकरणे व साधने' : 'Locally verified household and small business items'}
                 </p>
               </div>
 
@@ -670,7 +680,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         className="py-2 px-3 bg-[#003629] hover:bg-[#00281e] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">call</span>
-                        <span>Call Owner</span>
+                        <span>{lang === 'MR' ? 'कॉल करा' : 'Call Owner'}</span>
                       </a>
                       <a
                         href={`https://wa.me/91${item.phone}`}
@@ -679,7 +689,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         className="py-2 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#baeed9]/20 text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">chat</span>
-                        <span>Chat</span>
+                        <span>{lang === 'MR' ? 'चॅट' : 'Chat'}</span>
                       </a>
                     </div>
                   </div>
@@ -691,7 +701,9 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
           {/* Dynamic Pagination Strip */}
           <div className="bg-white rounded-xl p-3 border border-[#e8e2d9] flex flex-col sm:flex-row items-center justify-between text-[12px] text-[#707974] gap-2 mt-2">
             <span>
-              Showing {totalVisible > 0 ? startIndex + 1 : 0}-{Math.min(startIndex + pageSize, totalVisible)} of {totalVisible} village listings
+              {lang === 'MR'
+                ? `एकूण ${totalVisible} पैकी ${totalVisible > 0 ? startIndex + 1 : 0}-${Math.min(startIndex + pageSize, totalVisible)} नोंदी दाखवत आहे`
+                : `Showing ${totalVisible > 0 ? startIndex + 1 : 0}-${Math.min(startIndex + pageSize, totalVisible)} of ${totalVisible} village listings`}
             </span>
             {totalPages > 1 && (
               <div className="flex items-center gap-1">
@@ -740,9 +752,11 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               <span className="material-symbols-outlined text-[#006a4e] text-[22px]">verified_user</span>
               <div>
                 <h3 className="font-heading font-bold text-[14px] text-[#003629]">
-                  Marketplace Safe Guidelines
+                  {lang === 'MR' ? 'बाजारातील सुरक्षित खरेदी-विक्री नियम' : 'Marketplace Safe Guidelines'}
                 </h3>
-                <span className="text-[10px] text-[#707974]">Gram Gaon Verified Safe Advice</span>
+                <span className="text-[10px] text-[#707974]">
+                  {lang === 'MR' ? 'गाव पडताळणी सुरक्षित सल्ला' : 'Gram Gaon Verified Safe Advice'}
+                </span>
               </div>
             </div>
 
@@ -750,9 +764,13 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               <div className="bg-[#fff8f0] p-3 rounded-xl border border-[#ffe0cc] flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-[#a63b00] text-[18px] shrink-0 mt-0.5">wb_sunny</span>
                 <div>
-                  <h4 className="font-bold text-[12px] text-[#a63b00]">Daylight Inspection</h4>
+                  <h4 className="font-bold text-[12px] text-[#a63b00]">
+                    {lang === 'MR' ? 'दिवसा उजेडात प्रत्यक्ष तपासणी' : 'Daylight Inspection'}
+                  </h4>
                   <p className="text-[11px] text-[#404945] leading-relaxed">
-                    Always inspect cattle, tractors, and grain quality in daylight at the seller's farm or residence.
+                    {lang === 'MR'
+                      ? 'जनावरे, ट्रॅक्टर आणि धान्याची गुणवत्ता नेहमी दिवसा उजेडात विक्रेत्याच्या शेतात किंवा घरी प्रत्यक्ष तपासा.'
+                      : "Always inspect cattle, tractors, and grain quality in daylight at the seller's farm or residence."}
                   </p>
                 </div>
               </div>
@@ -760,9 +778,13 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               <div className="bg-[#fff8f0] p-3 rounded-xl border border-[#ffe0cc] flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-[#ba1a1a] text-[18px] shrink-0 mt-0.5">do_not_disturb_on</span>
                 <div>
-                  <h4 className="font-bold text-[12px] text-[#ba1a1a]">Zero Advance UPI</h4>
+                  <h4 className="font-bold text-[12px] text-[#ba1a1a]">
+                    {lang === 'MR' ? 'आगाऊ UPI पैसे पाठवू नका' : 'Zero Advance UPI'}
+                  </h4>
                   <p className="text-[11px] text-[#404945] leading-relaxed">
-                    Never transfer advance token money via Google Pay or PhonePe before physical verification scan-bills.
+                    {lang === 'MR'
+                      ? 'मालाची प्रत्यक्ष पाहणी करण्यापूर्वी Google Pay किंवा PhonePe द्वारे कधीही आगाऊ टोकन रक्कम पाठवू नका.'
+                      : 'Never transfer advance token money via Google Pay or PhonePe before physical verification scan-bills.'}
                   </p>
                 </div>
               </div>
@@ -770,9 +792,13 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               <div className="bg-[#fff8f0] p-3 rounded-xl border border-[#ffe0cc] flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-[#006a4e] text-[18px] shrink-0 mt-0.5">scale</span>
                 <div>
-                  <h4 className="font-bold text-[12px] text-[#006a4e]">Verify Haat Weighing Tag</h4>
+                  <h4 className="font-bold text-[12px] text-[#006a4e]">
+                    {lang === 'MR' ? 'अधिकृत धर्म काटा वजन पावती' : 'Verify Haat Weighing Tag'}
+                  </h4>
                   <p className="text-[11px] text-[#404945] leading-relaxed">
-                    For bulk harvest check, insist on receipt for testing certified by the weighbridge tag on the Pauni portal.
+                    {lang === 'MR'
+                      ? 'मोठ्या शेतमालाच्या व्यवहारासाठी पौनी पोर्टल प्रमाणित धर्म काटा वजन पावती अवश्य मागा.'
+                      : 'For bulk harvest check, insist on receipt for testing certified by the weighbridge tag on the Pauni portal.'}
                   </p>
                 </div>
               </div>
@@ -781,7 +807,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             <div className="pt-2 border-t border-[#f3ede4] flex items-center justify-between text-[11px] text-[#707974]">
               <span className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-[14px]">call</span>
-                <span>Toll Free Krishi Desk:</span>
+                <span>{lang === 'MR' ? 'कृषी हेल्पलाईन:' : 'Toll Free Krishi Desk:'}</span>
               </span>
               <strong className="text-[#003629]">07185-221101</strong>
             </div>
@@ -792,36 +818,42 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             <div className="flex items-center justify-between border-b border-[#f3ede4] pb-3">
               <div>
                 <span className="text-[9px] font-black uppercase text-[#a63b00] tracking-wider">
-                  WEEKLY HAAT
+                  {lang === 'MR' ? 'आठवडे बाजार' : 'WEEKLY HAAT'}
                 </span>
                 <h3 className="font-heading font-extrabold text-[15px] text-[#003629]">
-                  Asgaon Budhwar Bazaar
+                  {lang === 'MR' ? 'असगाव शुक्रवार बाजार' : 'Asgaon Friday Bazaar'}
                 </h3>
               </div>
               <span className="text-[10px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-2 py-0.5 rounded border border-[#baeed9]">
-                Every Friday
+                {lang === 'MR' ? 'दर शुक्रवारी' : 'Every Friday'}
               </span>
             </div>
 
             <div className="text-[11px] text-[#55605a]">
-              Old Bus Stand Ground • 07:00 AM – 02:00 PM
+              {lang === 'MR'
+                ? 'जुना बस स्टँड मैदान • सकाळी ०७:०० ते दुपारी ०२:००'
+                : 'Old Bus Stand Ground • 07:00 AM – 02:00 PM'}
             </div>
 
             {/* Map visual card */}
             <div className="relative rounded-xl overflow-hidden border border-[#c4d6cf] h-32 bg-[#e2eee9] flex flex-col items-center justify-center p-3 text-center">
               <span className="material-symbols-outlined text-[32px] text-[#006a4e] mb-1">map</span>
-              <span className="font-bold text-[11px] text-[#003629]">Old Bus Stand Ground • 42 Stalls Allocated</span>
-              <span className="text-[10px] text-[#55605a]">Pauni-Bhandara State Highway 352 Junction</span>
+              <span className="font-bold text-[11px] text-[#003629]">
+                {lang === 'MR' ? 'जुना बस स्टँड मैदान • ४२ ओटे/गाळे उपलब्ध' : 'Old Bus Stand Ground • 42 Stalls Allocated'}
+              </span>
+              <span className="text-[10px] text-[#55605a]">
+                {lang === 'MR' ? 'पौनी-भंडारा राज्य महामार्ग ३५२ जंक्शन' : 'Pauni-Bhandara State Highway 352 Junction'}
+              </span>
             </div>
 
             <div className="bg-[#f3ede4]/60 p-2.5 rounded-xl text-[10px] text-[#404945] flex flex-col gap-1">
               <div className="flex items-center justify-between">
-                <span>Local Farmers &amp; Self-Help Groups:</span>
-                <strong className="text-[#006a4e]">FREE / Stall</strong>
+                <span>{lang === 'MR' ? 'स्थानिक शेतकरी व बचत गट:' : 'Local Farmers & Self-Help Groups:'}</span>
+                <strong className="text-[#006a4e]">{lang === 'MR' ? 'मोफत गाळा' : 'FREE / Stall'}</strong>
               </div>
               <div className="flex items-center justify-between">
-                <span>Outside Commercial Vendors:</span>
-                <strong className="text-[#a63b00]">₹50 Stall Fee / Day</strong>
+                <span>{lang === 'MR' ? 'बाहेरील व्यावसायिक विक्रेते:' : 'Outside Commercial Vendors:'}</span>
+                <strong className="text-[#a63b00]">{lang === 'MR' ? '₹५० शुल्क / दिवस' : '₹50 Stall Fee / Day'}</strong>
               </div>
             </div>
 
@@ -829,7 +861,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               onClick={() => setShowStallModal(true)}
               className="w-full py-2.5 bg-[#a63b00] hover:bg-[#852f00] text-white text-[12px] font-bold rounded-xl transition-all shadow-xs"
             >
-              Book Free Farmer Stall Space
+              {lang === 'MR' ? 'शेतकऱ्यांसाठी मोफत गाळा बुक करा' : 'Book Free Farmer Stall Space'}
             </button>
           </div>
 
@@ -839,31 +871,44 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               <span className="material-symbols-outlined text-[#006a4e] text-[20px]">scale</span>
               <div>
                 <span className="text-[9px] font-bold text-[#006a4e] uppercase tracking-wider block">
-                  APMC CERTIFIED
+                  {lang === 'MR' ? 'एपीएमसी प्रमाणित' : 'APMC CERTIFIED'}
                 </span>
                 <h3 className="font-heading font-bold text-[14px] text-[#003629]">
-                  Computerized Weighbridge (धर्म काटा)
+                  {lang === 'MR' ? 'संगणकीकृत धर्म काटा (इलेक्ट्रॉनिक वजन)' : 'Computerized Weighbridge (धर्म काटा)'}
                 </h3>
               </div>
             </div>
 
             <p className="text-[11px] text-[#404945] leading-relaxed">
-              Avoid faulty scale losses. Electronic 60-ton weighbridge just 1.5 km from Asgaon on Pauni road.
+              {lang === 'MR'
+                ? 'चुकीच्या वजनामुळे होणारे नुकसान टाळा. असगावपासून पौनी रस्त्यावर अवघ्या १.५ किमी अंतरावर ६० टनी इलेक्ट्रॉनिक धर्म काटा.'
+                : 'Avoid faulty scale losses. Electronic 60-ton weighbridge just 1.5 km from Asgaon on Pauni road.'}
             </p>
 
             <div className="grid grid-cols-2 gap-2 text-[11px] bg-[#f3ede4]/40 p-2.5 rounded-xl">
               <div>
-                <span className="text-[10px] text-[#707974] block">Tractor / Trolley</span>
-                <strong className="text-[#003629]">Up to 60 Quintals: ₹50</strong>
+                <span className="text-[10px] text-[#707974] block">
+                  {lang === 'MR' ? 'ट्रॅक्टर / ट्रॉली' : 'Tractor / Trolley'}
+                </span>
+                <strong className="text-[#003629]">
+                  {lang === 'MR' ? '६० क्विंटलपर्यंत: ₹५०' : 'Up to 60 Quintals: ₹50'}
+                </strong>
               </div>
               <div>
-                <span className="text-[10px] text-[#707974] block">10-Wheeler Truck</span>
-                <strong className="text-[#003629]">₹100 (incl. MSP Receipt)</strong>
+                <span className="text-[10px] text-[#707974] block">
+                  {lang === 'MR' ? '१०-चाकी ट्रक' : '10-Wheeler Truck'}
+                </span>
+                <strong className="text-[#003629]">
+                  {lang === 'MR' ? '₹१०० (हमीभाव पावतीसह)' : '₹100 (incl. MSP Receipt)'}
+                </strong>
               </div>
             </div>
 
             <div className="text-[10px] text-[#707974]">
-              Hours: <strong className="text-[#003629]">Open 07:00 AM – 08:00 PM Daily</strong>
+              {lang === 'MR' ? 'वेळ: ' : 'Hours: '}
+              <strong className="text-[#003629]">
+                {lang === 'MR' ? 'दररोज सकाळी ०७:०० ते रात्री ०८:००' : 'Open 07:00 AM – 08:00 PM Daily'}
+              </strong>
             </div>
 
             <a
@@ -871,7 +916,9 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               className="w-full py-2 border border-[#006a4e] text-[#006a4e] hover:bg-[#baeed9]/20 text-[11px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
             >
               <span className="material-symbols-outlined text-[14px]">call</span>
-              <span>Call Weighbridge In-charge: 93704 88102</span>
+              <span>
+                {lang === 'MR' ? 'धर्म काटा प्रमुख: ९३७०४ ८८१०२' : 'Call Weighbridge In-charge: 93704 88102'}
+              </span>
             </a>
           </div>
 
@@ -879,26 +926,28 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
           <div className="bg-[#003629] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3">
             <div className="flex items-center justify-between">
               <span className="text-[9px] font-bold uppercase tracking-wider text-[#baeed9]">
-                OFFICIAL PROCUREMENT
+                {lang === 'MR' ? 'शासकीय हमीभाव' : 'OFFICIAL PROCUREMENT'}
               </span>
               <span className="bg-[#baeed9]/20 text-[#baeed9] text-[9px] font-bold px-2 py-0.5 rounded">
-                Centre Open Today
+                {lang === 'MR' ? 'खरेदी केंद्र आज सुरू' : 'Centre Open Today'}
               </span>
             </div>
 
             <h3 className="font-heading font-extrabold text-[15px] leading-snug">
-              Check Government MSP Before You Sell
+              {lang === 'MR' ? 'माल विकण्यापूर्वी शासकीय हमीभाव (MSP) तपासा' : 'Check Government MSP Before You Sell'}
             </h3>
 
             <p className="text-[11px] text-[#e8e2d9] leading-relaxed">
-              Soybean 2026 MSP: <strong>₹4,892/qtl</strong> • Cotton (Medium Staple): <strong>₹7,121/qtl</strong>. Never settle for distress sales below Govt minimum price floor.
+              {lang === 'MR'
+                ? 'सोयाबीन २०२६ हमीभाव: ₹४,८९२/क्विंटल • कापूस (मध्यम धागा): ₹७,१२१/क्विंटल. शासनाच्या हमीभावापेक्षा कमी दरात घाईघाईने माल विकू नका.'
+                : 'Soybean 2026 MSP: ₹4,892/qtl • Cotton (Medium Staple): ₹7,121/qtl. Never settle for distress sales below Govt minimum price floor.'}
             </p>
 
             <a
               href="#mandi-bulletin"
               className="w-full py-2.5 bg-[#baeed9] hover:bg-[#a0dec5] text-[#002117] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors mt-1"
             >
-              <span>Open Mandi Price Bulletin</span>
+              <span>{lang === 'MR' ? 'बाजारभाव पत्रिका पहा' : 'Open Mandi Price Bulletin'}</span>
               <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </a>
           </div>
@@ -920,56 +969,74 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               <span className="material-symbols-outlined text-[#006a4e] text-[24px]">post_add</span>
               <div>
                 <h3 className="font-heading font-extrabold text-[18px] text-[#003629]">
-                  Post a Free Village Listing
+                  {lang === 'MR' ? 'मोफत गाव जाहिरात नोंदवा' : 'Post a Free Village Listing'}
                 </h3>
-                <span className="text-[11px] text-[#707974]">Asgaon Gaon Bazaar Direct Seller Platform</span>
+                <span className="text-[11px] text-[#707974]">
+                  {lang === 'MR'
+                    ? 'असगाव गाव बाजार थेट शेतकरी-ग्राहक व्यासपीठ'
+                    : 'Asgaon Gaon Bazaar Direct Seller Platform'}
+                </span>
               </div>
             </div>
 
             {bookingSuccess ? (
               <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">Listing Published Successfully!</h4>
+                <h4 className="font-bold text-[15px] text-[#003629]">
+                  {lang === 'MR' ? 'जाहिरात यशस्वीरित्या प्रकाशित झाली!' : 'Listing Published Successfully!'}
+                </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
-                  Your listing is now active and visible to all villagers and nearby traders.
+                  {lang === 'MR'
+                    ? 'तुमची जाहिरात आता सक्रिय असून सर्व गावकरी आणि परिसरातील खरेदीदारांना दिसत आहे.'
+                    : 'Your listing is now active and visible to all villagers and nearby traders.'}
                 </p>
               </div>
             ) : (
               <form onSubmit={handlePostSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">Item Title / Commodity Name</label>
+                  <label className="font-bold text-[#003629] block mb-1">
+                    {lang === 'MR' ? 'वस्तूचे नाव / शेतमाल प्रकार' : 'Item Title / Commodity Name'}
+                  </label>
                   <input
                     type="text"
                     required
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    placeholder="e.g. JS335 Soybean Seeds / Murrah Buffalo / 6ft Rotavator"
+                    placeholder={
+                      lang === 'MR'
+                        ? 'उदा. जेएस ३३५ सोयाबीन बियाणे / मुऱ्हा म्हैस / ६ फूट रोटाव्हेटर'
+                        : 'e.g. JS335 Soybean Seeds / Murrah Buffalo / 6ft Rotavator'
+                    }
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">Category</label>
+                    <label className="font-bold text-[#003629] block mb-1">
+                      {lang === 'MR' ? 'श्रेणी (Category)' : 'Category'}
+                    </label>
                     <select
                       value={newCategory}
                       onChange={(e) => setNewCategory(e.target.value)}
                       className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none bg-white"
                     >
-                      <option value="harvest">Farm Harvest (शेतमाल)</option>
-                      <option value="livestock">Livestock &amp; Cattle (पशुधन)</option>
-                      <option value="machinery">Tractors &amp; Implements (अवजारे)</option>
-                      <option value="household">Household Goods (घरगुती)</option>
+                      <option value="harvest">{lang === 'MR' ? 'शेतमाल (Farm Harvest)' : 'Farm Harvest'}</option>
+                      <option value="livestock">{lang === 'MR' ? 'पशुधन (Livestock & Cattle)' : 'Livestock & Cattle'}</option>
+                      <option value="machinery">{lang === 'MR' ? 'अवजारे (Tractors & Implements)' : 'Tractors & Implements'}</option>
+                      <option value="household">{lang === 'MR' ? 'घरगुती सामान (Household Goods)' : 'Household Goods'}</option>
                     </select>
                   </div>
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">Expected Price (₹)</label>
+                    <label className="font-bold text-[#003629] block mb-1">
+                      {lang === 'MR' ? 'अपेक्षित किंमत (₹)' : 'Expected Price (₹)'}
+                    </label>
                     <input
                       type="text"
                       required
                       value={newPrice}
                       onChange={(e) => setNewPrice(e.target.value)}
-                      placeholder="e.g. ₹4,850 / Quintal or ₹82,000"
+                      placeholder={lang === 'MR' ? 'उदा. ₹४,८५० / क्विंटल किंवा ₹८२,०००' : 'e.g. ₹4,850 / Quintal or ₹82,000'}
                       className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                     />
                   </div>
@@ -977,37 +1044,47 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">Mobile / WhatsApp Number</label>
+                    <label className="font-bold text-[#003629] block mb-1">
+                      {lang === 'MR' ? 'मोबाईल / व्हॉट्सअ‍ॅप नंबर' : 'Mobile / WhatsApp Number'}
+                    </label>
                     <input
                       type="tel"
                       required
                       value={newPhone}
                       onChange={(e) => setNewPhone(e.target.value)}
-                      placeholder="10-digit mobile number"
+                      placeholder={lang === 'MR' ? '१०-अंकी मोबाईल नंबर' : '10-digit mobile number'}
                       className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                     />
                   </div>
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">Village Location / Ward</label>
+                    <label className="font-bold text-[#003629] block mb-1">
+                      {lang === 'MR' ? 'गावातील पत्ता / परिसर' : 'Village Location / Ward'}
+                    </label>
                     <input
                       type="text"
                       required
                       value={newLocation}
                       onChange={(e) => setNewLocation(e.target.value)}
-                      placeholder="e.g. Asgaon Ward 2 / Pauni Gate"
+                      placeholder={lang === 'MR' ? 'उदा. असगाव वॉर्ड २ / पौनी वेस' : 'e.g. Asgaon Ward 2 / Pauni Gate'}
                       className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">Details &amp; Condition</label>
+                  <label className="font-bold text-[#003629] block mb-1">
+                    {lang === 'MR' ? 'सविस्तर माहिती व स्थिती' : 'Details & Condition'}
+                  </label>
                   <textarea
                     rows={3}
                     required
                     value={newDesc}
                     onChange={(e) => setNewDesc(e.target.value)}
-                    placeholder="Provide details about variety, quantity, age/vaccination, machine hours, etc."
+                    placeholder={
+                      lang === 'MR'
+                        ? 'वाण, प्रमाण, जनावराचे वय/लसीकरण, अवजारे चाललेले तास इत्यादी तपशील द्या.'
+                        : 'Provide details about variety, quantity, age/vaccination, machine hours, etc.'
+                    }
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none resize-none"
                   />
                 </div>
@@ -1015,12 +1092,16 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 {/* Cloudinary Produce/Item Photo Upload */}
                 <div>
                   <label className="font-bold text-[#003629] block mb-1">
-                    Commodity / Item Photo (मालाचे छायाचित्र)
+                    {lang === 'MR' ? 'मालाचे छायाचित्र (फोटो)' : 'Commodity / Item Photo'}
                   </label>
                   <div className="flex items-center gap-3">
                     <label className="cursor-pointer inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-[#003629] text-white text-[11px] font-bold hover:bg-[#1b4d3e] transition-colors shadow-xs">
                       <span className="material-symbols-outlined text-[17px]">add_a_photo</span>
-                      <span>{uploadingImage ? 'Uploading...' : 'Upload Photo'}</span>
+                      <span>
+                        {uploadingImage
+                          ? (lang === 'MR' ? 'अपलोड होत आहे...' : 'Uploading...')
+                          : (lang === 'MR' ? 'फोटो निवडा' : 'Upload Photo')}
+                      </span>
                       <input
                         type="file"
                         accept="image/*"
@@ -1039,18 +1120,20 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         />
                         <span className="text-[11px] text-[#006a4e] font-bold flex items-center gap-0.5">
                           <span className="material-symbols-outlined text-[15px]">check_circle</span>
-                          Attached
+                          {lang === 'MR' ? 'जोडले' : 'Attached'}
                         </span>
                         <button
                           type="button"
                           onClick={() => setNewImage('')}
                           className="text-[11px] text-[#ba1a1a] hover:underline font-semibold"
                         >
-                          Remove
+                          {lang === 'MR' ? 'काढून टाका' : 'Remove'}
                         </button>
                       </div>
                     ) : (
-                      <span className="text-[11px] text-[#707974]">Optional (Defaults to verified category photo)</span>
+                      <span className="text-[11px] text-[#707974]">
+                        {lang === 'MR' ? 'पर्यायी (डीफॉल्ट फोटो वापरला जाईल)' : 'Optional (Defaults to verified category photo)'}
+                      </span>
                     )}
                   </div>
                   {uploadError && (
@@ -1060,7 +1143,11 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
                 <div className="bg-[#fff8f0] p-2.5 rounded-lg border border-[#ffe0cc] text-[11px] text-[#a63b00] flex items-center gap-2">
                   <span className="material-symbols-outlined text-[16px]">verified</span>
-                  <span>Listing is 100% free with zero commission taken by Gram Panchayat.</span>
+                  <span>
+                    {lang === 'MR'
+                      ? 'ही सेवा १००% मोफत असून कोणतीही मध्यस्थी किंवा कमिशन घेतले जात नाही.'
+                      : 'Listing is 100% free with zero brokerage or commission taken.'}
+                  </span>
                 </div>
 
                 <button
@@ -1068,7 +1155,9 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                   disabled={uploadingImage}
                   className="w-full py-2.5 bg-[#003629] hover:bg-[#00281e] text-white font-bold rounded-xl transition-all shadow-xs mt-1 disabled:opacity-50"
                 >
-                  {uploadingImage ? 'Uploading Image...' : 'Publish Marketplace Listing'}
+                  {uploadingImage
+                    ? (lang === 'MR' ? 'फोटो अपलोड होत आहे...' : 'Uploading Image...')
+                    : (lang === 'MR' ? 'जाहिरात प्रकाशित करा' : 'Publish Marketplace Listing')}
                 </button>
               </form>
             )}
@@ -1091,33 +1180,43 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               <span className="material-symbols-outlined text-[#a63b00] text-[24px]">storefront</span>
               <div>
                 <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
-                  Book Free Stall for Friday Haat
+                  {lang === 'MR' ? 'शुक्रवार आठवडे बाजारासाठी मोफत गाळा नोंदवा' : 'Book Free Stall for Friday Haat'}
                 </h3>
-                <span className="text-[11px] text-[#707974]">Asgaon Shukrawar Weekly Bazaar</span>
+                <span className="text-[11px] text-[#707974]">
+                  {lang === 'MR' ? 'असगाव शुक्रवार साप्ताहिक बाजार' : 'Asgaon Friday Weekly Bazaar'}
+                </span>
               </div>
             </div>
 
             {bookingSuccess ? (
               <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">Stall Slot Confirmed!</h4>
+                <h4 className="font-bold text-[15px] text-[#003629]">
+                  {lang === 'MR' ? 'गाळा जागा निश्चित झाली!' : 'Stall Slot Confirmed!'}
+                </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
-                  Stall #F-19 reserved under your name for this Friday (07:00 AM - 02:00 PM).
+                  {lang === 'MR'
+                    ? 'या शुक्रवारसाठी (सकाळी ०७:०० - दुपारी ०२:००) गाळा क्र. #F-19 आपल्या नावे राखीव झाला आहे.'
+                    : 'Stall #F-19 reserved under your name for this Friday (07:00 AM - 02:00 PM).'}
                 </p>
               </div>
             ) : (
               <form onSubmit={handlePostSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">Farmer / Vendor Name</label>
+                  <label className="font-bold text-[#003629] block mb-1">
+                    {lang === 'MR' ? 'शेतकरी / विक्रेत्याचे नाव' : 'Farmer / Vendor Name'}
+                  </label>
                   <input
                     type="text"
                     required
-                    placeholder="Enter vendor / farmer full name"
+                    placeholder={lang === 'MR' ? 'विक्रेत्याचे पूर्ण नाव प्रविष्ट करा' : 'Enter vendor / farmer full name'}
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">Contact Number</label>
+                  <label className="font-bold text-[#003629] block mb-1">
+                    {lang === 'MR' ? 'संपर्क मोबाईल क्रमांक' : 'Contact Number'}
+                  </label>
                   <input
                     type="tel"
                     required
@@ -1126,22 +1225,30 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">Produce to Sell</label>
+                  <label className="font-bold text-[#003629] block mb-1">
+                    {lang === 'MR' ? 'विक्रीसाठी आणायचा माल' : 'Produce to Sell'}
+                  </label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Fresh leafy vegetables, grains, milk or fruits"
+                    placeholder={
+                      lang === 'MR'
+                        ? 'उदा. ताज्या पालेभाज्या, धान्य, फळे, दूध इत्यादी'
+                        : 'e.g. Fresh leafy vegetables, grains, milk or fruits'
+                    }
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                   />
                 </div>
                 <div className="bg-[#baeed9]/30 p-2.5 rounded-lg border border-[#006a4e]/20 text-[11px] text-[#003629]">
-                  Notice: Asgaon resident farmers receive free stalls. Please bring your 7/12 extract or Aadhaar card.
+                  {lang === 'MR'
+                    ? 'सूचना: असगावच्या स्थानिक रहिवासी शेतकऱ्यांना मोफत गाळा मिळतो. कृपया सोबत ७/१२ किंवा आधार कार्ड ठेवा.'
+                    : 'Notice: Asgaon resident farmers receive free stalls. Please bring your 7/12 extract or Aadhaar card.'}
                 </div>
                 <button
                   type="submit"
                   className="w-full py-2.5 bg-[#a63b00] hover:bg-[#852f00] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
                 >
-                  Confirm Stall Reservation
+                  {lang === 'MR' ? 'गाळा आरक्षण निश्चित करा' : 'Confirm Stall Reservation'}
                 </button>
               </form>
             )}
