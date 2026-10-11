@@ -244,9 +244,11 @@ public class AuthService {
             user.setCreatedAt(OffsetDateTime.now());
             user.setUpdatedAt(OffsetDateTime.now());
 
-            String roleName = (request.getRole() != null && !request.getRole().isBlank()) ? request.getRole() : "CITIZEN";
-            Role role = roleRepository.findByName(roleName)
-                    .orElseGet(() -> roleRepository.save(new Role(roleName, "Default " + roleName + " role")));
+            String rawRole = (request.getRole() != null && !request.getRole().isBlank()) ? request.getRole() : "CITIZEN";
+            String roleWithPrefix = rawRole.startsWith("ROLE_") ? rawRole : "ROLE_" + rawRole;
+            Role role = roleRepository.findByName(roleWithPrefix)
+                    .or(() -> roleRepository.findByName(rawRole))
+                    .orElseGet(() -> roleRepository.save(new Role(roleWithPrefix, "Default " + rawRole + " role")));
             user.setRoles(Collections.singleton(role));
 
             user = userRepository.save(user);
@@ -266,7 +268,9 @@ public class AuthService {
     }
 
     private AuthResponse buildAuthResponse(User user) {
-        String rolesString = user.getRoles().stream().map(r -> "ROLE_" + r.getName()).collect(Collectors.joining(","));
+        String rolesString = user.getRoles().stream()
+                .map(r -> r.getName().startsWith("ROLE_") ? r.getName() : "ROLE_" + r.getName())
+                .collect(Collectors.joining(","));
         String token = tokenProvider.generateTokenForUsername(user.getPhone(), rolesString);
 
         return AuthResponse.builder()
