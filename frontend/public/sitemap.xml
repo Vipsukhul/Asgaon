@@ -3,46 +3,73 @@
   <!-- Core Portal Pages -->
   <url>
     <loc>https://asgaon.vercel.app/</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/businesses</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/shiksha</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/transport</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/jobs</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/krishi</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://asgaon.vercel.app/marketplace</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://asgaon.vercel.app/marketplace</loc>
+    <loc>https://asgaon.vercel.app/announcements</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.7</priority>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://asgaon.vercel.app/events</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://asgaon.vercel.app/emergency</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/blogs</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -50,31 +77,37 @@
   <!-- Dedicated Gharkul & Housing Scheme Pages -->
   <url>
     <loc>https://asgaon.vercel.app/schemes/pmay-gramin-housing</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/ramai-awas-gharkul-yojana</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/shabari-adivasi-gharkul-yojana</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/modi-awas-gharkul-yojana</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/yashwantrao-chavan-mukt-vasahat</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/punyashlok-ahilyadevi-holkar-gharkul</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
@@ -82,41 +115,49 @@
   <!-- Dedicated Agriculture & Farmer Scheme Pages -->
   <url>
     <loc>https://asgaon.vercel.app/schemes/pm-kisan-17th-installment</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/namo-shetkari-mahasanman-nidhi</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/pm-fasal-bima-yojana-1-rupee</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/kusum-b-solar-agri-pump</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/magel-tyala-shettale</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/gopinath-munde-shetkari-apghat-vima</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/bhausaheb-fundkar-phalbag-lagwad</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/dr-ambedkar-krishi-swavalamban</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
@@ -124,21 +165,25 @@
   <!-- Dedicated Women & Child Welfare Scheme Pages -->
   <url>
     <loc>https://asgaon.vercel.app/schemes/majhi-ladki-bahin-yojana</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/umed-msrlm-shg-fund</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/pm-matru-vandana-yojana</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/mukhyamantri-annapurna-yojana</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
@@ -146,21 +191,25 @@
   <!-- Dedicated Students & Education Scheme Pages -->
   <url>
     <loc>https://asgaon.vercel.app/schemes/mahadbt-post-matric-scholarship</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/rajarshi-shahu-ebc-scholarship</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/mukhyamantri-yuva-karya-prashikshan</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/dr-ambedkar-swadhar-yojana</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -168,21 +217,25 @@
   <!-- Dedicated Solar & Health Scheme Pages -->
   <url>
     <loc>https://asgaon.vercel.app/schemes/pm-surya-ghar-muft-bijli</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/ayushman-bharat-mjpjay-health</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/sanjay-gandhi-niradhar-anudan</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/schemes/mgnrega-100-day-employment</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
@@ -190,41 +243,49 @@
   <!-- Dedicated Local Business & Shop Pages -->
   <url>
     <loc>https://asgaon.vercel.app/businesses/shivaji-krishi-seva-kendra</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/businesses/mauli-clinic-day-care</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/businesses/gurukrupa-tractor-hire</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/businesses/shree-ganesh-dairy</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/businesses/sai-samarth-maha-e-seva</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/businesses/gajanan-hardware-cement-depot</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/businesses/balaji-kirana-daily-needs</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/businesses/jai-malhar-agro-electricals</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -232,31 +293,37 @@
   <!-- Dedicated Education & School Pages -->
   <url>
     <loc>https://asgaon.vercel.app/shiksha/sch-1</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/shiksha/sch-2</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/shiksha/sch-3</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/shiksha/abhyasika</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/shiksha/tutor-1</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/shiksha/tutor-2</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -264,46 +331,55 @@
   <!-- Dedicated Blog Articles & Guides (SEO Slugs) -->
   <url>
     <loc>https://asgaon.vercel.app/blogs/write</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/blogs/c7f9e2b1</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/blogs/post-100</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/blogs/gharkul-yojana-2026-online-form-eligibility-asgaon</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/blogs/how-to-download-digital-712-satbara-mahabhumi-guide</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/blogs/pauni-bhandara-msrtc-bus-schedule-pass-concessions</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/blogs/majhi-ladki-bahin-yojana-installment-aadhaar-seeding-asgaon</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/blogs/cotton-paddy-kharif-crop-disease-management-asgaon</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asgaon.vercel.app/blogs/asgaon-gram-sabha-tharaav-and-tax-payment-guide</loc>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
