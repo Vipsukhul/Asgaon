@@ -106,7 +106,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
       <Breadcrumb
         items={[
           { label: 'Home', onClick: onNavigateHome },
-          { label: 'ग्रामपंचायत अधिकृत घोषणा (Announcements & Gazettes)', active: true }
+          { label: 'ग्रामपंचायत अधिकृत घोषणा', active: true }
         ]}
         rightBadge={
           <div className="text-[11px] font-semibold text-[#006a4e] bg-[#baeed9]/40 px-2.5 py-0.5 rounded-full border border-[#baeed9]">

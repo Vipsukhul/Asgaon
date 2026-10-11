@@ -233,7 +233,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
       <Breadcrumb
         items={[
           { label: 'Home', onClick: onNavigateHome },
-          { label: 'Marketplace (स्थानिक बाजारपेठ)', active: true }
+          { label: 'स्थानिक बाजारपेठ', active: true }
         ]}
         rightBadge={
           <div className="text-[11px] font-semibold text-[#006a4e] bg-[#baeed9]/40 px-2.5 py-0.5 rounded-full border border-[#baeed9]">

@@ -186,7 +186,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
       <Breadcrumb
         items={[
           { label: 'Home', onClick: onNavigateHome },
-          { label: 'Village Events & Calendar (गावातील कार्यक्रम व दिनदर्शिका)', active: true }
+          { label: 'गावातील कार्यक्रम व दिनदर्शिका', active: true }
         ]}
         rightBadge={
           <div className="text-[11px] font-semibold text-[#006a4e] bg-[#baeed9]/40 px-2.5 py-0.5 rounded-full border border-[#baeed9]">

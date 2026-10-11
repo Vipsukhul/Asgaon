@@ -141,7 +141,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
       <Breadcrumb
         items={[
           { label: 'Home', onClick: onNavigateHome },
-          { label: 'Businesses & Local Services (स्थानिक व्यवसाय यादी)', active: true }
+          { label: 'स्थानिक व्यवसाय यादी', active: true }
         ]}
         rightBadge={
           <div className="flex items-center gap-1.5 bg-[#baeed9] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">

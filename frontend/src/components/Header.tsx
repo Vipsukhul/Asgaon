@@ -26,7 +26,6 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({
   onOpenLogin,
-  onOpenGrievance,
   activeNav,
   setActiveNav,
   onSearch,
@@ -527,10 +526,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
               ) : (
                 <div className="bg-white p-3.5 rounded-2xl border border-[#e8e2d9] shadow-2xs">
-                  <div className="flex items-center gap-2 mb-2 text-[#707974] text-[11px]">
-                    <span className="material-symbols-outlined text-[17px] text-[#006a4e]">account_circle</span>
-                    <span className="font-semibold">{lang === 'MR' ? 'नागरिक सेवा खाते' : 'Citizen Civic Portal'}</span>
-                  </div>
+                  
                   <button
                     type="button"
                     onClick={() => {
@@ -548,13 +544,7 @@ export const Header: React.FC<HeaderProps> = ({
               {/* 2. Language Switcher (Marathi & English Separate Buttons with Marathi as Preferred Default) */}
               <div className="bg-white p-3 rounded-2xl border border-[#e8e2d9] shadow-2xs">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#003629]">
-                    <span className="material-symbols-outlined text-[16px] text-[#006a4e]">translate</span>
-                    <span>{lang === 'MR' ? 'भाषा निवडा' : 'Select Language'}</span>
-                  </div>
-                  <span className="text-[10px] text-[#006a4e] font-bold bg-[#baeed9] px-2 py-0.5 rounded-full">
-                    {lang === 'MR' ? 'मराठी सक्रिय ✓' : 'English Active ✓'}
-                  </span>
+                  
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <button
@@ -567,7 +557,7 @@ export const Header: React.FC<HeaderProps> = ({
                     }`}
                   >
                     <span className="text-sm">🇮🇳</span>
-                    <span>मराठी (प्राधान्य)</span>
+                    <span>मराठी</span>
                   </button>
                   <button
                     type="button"
@@ -667,19 +657,10 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
             </div>
 
+
             {/* Drawer Footer: Grievance and Emergency Services */}
             <div className="p-3 border-t border-[#e8e2d9] bg-white space-y-2 shrink-0">
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenGrievance();
-                }}
-                className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-[#006a4e]/10 text-[#003629] border border-[#006a4e]/25 text-xs font-bold hover:bg-[#006a4e]/20 transition-all cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-[18px] text-[#006a4e]">support_agent</span>
-                <span>{lang === 'MR' ? 'नागरिक तक्रार नोंदवा' : 'Register Citizen Grievance'}</span>
-              </button>
+              
               <div className="flex items-center justify-between text-[11px] text-[#707974] px-1">
                 <span>{lang === 'MR' ? 'आपत्कालीन मदत:' : 'Emergency Help:'}</span>
                 <a href="tel:108" className="text-[#ba1a1a] font-bold hover:underline flex items-center gap-1">

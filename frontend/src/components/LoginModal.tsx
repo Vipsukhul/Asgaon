@@ -232,7 +232,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
         {/* Informative Note */}
         <div className="mb-4 bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] text-[12px] text-[#404945]">
           <p className="font-semibold text-[#003629] mb-0.5">
-            {lang === 'MR' ? 'गुगल खात्याद्वारे सुरक्षित प्रवेश (Google Single Sign-On)' : 'Single Sign-On (SSO) with Google'}
+            {lang === 'MR' ? 'गुगल खात्याद्वारे सुरक्षित प्रवेश ' : 'Sign-In with Google'}
           </p>
           <p>
             {lang === 'MR'

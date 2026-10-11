@@ -1378,17 +1378,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {/* Top Banner */}
       <div className="bg-gradient-to-r from-[#003629] via-[#004d3b] to-[#1b4d3e] text-white rounded-2xl p-6 shadow-sm border border-[#baeed9]/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-[#baeed9] shadow-inner shrink-0">
-            <span className="material-symbols-outlined text-[28px]">edit_note</span>
-          </div>
+          
           <div>
             <div className="flex items-center gap-2">
               <h1 className="font-heading font-extrabold text-[22px] sm:text-[24px] text-white leading-tight">
                 आसगाव ग्राम माहिती व डेटा व्यवस्थापन केंद्र
               </h1>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider uppercase bg-[#baeed9] text-[#002117]">
-                व्यवस्थापक (Coordinator)
-              </span>
+           
             </div>
             <p className="text-[12px] text-[#baeed9] font-medium mt-0.5">
               ग्रामपंचायतीतून मिळणारी खरी माहिती गावकऱ्यांपर्यंत पोहोचवणारा स्वतंत्र मंच

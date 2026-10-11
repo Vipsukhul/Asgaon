@@ -182,7 +182,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
       <Breadcrumb
         items={[
           { label: 'Home', onClick: onNavigateHome },
-          { label: 'Shiksha & Education (शिक्षण आणि करिअर)', active: true }
+          { label: 'शिक्षण आणि करिअर', active: true }
         ]}
         rightBadge={
           <div className="flex items-center gap-3 text-[11px]">

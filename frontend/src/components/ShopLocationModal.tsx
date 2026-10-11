@@ -46,7 +46,6 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
   business,
   isOpen,
   onClose,
-  onOpenInFullVillageMap
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -244,21 +243,15 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
         {/* Header */}
         <div className="px-5 py-4 bg-[#f9f3ea] border-b border-[#e8e2d9] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-[#003629] text-[#baeed9] flex items-center justify-center shadow-xs">
-              <span className="material-symbols-outlined text-[22px]">location_on</span>
-            </div>
+            
             <div>
               <div className="flex items-center gap-2">
                 <h3 id="shop-location-title" className="font-heading font-extrabold text-[17px] sm:text-[19px] text-[#003629] leading-tight">
                   {business.name}
                 </h3>
-                <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-[#baeed9] text-[#002117]">
-                  नकाशावर स्थान
-                </span>
+               
               </div>
-              <p className="text-[12px] text-[#707974]">
-                आसगाव ग्राम नकाशा (Asgaon Village GIS Location)
-              </p>
+             
             </div>
           </div>
 
@@ -276,16 +269,12 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
         <div className="relative w-full h-[320px] sm:h-[380px] bg-[#f3ede4]">
           <div ref={mapContainerRef} className="w-full h-full z-10" />
 
-          {/* Quick Compass & GPS Pill overlay */}
-          <div className="absolute top-3 left-3 z-20 bg-white/95 backdrop-blur-xs text-[#003629] px-3 py-1.5 rounded-xl shadow-md border border-[#e8e2d9] flex items-center gap-2 text-[11px] font-bold">
-            <span className="material-symbols-outlined text-[16px] text-[#a63b00]">my_location</span>
-            <span>अक्षांश/रेखांश: {lat.toFixed(4)}° N, {lng.toFixed(4)}° E</span>
-          </div>
+         
 
           {/* Gram Panchayat reference indicator */}
           <div className="absolute top-3 right-3 z-20 bg-[#003629]/95 backdrop-blur-xs text-white px-2.5 py-1 rounded-lg shadow-md flex items-center gap-1.5 text-[10px] font-bold">
             <span className="material-symbols-outlined text-[13px] text-[#baeed9]">account_balance</span>
-            <span>ग्रामपंचायत चौकापासून: {business.distance || business.landmark || '0.3 km'}</span>
+            <span>ग्रामपंचायतपासून: {business.distance || business.landmark || '0.3 km'}</span>
           </div>
         </div>
 
@@ -296,7 +285,7 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
             <div className="flex items-start gap-2">
               <span className="material-symbols-outlined text-[18px] text-[#a63b00] shrink-0 mt-0.5">storefront</span>
               <div>
-                <span className="text-[#707974] font-medium block">पत्ता व परिसर (Address):</span>
+                <span className="text-[#707974] font-medium block">पत्ता व परिसर</span>
                 <span className="text-[#1d1b16] font-bold">{business.address || 'Asgaon Market Road, Asgaon'}</span>
                 {business.landmark && (
                   <span className="block text-[11px] text-[#003629] font-medium mt-0.5">खूण: {business.landmark}</span>
@@ -307,7 +296,7 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
             <div className="flex items-start gap-2">
               <span className="material-symbols-outlined text-[18px] text-[#003629] shrink-0 mt-0.5">schedule</span>
               <div>
-                <span className="text-[#707974] font-medium block">वेळ (Operating Hours):</span>
+                <span className="text-[#707974] font-medium block">वेळ:</span>
                 <span className="text-[#1d1b16] font-bold">{hours}</span>
                 <span className="block text-[11px] text-[#376757] font-medium mt-0.5">
                   अंतर: {business.distance || 'ग्रामपंचायत जवळ'}
@@ -328,23 +317,10 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
                 className="px-4 py-2.5 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] sm:text-[13px] font-bold flex items-center gap-1.5 shadow-xs transition-all hover:shadow-md"
               >
                 <span className="material-symbols-outlined text-[18px] text-[#baeed9]">navigation</span>
-                <span>Google Maps दिशानिर्देश (Get Directions)</span>
+                <span>Google Maps</span>
               </a>
 
-              {/* View in village full map */}
-              {onOpenInFullVillageMap && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    onClose();
-                    onOpenInFullVillageMap(business.id);
-                  }}
-                  className="px-3.5 py-2.5 rounded-xl bg-[#fff8f0] hover:bg-[#ffdbce] text-[#a63b00] text-[12px] sm:text-[13px] font-bold flex items-center gap-1.5 border border-[#ffdbce] transition-colors"
-                >
-                  <span className="material-symbols-outlined text-[17px]">map</span>
-                  <span>गावाच्या मुख्य नकाशात पहा</span>
-                </button>
-              )}
+             
             </div>
 
             {/* Direct Contact links */}

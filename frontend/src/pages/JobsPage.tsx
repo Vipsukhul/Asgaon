@@ -79,7 +79,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
       <Breadcrumb
         items={[
           { label: 'Home', onClick: onNavigateHome },
-          { label: 'Rojgar & Jobs (ग्राम रोजगार मंच)', active: true }
+          { label: 'ग्राम रोजगार मंच', active: true }
         ]}
         rightBadge={
           <div className="flex items-center gap-1.5 bg-[#baeed9] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
