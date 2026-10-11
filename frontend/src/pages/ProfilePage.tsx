@@ -35,7 +35,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     fullName: 'Asgaon Citizen',
     phone: '9822104500',
     role: 'FARMER',
-    ward: 'Ward 2 (Gaothan)',
+    ward: 'Gandhi Ward',
     village: 'Asgaon, Pauni (PIN 441910)',
     isLoggedIn: false,
     avatarInitials: 'AC'
