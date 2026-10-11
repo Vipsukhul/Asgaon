@@ -92,6 +92,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   const navItems = [
     { id: 'businesses', label: lang === 'MR' ? 'स्थानिक दुकाने' : 'Businesses', icon: 'storefront' },
+    { id: 'reviews', label: lang === 'MR' ? 'नागरिक अभिप्राय' : 'Reviews', icon: 'rate_review' },
     { id: 'jobs', label: lang === 'MR' ? 'रोजगार / नोकऱ्या' : 'Jobs', icon: 'work' },
     { id: 'schemes', label: lang === 'MR' ? 'शासकीय योजना' : 'Govt Schemes', icon: 'assured_workload' },
     { id: 'krishi', label: lang === 'MR' ? 'कृषी व बाजारभाव' : 'Krishi / Mandi', icon: 'agriculture' },

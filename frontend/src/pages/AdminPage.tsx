@@ -48,8 +48,70 @@ interface AdminPageProps {
 
 export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmin, onExit, onLogout }) => {
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users' | 'logs' | 'banners'
+    'overview' | 'reviews' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users' | 'logs' | 'banners'
   >('overview');
+
+  // Customer Reviews Moderation State
+  const [adminReviews, setAdminReviews] = useState<any[]>(() => {
+    const saved = localStorage.getItem('dg_all_public_reviews');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch { /* ignore */ }
+    }
+    return [
+      {
+        id: 'rev-1',
+        businessId: '1',
+        businessName: 'खडके किराणा आणि जनरल स्टोअर्स (Khadke Kirana)',
+        userName: 'रमेश पाटील (Rameshwar Patil)',
+        wardOrArea: 'वॉर्ड २ (गावठाण)',
+        rating: 5,
+        date: 'काल (Yesterday)',
+        comment: 'उत्कृष्ट सेवा आणि वाजवी दर. वेळेवर सर्व धान्य व किराणा माल उपलब्ध असतो.',
+        verifiedCitizen: true
+      },
+      {
+        id: 'rev-2',
+        businessId: '2',
+        businessName: 'पाटील कृषी केंद्र (Patil Krishi Kendra)',
+        userName: 'सुनीता झाळके (Sunita Zalke)',
+        wardOrArea: 'आंबेडकर वॉर्ड १',
+        rating: 5,
+        date: '३ दिवसांपूर्वी (3 days ago)',
+        comment: 'अतिशय नम्र बोलणे आणि खात्रीशीर बियाणे. रासायनिक व सेंद्रिय खतांचा योग्य सल्ला देतात.',
+        verifiedCitizen: true
+      },
+      {
+        id: 'rev-3',
+        businessId: '3',
+        businessName: 'सोनवणे मेडिकल व क्लिनिक (Sonone Medical)',
+        userName: 'विठ्ठल मेश्राम (Vitthal Meshram)',
+        wardOrArea: 'विठ्ठल मंदिर परिसर वॉर्ड ३',
+        rating: 5,
+        date: '१ आठवड्यापूर्वी (1 week ago)',
+        comment: 'तातडीच्या वेळी रात्रीही आवश्यक औषधे उपलब्ध करून दिली. बीपी व शुगर तपासणी मोफत केली जाते.',
+        verifiedCitizen: true
+      }
+    ];
+  });
+  const [reviewSearch, setReviewSearch] = useState('');
+  const [reviewFilterRating, setReviewFilterRating] = useState('all');
+
+  const handleDeleteReview = (id: string | number) => {
+    if (!window.confirm('हा अभिप्राय हटवायचा आहे का?')) return;
+    const updated = adminReviews.filter((r) => r.id !== id);
+    setAdminReviews(updated);
+    localStorage.setItem('dg_all_public_reviews', JSON.stringify(updated));
+    alert('अभिप्राय यशस्वीरीत्या काढला गेला!');
+  };
+
+  const handleToggleVerifiedReview = (id: string | number) => {
+    const updated = adminReviews.map((r) => r.id === id ? { ...r, verifiedCitizen: !r.verifiedCitizen } : r);
+    setAdminReviews(updated);
+    localStorage.setItem('dg_all_public_reviews', JSON.stringify(updated));
+  };
 
   // Dashboard Metrics
   const [stats, setStats] = useState<any>({
@@ -1376,27 +1438,25 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       />
 
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-[#003629] via-[#004d3b] to-[#1b4d3e] text-white rounded-2xl p-6 shadow-sm border border-[#baeed9]/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-[#003629] via-[#004d3b] to-[#1b4d3e] text-white rounded-2xl p-4 sm:p-6 shadow-sm border border-[#baeed9]/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-heading font-extrabold text-[22px] sm:text-[24px] text-white leading-tight">
+              <h1 className="font-heading font-extrabold text-[20px] sm:text-[24px] text-white leading-tight">
                 आसगाव ग्राम माहिती व डेटा व्यवस्थापन केंद्र
               </h1>
-           
             </div>
-            <p className="text-[12px] text-[#baeed9] font-medium mt-0.5">
+            <p className="text-[11px] sm:text-[12px] text-[#baeed9] font-medium mt-0.5">
               ग्रामपंचायतीतून मिळणारी खरी माहिती गावकऱ्यांपर्यंत पोहोचवणारा स्वतंत्र मंच
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 self-end md:self-auto">
+        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-between md:justify-end">
           {onExit && (
             <button
               onClick={onExit}
-              className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-[12px] transition-all flex items-center gap-1.5 border border-white/20"
+              className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-[12px] transition-all flex items-center gap-1.5 border border-white/20 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[16px]">visibility</span>
               <span>सार्वजनिक दृश्य पहा</span>
@@ -1405,7 +1465,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           {onLogout && (
             <button
               onClick={onLogout}
-              className="px-3.5 py-2 rounded-xl bg-[#ffdad6]/20 hover:bg-[#ffdad6]/30 text-[#ffb4ab] font-bold text-[12px] transition-all flex items-center gap-1.5 border border-[#ffb4ab]/30"
+              className="px-3.5 py-2 rounded-xl bg-[#ffdad6]/20 hover:bg-[#ffdad6]/30 text-[#ffb4ab] font-bold text-[12px] transition-all flex items-center gap-1.5 border border-[#ffb4ab]/30 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[16px]">logout</span>
               <span>बाहेर पडा</span>
@@ -1414,10 +1474,48 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         </div>
       </div>
 
-      {/* Navigation Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-[#e8e2d9] scrollbar-none">
+      {/* Mobile Select Tab Navigation (Quick 1-tap jump on phones) */}
+      <div className="block md:hidden">
+        <label className="text-[11px] font-bold uppercase tracking-wider text-[#707974] block mb-1">
+          व्यवस्थापन विभाग निवडा (Select Admin Module):
+        </label>
+        <div className="relative">
+          <select
+            value={activeTab}
+            onChange={(e) => setActiveTab(e.target.value as any)}
+            className="w-full p-3 pl-10 pr-9 bg-white border-2 border-[#003629] rounded-xl text-xs sm:text-sm font-bold text-[#003629] shadow-xs appearance-none cursor-pointer"
+          >
+            <option value="overview">📊 आढावा (Overview)</option>
+            <option value="reviews">⭐ नागरिक अभिप्राय (Reviews) ({adminReviews.length})</option>
+            <option value="banners">🖼️ हिरो स्लायडर व बॅनर</option>
+            <option value="events">🎪 कार्यक्रम व जत्रा ({events.length})</option>
+            <option value="shiksha">🏫 शिक्षण व शाळा ({shikshaSchools.length})</option>
+            <option value="transport">🚌 वाहतूक व बसेस ({transportBuses.length})</option>
+            <option value="blogs">📰 ब्लॉग व लेख ({villageBlogs.length})</option>
+            <option value="notices">📢 सूचना फलक ({announcements.length})</option>
+            <option value="water">💧 पाणी पुरवठा</option>
+            <option value="schemes">📋 योजना व्यवस्थापन ({schemes.length})</option>
+            <option value="contacts">📞 महत्त्वाचे संपर्क ({contacts.length})</option>
+            <option value="projects">🏗️ विकासकामे ({projects.length})</option>
+            <option value="complaints">📝 गावकऱ्यांच्या तक्रारी ({complaints.length})</option>
+            <option value="broadcast">🚨 तातडीची दवंडी (Push Alert)</option>
+            <option value="users">👥 गावकऱ्यांची यादी</option>
+            <option value="logs">📜 ऑडिट नोंदी (Audit Logs)</option>
+          </select>
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#003629] text-[20px] pointer-events-none">
+            tune
+          </span>
+          <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#003629] text-[20px] pointer-events-none">
+            expand_more
+          </span>
+        </div>
+      </div>
+
+      {/* Navigation Tabs (Scrollable pills on desktop & tablet) */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-[#e8e2d9] no-scrollbar scroll-smooth -mx-2 px-2 sm:mx-0 sm:px-0">
         {[
           { id: 'overview', icon: 'analytics', label: 'आढावा (Overview)' },
+          { id: 'reviews', icon: 'rate_review', label: `नागरिक अभिप्राय (${adminReviews.length})` },
           { id: 'banners', icon: 'view_carousel', label: 'हिरो स्लायडर व बॅनर' },
           { id: 'events', icon: 'event', label: `कार्यक्रम व जत्रा (${events.length})` },
           { id: 'shiksha', icon: 'school', label: `शिक्षण व शाळा (${shikshaSchools.length})` },
@@ -1436,12 +1534,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           <button
             key={t.id}
             onClick={() => setActiveTab(t.id as any)}
-            className={`px-3.5 py-2 rounded-xl text-[12px] sm:text-[13px] font-bold transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap ${activeTab === t.id
+            className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-[11px] sm:text-[13px] font-bold transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer ${activeTab === t.id
                 ? 'bg-[#003629] text-[#baeed9] shadow-xs'
                 : 'text-[#55605a] hover:bg-[#f3ede4]'
               }`}
           >
-            <span className="material-symbols-outlined text-[18px]">{t.icon}</span>
+            <span className="material-symbols-outlined text-[17px] sm:text-[18px]">{t.icon}</span>
             <span>{t.label}</span>
           </button>
         ))}
@@ -1602,6 +1700,157 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   सर्व गावकऱ्यांच्या मोबाईलवर लगेच अलर्ट पाठवा
                 </p>
               </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('reviews')}
+                className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+              >
+                <span className="material-symbols-outlined text-[24px] text-[#ef9f27] group-hover:text-[#baeed9] mb-2 block">
+                  rate_review
+                </span>
+                <strong className="block text-[13px] mb-1">नागरिक अभिप्राय व्यवस्थापन</strong>
+                <p className="text-[11px] text-[#707974] group-hover:text-white/80">
+                  स्थानिक दुकानांचे रेटिंग, परीक्षणे व अभिप्राय
+                </p>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB: REVIEWS MANAGEMENT */}
+      {activeTab === 'reviews' && (
+        <div className="flex flex-col gap-6">
+          <div className="bg-white rounded-2xl border border-[#e8e2d9] p-4 sm:p-6 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div>
+                <h2 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#003629] flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[24px] text-[#ef9f27]">rate_review</span>
+                  <span>स्थानिक दुकाने - नागरिक अभिप्राय व्यवस्थापन</span>
+                </h2>
+                <p className="text-[12px] text-[#707974] mt-0.5">
+                  गावकऱ्यांनी विविध दुकानांसाठी दिलेले रेटिंग, परीक्षणे व अनुभव तपासा आणि नियंत्रित करा.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <a
+                  href="/reviews"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-3.5 py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+                  <span>सार्वजनिक अभिप्राय पृष्ठ उघडा</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Filter Controls */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-6 bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9]">
+              <div className="relative flex-1">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]">
+                  search
+                </span>
+                <input
+                  type="text"
+                  value={reviewSearch}
+                  onChange={(e) => setReviewSearch(e.target.value)}
+                  placeholder="ग्राहक, दुकान किंवा टिप्पणी शोधा..."
+                  className="w-full pl-9 pr-3 py-2 bg-white rounded-lg text-xs text-[#1d1b16] border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
+                />
+              </div>
+
+              <div className="flex items-center gap-2">
+                <select
+                  value={reviewFilterRating}
+                  onChange={(e) => setReviewFilterRating(e.target.value)}
+                  className="p-2 bg-white rounded-lg text-xs font-bold text-[#003629] border border-[#e8e2d9] outline-none cursor-pointer"
+                >
+                  <option value="all">सर्व रेटिंग (All Stars)</option>
+                  <option value="5">⭐⭐⭐⭐⭐ (५ स्टार)</option>
+                  <option value="4">⭐⭐⭐⭐ (४ स्टार)</option>
+                  <option value="3">⭐⭐⭐ (३ स्टार)</option>
+                  <option value="2">⭐⭐ (२ स्टार)</option>
+                  <option value="1">⭐ (१ स्टार)</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Reviews Cards List */}
+            <div className="space-y-3">
+              {adminReviews
+                .filter((r) => {
+                  const matchesRating = reviewFilterRating === 'all' || String(r.rating) === reviewFilterRating;
+                  const q = reviewSearch.toLowerCase().trim();
+                  const matchesSearch =
+                    !q ||
+                    (r.userName && r.userName.toLowerCase().includes(q)) ||
+                    (r.businessName && r.businessName.toLowerCase().includes(q)) ||
+                    (r.comment && r.comment.toLowerCase().includes(q));
+                  return matchesRating && matchesSearch;
+                })
+                .map((rev) => (
+                  <div
+                    key={rev.id}
+                    className="p-4 rounded-xl border border-[#e8e2d9] bg-[#fcfbf9] hover:bg-white transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                  >
+                    <div className="flex-1 space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-bold text-xs sm:text-sm text-[#003629]">
+                          {rev.userName}
+                        </span>
+                        <span className="text-[11px] text-[#707974]">
+                          ({rev.wardOrArea || 'आसगाव'})
+                        </span>
+                        <span className="px-2 py-0.5 rounded-md bg-[#003629] text-white text-[10px] font-bold">
+                          {rev.businessName}
+                        </span>
+                        <div className="flex items-center text-[#ef9f27]">
+                          {[...Array(rev.rating || 5)].map((_, i) => (
+                            <span key={i} className="material-symbols-outlined text-[15px] font-fill">
+                              star
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <p className="text-xs text-[#404945] italic">
+                        "{rev.comment}"
+                      </p>
+
+                      <div className="flex items-center gap-3 text-[10px] text-[#707974] pt-0.5">
+                        <span>{rev.date}</span>
+                        <span className="font-semibold text-[#006a4e]">
+                          {rev.verifiedCitizen ? '✓ सत्यापित ग्रामस्थ नागरिक' : 'अनोंदणीकृत'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                      <button
+                        onClick={() => handleToggleVerifiedReview(rev.id)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border cursor-pointer ${
+                          rev.verifiedCitizen
+                            ? 'bg-[#baeed9]/40 text-[#006a4e] border-[#baeed9]'
+                            : 'bg-white text-[#707974] border-[#e8e2d9]'
+                        }`}
+                        title="सत्यापित स्थिती बदला"
+                      >
+                        {rev.verifiedCitizen ? 'सत्यापित ✓' : 'सत्यापित करा'}
+                      </button>
+
+                      <button
+                        onClick={() => handleDeleteReview(rev.id)}
+                        className="p-1.5 rounded-lg bg-[#ffdad6]/40 hover:bg-[#ffdad6] text-[#ba1a1a] transition-all cursor-pointer"
+                        title="अभिप्राय हटवा"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">delete</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
         </div>
@@ -1790,7 +2039,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="font-bold text-[#003629] block mb-1">श्रेणी (Category) *</label>
                   <select
@@ -1817,7 +2066,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="font-bold text-[#003629] block mb-1">तारीख (Event Date) *</label>
                   <input
@@ -2040,7 +2289,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">प्रवर्ग (Category)</label>
                       <select
@@ -2068,7 +2317,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">वर्ग / इयत्ता (Grades)</label>
                       <input
@@ -2092,7 +2341,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">मुख्याध्यापक / संपर्क व्यक्ती</label>
                       <input
@@ -2316,7 +2565,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">प्रवर्ग / टॅग (Badge)</label>
                       <input
@@ -2340,7 +2589,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">मिळणारा लाभ / रक्कम (Benefit)</label>
                       <input
@@ -2448,7 +2697,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         <h4 className="font-bold text-[14px] text-[#003629] mb-1">{sch.title}</h4>
                         <p className="text-[12px] text-[#555] line-clamp-2 mb-2">{sch.description}</p>
 
-                        <div className="grid grid-cols-2 gap-2 p-2.5 rounded-xl bg-[#fcfbf9] border border-[#f0eee8] text-[11px] mb-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-2.5 rounded-xl bg-[#fcfbf9] border border-[#f0eee8] text-[11px] mb-2">
                           <div>
                             <span className="text-[#707974] block">लाभ / सहाय्य:</span>
                             <span className="font-bold text-[#006a4e]">{sch.benefit}</span>
@@ -2533,7 +2782,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="p-3 rounded-xl bg-[#f8f6f0] border border-[#e8e2d9]">
                       <label className="block font-bold text-[#003629] mb-1">एकूण जागा / टेबल्स (Total Desks)</label>
                       <input
@@ -2559,7 +2808,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">वेळ (Daily Timings)</label>
                       <input
@@ -2583,7 +2832,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">पुस्तकांची संख्या (Books Count)</label>
                       <input
@@ -2656,7 +2905,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   <h3 className="font-heading font-black text-[18px] mb-2">{shikshaAbhyasika.title}</h3>
                   <p className="text-[12px] opacity-80 mb-5 leading-relaxed">{shikshaAbhyasika.noticeText}</p>
 
-                  <div className="grid grid-cols-2 gap-3 mb-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
                     <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-xs border border-white/10">
                       <span className="text-[11px] opacity-75 block">उपलब्ध जागा</span>
                       <span className="font-mono text-[22px] font-black text-emerald-300">
@@ -2728,7 +2977,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">प्रवर्ग / गट (Category)</label>
                       <input
@@ -2763,7 +3012,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">वर्गाची वेळ (Timings)</label>
                       <input
@@ -3122,7 +3371,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </p>
 
                 <form onSubmit={handleSaveBus} className="space-y-3.5 text-[13px]">
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">बस क्रमांक (वाहन क्र.)</label>
                       <input
@@ -3148,7 +3397,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">सुरुवात (Source Marathi) *</label>
                       <input
@@ -3173,7 +3422,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">सुटण्याची वेळ *</label>
                       <input
@@ -3221,7 +3470,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">एसटी आगार (Depot) *</label>
                       <input
@@ -3420,7 +3669,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block font-bold text-[#2d312e] mb-1">वाहन क्रमांक (MH36-...) *</label>
                       <input
@@ -3765,7 +4014,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block font-bold text-[#2d312e] mb-1">विभाग (Category) *</label>
                     <select
@@ -4008,7 +4257,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">वर्गवारी (Category)</label>
                   <select
@@ -4203,7 +4452,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 text-[12px] p-3 rounded-xl bg-[#f9f3ea]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[12px] p-3 rounded-xl bg-[#f9f3ea]">
                   <div>
                     <span className="text-[#707974] block text-[11px]">सकाळची वेळ:</span>
                     <strong className="text-[#1d1b16]">{w.morningTime}</strong>
@@ -4317,7 +4566,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[12px] font-bold mb-1">लाभार्थी वर्ग</label>
                   <select
@@ -4502,7 +4751,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[12px] font-bold mb-1">मोबाईल नंबर *</label>
                   <input
@@ -4656,7 +4905,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[12px] font-bold mb-1">मंजूर निधी रक्कम</label>
                   <input
@@ -4679,7 +4928,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[12px] font-bold mb-1">प्रगती टक्केवारी: {projectForm.progressPercent}%</label>
                   <input

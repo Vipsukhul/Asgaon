@@ -359,6 +359,17 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
             </p>
           </div>
         ))}
+
+        {/* Link to Dedicated Village Reviews Hub */}
+        <div className="pt-2 text-center">
+          <a
+            href="/reviews"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#003629] hover:underline cursor-pointer"
+          >
+            <span>सर्व गावातील नागरी अभिप्राय पृष्ठ पहा (All Community Reviews)</span>
+            <span className="material-symbols-outlined text-[15px]">arrow_forward</span>
+          </a>
+        </div>
       </div>
     </div>
   );

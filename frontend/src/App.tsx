@@ -29,6 +29,7 @@ import { MarketplacePage } from './pages/MarketplacePage';
 import { AnnouncementsPage } from './pages/AnnouncementsPage';
 import { EventsPage } from './pages/EventsPage';
 import { EmergencyPage } from './pages/EmergencyPage';
+import { ReviewsPage } from './pages/ReviewsPage';
 import { AdminPage } from './pages/AdminPage';
 
 // Modals
@@ -121,6 +122,12 @@ export function App() {
           title: 'स्थानिक दुकाने व सेवा डिरेक्टरी',
           description: 'आसगाव परिसरातील सर्व प्रमाणित स्थानिक दुकाने, कृषी केंद्र, किराणा, दवाखाने व व्यापारी संपर्क.',
           canonicalPath: '/businesses'
+        };
+      case 'reviews':
+        return {
+          title: 'स्थानिक नागरिक व ग्राहक अभिप्राय मंच (Community Reviews & Ratings)',
+          description: 'आसगाव परिसरातील दुकाने, कृषी केंद्र, दवाखाने व सेवांचे गावकऱ्यांनी दिलेले थेट अभिप्राय व मानांकन.',
+          canonicalPath: '/reviews'
         };
       case 'jobs':
         return {
@@ -794,6 +801,15 @@ export function App() {
         {activeNav === 'emergency' && (
           <EmergencyPage
             onNavigateHome={() => navigateTo('home')}
+          />
+        )}
+
+        {activeNav === 'reviews' && (
+          <ReviewsPage
+            businesses={businesses}
+            onNavigateHome={() => navigateTo('home')}
+            onSelectBusiness={(biz) => navigateToBusiness(biz.slug || biz.id)}
+            onSelectBusinessSlug={(slug) => navigateToBusiness(slug)}
           />
         )}
 

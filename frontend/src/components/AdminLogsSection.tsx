@@ -438,7 +438,7 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 pt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                 <div>
                   <span className="text-[#707974] font-bold uppercase text-[10px] block">अधिकारी (Actor)</span>
                   <p className="font-bold text-[#1d1b16] mt-0.5">{selectedLog.actorName}</p>
@@ -452,7 +452,7 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 pt-1 border-t border-[#f3ede4]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 border-t border-[#f3ede4]">
                 <div>
                   <span className="text-[#707974] font-bold uppercase text-[10px] block">विभाग (Module)</span>
                   <span className="font-bold text-[#006a4e]">{selectedLog.category}</span>

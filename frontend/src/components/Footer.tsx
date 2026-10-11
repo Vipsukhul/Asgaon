@@ -216,6 +216,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li>
                 <a
+                  href="/reviews"
+                  onClick={(e) => handleNav('reviews', e)}
+                  className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
+                >
+                  <span className="text-[#00a877]">›</span>
+                  <span>{lang === 'MR' ? 'नागरिक अभिप्राय व मानांकन (Reviews)' : 'Community Reviews & Ratings'}</span>
+                </a>
+              </li>
+              <li>
+                <a
                   href="/jobs"
                   onClick={(e) => handleNav('jobs', e)}
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
