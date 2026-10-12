@@ -7,7 +7,6 @@ import com.digitalgaon.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
@@ -21,13 +20,11 @@ public class DataSeeder implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
     private final com.digitalgaon.repository.VillageEventRepository eventRepository;
 
-    public DataSeeder(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, com.digitalgaon.repository.VillageEventRepository eventRepository) {
+    public DataSeeder(UserRepository userRepository, RoleRepository roleRepository, com.digitalgaon.repository.VillageEventRepository eventRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
         this.eventRepository = eventRepository;
     }
 
