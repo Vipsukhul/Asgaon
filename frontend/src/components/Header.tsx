@@ -70,7 +70,7 @@ export const Header: React.FC<HeaderProps> = ({
           setHasUrgent(urgent);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const handleTogglePush = async () => {
@@ -121,30 +121,30 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Center Search Bar */}
-            <form onSubmit={handleSearchSubmit} className="flex-1 max-w-xl mx-2 hidden sm:flex">
-              <div className="relative flex items-center w-full h-10 rounded-xl bg-white border border-[#e8e2d9] px-3 shadow-inner">
-                <span className="material-symbols-outlined text-[20px] text-[#707974] mr-2">search</span>
-                <input
-                  type="text"
-                  value={searchVal}
-                  onChange={(e) => setSearchVal(e.target.value)}
-                  placeholder={t('header_search_placeholder')}
-                  className="w-full bg-transparent text-[#1d1b16] text-[13px] focus:outline-none placeholder:text-[#707974]"
-                />
-                <div className="flex items-center gap-2 pl-2 border-l border-[#e8e2d9]">
-                  <button
-                    type="button"
-                    title={t('header_voice_search_title')}
-                    onClick={() => alert(lang === 'MR' ? 'व्हॉइस सर्च तयार आहे! बोला...' : 'Voice search ready! Speak now...')}
-                    className="text-[#003629] hover:text-[#1b4d3e] p-0.5"
-                  >
-                    <span className="material-symbols-outlined text-[19px]">mic</span>
-                  </button>
-                  <span className="text-[11px] font-semibold text-[#707974]">{t('header_all')}</span>
-                  <span className="material-symbols-outlined text-[16px] text-[#707974]">expand_more</span>
-                </div>
+          <form onSubmit={handleSearchSubmit} className="flex-1 max-w-xl mx-2 hidden sm:flex">
+            <div className="relative flex items-center w-full h-10 rounded-xl bg-white border border-[#e8e2d9] px-3 shadow-inner">
+              <span className="material-symbols-outlined text-[20px] text-[#707974] mr-2">search</span>
+              <input
+                type="text"
+                value={searchVal}
+                onChange={(e) => setSearchVal(e.target.value)}
+                placeholder={t('header_search_placeholder')}
+                className="w-full bg-transparent text-[#1d1b16] text-[13px] focus:outline-none placeholder:text-[#707974]"
+              />
+              <div className="flex items-center gap-2 pl-2 border-l border-[#e8e2d9]">
+                <button
+                  type="button"
+                  title={t('header_voice_search_title')}
+                  onClick={() => alert(lang === 'MR' ? 'व्हॉइस सर्च तयार आहे! बोला...' : 'Voice search ready! Speak now...')}
+                  className="text-[#003629] hover:text-[#1b4d3e] p-0.5"
+                >
+                  <span className="material-symbols-outlined text-[19px]">mic</span>
+                </button>
+                <span className="text-[11px] font-semibold text-[#707974]">{t('header_all')}</span>
+                <span className="material-symbols-outlined text-[16px] text-[#707974]">expand_more</span>
               </div>
-            </form>
+            </div>
+          </form>
 
           {/* Actions & Role / Login */}
           <div className="flex items-center gap-2 shrink-0">
@@ -154,11 +154,10 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   type="button"
                   onClick={() => setNotifDropdownOpen(!notifDropdownOpen)}
-                  className={`relative h-8 w-8 rounded-lg flex items-center justify-center transition-all border ${
-                    notifDropdownOpen || pushActive
+                  className={`relative h-8 w-8 rounded-lg flex items-center justify-center transition-all border ${notifDropdownOpen || pushActive
                       ? 'bg-[#baeed9] text-[#002117] border-[#006a4e]/40 shadow-xs ring-1 ring-[#006a4e]/30'
                       : 'bg-white hover:bg-[#f3ede4] text-[#55605a] hover:text-[#003629] border-[#e8e2d9] shadow-2xs'
-                  }`}
+                    }`}
                   title="गाव पातळीवरील सूचना व थेट अलर्ट (Civic Notifications & Push Alerts)"
                 >
                   <span className={`material-symbols-outlined text-[19px] ${pushActive ? 'text-[#006a4e]' : ''}`}>
@@ -184,9 +183,8 @@ export const Header: React.FC<HeaderProps> = ({
                     </div>
 
                     {/* Web Push Subscription Action Box */}
-                    <div className={`p-2.5 rounded-xl border mb-3 flex items-center justify-between gap-2 ${
-                      pushActive ? 'bg-[#e6f7f0] border-[#b8ebd5]' : 'bg-[#fff8f0] border-[#f0dfcc]'
-                    }`}>
+                    <div className={`p-2.5 rounded-xl border mb-3 flex items-center justify-between gap-2 ${pushActive ? 'bg-[#e6f7f0] border-[#b8ebd5]' : 'bg-[#fff8f0] border-[#f0dfcc]'
+                      }`}>
                       <div className="flex items-center gap-2">
                         <span className={`material-symbols-outlined text-[20px] ${pushActive ? 'text-[#006a4e]' : 'text-[#a63b00]'}`}>
                           {pushActive ? 'check_circle' : 'notifications_paused'}
@@ -204,11 +202,10 @@ export const Header: React.FC<HeaderProps> = ({
                         type="button"
                         onClick={handleTogglePush}
                         disabled={pushLoading}
-                        className={`px-2.5 py-1 rounded-lg text-[10px] font-black shrink-0 transition-all ${
-                          pushActive
+                        className={`px-2.5 py-1 rounded-lg text-[10px] font-black shrink-0 transition-all ${pushActive
                             ? 'bg-white border border-[#b8ebd5] text-[#006a4e] hover:bg-[#d5f3e5]'
                             : 'bg-[#003629] text-[#baeed9] hover:bg-[#1b4d3e] shadow-2xs'
-                        }`}
+                          }`}
                       >
                         {pushLoading ? '...' : pushActive ? 'सक्रिय ✓' : 'सुरू करा'}
                       </button>
@@ -303,8 +300,8 @@ export const Header: React.FC<HeaderProps> = ({
                     type="button"
                     onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                     className={`flex items-center gap-2 pl-2 pr-2.5 py-1.5 rounded-xl text-[12px] font-bold transition-all border ${activeNav === 'profile'
-                        ? 'bg-[#003629] text-[#baeed9] border-[#003629] shadow-xs'
-                        : 'bg-white hover:bg-[#f3ede4] text-[#003629] border-[#e8e2d9] shadow-xs'
+                      ? 'bg-[#003629] text-[#baeed9] border-[#003629] shadow-xs'
+                      : 'bg-white hover:bg-[#f3ede4] text-[#003629] border-[#e8e2d9] shadow-xs'
                       }`}
                     title="Citizen Profile & Settings"
                   >
@@ -423,8 +420,8 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 onClick={() => setActiveNav('home')}
                 className={`transition-colors whitespace-nowrap px-3 py-1 rounded-lg text-[13px] font-bold ${activeNav === 'home' || activeNav === 'all'
-                    ? 'bg-[#1b4d3e] text-[#baeed9]'
-                    : 'text-[#404945] hover:text-[#1d1b16] hover:bg-[#f3ede4]'
+                  ? 'bg-[#1b4d3e] text-[#baeed9]'
+                  : 'text-[#404945] hover:text-[#1d1b16] hover:bg-[#f3ede4]'
                   }`}
               >
                 {lang === 'MR' ? 'सर्व विभाग' : 'All Hub'}
@@ -434,8 +431,8 @@ export const Header: React.FC<HeaderProps> = ({
                   key={item.id}
                   onClick={() => setActiveNav(item.id)}
                   className={`transition-colors whitespace-nowrap px-2.5 py-1 rounded-lg text-[13px] font-semibold ${activeNav === item.id
-                      ? 'bg-[#1b4d3e] text-[#baeed9] font-bold'
-                      : 'text-[#404945] hover:text-[#1d1b16] hover:bg-[#f3ede4]'
+                    ? 'bg-[#1b4d3e] text-[#baeed9] font-bold'
+                    : 'text-[#404945] hover:text-[#1d1b16] hover:bg-[#f3ede4]'
                     }`}
                 >
                   {item.label}
@@ -527,7 +524,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
               ) : (
                 <div className="bg-white p-3.5 rounded-2xl border border-[#e8e2d9] shadow-2xs">
-                  
+
                   <button
                     type="button"
                     onClick={() => {
@@ -545,17 +542,16 @@ export const Header: React.FC<HeaderProps> = ({
               {/* 2. Language Switcher (Marathi & English Separate Buttons with Marathi as Preferred Default) */}
               <div className="bg-white p-3 rounded-2xl border border-[#e8e2d9] shadow-2xs">
                 <div className="flex items-center justify-between mb-2">
-                  
+
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => setLang('MR')}
-                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border cursor-pointer ${
-                      lang === 'MR'
+                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border cursor-pointer ${lang === 'MR'
                         ? 'bg-[#003629] text-white border-[#003629] shadow-xs ring-2 ring-[#006a4e]/20'
                         : 'bg-[#f9f3ea] text-[#404945] border-[#e8e2d9] hover:bg-[#f3ede4]'
-                    }`}
+                      }`}
                   >
                     <span className="text-sm">🇮🇳</span>
                     <span>मराठी</span>
@@ -563,11 +559,10 @@ export const Header: React.FC<HeaderProps> = ({
                   <button
                     type="button"
                     onClick={() => setLang('EN')}
-                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border cursor-pointer ${
-                      lang === 'EN'
+                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border cursor-pointer ${lang === 'EN'
                         ? 'bg-[#003629] text-white border-[#003629] shadow-xs ring-2 ring-[#006a4e]/20'
                         : 'bg-[#f9f3ea] text-[#404945] border-[#e8e2d9] hover:bg-[#f3ede4]'
-                    }`}
+                      }`}
                   >
                     <span className="text-sm">🌐</span>
                     <span>English</span>
@@ -616,15 +611,13 @@ export const Header: React.FC<HeaderProps> = ({
                     setActiveNav('home');
                     setMobileMenuOpen(false);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all text-left cursor-pointer ${
-                    activeNav === 'home' || activeNav === 'all'
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all text-left cursor-pointer ${activeNav === 'home' || activeNav === 'all'
                       ? 'bg-[#003629] text-[#baeed9] shadow-xs'
                       : 'text-[#1d1b16] hover:bg-white hover:text-[#003629]'
-                  }`}
+                    }`}
                 >
-                  <span className={`material-symbols-outlined text-[20px] ${
-                    activeNav === 'home' || activeNav === 'all' ? 'text-[#baeed9]' : 'text-[#006a4e]'
-                  }`}>
+                  <span className={`material-symbols-outlined text-[20px] ${activeNav === 'home' || activeNav === 'all' ? 'text-[#baeed9]' : 'text-[#006a4e]'
+                    }`}>
                     home
                   </span>
                   <span className="flex-1 truncate">{lang === 'MR' ? 'सर्व विभाग (मुख्य दालन)' : 'All Hub (Home)'}</span>
@@ -641,11 +634,10 @@ export const Header: React.FC<HeaderProps> = ({
                         setActiveNav(item.id);
                         setMobileMenuOpen(false);
                       }}
-                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all text-left cursor-pointer ${
-                        isActive
+                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all text-left cursor-pointer ${isActive
                           ? 'bg-[#003629] text-[#baeed9] shadow-xs'
                           : 'text-[#1d1b16] hover:bg-white hover:text-[#003629]'
-                      }`}
+                        }`}
                     >
                       <span className={`material-symbols-outlined text-[20px] ${isActive ? 'text-[#baeed9]' : 'text-[#006a4e]'}`}>
                         {item.icon}
@@ -661,7 +653,7 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* Drawer Footer: Grievance and Emergency Services */}
             <div className="p-3 border-t border-[#e8e2d9] bg-white space-y-2 shrink-0">
-              
+
               <div className="flex items-center justify-between text-[11px] text-[#707974] px-1">
                 <span>{lang === 'MR' ? 'आपत्कालीन मदत:' : 'Emergency Help:'}</span>
                 <a href="tel:108" className="text-[#ba1a1a] font-bold hover:underline flex items-center gap-1">

@@ -120,17 +120,20 @@ public class DataSeeder implements CommandLineRunner {
     private void seedSuperAdmin() {
         String phone = "9999999999";
         String email = "superadmin@asgaon.digitalgaon.in";
+
+        // Managed directly in DB
+        if (userRepository.findByPhone(phone).isPresent() || userRepository.findByEmail(email).isPresent()) {
+            return;
+        }
+
         Role superAdminRole = createRoleIfMissing("ROLE_SUPER_ADMIN", "Master civic coordinator");
         Role adminRole = createRoleIfMissing("ROLE_ADMIN", "Gram Panchayat administrator");
 
-        User superAdmin = userRepository.findByPhone(phone)
-                .or(() -> userRepository.findByEmail(email))
-                .orElse(new User());
-
+        User superAdmin = new User();
         superAdmin.setFullName("Asgaon Chief Super Admin");
         superAdmin.setPhone(phone);
         superAdmin.setEmail(email);
-        superAdmin.setPasswordHash(passwordEncoder.encode("Admin@123"));
+        superAdmin.setPasswordHash("");
         superAdmin.setVillageName("Asgaon");
         superAdmin.setWardNumber("Gram Sachivalaya");
         superAdmin.setPreferredLanguage("en");
@@ -144,22 +147,24 @@ public class DataSeeder implements CommandLineRunner {
         superAdmin.setRoles(roles);
 
         userRepository.save(superAdmin);
-        log.info(">>> [SEED] Super Admin verified: Email: {}, Phone: {}, Password: Admin@123, Role: SUPER_ADMIN", email, phone);
     }
 
     private void seedAdmin() {
         String phone = "9822104500";
         String email = "admin@asgaon.digitalgaon.in";
+
+        // Managed directly in DB
+        if (userRepository.findByPhone(phone).isPresent() || userRepository.findByEmail(email).isPresent()) {
+            return;
+        }
+
         Role adminRole = createRoleIfMissing("ROLE_ADMIN", "Gram Panchayat administrator");
 
-        User admin = userRepository.findByPhone(phone)
-                .or(() -> userRepository.findByEmail(email))
-                .orElse(new User());
-
+        User admin = new User();
         admin.setFullName("Gram Sevak S. N. Jadhav");
         admin.setPhone(phone);
         admin.setEmail(email);
-        admin.setPasswordHash(passwordEncoder.encode("Admin@123"));
+        admin.setPasswordHash("");
         admin.setVillageName("Asgaon");
         admin.setWardNumber("Ward 2 (Gaothan)");
         admin.setPreferredLanguage("mr");
@@ -172,6 +177,5 @@ public class DataSeeder implements CommandLineRunner {
         admin.setRoles(roles);
 
         userRepository.save(admin);
-        log.info(">>> [SEED] Gram Admin verified: Email: {}, Phone: {}, Password: Admin@123, Role: ADMIN", email, phone);
     }
 }

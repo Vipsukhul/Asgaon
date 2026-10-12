@@ -6,6 +6,11 @@ import { sendTestPushNotification } from '../services/pushNotifications';
 import { AdminLogsSection } from '../components/AdminLogsSection';
 import { AdminBannerManager } from '../components/AdminBannerManager';
 import {
+  AdminManagementSection,
+  getAllowedModulesForUser,
+  type AdminModuleId
+} from '../components/AdminManagementSection';
+import {
   VILLAGE_CONTACTS,
   WATER_SCHEDULE,
   VILLAGE_PROJECTS
@@ -48,7 +53,7 @@ interface AdminPageProps {
 
 export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmin, onExit, onLogout }) => {
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'reviews' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users' | 'logs' | 'banners'
+    'overview' | 'businesses' | 'reviews' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users' | 'logs' | 'banners' | 'admin_management'
   >('overview');
 
   // Customer Reviews Moderation State
@@ -112,6 +117,24 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
     setAdminReviews(updated);
     localStorage.setItem('dg_all_public_reviews', JSON.stringify(updated));
   };
+
+  // --- BUSINESSES & VERIFICATION MODERATION STATE ---
+  const [adminBusinesses, setAdminBusinesses] = useState<any[]>(() => {
+    const saved = localStorage.getItem('dg_asgaon_businesses_cache');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch { /* ignore */ }
+    }
+    return [];
+  });
+  const [loadingBusinesses, setLoadingBusinesses] = useState(false);
+  const [businessSearch, setBusinessSearch] = useState('');
+  const [businessStatusFilter, setBusinessStatusFilter] = useState<'ALL' | 'VERIFIED' | 'PENDING'>('ALL');
+  const [selectedBizForBadge, setSelectedBizForBadge] = useState<any | null>(null);
+  const [badgeToAssign, setBadgeToAssign] = useState('Verified Merchant');
+  const [bizFeedbackMsg, setBizFeedbackMsg] = useState<string | null>(null);
 
   // Dashboard Metrics
   const [stats, setStats] = useState<any>({
@@ -673,6 +696,23 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
   const isSuperAdmin = currentUser.role === 'SUPER_ADMIN' || currentUser.role === 'ROLE_SUPER_ADMIN';
   const isAdmin = isSuperAdmin || currentUser.role === 'ADMIN' || currentUser.role === 'ROLE_ADMIN';
 
+  // Resolved list of modules permitted for this user
+  const allowedModules = getAllowedModulesForUser(currentUser.phone, currentUser.role);
+
+  const isTabAllowed = (tabId: string) => {
+    if (tabId === 'admin_management') return isSuperAdmin;
+    if (isSuperAdmin) return true;
+    return allowedModules.includes(tabId as AdminModuleId);
+  };
+
+  // Auto-redirect if non-super admin lands on unauthorized tab
+  useEffect(() => {
+    if (!isTabAllowed(activeTab)) {
+      const fallbackTab = (allowedModules[0] || 'overview') as any;
+      setActiveTab(fallbackTab);
+    }
+  }, [currentUser.phone, currentUser.role, activeTab]);
+
   // Load all data
   const loadData = () => {
     api.getAdminStats()
@@ -751,6 +791,71 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         }
       })
       .catch((e) => console.log('Admin blogs fetch notice:', e.message));
+
+    setLoadingBusinesses(true);
+    api.getBusinesses()
+      .then((res) => {
+        if (res && Array.isArray(res) && res.length > 0) {
+          setAdminBusinesses(res);
+          localStorage.setItem('dg_asgaon_businesses_cache', JSON.stringify(res));
+        }
+      })
+      .catch((e) => console.log('Admin businesses fetch notice:', e.message))
+      .finally(() => setLoadingBusinesses(false));
+  };
+
+  // --- BUSINESS VERIFICATION HANDLERS ---
+  const handleToggleBusinessVerify = async (biz: any) => {
+    const newStatus = !biz.isVerified;
+    const badge = biz.verificationBadge || 'Verified Merchant';
+    try {
+      if (biz.id && !String(biz.id).startsWith('b-')) {
+        await api.adminVerifyBusiness(biz.id, newStatus, badge);
+      }
+      const updated = adminBusinesses.map((b) =>
+        b.id === biz.id ? { ...b, isVerified: newStatus, verificationBadge: badge } : b
+      );
+      setAdminBusinesses(updated);
+      localStorage.setItem('dg_asgaon_businesses_cache', JSON.stringify(updated));
+      setBizFeedbackMsg(`दुकान "${biz.name}" ची पडताळणी ${newStatus ? 'यशस्वीरीत्या मंजूर केली!' : 'रद्द केली.'}`);
+      setTimeout(() => setBizFeedbackMsg(null), 4000);
+    } catch (err: any) {
+      alert('पडताळणी बदलण्यात अडचण आली: ' + err.message);
+    }
+  };
+
+  const handleUpdateBusinessBadge = async (biz: any, newBadge: string) => {
+    try {
+      if (biz.id && !String(biz.id).startsWith('b-')) {
+        await api.adminVerifyBusiness(biz.id, true, newBadge);
+      }
+      const updated = adminBusinesses.map((b) =>
+        b.id === biz.id ? { ...b, isVerified: true, verificationBadge: newBadge } : b
+      );
+      setAdminBusinesses(updated);
+      localStorage.setItem('dg_asgaon_businesses_cache', JSON.stringify(updated));
+      setSelectedBizForBadge(null);
+      setBizFeedbackMsg(`"${biz.name}" साठी अधिकृत बॅज "${newBadge}" लागू केला!`);
+      setTimeout(() => setBizFeedbackMsg(null), 4000);
+    } catch (err: any) {
+      alert('बॅज बदलताना अडचण आली: ' + err.message);
+    }
+  };
+
+  const handleDeleteBusiness = async (biz: any) => {
+    if (!window.confirm(`तुम्हाला खात्री आहे की "${biz.name}" हे दुकान पोर्टलवरून हटवायचे आहे?`)) return;
+    try {
+      if (biz.id && !String(biz.id).startsWith('b-')) {
+        await api.adminDeleteBusiness(biz.id);
+      }
+      const updated = adminBusinesses.filter((b) => b.id !== biz.id);
+      setAdminBusinesses(updated);
+      localStorage.setItem('dg_asgaon_businesses_cache', JSON.stringify(updated));
+      setBizFeedbackMsg(`दुकान "${biz.name}" पोर्टलवरून यशस्वीरीत्या काढण्यात आले.`);
+      setTimeout(() => setBizFeedbackMsg(null), 4000);
+    } catch (err: any) {
+      alert('दुकान काढताना अडचण आली: ' + err.message);
+    }
   };
 
   useEffect(() => {
@@ -790,38 +895,23 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
     try {
       const res = await api.login(phone, pass);
       if (res && res.token) {
+        const rawRole = (res.roles && res.roles.length > 0)
+          ? res.roles[0].replace('ROLE_', '')
+          : (res.role ? res.role.replace('ROLE_', '') : 'USER');
+
+        if (rawRole !== 'ADMIN' && rawRole !== 'SUPER_ADMIN') {
+          throw new Error('या खात्याकडे प्रशासक अधिकार नाहीत. कृपया अधिकृत ग्रामपंचायत अॅडमिन खात्याने प्रवेश करा. (Access Denied: Admin Privileges Required)');
+        }
+
         localStorage.setItem('dg_auth_token', res.token);
-        localStorage.setItem('dg_user', JSON.stringify(res));
-        const role = (res.roles && res.roles.length > 0) ? res.roles[0].replace('ROLE_', '') : 'ADMIN';
-        onLoginAsAdmin?.(role, res.phone || phone, res.fullName || 'Asgaon Admin');
+        localStorage.setItem('dg_user', JSON.stringify({ ...res, role: rawRole }));
+        onLoginAsAdmin?.(rawRole, res.phone || phone, res.fullName || 'Asgaon Admin');
         setActiveTab('overview');
         return;
       }
       throw new Error('अवैध क्रेडेन्शियल्स (Invalid credentials)');
     } catch (err: any) {
-      // Check for seeded authorized official credentials
-      const isSuper = (phone === '9999999999' || phone.toLowerCase() === 'superadmin') && pass === 'Admin@123';
-      const isAdminUser = (phone === '9604331589' || phone === '9822104500' || phone.toLowerCase() === 'admin') && pass === 'Admin@123';
-
-      if (isSuper || isAdminUser) {
-        const role = isSuper ? 'SUPER_ADMIN' : 'ADMIN';
-        const name = isSuper ? 'Chief Super Admin (आसगाव)' : 'Gram Sevak S. N. Jadhav';
-        const userObj = {
-          fullName: name,
-          phone,
-          role,
-          roles: [`ROLE_${role}`],
-          ward: isSuper ? 'Gram Sachivalaya' : 'Ward 2 (Gaothan)',
-          village: 'Asgaon, Pauni (PIN 441910)'
-        };
-        const token = 'admin_jwt_' + Date.now();
-        localStorage.setItem('dg_auth_token', token);
-        localStorage.setItem('dg_user', JSON.stringify(userObj));
-        onLoginAsAdmin?.(role, phone, name);
-        setActiveTab('overview');
-      } else {
-        setLoginError(err.message || 'प्रवेश अयशस्वी: कृपया योग्य मोबाईल नंबर व पासवर्ड तपासा.');
-      }
+      setLoginError(err.message || 'प्रवेश अयशस्वी: कृपया योग्य मोबाईल नंबर व पासवर्ड तपासा.');
     } finally {
       setLoginLoading(false);
     }
@@ -1437,35 +1527,50 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         ]}
       />
 
-      {/* Top Banner */}
+      {/* Top Banner with responsive mobile and role badge */}
       <div className="bg-gradient-to-r from-[#003629] via-[#004d3b] to-[#1b4d3e] text-white rounded-2xl p-4 sm:p-6 shadow-sm border border-[#baeed9]/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5">
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="font-heading font-extrabold text-[20px] sm:text-[24px] text-white leading-tight">
-                आसगाव ग्राम माहिती व डेटा व्यवस्थापन केंद्र
-              </h1>
+        <div className="flex items-center gap-3.5 w-full md:w-auto">
+          <div className="w-full">
+            <div className="flex items-center gap-2 flex-wrap mb-1">
+              {isSuperAdmin ? (
+                <span className="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#ef9f27] to-[#ba7200] text-white font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
+                  <span className="material-symbols-outlined text-[13px]">military_tech</span>
+                  👑 चीफ सुपर अॅडमिन (Master Super Admin)
+                </span>
+              ) : (
+                <span className="px-2.5 py-0.5 rounded-full bg-[#baeed9] text-[#002117] font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
+                  <span className="material-symbols-outlined text-[13px]">verified_user</span>
+                  🛡️ अधिकृत व्यवस्थापक ({allowedModules.length} मॉड्यूल्स अधिकार)
+                </span>
+              )}
+              <span className="text-[11px] text-[#baeed9] font-medium hidden sm:inline">
+                {currentUser.fullName || (isSuperAdmin ? 'Chief Super Admin' : 'Admin')}
+              </span>
             </div>
+
+            <h1 className="font-heading font-extrabold text-[19px] sm:text-[23px] text-white leading-tight">
+              आसगाव ग्राम माहिती व डेटा व्यवस्थापन केंद्र
+            </h1>
             <p className="text-[11px] sm:text-[12px] text-[#baeed9] font-medium mt-0.5">
               ग्रामपंचायतीतून मिळणारी खरी माहिती गावकऱ्यांपर्यंत पोहोचवणारा स्वतंत्र मंच
             </p>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-between md:justify-end">
+        <div className="flex items-center gap-2 w-full md:w-auto justify-between md:justify-end flex-wrap pt-2 md:pt-0 border-t md:border-t-0 border-white/10">
           {onExit && (
             <button
               onClick={onExit}
-              className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-[12px] transition-all flex items-center gap-1.5 border border-white/20 cursor-pointer"
+              className="flex-1 md:flex-initial px-3.5 py-2.5 sm:py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-[12px] transition-all flex items-center justify-center gap-1.5 border border-white/20 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[16px]">visibility</span>
-              <span>सार्वजनिक दृश्य पहा</span>
+              <span>सार्वजनिक दृश्य</span>
             </button>
           )}
           {onLogout && (
             <button
               onClick={onLogout}
-              className="px-3.5 py-2 rounded-xl bg-[#ffdad6]/20 hover:bg-[#ffdad6]/30 text-[#ffb4ab] font-bold text-[12px] transition-all flex items-center gap-1.5 border border-[#ffb4ab]/30 cursor-pointer"
+              className="flex-1 md:flex-initial px-3.5 py-2.5 sm:py-2 rounded-xl bg-[#ffdad6]/20 hover:bg-[#ffdad6]/30 text-[#ffb4ab] font-bold text-[12px] transition-all flex items-center justify-center gap-1.5 border border-[#ffb4ab]/30 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[16px]">logout</span>
               <span>बाहेर पडा</span>
@@ -1476,34 +1581,53 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
       {/* Mobile Select Tab Navigation (Quick 1-tap jump on phones) */}
       <div className="block md:hidden">
-        <label className="text-[11px] font-bold uppercase tracking-wider text-[#707974] block mb-1">
-          व्यवस्थापन विभाग निवडा (Select Admin Module):
-        </label>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="text-[11px] font-bold uppercase tracking-wider text-[#707974] flex items-center gap-1">
+            <span className="material-symbols-outlined text-[15px] text-[#006a4e]">tune</span>
+            <span>व्यवस्थापन विभाग निवडा:</span>
+          </label>
+          <span className="text-[10px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-2 py-0.5 rounded-full">
+            {isSuperAdmin ? 'सर्व १६ मॉड्यूल्स' : `${allowedModules.length} मॉड्यूल्स अधिकार`}
+          </span>
+        </div>
+
         <div className="relative">
           <select
             value={activeTab}
             onChange={(e) => setActiveTab(e.target.value as any)}
             className="w-full p-3 pl-10 pr-9 bg-white border-2 border-[#003629] rounded-xl text-xs sm:text-sm font-bold text-[#003629] shadow-xs appearance-none cursor-pointer"
           >
-            <option value="overview">📊 आढावा (Overview)</option>
-            <option value="reviews">⭐ नागरिक अभिप्राय (Reviews) ({adminReviews.length})</option>
-            <option value="banners">🖼️ हिरो स्लायडर व बॅनर</option>
-            <option value="events">🎪 कार्यक्रम व जत्रा ({events.length})</option>
-            <option value="shiksha">🏫 शिक्षण व शाळा ({shikshaSchools.length})</option>
-            <option value="transport">🚌 वाहतूक व बसेस ({transportBuses.length})</option>
-            <option value="blogs">📰 ब्लॉग व लेख ({villageBlogs.length})</option>
-            <option value="notices">📢 सूचना फलक ({announcements.length})</option>
-            <option value="water">💧 पाणी पुरवठा</option>
-            <option value="schemes">📋 योजना व्यवस्थापन ({schemes.length})</option>
-            <option value="contacts">📞 महत्त्वाचे संपर्क ({contacts.length})</option>
-            <option value="projects">🏗️ विकासकामे ({projects.length})</option>
-            <option value="complaints">📝 गावकऱ्यांच्या तक्रारी ({complaints.length})</option>
-            <option value="broadcast">🚨 तातडीची दवंडी (Push Alert)</option>
-            <option value="users">👥 गावकऱ्यांची यादी</option>
-            <option value="logs">📜 ऑडिट नोंदी (Audit Logs)</option>
+            {[
+              { id: 'overview', label: '📊 आढावा (Overview)' },
+              ...(isSuperAdmin
+                ? [{ id: 'admin_management', label: '🛡️ अॅडमिन अधिकार नियंत्रण (Super Admin Only)' }]
+                : []),
+              { id: 'businesses', label: `🏪 दुकाने व पडताळणी (${adminBusinesses.length})` },
+              { id: 'reviews', label: `⭐ नागरिक अभिप्राय (${adminReviews.length})` },
+              { id: 'banners', label: '🖼️ हिरो स्लायडर व बॅनर' },
+              { id: 'events', label: `🎪 कार्यक्रम व जत्रा (${events.length})` },
+              { id: 'shiksha', label: `🏫 शिक्षण व शाळा (${shikshaSchools.length})` },
+              { id: 'transport', label: `🚌 वाहतूक व बसेस (${transportBuses.length})` },
+              { id: 'blogs', label: `📰 ब्लॉग व लेख (${villageBlogs.length})` },
+              { id: 'notices', label: `📢 सूचना फलक (${announcements.length})` },
+              { id: 'water', label: '💧 पाणी पुरवठा' },
+              { id: 'schemes', label: `📋 योजना व्यवस्थापन (${schemes.length})` },
+              { id: 'contacts', label: `📞 महत्त्वाचे संपर्क (${contacts.length})` },
+              { id: 'projects', label: `🏗️ विकासकामे (${projects.length})` },
+              { id: 'complaints', label: `📝 गावकऱ्यांच्या तक्रारी (${complaints.length})` },
+              { id: 'broadcast', label: '🚨 तातडीची दवंडी (Push Alert)' },
+              { id: 'users', label: '👥 गावकऱ्यांची यादी' },
+              { id: 'logs', label: '📜 ऑडिट नोंदी (Audit Logs)' }
+            ]
+              .filter((t) => isTabAllowed(t.id))
+              .map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.label}
+                </option>
+              ))}
           </select>
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#003629] text-[20px] pointer-events-none">
-            tune
+            dashboard_customize
           </span>
           <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#003629] text-[20px] pointer-events-none">
             expand_more
@@ -1512,9 +1636,18 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       </div>
 
       {/* Navigation Tabs (Scrollable pills on desktop & tablet) */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-[#e8e2d9] no-scrollbar scroll-smooth -mx-2 px-2 sm:mx-0 sm:px-0">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 border-b border-[#e8e2d9] no-scrollbar scroll-smooth -mx-2 px-2 sm:mx-0 sm:px-0">
         {[
           { id: 'overview', icon: 'analytics', label: 'आढावा (Overview)' },
+          ...(isSuperAdmin
+            ? [{
+                id: 'admin_management',
+                icon: 'admin_panel_settings',
+                label: 'अॅडमिन अधिकार',
+                isSuperTag: true
+              }]
+            : []),
+          { id: 'businesses', icon: 'storefront', label: `दुकाने व पडताळणी (${adminBusinesses.length})` },
           { id: 'reviews', icon: 'rate_review', label: `नागरिक अभिप्राय (${adminReviews.length})` },
           { id: 'banners', icon: 'view_carousel', label: 'हिरो स्लायडर व बॅनर' },
           { id: 'events', icon: 'event', label: `कार्यक्रम व जत्रा (${events.length})` },
@@ -1530,19 +1663,31 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           { id: 'broadcast', icon: 'cell_tower', label: 'तातडीची दवंडी (Push Alert)' },
           { id: 'users', icon: 'group', label: 'गावकऱ्यांची यादी' },
           { id: 'logs', icon: 'manage_history', label: 'ऑडिट नोंदी (Audit Logs)' }
-        ].map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setActiveTab(t.id as any)}
-            className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-[11px] sm:text-[13px] font-bold transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer ${activeTab === t.id
-                ? 'bg-[#003629] text-[#baeed9] shadow-xs'
-                : 'text-[#55605a] hover:bg-[#f3ede4]'
+        ]
+          .filter((t) => isTabAllowed(t.id))
+          .map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setActiveTab(t.id as any)}
+              className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-[11px] sm:text-[13px] font-bold transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer ${
+                activeTab === t.id
+                  ? t.isSuperTag
+                    ? 'bg-gradient-to-r from-[#ef9f27] to-[#ba7200] text-white shadow-xs'
+                    : 'bg-[#003629] text-[#baeed9] shadow-xs'
+                  : t.isSuperTag
+                    ? 'bg-[#fff8e1] text-[#7c4d00] hover:bg-[#ffecb3] border border-[#ffe082]'
+                    : 'text-[#55605a] hover:bg-[#f3ede4]'
               }`}
-          >
-            <span className="material-symbols-outlined text-[17px] sm:text-[18px]">{t.icon}</span>
-            <span>{t.label}</span>
-          </button>
-        ))}
+            >
+              <span className="material-symbols-outlined text-[17px] sm:text-[18px]">{t.icon}</span>
+              <span>{t.label}</span>
+              {t.isSuperTag && (
+                <span className="px-1.5 py-0.2 rounded-full bg-white/20 text-[9px] font-black uppercase ml-0.5">
+                  SUPER
+                </span>
+              )}
+            </button>
+          ))}
       </div>
 
       {/* TAB 1: OVERVIEW */}
@@ -1616,106 +1761,504 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <span className="material-symbols-outlined text-[20px] text-[#a63b00]">bolt</span>
               <span>ग्रामपंचायत भेट दिल्यावर त्वरित करण्याचे काम (Quick Data Entry Shortcuts)</span>
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
-              <button
-                type="button"
-                onClick={() => { setEditingEvent(null); setActiveTab('events'); }}
-                className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
-              >
-                <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#baeed9] mb-2 block">
-                  event
-                </span>
-                <strong className="block text-[13px] mb-1">नवीन कार्यक्रम / जत्रा जोडा</strong>
-                <p className="text-[11px] text-[#707974] group-hover:text-white/80">
-                  यात्रा, महाप्रसाद, आरोग्य शिबीर किंवा क्रीडा स्पर्धा
-                </p>
-              </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {isSuperAdmin && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('admin_management')}
+                  className="p-4 rounded-xl bg-gradient-to-br from-[#003629] to-[#002117] text-white hover:shadow-md transition-all text-left group border border-[#ef9f27]/40 relative overflow-hidden"
+                >
+                  <span className="material-symbols-outlined text-[24px] text-[#ef9f27] mb-2 block">
+                    admin_panel_settings
+                  </span>
+                  <strong className="block text-[13px] mb-1 flex items-center gap-1.5 text-white">
+                    <span>अॅडमिन व पृष्ठ अधिकार</span>
+                    <span className="px-1.5 py-0.2 rounded-full bg-[#ef9f27] text-[#002117] text-[9px] font-black">SUPER</span>
+                  </strong>
+                  <p className="text-[11px] text-[#baeed9]">
+                    इतर अॅडमिन्स जोडा व त्यांच्या पानांचे प्रवेश अधिकार नियंत्रित करा
+                  </p>
+                </button>
+              )}
 
-              <button
-                type="button"
-                onClick={() => { setEditingSchool(null); setActiveTab('shiksha'); }}
-                className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
-              >
-                <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#baeed9] mb-2 block">
-                  school
-                </span>
-                <strong className="block text-[13px] mb-1">शाळा व शिक्षण व्यवस्थापन</strong>
-                <p className="text-[11px] text-[#707974] group-hover:text-white/80">
-                  शाळा, शिष्यवृत्ती, अभ्यासिका व शिकवणी वर्ग
-                </p>
-              </button>
+              {isTabAllowed('events') && (
+                <button
+                  type="button"
+                  onClick={() => { setEditingEvent(null); setActiveTab('events'); }}
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                >
+                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#baeed9] mb-2 block">
+                    event
+                  </span>
+                  <strong className="block text-[13px] mb-1">नवीन कार्यक्रम / जत्रा जोडा</strong>
+                  <p className="text-[11px] text-[#707974] group-hover:text-white/80">
+                    यात्रा, महाप्रसाद, आरोग्य शिबीर किंवा क्रीडा स्पर्धा
+                  </p>
+                </button>
+              )}
 
-              <button
-                type="button"
-                onClick={() => { setEditingAnnouncement(null); setActiveTab('notices'); }}
-                className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
-              >
-                <span className="material-symbols-outlined text-[24px] text-[#003629] group-hover:text-[#baeed9] mb-2 block">
-                  campaign
-                </span>
-                <strong className="block text-[13px] mb-1">नवीन नोटीस / ठराव टाका</strong>
-                <p className="text-[11px] text-[#707974] group-hover:text-white/80">
-                  ग्रामसभा बैठक, कर भरणा अथवा वीज भारनियमन सूचना
-                </p>
-              </button>
+              {isTabAllowed('shiksha') && (
+                <button
+                  type="button"
+                  onClick={() => { setEditingSchool(null); setActiveTab('shiksha'); }}
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                >
+                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#baeed9] mb-2 block">
+                    school
+                  </span>
+                  <strong className="block text-[13px] mb-1">शाळा व शिक्षण व्यवस्थापन</strong>
+                  <p className="text-[11px] text-[#707974] group-hover:text-white/80">
+                    शाळा, शिष्यवृत्ती, अभ्यासिका व शिकवणी वर्ग
+                  </p>
+                </button>
+              )}
 
-              <button
-                type="button"
-                onClick={() => setActiveTab('water')}
-                className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
-              >
-                <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#baeed9] mb-2 block">
-                  water_drop
-                </span>
-                <strong className="block text-[13px] mb-1">पाणी पुरवठा वेळ बदला</strong>
-                <p className="text-[11px] text-[#707974] group-hover:text-white/80">
-                  वॉर्डनिहाय वेळ, टाकीतील पाणी साठा व दुरुस्ती स्थिती
-                </p>
-              </button>
+              {isTabAllowed('notices') && (
+                <button
+                  type="button"
+                  onClick={() => { setEditingAnnouncement(null); setActiveTab('notices'); }}
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                >
+                  <span className="material-symbols-outlined text-[24px] text-[#003629] group-hover:text-[#baeed9] mb-2 block">
+                    campaign
+                  </span>
+                  <strong className="block text-[13px] mb-1">नवीन नोटीस / ठराव टाका</strong>
+                  <p className="text-[11px] text-[#707974] group-hover:text-white/80">
+                    ग्रामसभा बैठक, कर भरणा अथवा वीज भारनियमन सूचना
+                  </p>
+                </button>
+              )}
 
-              <button
-                type="button"
-                onClick={() => { setEditingScheme(null); setActiveTab('schemes'); }}
-                className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
-              >
-                <span className="material-symbols-outlined text-[24px] text-[#a63b00] group-hover:text-[#baeed9] mb-2 block">
-                  description
-                </span>
-                <strong className="block text-[13px] mb-1">नवीन सरकारी योजना जोडा</strong>
-                <p className="text-[11px] text-[#707974] group-hover:text-white/80">
-                  कागदपत्रे यादी, अनुदान रक्कम व शेवटची तारीख
-                </p>
-              </button>
+              {isTabAllowed('water') && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('water')}
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                >
+                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#baeed9] mb-2 block">
+                    water_drop
+                  </span>
+                  <strong className="block text-[13px] mb-1">पाणी पुरवठा वेळ बदला</strong>
+                  <p className="text-[11px] text-[#707974] group-hover:text-white/80">
+                    वॉर्डनिहाय वेळ, टाकीतील पाणी साठा व दुरुस्ती स्थिती
+                  </p>
+                </button>
+              )}
 
-              <button
-                type="button"
-                onClick={() => setActiveTab('broadcast')}
-                className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
-              >
-                <span className="material-symbols-outlined text-[24px] text-[#ba1a1a] group-hover:text-[#baeed9] mb-2 block">
-                  cell_tower
-                </span>
-                <strong className="block text-[13px] mb-1">तातडीची दवंडी (Push Alert)</strong>
-                <p className="text-[11px] text-[#707974] group-hover:text-white/80">
-                  सर्व गावकऱ्यांच्या मोबाईलवर लगेच अलर्ट पाठवा
-                </p>
-              </button>
+              {isTabAllowed('schemes') && (
+                <button
+                  type="button"
+                  onClick={() => { setEditingScheme(null); setActiveTab('schemes'); }}
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                >
+                  <span className="material-symbols-outlined text-[24px] text-[#a63b00] group-hover:text-[#baeed9] mb-2 block">
+                    description
+                  </span>
+                  <strong className="block text-[13px] mb-1">नवीन सरकारी योजना जोडा</strong>
+                  <p className="text-[11px] text-[#707974] group-hover:text-white/80">
+                    कागदपत्रे यादी, अनुदान रक्कम व शेवटची तारीख
+                  </p>
+                </button>
+              )}
 
-              <button
-                type="button"
-                onClick={() => setActiveTab('reviews')}
-                className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
-              >
-                <span className="material-symbols-outlined text-[24px] text-[#ef9f27] group-hover:text-[#baeed9] mb-2 block">
-                  rate_review
-                </span>
-                <strong className="block text-[13px] mb-1">नागरिक अभिप्राय व्यवस्थापन</strong>
-                <p className="text-[11px] text-[#707974] group-hover:text-white/80">
-                  स्थानिक दुकानांचे रेटिंग, परीक्षणे व अभिप्राय
-                </p>
-              </button>
+              {isTabAllowed('broadcast') && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('broadcast')}
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                >
+                  <span className="material-symbols-outlined text-[24px] text-[#ba1a1a] group-hover:text-[#baeed9] mb-2 block">
+                    cell_tower
+                  </span>
+                  <strong className="block text-[13px] mb-1">तातडीची दवंडी (Push Alert)</strong>
+                  <p className="text-[11px] text-[#707974] group-hover:text-white/80">
+                    सर्व गावकऱ्यांच्या मोबाईलवर लगेच अलर्ट पाठवा
+                  </p>
+                </button>
+              )}
+
+              {isTabAllowed('businesses') && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('businesses')}
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                >
+                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#baeed9] mb-2 block">
+                    storefront
+                  </span>
+                  <strong className="block text-[13px] mb-1">स्थानिक दुकाने व पडताळणी</strong>
+                  <p className="text-[11px] text-[#707974] group-hover:text-white/80">
+                    दुकानांची तपासणी, मंजुरी व पडताळणी बॅज व्यवस्थापन
+                  </p>
+                </button>
+              )}
+
+              {isTabAllowed('reviews') && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('reviews')}
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                >
+                  <span className="material-symbols-outlined text-[24px] text-[#ef9f27] group-hover:text-[#baeed9] mb-2 block">
+                    rate_review
+                  </span>
+                  <strong className="block text-[13px] mb-1">नागरिक अभिप्राय व्यवस्थापन</strong>
+                  <p className="text-[11px] text-[#707974] group-hover:text-white/80">
+                    स्थानिक दुकानांचे रेटिंग, परीक्षणे व अभिप्राय
+                  </p>
+                </button>
+              )}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* TAB: BUSINESSES DIRECTORY & VERIFICATION MODERATION */}
+      {activeTab === 'businesses' && (
+        <div className="flex flex-col gap-6">
+          {/* Feedback Toast */}
+          {bizFeedbackMsg && (
+            <div className="bg-[#baeed9] border border-[#006a4e] text-[#002117] p-3.5 rounded-xl text-xs font-bold flex items-center justify-between shadow-md transition-all animate-fade-in">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[18px] text-[#006a4e]">verified</span>
+                <span>{bizFeedbackMsg}</span>
+              </div>
+              <button onClick={() => setBizFeedbackMsg(null)} className="text-[#002117]/60 hover:text-[#002117]">
+                ✕
+              </button>
+            </div>
+          )}
+
+          <div className="bg-white rounded-2xl border border-[#e8e2d9] p-4 sm:p-6 shadow-xs">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div>
+                <div className="flex items-center gap-2 flex-wrap mb-1">
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#003629] text-[#baeed9] font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
+                    <span className="material-symbols-outlined text-[13px]">verified_user</span>
+                    ग्रामपंचायत पडताळणी केंद्र (Verification Desk)
+                  </span>
+                  <span className="text-[11px] text-[#707974]">
+                    एकूण दुकाने: {adminBusinesses.length}
+                  </span>
+                </div>
+                <h2 className="font-heading font-extrabold text-[18px] sm:text-[22px] text-[#003629] flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[24px] text-[#006a4e]">storefront</span>
+                  <span>स्थानिक दुकाने व व्यवसाय पडताळणी (Shop Verification)</span>
+                </h2>
+                <p className="text-[12px] text-[#707974] mt-0.5">
+                  गावकऱ्यांच्या सुरक्षिततेसाठी दुकानांची पडताळणी करा, अधिकृत ट्रस्ट बॅज द्या आणि अनधिकृत दुकाने नियंत्रित करा.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={loadData}
+                  disabled={loadingBusinesses}
+                  className="px-3.5 py-2 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white text-[#003629] font-bold text-xs flex items-center gap-1.5 transition-all border border-[#e8e2d9] cursor-pointer"
+                >
+                  <span className={`material-symbols-outlined text-[16px] ${loadingBusinesses ? 'animate-spin' : ''}`}>
+                    refresh
+                  </span>
+                  <span>ताजे करा (Refresh)</span>
+                </button>
+              </div>
+            </div>
+
+            {/* KPI Summary Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+              <div className="p-3.5 rounded-xl bg-[#fcfbf9] border border-[#e8e2d9]">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#707974] block">एकूण दुकाने</span>
+                <span className="font-heading font-black text-[22px] text-[#003629]">{adminBusinesses.length}</span>
+                <span className="text-[10px] text-[#55605a] block">पोर्टलवर नोंदणीकृत</span>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-[#f0fdf4] border border-[#bbf7d0]">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#166534] block">प्रमाणित दुकाने</span>
+                <span className="font-heading font-black text-[22px] text-[#166534]">
+                  {adminBusinesses.filter((b) => b.isVerified).length}
+                </span>
+                <span className="text-[10px] text-[#166534] block font-semibold">पडताळणी पूर्ण (Verified)</span>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-[#fffbeb] border border-[#fde68a] col-span-2 sm:col-span-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#92400e] block">पडताळणी प्रलंबित</span>
+                <span className="font-heading font-black text-[22px] text-[#92400e]">
+                  {adminBusinesses.filter((b) => !b.isVerified).length}
+                </span>
+                <span className="text-[10px] text-[#92400e] block font-semibold">तपासणी आवश्यक</span>
+              </div>
+            </div>
+
+            {/* Search and Status Filters */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-6 bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9]">
+              <div className="relative flex-1">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]">
+                  search
+                </span>
+                <input
+                  type="text"
+                  value={businessSearch}
+                  onChange={(e) => setBusinessSearch(e.target.value)}
+                  placeholder="दुकान, मालकाचे नाव, वर्गवारी किंवा फोन शोधा..."
+                  className="w-full pl-9 pr-3 py-2 bg-white rounded-lg text-xs text-[#1d1b16] border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
+                />
+              </div>
+
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+                {[
+                  { id: 'ALL', label: `सर्व (${adminBusinesses.length})` },
+                  { id: 'VERIFIED', label: `प्रमाणित (${adminBusinesses.filter((b) => b.isVerified).length})` },
+                  { id: 'PENDING', label: `प्रलंबित (${adminBusinesses.filter((b) => !b.isVerified).length})` }
+                ].map((f) => (
+                  <button
+                    key={f.id}
+                    type="button"
+                    onClick={() => setBusinessStatusFilter(f.id as any)}
+                    className={`px-3 py-1.5 rounded-lg text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
+                      businessStatusFilter === f.id
+                        ? 'bg-[#003629] text-white shadow-xs'
+                        : 'bg-white text-[#55605a] hover:bg-[#f3ede4] border border-[#e8e2d9]'
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Businesses List */}
+            {adminBusinesses.length === 0 ? (
+              <div className="text-center py-12 text-[#707974]">
+                <span className="material-symbols-outlined text-[48px] text-[#ccc] mb-2 block">
+                  storefront
+                </span>
+                <p className="font-bold text-[14px]">अद्याप कोणतीही दुकाने आढळली नाहीत</p>
+                <p className="text-[12px] mt-1">पोर्टलवर दुकान नोंदणी झाल्यानंतर ती येथे व्यवस्थापनासाठी दिसतील.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {adminBusinesses
+                  .filter((b) => {
+                    const matchesStatus =
+                      businessStatusFilter === 'ALL' ||
+                      (businessStatusFilter === 'VERIFIED' && b.isVerified) ||
+                      (businessStatusFilter === 'PENDING' && !b.isVerified);
+                    const q = businessSearch.toLowerCase().trim();
+                    const matchesSearch =
+                      !q ||
+                      (b.name && b.name.toLowerCase().includes(q)) ||
+                      (b.phone && b.phone.includes(q)) ||
+                      (b.address && b.address.toLowerCase().includes(q)) ||
+                      (b.category && (typeof b.category === 'string' ? b.category.toLowerCase().includes(q) : b.category.name?.toLowerCase().includes(q)));
+                    return matchesStatus && matchesSearch;
+                  })
+                  .map((biz) => {
+                    const categoryName = typeof biz.category === 'string' ? biz.category : biz.category?.name || 'स्थानिक दुकान';
+                    const isVerified = Boolean(biz.isVerified);
+                    const badge = biz.verificationBadge || 'Verified Merchant';
+
+                    return (
+                      <div
+                        key={biz.id}
+                        className={`bg-white rounded-2xl border p-4 shadow-xs flex flex-col justify-between gap-3.5 transition-all ${
+                          isVerified ? 'border-[#baeed9] hover:border-[#006a4e]' : 'border-[#fde68a] bg-[#fffdfa]'
+                        }`}
+                      >
+                        <div>
+                          {/* Top Row: Image + Details + Status */}
+                          <div className="flex items-start gap-3">
+                            <img
+                              src={biz.imageUrl || 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=400&q=80'}
+                              alt={biz.name}
+                              className="w-16 h-16 rounded-xl object-cover shrink-0 border border-[#e8e2d9]"
+                              onError={(e: any) => {
+                                e.target.src = 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=400&q=80';
+                              }}
+                            />
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between gap-1">
+                                <h3 className="font-heading font-extrabold text-[14px] sm:text-[15px] text-[#1d1b16] truncate">
+                                  {biz.name}
+                                </h3>
+                                <span
+                                  className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase shrink-0 ${
+                                    isVerified
+                                      ? 'bg-[#baeed9] text-[#002117]'
+                                      : 'bg-[#fef3c7] text-[#92400e]'
+                                  }`}
+                                >
+                                  {isVerified ? 'प्रमाणित' : 'प्रलंबित'}
+                                </span>
+                              </div>
+
+                              <p className="text-[11px] text-[#006a4e] font-semibold flex items-center gap-1 mt-0.5">
+                                <span className="material-symbols-outlined text-[13px]">category</span>
+                                <span>{categoryName}</span>
+                              </p>
+
+                              <p className="text-[11px] text-[#707974] flex items-center gap-1.5 mt-1 truncate">
+                                <span className="material-symbols-outlined text-[13px] text-[#006a4e]">call</span>
+                                <a href={`tel:${biz.phone}`} className="hover:underline text-[#003629] font-mono font-bold">
+                                  {biz.phone || '-'}
+                                </a>
+                                {biz.address && <span>• {biz.address}</span>}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Verification Badge Display */}
+                          <div className="mt-3 p-2.5 rounded-xl bg-[#fcfbf9] border border-[#f0eee8] flex items-center justify-between text-[11px]">
+                            <div className="flex items-center gap-1.5">
+                              <span className={`material-symbols-outlined text-[16px] ${isVerified ? 'text-[#006a4e]' : 'text-[#a63b00]'}`}>
+                                {isVerified ? 'verified' : 'pending_actions'}
+                              </span>
+                              <span className="font-bold text-[#003629]">
+                                {isVerified ? badge : 'पडताळणी प्रलंबित (Not yet verified)'}
+                              </span>
+                            </div>
+                            <span className="text-[10px] text-[#707974]">
+                              रेटिंग: ⭐ {biz.rating || 5.0} ({biz.ratingCount || 1})
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="pt-2 border-t border-[#f0eee8] flex items-center justify-between gap-2 flex-wrap">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            {/* Toggle Verification Button */}
+                            <button
+                              type="button"
+                              onClick={() => handleToggleBusinessVerify(biz)}
+                              className={`px-3 py-1.5 rounded-xl text-[11px] font-bold flex items-center gap-1 transition-all shadow-xs cursor-pointer active:scale-98 ${
+                                isVerified
+                                  ? 'bg-[#fff1f0] hover:bg-[#ffdad6] text-[#ba1a1a] border border-[#ffdad6]'
+                                  : 'bg-[#003629] hover:bg-[#1b4d3e] text-white'
+                              }`}
+                            >
+                              <span className="material-symbols-outlined text-[14px]">
+                                {isVerified ? 'cancel' : 'check_circle'}
+                              </span>
+                              <span>{isVerified ? 'पडताळणी रद्द करा' : 'पडताळणी मंजूर करा'}</span>
+                            </button>
+
+                            {/* Change Badge Button */}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedBizForBadge(biz);
+                                setBadgeToAssign(biz.verificationBadge || 'Verified Merchant');
+                              }}
+                              className="px-2.5 py-1.5 rounded-xl bg-[#f5ede3] hover:bg-[#e8ded3] text-[#003629] text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer"
+                            >
+                              <span className="material-symbols-outlined text-[14px]">military_tech</span>
+                              <span>बॅज बदला</span>
+                            </button>
+                          </div>
+
+                          {/* Delete Shop Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteBusiness(biz)}
+                            title="दुकान हटवा"
+                            className="p-1.5 rounded-xl text-[#ba1a1a] hover:bg-[#ffdad6]/40 transition-all cursor-pointer"
+                          >
+                            <span className="material-symbols-outlined text-[17px]">delete</span>
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
+          </div>
+
+          {/* BADGE MODAL */}
+          {selectedBizForBadge && (
+            <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+              <div className="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-[#e8e2d9] flex flex-col gap-4">
+                <div className="flex items-start justify-between border-b border-[#f0eee8] pb-3">
+                  <div>
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#baeed9] text-[#002117] text-[10px] font-black uppercase">
+                      ट्रस्ट बॅज व्यवस्थापन (Trust Badge)
+                    </span>
+                    <h3 className="font-heading font-black text-[16px] text-[#003629] mt-1">
+                      {selectedBizForBadge.name}
+                    </h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedBizForBadge(null)}
+                    className="w-7 h-7 rounded-full bg-[#f3ede4] hover:bg-[#e8ded3] flex items-center justify-center text-[#55605a] font-bold cursor-pointer"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-[12px] font-bold text-[#003629]">
+                    अधिकृत पडताळणी बॅज निवडा:
+                  </label>
+
+                  {[
+                    { id: 'Verified Merchant', label: 'Verified Merchant (प्रमाणित स्थानिक व्यापारी)' },
+                    { id: 'Gram Panchayat Approved', label: 'Gram Panchayat Approved (ग्रामपंचायत मान्यताप्राप्त)' },
+                    { id: 'Authentic Agri Partner', label: 'Authentic Agri Partner (खात्रीशीर कृषी केंद्र)' },
+                    { id: 'Govt Ration Authorized', label: 'Govt Ration Authorized (शासकीय रास्त भाव धान्य)' },
+                    { id: 'Essential Health Service', label: 'Essential Health Service (अत्यावश्यक आरोग्य सेवा)' }
+                  ].map((preset) => (
+                    <label
+                      key={preset.id}
+                      className={`p-2.5 rounded-xl border text-[11px] font-bold flex items-center gap-2 cursor-pointer transition-all ${
+                        badgeToAssign === preset.id
+                          ? 'border-[#003629] bg-[#f0fdf4] text-[#003629]'
+                          : 'border-[#e8e2d9] hover:bg-[#fcfbf9] text-[#55605a]'
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="badgePreset"
+                        checked={badgeToAssign === preset.id}
+                        onChange={() => setBadgeToAssign(preset.id)}
+                        className="accent-[#003629]"
+                      />
+                      <span>{preset.label}</span>
+                    </label>
+                  ))}
+
+                  <div className="mt-2 flex flex-col gap-1">
+                    <label className="text-[11px] font-bold text-[#707974]">किंवा स्वतःचा सानुकूल बॅज प्रविष्ट करा:</label>
+                    <input
+                      type="text"
+                      value={badgeToAssign}
+                      onChange={(e) => setBadgeToAssign(e.target.value)}
+                      className="p-2 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] font-medium"
+                      placeholder="उदा. ग्राम गौरव पुरस्कार प्राप्त"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-2 flex items-center justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedBizForBadge(null)}
+                    className="px-4 py-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8ded3] text-[#55605a] font-bold text-xs cursor-pointer"
+                  >
+                    रद्द करा
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleUpdateBusinessBadge(selectedBizForBadge, badgeToAssign)}
+                    className="px-5 py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-98 cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">save</span>
+                    <span>बॅज लागू करा (Save Badge)</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -3156,7 +3699,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </div>
               ) : (
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-[12px]">
+                  <table className="w-full text-left text-[12px] min-w-[650px]">
                     <thead className="bg-[#fcfbf9] text-[#707974] uppercase text-[11px] font-black border-b border-[#e8e2d9]">
                       <tr>
                         <th className="p-3">विद्यार्थ्याचे नाव</th>
@@ -3496,7 +4039,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
 
                   {/* Fares */}
-                  <div className="grid grid-cols-3 gap-2 bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9]">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9]">
                     <div>
                       <label className="block font-bold text-[#2d312e] text-xs mb-1">पूर्ण भाडे (₹)</label>
                       <input
@@ -5264,7 +5807,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-[12px]">
+            <table className="w-full text-left text-[12px] min-w-[500px]">
               <thead className="bg-[#f9f3ea] text-[#707974] font-bold">
                 <tr>
                   <th className="p-3 rounded-l-xl">नाव</th>
@@ -5302,6 +5845,34 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {/* TAB 15: HERO BANNERS & SLIDER CAROUSEL */}
       {activeTab === 'banners' && (
         <AdminBannerManager />
+      )}
+
+      {/* TAB 16: SUPER ADMIN ACCESS CONTROL & ADMIN MANAGEMENT */}
+      {activeTab === 'admin_management' && (
+        isSuperAdmin ? (
+          <AdminManagementSection
+            currentUser={currentUser}
+            onAuditLog={(action, details) => {
+              console.log('Super Admin Action:', action, details);
+            }}
+          />
+        ) : (
+          <div className="bg-white p-8 rounded-3xl border border-[#ffdad6] text-center flex flex-col items-center gap-3 shadow-xs">
+            <div className="w-14 h-14 rounded-2xl bg-[#ffdad6]/40 text-[#ba1a1a] flex items-center justify-center">
+              <span className="material-symbols-outlined text-[32px]">lock</span>
+            </div>
+            <h3 className="font-heading font-black text-lg text-[#ba1a1a]">मर्यादित प्रवेश (Access Restricted)</h3>
+            <p className="text-xs text-[#55605a] max-w-md leading-relaxed">
+              हे पृष्ठ केवळ चीफ सुपर अॅडमिन (Chief Super Admin) साठी राखीव आहे. अतिरिक्त पृष्ठ अधिकारांसाठी मुख्य प्रशासकाशी संपर्क साधा.
+            </p>
+            <button
+              onClick={() => setActiveTab('overview')}
+              className="mt-2 px-4 py-2 bg-[#003629] text-white rounded-xl text-xs font-bold cursor-pointer"
+            >
+              📊 मुख्य आढावा पृष्ठावर जा
+            </button>
+          </div>
+        )
       )}
     </div>
   );

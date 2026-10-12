@@ -6,7 +6,7 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
-  const { lang} = useLanguage();
+  const { lang } = useLanguage();
 
   const handleNav = (nav: string, e?: React.MouseEvent) => {
     if (e) e.preventDefault();
