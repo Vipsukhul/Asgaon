@@ -35,7 +35,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
     return {
       id: j.id || `dyn-job-${idx}`,
       tagBadge: j.employmentType ? String(j.employmentType).toUpperCase() : 'ACTIVE VACANCY',
-      tagColor: 'bg-[#baeed9] text-[#002117]',
+      tagColor: 'bg-[#bbf7d0] text-[#002117]',
       certBadge: 'Asgaon Verified Employer',
       posted: j.postedAgo || 'Recently Posted',
       title: j.title,
@@ -84,7 +84,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
           { label: lang === 'MR' ? 'ग्राम रोजगार मंच' : 'Jobs', active: true }
         ]}
         rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#baeed9] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
+          <div className="flex items-center gap-1.5 bg-[#bbf7d0] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
             <span className="material-symbols-outlined text-[15px] text-[#002117]">verified</span>
             <span>{lang === 'MR' ? '१००% थेट स्थानिक रोजगार • शून्य दलाली' : '100% Direct Village Employment • No Middlemen Fee'}</span>
           </div>
@@ -103,10 +103,10 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
             </span>
           </div>
 
-          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#003629] leading-tight mb-1">
+          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#166534] leading-tight mb-1">
             {lang === 'MR' ? 'ग्रामीण रोजगार मंच — स्थानिक नोकऱ्या व कामे' : 'Gramin Rojgar Manch — Local Village Job Board'}
           </h1>
-          <p className="font-heading font-bold text-[15px] text-[#a63b00] mb-2">
+          <p className="font-heading font-bold text-[15px] text-[#c2410c] mb-2">
             {lang === 'MR' ? 'स्थानिक रोजगार, रोजंदारी व कारागीर' : 'Local Jobs, Daily Wage & Skilled Trades'}
           </p>
 
@@ -121,7 +121,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
         <div className="flex flex-col gap-2.5 w-full lg:w-72 shrink-0">
           <button
             onClick={onPostJob}
-            className="w-full py-2.5 px-4 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[13px] font-bold flex items-center justify-center gap-2 transition-colors shadow-xs"
+            className="w-full py-2.5 px-4 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-2 transition-colors shadow-xs"
           >
             <span className="material-symbols-outlined text-[18px]">post_add</span>
             <span>{lang === 'MR' ? 'नोकरीची जाहिरात करा' : 'Post a Job Vacancy'}</span>
@@ -140,11 +140,11 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
       {/* 3. Four Metric Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-[#baeed9] text-[#002117] flex items-center justify-center shrink-0">
+          <div className="w-11 h-11 rounded-xl bg-[#bbf7d0] text-[#002117] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[22px]">work</span>
           </div>
           <div>
-            <div className="font-heading font-extrabold text-[20px] text-[#003629]">{allJobs.length}</div>
+            <div className="font-heading font-extrabold text-[20px] text-[#166534]">{allJobs.length}</div>
             <div className="text-[11px] font-bold text-[#707974] uppercase">
               {lang === 'MR' ? 'सध्याच्या संधी (आसगाव परिसर)' : 'Active Openings (Asgaon Cluster)'}
             </div>
@@ -152,11 +152,11 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
         </div>
 
         <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-[#ffdbce] text-[#a63b00] flex items-center justify-center shrink-0">
+          <div className="w-11 h-11 rounded-xl bg-[#fed7aa] text-[#c2410c] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[22px]">payments</span>
           </div>
           <div>
-            <div className="font-heading font-extrabold text-[20px] text-[#a63b00]">₹650 - ₹950</div>
+            <div className="font-heading font-extrabold text-[20px] text-[#c2410c]">₹650 - ₹950</div>
             <div className="text-[11px] font-bold text-[#707974] uppercase">
               {lang === 'MR' ? 'सरासरी रोजंदारी दर' : 'Avg Daily Wage Rate'}
             </div>
@@ -198,7 +198,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
               value={search}
               onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
               placeholder={lang === 'MR' ? 'पद, मालक किंवा कौशल्यानुसार शोधा (उदा. ड्रायव्हर, हिशेबनीस, वायरमन, शेतमजूर)...' : 'Search by job role, employer, village (e.g. Tractor Driver, Accountant, ZP Teacher, Electrician)...'}
-              className="w-full pl-10 pr-4 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+              className="w-full pl-10 pr-4 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
           </div>
 
@@ -223,7 +223,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
               onClick={() => { setFilterType(cat.id); setCurrentPage(1); }}
               className={`px-3 py-1.5 rounded-xl text-[12px] font-bold transition-all whitespace-nowrap ${
                 filterType === cat.id
-                  ? 'bg-[#003629] text-white shadow-xs'
+                  ? 'bg-[#166534] text-white shadow-xs'
                   : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9] border border-[#e8e2d9]'
               }`}
             >
@@ -238,7 +238,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
         {/* Left Column: Job Cards List (2 cols wide) */}
         <div className="lg:col-span-2 flex flex-col gap-5">
           <div className="flex items-center justify-between">
-            <h2 className="font-heading font-extrabold text-[17px] text-[#003629]">
+            <h2 className="font-heading font-extrabold text-[17px] text-[#166534]">
               {lang === 'MR' ? 'स्थानिक रोजगार संधी' : 'Verified Village Openings'}{' '}
               <span className="text-[13px] font-normal text-[#707974]">
                 ({lang === 'MR'
@@ -250,15 +250,15 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
 
           {allJobs.length === 0 ? (
             <div className="bg-white rounded-2xl p-12 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-              <div className="w-8 h-8 border-3 border-[#003629] border-t-transparent rounded-full animate-spin mb-1" />
-              <p className="text-[13px] font-bold text-[#003629]">
+              <div className="w-8 h-8 border-3 border-[#166534] border-t-transparent rounded-full animate-spin mb-1" />
+              <p className="text-[13px] font-bold text-[#166534]">
                 {lang === 'MR' ? 'नोकरी माहिती लोड होत आहे, कृपया प्रतीक्षा करा...' : 'Connecting to database & loading job vacancies...'}
               </p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-              <span className="material-symbols-outlined text-[48px] text-[#a63b00]">work_off</span>
-              <h3 className="font-heading font-bold text-[18px] text-[#003629]">
+              <span className="material-symbols-outlined text-[48px] text-[#c2410c]">work_off</span>
+              <h3 className="font-heading font-bold text-[18px] text-[#166534]">
                 {lang === 'MR' ? 'एकही नोकरी आढळली नाही' : 'No matching job openings'}
               </h3>
               <p className="text-[13px] text-[#707974] max-w-md">
@@ -268,7 +268,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
               </p>
               <button
                 onClick={() => { setFilterType('All'); setSearch(''); setPayRange('All'); setCurrentPage(1); }}
-                className="px-4 py-2 bg-[#003629] text-white text-[12px] font-bold rounded-xl hover:bg-[#1b4d3e] transition-colors"
+                className="px-4 py-2 bg-[#166534] text-white text-[12px] font-bold rounded-xl hover:bg-[#052e16] transition-colors"
               >
                 {lang === 'MR' ? 'सर्व फिल्टर्स रीसेट करा' : 'Reset All Filters'}
               </button>
@@ -285,7 +285,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                       <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider ${job.tagColor}`}>
                         {job.tagBadge}
                       </span>
-                      <span className="text-[11px] font-bold text-[#003629] bg-[#baeed9] px-2 py-0.5 rounded">
+                      <span className="text-[11px] font-bold text-[#166534] bg-[#bbf7d0] px-2 py-0.5 rounded">
                         {lang === 'MR' ? 'सत्यापित मालक' : job.certBadge}
                       </span>
                     </div>
@@ -295,7 +295,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                   <h3 className="font-heading font-extrabold text-[18px] text-[#1d1b16] mb-1">
                     {job.title}
                   </h3>
-                  <div className="text-[12px] font-semibold text-[#a63b00] mb-3 flex items-center gap-1">
+                  <div className="text-[12px] font-semibold text-[#c2410c] mb-3 flex items-center gap-1">
                     <span className="material-symbols-outlined text-[15px]">apartment</span>
                     <span>{job.employer}</span>
                   </div>
@@ -306,7 +306,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                       <div className="text-[10px] font-bold text-[#707974] uppercase">
                         {lang === 'MR' ? 'तासिका / रोजंदारी दर' : 'Hourly / Daily Rate'}
                       </div>
-                      <div className="font-heading font-extrabold text-[15px] text-[#003629]">{job.rate}</div>
+                      <div className="font-heading font-extrabold text-[15px] text-[#166534]">{job.rate}</div>
                       <div className="text-[10px] text-[#707974]">{job.rateSub}</div>
                     </div>
 
@@ -350,7 +350,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                   <div className="flex items-center gap-2">
                     <a
                       href={`tel:${job.phone}`}
-                      className="px-3.5 py-1.5 rounded-lg bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] font-bold flex items-center gap-1 shadow-xs transition-colors"
+                      className="px-3.5 py-1.5 rounded-lg bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold flex items-center gap-1 shadow-xs transition-colors"
                     >
                       <span className="material-symbols-outlined text-[14px]">call</span>
                       <span>{lang === 'MR' ? 'थेट फोन करा' : 'Direct Call Employer'}</span>
@@ -360,7 +360,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                       href={`https://wa.me/91${job.phone}?text=Hello,%20I%20saw%20your%20job%20posting%20for%20${encodeURIComponent(job.title)}%20on%20Digital%20Gaon.`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-3 py-1.5 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#003629] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9]"
+                      className="px-3 py-1.5 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#166534] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9]"
                     >
                       <span className="material-symbols-outlined text-[14px] text-[#25D366]">chat</span>
                       <span>WhatsApp</span>
@@ -369,7 +369,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
 
                   <button
                     onClick={() => onApplyJob(job)}
-                    className="text-[12px] font-bold text-[#a63b00] hover:underline flex items-center gap-0.5"
+                    className="text-[12px] font-bold text-[#c2410c] hover:underline flex items-center gap-0.5"
                   >
                     <span>{lang === 'MR' ? 'प्रोफाइलद्वारे अर्ज करा' : 'Apply via Village Profile'}</span>
                     <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
@@ -404,7 +404,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                       onClick={() => setCurrentPage(pageNum)}
                       className={`w-7 h-7 rounded-lg font-bold flex items-center justify-center transition-colors ${
                         validCurrentPage === pageNum
-                          ? 'bg-[#003629] text-white shadow-xs'
+                          ? 'bg-[#166534] text-white shadow-xs'
                           : 'bg-[#f3ede4] text-[#1d1b16] hover:bg-[#e8e2d9]'
                       }`}
                     >
@@ -429,11 +429,11 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
         <div className="flex flex-col gap-5">
           {/* Widget 1: Kisan & Village Labor Wage Standard */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#a63b00] bg-[#fff8f0] px-2 py-0.5 rounded border border-[#ffdbce]">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#c2410c] bg-[#fef9ee] px-2 py-0.5 rounded border border-[#fed7aa]">
               {lang === 'MR' ? 'स्थानिक वेतन मापदंड' : 'CIVIC WAGE BENCHMARK'}
             </span>
 
-            <h3 className="font-heading font-extrabold text-[16px] text-[#003629] mt-2 mb-1">
+            <h3 className="font-heading font-extrabold text-[16px] text-[#166534] mt-2 mb-1">
               {lang === 'MR' ? 'शेतकरी व ग्रामीण मजूर वेतन दर' : 'Kisan & Village Labor Wage Standard'}
             </h3>
             <p className="text-[11px] text-[#707974] mb-3">
@@ -445,29 +445,29 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
             <div className="space-y-2 text-[12px]">
               <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
                 <span className="text-[#1d1b16] font-semibold">{lang === 'MR' ? 'दैनिक शेतमजूर (महिला)' : 'Daily Farm Labour (Female)'}</span>
-                <span className="font-extrabold text-[#a63b00]">₹350 - ₹400 / {lang === 'MR' ? 'दिवस' : 'day'}</span>
+                <span className="font-extrabold text-[#c2410c]">₹350 - ₹400 / {lang === 'MR' ? 'दिवस' : 'day'}</span>
               </div>
               <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
                 <span className="text-[#1d1b16] font-semibold">{lang === 'MR' ? 'कापूस वेचणी मजूर' : 'Women Farm Labour (Cotton picking)'}</span>
-                <span className="font-extrabold text-[#003629]">₹400 / {lang === 'MR' ? 'दिवस' : 'day'}</span>
+                <span className="font-extrabold text-[#166534]">₹400 / {lang === 'MR' ? 'दिवस' : 'day'}</span>
               </div>
               <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
                 <span className="text-[#1d1b16] font-semibold">{lang === 'MR' ? 'ट्रॅक्टर + चालक (जड काम)' : 'Tractor + Operator (Heavy Work)'}</span>
-                <span className="font-extrabold text-[#003629]">₹900 - ₹1,000 / {lang === 'MR' ? 'तास' : 'hr'}</span>
+                <span className="font-extrabold text-[#166534]">₹900 - ₹1,000 / {lang === 'MR' ? 'तास' : 'hr'}</span>
               </div>
               <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
                 <span className="text-[#1d1b16] font-semibold">{lang === 'MR' ? 'गवंडी / मिस्त्री (कुशल बांधकाम)' : 'Mason / Mistri (Skilled Civil)'}</span>
-                <span className="font-extrabold text-[#a63b00]">₹850 / {lang === 'MR' ? 'दिवस' : 'day'}</span>
+                <span className="font-extrabold text-[#c2410c]">₹850 / {lang === 'MR' ? 'दिवस' : 'day'}</span>
               </div>
               <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
                 <span className="text-[#1d1b16] font-semibold">{lang === 'MR' ? 'पेंटर / प्लंबर (कुशल काम)' : 'Skilled Painter / Plumber (Daily)'}</span>
-                <span className="font-extrabold text-[#003629]">₹750 - ₹850 / {lang === 'MR' ? 'दिवस' : 'day'}</span>
+                <span className="font-extrabold text-[#166534]">₹750 - ₹850 / {lang === 'MR' ? 'दिवस' : 'day'}</span>
               </div>
             </div>
 
             <button
               onClick={() => alert(lang === 'MR' ? 'वेतन दर मार्गदर्शक सूची PDF डाऊनलोड होत आहे.' : 'Official Wage Standard Gazette PDF downloaded.')}
-              className="mt-3 text-[12px] text-[#003629] font-bold hover:underline flex items-center gap-1"
+              className="mt-3 text-[12px] text-[#166534] font-bold hover:underline flex items-center gap-1"
             >
               <span>{lang === 'MR' ? 'वेतन दर मार्गदर्शक PDF डाऊनलोड करा' : 'Download Wage Benchmark PDF'}</span>
               <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
@@ -475,10 +475,10 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
           </div>
 
           {/* Widget 2: Instant Village Job Alerts */}
-          <div className="bg-[#1b4d3e] text-white rounded-2xl p-5 shadow-xs border border-[#003629]">
+          <div className="bg-[#052e16] text-white rounded-2xl p-5 shadow-xs border border-[#166534]">
             <div className="flex items-center gap-2 mb-2">
-              <span className="material-symbols-outlined text-[#baeed9] text-[22px]">notifications_active</span>
-              <h3 className="font-heading font-extrabold text-[15px] text-[#baeed9]">
+              <span className="material-symbols-outlined text-[#bbf7d0] text-[22px]">notifications_active</span>
+              <h3 className="font-heading font-extrabold text-[15px] text-[#bbf7d0]">
                 {lang === 'MR' ? 'झटपट नोकरी अलर्ट्स!' : 'Instant Village Job Alerts!'}
               </h3>
             </div>
@@ -491,22 +491,22 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
 
             <ul className="space-y-1.5 text-[11px] text-white/80 mb-4">
               <li className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[14px] text-[#baeed9]">check_circle</span>
+                <span className="material-symbols-outlined text-[14px] text-[#bbf7d0]">check_circle</span>
                 <span>{lang === 'MR' ? 'सत्यापित स्थानिक नोकऱ्या' : 'Verified jobs'}</span>
               </li>
               <li className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[14px] text-[#baeed9]">check_circle</span>
+                <span className="material-symbols-outlined text-[14px] text-[#bbf7d0]">check_circle</span>
                 <span>{lang === 'MR' ? '१००% मोफत सूचना' : '100% free alerts, no fees ever'}</span>
               </li>
               <li className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[14px] text-[#baeed9]">check_circle</span>
+                <span className="material-symbols-outlined text-[14px] text-[#bbf7d0]">check_circle</span>
                 <span>{lang === 'MR' ? 'थेट मालकांशी संपर्क' : 'Direct connect to employers'}</span>
               </li>
             </ul>
 
             <button
               onClick={() => alert(lang === 'MR' ? 'तुमच्या क्रमांकासाठी मोफत नोकरी अलर्ट सुरू झाले आहे.' : 'Free job alert subscription activated for your mobile number.')}
-              className="w-full py-2.5 rounded-xl bg-[#a63b00] hover:bg-[#852f00] text-white text-[12px] font-bold shadow-xs transition-colors flex items-center justify-center gap-1"
+              className="w-full py-2.5 rounded-xl bg-[#c2410c] hover:bg-[#852f00] text-white text-[12px] font-bold shadow-xs transition-colors flex items-center justify-center gap-1"
             >
               <span>{lang === 'MR' ? '१-क्लिकमध्ये मोफत नोंदणी करा' : 'Create Free Profile in 1-Click'}</span>
             </button>
@@ -514,7 +514,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
 
           {/* Widget 3: Need Farm or Shop Workers? */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <h3 className="font-heading font-extrabold text-[15px] text-[#003629] mb-1">
+            <h3 className="font-heading font-extrabold text-[15px] text-[#166534] mb-1">
               {lang === 'MR' ? 'शेती किंवा दुकानासाठी कामगार हवेत?' : 'Need Farm or Shop Workers?'}
             </h3>
             <p className="text-[11px] text-[#707974] mb-3">
@@ -524,13 +524,13 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
             </p>
 
             <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] text-[11px] text-[#404945] mb-3 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#a63b00] text-[20px]">groups</span>
+              <span className="material-symbols-outlined text-[#c2410c] text-[20px]">groups</span>
               <span>{lang === 'MR' ? 'थेट स्थानिक कामगारांशी संपर्क • १००% पडताळणी केलेले प्रोफाइल' : 'Direct connect with verified local worker profiles'}</span>
             </div>
 
             <button
               onClick={onPostJob}
-              className="w-full py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] font-bold transition-colors flex items-center justify-center gap-1"
+              className="w-full py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold transition-colors flex items-center justify-center gap-1"
             >
               <span className="material-symbols-outlined text-[15px]">add_circle</span>
               <span>{lang === 'MR' ? 'नोकरीची जाहिरात पोस्ट करा' : 'Post Vacancy'}</span>
@@ -539,7 +539,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
 
           {/* Widget 4: MGNREGA 100 Days Guarantee */}
           <div className="bg-[#f9f3ea] rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <div className="flex items-center gap-2 text-[#003629] font-bold text-[14px] mb-1">
+            <div className="flex items-center gap-2 text-[#166534] font-bold text-[14px] mb-1">
               <span className="material-symbols-outlined text-[18px]">verified_user</span>
               <span>{lang === 'MR' ? 'मनरेगा १०० दिवस रोजगार हमी' : 'MGNREGA 100 Days Guarantee'}</span>
             </div>
@@ -552,7 +552,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
               href="https://nrega.nic.in"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[12px] text-[#a63b00] font-bold hover:underline flex items-center gap-1"
+              className="text-[12px] text-[#c2410c] font-bold hover:underline flex items-center gap-1"
             >
               <span>{lang === 'MR' ? 'मनरेगा जॉब कार्डसाठी अर्ज करा' : 'Apply for MGNREGA Job Card'}</span>
               <span className="material-symbols-outlined text-[14px]">open_in_new</span>

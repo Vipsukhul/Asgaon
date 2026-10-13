@@ -410,7 +410,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
           {onWriteBlog && (
             <button
               onClick={onWriteBlog}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#003629] text-[#baeed9] hover:bg-[#00261d] font-bold text-xs shadow-2xs transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#166534] text-[#bbf7d0] hover:bg-[#052e16] font-bold text-xs shadow-2xs transition-all"
             >
               <span className="material-symbols-outlined text-[16px]">edit_note</span>
               <span>{isMr ? 'लेख लिहा' : 'Write Article'}</span>
@@ -419,7 +419,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
 
           <button
             onClick={onNavigateBack}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white border border-[#e8e2d9] text-[#003629] font-bold text-xs hover:bg-[#f9f3ea] shadow-2xs transition-all shrink-0"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white border border-[#e8e2d9] text-[#166534] font-bold text-xs hover:bg-[#f9f3ea] shadow-2xs transition-all shrink-0"
           >
             <span className="material-symbols-outlined text-[16px]">arrow_back</span>
             <span>{isMr ? 'मागे जा (Back)' : 'Back'}</span>
@@ -430,7 +430,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
       {/* 2. Article Header Card */}
       <header className="bg-white rounded-2xl p-6 sm:p-8 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
         <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className="px-2.5 py-1 rounded-md bg-[#003629] text-[#baeed9] text-[11px] font-bold uppercase tracking-wider">
+          <span className="px-2.5 py-1 rounded-md bg-[#166534] text-[#bbf7d0] text-[11px] font-bold uppercase tracking-wider">
             {currentCategory}
           </span>
           <span className="text-[#707974] flex items-center gap-1 font-medium">
@@ -450,30 +450,30 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
         </div>
 
         <div>
-          <h1 className="font-heading font-extrabold text-[24px] sm:text-[32px] text-[#003629] leading-tight mb-2">
+          <h1 className="font-heading font-extrabold text-[24px] sm:text-[32px] text-[#166534] leading-tight mb-2">
             {currentTitle}
           </h1>
           {isMr && post.title && post.title !== post.titleMarathi && (
-            <p className="font-heading font-semibold text-[14px] sm:text-[16px] text-[#a63b00]">
+            <p className="font-heading font-semibold text-[14px] sm:text-[16px] text-[#c2410c]">
               {post.title}
             </p>
           )}
           {!isMr && post.titleMarathi && post.titleMarathi !== post.title && (
-            <p className="font-heading font-semibold text-[14px] sm:text-[16px] text-[#a63b00]">
+            <p className="font-heading font-semibold text-[14px] sm:text-[16px] text-[#c2410c]">
               {post.titleMarathi}
             </p>
           )}
         </div>
 
         {/* Excerpt Box */}
-        <div className="bg-[#fff8f0] border-l-4 border-[#a63b00] p-4 rounded-r-xl text-[13px] sm:text-[14px] text-[#7a2b00] font-medium leading-relaxed">
+        <div className="bg-[#fef9ee] border-l-4 border-[#c2410c] p-4 rounded-r-xl text-[13px] sm:text-[14px] text-[#7a2b00] font-medium leading-relaxed">
           {currentExcerpt}
         </div>
 
         {/* Author Details & Interactive Likes/Share Action Bar */}
         <div className="p-4 rounded-xl bg-[#fcfaf7] border border-[#e8e2d9] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-[#003629] text-[#baeed9] flex items-center justify-center font-extrabold text-base shrink-0 shadow-2xs">
+            <div className="w-12 h-12 rounded-xl bg-[#166534] text-[#bbf7d0] flex items-center justify-center font-extrabold text-base shrink-0 shadow-2xs">
               {post.author.substring(0, 2).toUpperCase()}
             </div>
             <div>
@@ -542,24 +542,24 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
         {/* Prominent Clean Hash ID Permalink Bar */}
         <div className="bg-[#f9f5ed] border border-[#e5decb] rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
           <div className="flex items-center gap-3 overflow-hidden w-full sm:w-auto">
-            <span className="w-9 h-9 rounded-xl bg-[#003629] text-[#baeed9] flex items-center justify-center shrink-0 shadow-2xs font-mono font-bold text-sm">
+            <span className="w-9 h-9 rounded-xl bg-[#166534] text-[#bbf7d0] flex items-center justify-center shrink-0 shadow-2xs font-mono font-bold text-sm">
               #
             </span>
             <div className="overflow-hidden min-w-0">
               <div className="text-[11px] font-bold text-[#707974] flex items-center gap-2 mb-0.5">
                 <span>{isMr ? 'लेखाची कायमस्वरूपी वेब लिंक (Direct Hash ID):' : 'Direct Article Permalink (Hash ID):'}</span>
-                <span className="px-2 py-0.5 rounded-md bg-[#003629] text-[#baeed9] text-[11px] font-mono font-black tracking-wider">
+                <span className="px-2 py-0.5 rounded-md bg-[#166534] text-[#bbf7d0] text-[11px] font-mono font-black tracking-wider">
                   #{post.id || post.slug}
                 </span>
               </div>
-              <div className="font-mono text-xs sm:text-sm font-extrabold text-[#003629] truncate select-all">
+              <div className="font-mono text-xs sm:text-sm font-extrabold text-[#166534] truncate select-all">
                 {window.location.origin}/blogs/{post.id || post.slug}
               </div>
             </div>
           </div>
           <button
             onClick={handleCopyLink}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white hover:bg-[#003629] text-[#003629] hover:text-[#baeed9] border border-[#d8cfbe] text-xs font-bold transition-all shadow-2xs shrink-0 cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white hover:bg-[#166534] text-[#166534] hover:text-[#bbf7d0] border border-[#d8cfbe] text-xs font-bold transition-all shadow-2xs shrink-0 cursor-pointer"
           >
             <span className="material-symbols-outlined text-[16px]">content_copy</span>
             <span>{isMr ? 'लिंक कॉपी करा (Copy)' : 'Copy Link'}</span>
@@ -591,7 +591,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
           {(currentTags || []).map((tag, i) => (
             <span
               key={i}
-              className="text-xs px-3 py-1 rounded-lg bg-[#f4efe8] text-[#003629] font-bold border border-[#e8e2d9]"
+              className="text-xs px-3 py-1 rounded-lg bg-[#f4efe8] text-[#166534] font-bold border border-[#e8e2d9]"
             >
               #{tag}
             </span>
@@ -604,10 +604,10 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
         <div className="flex items-center justify-between border-b border-[#f0eee8] pb-4">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-[24px] text-[#006a4e]">forum</span>
-            <h3 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#003629]">
+            <h3 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#166534]">
               {isMr ? 'प्रतिक्रिया व ग्राम संवाद' : 'Comments & Discussion'}
             </h3>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#baeed9] text-[#002117] text-xs font-bold">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117] text-xs font-bold">
               {comments.length}
             </span>
           </div>
@@ -622,11 +622,11 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
             {/* Authenticated user indicator */}
             <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-[#e8e2d9]">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-[#003629] text-[#baeed9] flex items-center justify-center font-bold text-xs">
+                <div className="w-8 h-8 rounded-full bg-[#166534] text-[#bbf7d0] flex items-center justify-center font-bold text-xs">
                   {currentUser.fullName.charAt(0)}
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-[#003629] flex items-center gap-1">
+                  <div className="text-xs font-bold text-[#166534] flex items-center gap-1">
                     <span>{currentUser.fullName}</span>
                     <span className="material-symbols-outlined text-[15px] text-[#006a4e]">verified</span>
                   </div>
@@ -664,7 +664,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
                     ? 'या लेखाबद्दल तुमचे मत, शंका किंवा इतर शेतकऱ्यांसाठी उपयुक्त अनुभव येथे लिहा...'
                     : 'Share your thoughts, questions, or helpful experience about this article...'
                 }
-                className="w-full px-3.5 py-2.5 bg-white rounded-xl text-xs sm:text-sm border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629] leading-relaxed"
+                className="w-full px-3.5 py-2.5 bg-white rounded-xl text-xs sm:text-sm border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534] leading-relaxed"
               />
             </div>
 
@@ -676,7 +676,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
               </span>
               <button
                 type="submit"
-                className="px-5 py-2.5 rounded-xl bg-[#003629] hover:bg-[#00261d] text-[#baeed9] text-xs font-bold flex items-center gap-1.5 transition-colors shadow-2xs shrink-0"
+                className="px-5 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-[#bbf7d0] text-xs font-bold flex items-center gap-1.5 transition-colors shadow-2xs shrink-0"
               >
                 <span className="material-symbols-outlined text-[16px]">send</span>
                 <span>{isMr ? 'प्रतिक्रिया नोंदवा' : 'Post Comment'}</span>
@@ -686,11 +686,11 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
         ) : (
           /* Login prompt when not authenticated */
           <div className="p-6 rounded-2xl bg-gradient-to-br from-[#fbf8f3] to-[#f4eee4] border border-[#e8e2d9] text-center space-y-3">
-            <div className="w-12 h-12 mx-auto rounded-full bg-[#003629]/10 text-[#003629] flex items-center justify-center">
+            <div className="w-12 h-12 mx-auto rounded-full bg-[#166534]/10 text-[#166534] flex items-center justify-center">
               <span className="material-symbols-outlined text-[24px]">lock</span>
             </div>
             <div>
-              <h4 className="font-heading font-extrabold text-[15px] sm:text-[17px] text-[#003629]">
+              <h4 className="font-heading font-extrabold text-[15px] sm:text-[17px] text-[#166534]">
                 {isMr ? 'प्रतिक्रिया देण्यासाठी कृपया लॉगिन करा' : 'Please Sign In to Join Discussion'}
               </h4>
               <p className="text-xs text-[#707974] max-w-md mx-auto mt-1 leading-relaxed">
@@ -702,7 +702,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
             <button
               type="button"
               onClick={onRequireLogin}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#003629] hover:bg-[#00261d] text-[#baeed9] text-xs font-bold transition-all shadow-sm"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-[#bbf7d0] text-xs font-bold transition-all shadow-sm"
             >
               <span className="material-symbols-outlined text-[18px]">login</span>
               <span>{isMr ? 'लॉगिन करा (Login to Join Discussion)' : 'Sign In to Join Discussion'}</span>
@@ -720,11 +720,11 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
             comments.map((comment) => (
               <div
                 key={comment.id}
-                className="p-4 rounded-xl border border-[#e8e2d9] bg-white shadow-2xs hover:border-[#1b4d3e] transition-colors"
+                className="p-4 rounded-xl border border-[#e8e2d9] bg-white shadow-2xs hover:border-[#052e16] transition-colors"
               >
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-full bg-[#f4efe8] text-[#003629] font-bold text-xs flex items-center justify-center border border-[#e8e2d9]">
+                    <div className="w-8 h-8 rounded-full bg-[#f4efe8] text-[#166534] font-bold text-xs flex items-center justify-center border border-[#e8e2d9]">
                       {comment.authorName.charAt(0)}
                     </div>
                     <div>
@@ -760,10 +760,10 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
       </section>
 
       {/* 5. WhatsApp & Citizen Community Callout */}
-      <section className="bg-gradient-to-r from-[#003629] to-[#0f533f] text-white rounded-2xl p-6 sm:p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-sm border border-[#00261d]">
+      <section className="bg-gradient-to-r from-[#166534] to-[#0f533f] text-white rounded-2xl p-6 sm:p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-sm border border-[#052e16]">
         <div>
           <h3 className="text-[16px] sm:text-[18px] font-extrabold flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#baeed9]">share</span>
+            <span className="material-symbols-outlined text-[#bbf7d0]">share</span>
             <span>{isMr ? 'हा लेख इतर ग्रामस्थांना उपयुक्त वाटेल का?' : 'Found this article helpful?'}</span>
           </h3>
           <p className="text-xs sm:text-[13px] text-[#d6eee4] mt-1 font-medium">
@@ -787,7 +787,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
       {relatedPosts.length > 0 && (
         <section className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="font-heading font-extrabold text-[18px] text-[#003629]">
+            <h3 className="font-heading font-extrabold text-[18px] text-[#166534]">
               {isMr ? 'इतर संबंधित माहिती लेख (Related Knowledge Articles)' : 'Related Knowledge Articles'}
             </h3>
             <button
@@ -806,7 +806,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
                 <div
                   key={rel.id}
                   onClick={() => onSelectBlog(rel.slug)}
-                  className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-2xs hover:shadow-md hover:border-[#1b4d3e] transition-all cursor-pointer group flex flex-col justify-between"
+                  className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-2xs hover:shadow-md hover:border-[#052e16] transition-all cursor-pointer group flex flex-col justify-between"
                 >
                   <div>
                     <div className="h-32 w-full rounded-xl overflow-hidden mb-3 bg-stone-100">
@@ -825,7 +825,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
                         e.preventDefault();
                         onSelectBlog(rel.slug);
                       }}
-                      className="block font-bold text-xs sm:text-sm text-[#003629] group-hover:text-[#a63b00] mt-1.5 leading-snug line-clamp-2 transition-colors"
+                      className="block font-bold text-xs sm:text-sm text-[#166534] group-hover:text-[#c2410c] mt-1.5 leading-snug line-clamp-2 transition-colors"
                     >
                       {relTitle}
                     </a>
@@ -833,7 +833,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
 
                   <div className="mt-3 pt-2 border-t border-[#f0eee8] flex items-center justify-between text-[11px] text-[#707974]">
                     <span>{rel.readTimeMinutes} {isMr ? 'मि. वाचन' : 'min read'}</span>
-                    <span className="text-[#003629] font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                    <span className="text-[#166534] font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
                       <span>{isMr ? 'वाचा' : 'Read'}</span>
                       <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                     </span>

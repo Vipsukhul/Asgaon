@@ -46,7 +46,7 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
       badge: lang === 'MR' ? 'वीज पुरवठा बिघाड' : 'Electrical Breakdown',
       category: lang === 'MR' ? 'वीज पुरवठा' : 'Power Grid',
       icon: 'bolt',
-      bg: 'bg-[#ffdbce] text-[#a63b00]'
+      bg: 'bg-[#fed7aa] text-[#c2410c]'
     },
     {
       id: 5,
@@ -56,7 +56,7 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
       badge: lang === 'MR' ? 'ग्रामपंचायत प्रशासन' : 'Panchayat Administration',
       category: lang === 'MR' ? 'नागरी अडचणी' : 'Civic Grievances',
       icon: 'shield_person',
-      bg: 'bg-[#baeed9] text-[#002117]'
+      bg: 'bg-[#bbf7d0] text-[#002117]'
     },
     {
       id: 6,
@@ -65,7 +65,7 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
       badge: lang === 'MR' ? 'टोल-फ्री शेतकरी मदत' : 'Toll-Free Kisan Desk',
       category: lang === 'MR' ? 'कृषी सल्ला' : 'Pest & Livestock Alert',
       icon: 'phone_in_talk',
-      bg: 'bg-[#baeed9] text-[#002117]'
+      bg: 'bg-[#bbf7d0] text-[#002117]'
     }
   ];
 
@@ -110,36 +110,36 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {hotlines.map((h) => (
-          <div key={h.id} className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs flex flex-col justify-between">
+          <div key={h.id} className="bg-white rounded-2xl p-5 border-2 border-emerald-700/15 hover:border-emerald-700 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-3">
                 <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${h.bg}`}>
                   {h.category}
                 </span>
-                <span className="text-[11px] font-bold text-[#707974] bg-[#f9f3ea] px-2 py-0.5 rounded">
+                <span className="text-[11px] font-bold text-stone-600 bg-[#faf6ee] px-2 py-0.5 rounded border border-[#efe7dc]">
                   {h.badge}
                 </span>
               </div>
 
-              <h2 className="font-heading font-bold text-[16px] text-[#1d1b16] mb-1">
+              <h2 className="font-heading font-extrabold text-[16px] text-stone-900 mb-1">
                 {h.title}
               </h2>
 
               {h.name && (
-                <p className="text-[12px] font-semibold text-[#006a4e] mb-2 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">person</span>
+                <p className="text-[12px] font-bold text-emerald-800 mb-2 flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[15px]">person</span>
                   <span>{h.name}</span>
                 </p>
               )}
             </div>
 
-            <div className="mt-4 pt-3 border-t border-[#f3ede4] flex items-center justify-between">
-              <span className="font-mono text-base font-bold text-[#1d1b16]">{h.phone}</span>
+            <div className="mt-4 pt-3 border-t border-[#efe7dc] flex items-center justify-between">
+              <span className="font-mono text-base font-extrabold text-stone-900">{h.phone}</span>
               <a
                 href={`tel:${h.phone}`}
-                className="px-4 py-1.5 rounded-xl bg-[#003629] text-white hover:bg-[#1b4d3e] text-[12px] font-bold flex items-center gap-1.5 shadow-xs transition-colors"
+                className="px-4 py-2 rounded-xl bg-emerald-800 text-white hover:bg-emerald-900 text-[13px] font-extrabold flex items-center gap-1.5 shadow-sm transition-all active:scale-95 cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[15px]">call</span>
+                <span className="material-symbols-outlined text-[16px]">call</span>
                 <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
               </a>
             </div>

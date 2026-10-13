@@ -205,7 +205,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
           { label: lang === 'MR' ? 'माहिती लेख व नागरिक ब्लॉग' : 'Village Blogs & Knowledge Hub', active: true }
         ]}
         rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#baeed9] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
+          <div className="flex items-center gap-1.5 bg-[#bbf7d0] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
             <span className="material-symbols-outlined text-[15px] text-[#002117]">verified</span>
             <span>{lang === 'MR' ? 'नागरिक व ग्राम माहिती व्यासपीठ' : 'Civic Knowledge Platform'}</span>
           </div>
@@ -213,13 +213,13 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
       />
 
       {/* 2. Community Blog Hero & Write Action Banner */}
-      <section className="bg-gradient-to-r from-[#003629] via-[#084535] to-[#0f533f] text-white rounded-3xl p-6 sm:p-8 shadow-sm border border-[#00261d] relative overflow-hidden">
+      <section className="bg-gradient-to-r from-[#166534] via-[#084535] to-[#0f533f] text-white rounded-3xl p-6 sm:p-8 shadow-sm border border-[#052e16] relative overflow-hidden">
         {/* Decorative background circle */}
         <div className="absolute -right-12 -bottom-12 w-48 h-48 rounded-full bg-white/5 pointer-events-none blur-2xl"></div>
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-[#baeed9] text-xs font-bold border border-white/10">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-[#bbf7d0] text-xs font-bold border border-white/10">
               <span className="material-symbols-outlined text-[15px]">auto_stories</span>
               <span>{lang === 'MR' ? 'नागरिक ज्ञानपीठ • Community Blog' : 'COMMUNITY BLOG & KNOWLEDGE HUB'}</span>
             </div>
@@ -234,7 +234,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                 : 'Guides, agricultural tips, government scheme walk-throughs, and community development thoughts written by Asgaon villagers, farmers, and youths.'}
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-[#baeed9] font-medium">
+            <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-[#bbf7d0] font-medium">
               <span className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-[16px]">menu_book</span>
                 <span>{posts.length} {lang === 'MR' ? 'एकूण लेख' : 'Total Articles'}</span>
@@ -251,7 +251,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto shrink-0">
             <button
               onClick={handleOpenWriteModal}
-              className="px-6 py-3.5 rounded-2xl bg-[#baeed9] hover:bg-[#a0e4c8] text-[#002117] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5"
+              className="px-6 py-3.5 rounded-2xl bg-[#bbf7d0] hover:bg-[#a0e4c8] text-[#002117] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5"
             >
               <span className="material-symbols-outlined text-[20px]">edit_note</span>
               <span>{lang === 'MR' ? 'नवीन लेख लिहा (Write Blog)' : 'Write New Article'}</span>
@@ -264,7 +264,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
       {!searchQuery && selectedCategory === 'all' && featuredPost && (
         <section
           onClick={() => onSelectBlogSlug(featuredPost.id || featuredPost.slug)}
-          className="bg-white rounded-3xl p-6 sm:p-8 shadow-xs hover:shadow-md border border-[#e8e2d9] hover:border-[#1b4d3e] cursor-pointer group flex flex-col lg:flex-row items-center gap-6 transition-all"
+          className="bg-white rounded-3xl p-6 sm:p-8 shadow-xs hover:shadow-md border border-[#e8e2d9] hover:border-[#052e16] cursor-pointer group flex flex-col lg:flex-row items-center gap-6 transition-all"
         >
           <div className="lg:w-1/2 rounded-2xl overflow-hidden bg-stone-100 max-h-[280px] w-full">
             <img
@@ -277,7 +277,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
           <div className="lg:w-1/2 flex flex-col justify-between space-y-4">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="px-2.5 py-0.5 rounded-full bg-[#003629] text-[#baeed9] text-[10px] font-black uppercase">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#bbf7d0] text-[10px] font-black uppercase">
                   {lang === 'MR' ? 'ठळक लेख • Featured Spotlight' : 'Featured Spotlight'}
                 </span>
                 <span className="text-xs text-[#707974] font-medium">{featuredPost.publishDate}</span>
@@ -287,7 +287,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                 </span>
               </div>
 
-              <h2 className="font-heading font-extrabold text-[20px] sm:text-[24px] text-[#003629] leading-tight group-hover:text-[#a63b00] transition-colors">
+              <h2 className="font-heading font-extrabold text-[20px] sm:text-[24px] text-[#166534] leading-tight group-hover:text-[#c2410c] transition-colors">
                 {lang === 'MR' ? (featuredPost.titleMarathi || featuredPost.title) : featuredPost.title}
               </h2>
 
@@ -310,7 +310,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                   <span className="material-symbols-outlined text-[16px]">share</span>
                   <span>{lang === 'MR' ? 'शेअर' : 'Share'}</span>
                 </button>
-                <span className="px-4 py-1.5 rounded-xl bg-[#003629] text-[#baeed9] group-hover:bg-[#00261d] text-xs font-bold flex items-center gap-1 transition-colors">
+                <span className="px-4 py-1.5 rounded-xl bg-[#166534] text-[#bbf7d0] group-hover:bg-[#052e16] text-xs font-bold flex items-center gap-1 transition-colors">
                   <span>{lang === 'MR' ? 'वाचा' : 'Read'}</span>
                   <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                 </span>
@@ -334,7 +334,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                   ? 'शोध: शीर्षक, योजना, पीक किंवा लेखक (उदा. घरकुल, सातबारा, एसटी, कापूस)...'
                   : 'Search: title, scheme, crop or author (e.g. Gharkul, 7/12, ST, Cotton)...'
               }
-              className="w-full pl-10 pr-10 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+              className="w-full pl-10 pr-10 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
             {searchQuery && (
               <button
@@ -374,7 +374,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${selectedCategory === cat.id
-                  ? 'bg-[#003629] text-[#baeed9] shadow-xs'
+                  ? 'bg-[#166534] text-[#bbf7d0] shadow-xs'
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
@@ -402,7 +402,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
               setSelectedCategory('all');
               setSearchQuery('');
             }}
-            className="mt-4 px-4 py-2 rounded-xl bg-[#003629] text-white text-xs font-bold"
+            className="mt-4 px-4 py-2 rounded-xl bg-[#166534] text-white text-xs font-bold"
           >
             {lang === 'MR' ? 'सर्व लेख दाखवा' : 'Show All Blogs'}
           </button>
@@ -413,7 +413,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
             <article
               key={post.id}
               onClick={() => onSelectBlogSlug(post.id || post.slug)}
-              className="bg-white rounded-2xl border border-[#e8e2d9] shadow-xs hover:shadow-md hover:border-[#1b4d3e] transition-all overflow-hidden flex flex-col justify-between group cursor-pointer"
+              className="bg-white rounded-2xl border border-[#e8e2d9] shadow-xs hover:shadow-md hover:border-[#052e16] transition-all overflow-hidden flex flex-col justify-between group cursor-pointer"
             >
               <div>
                 {/* Cover Image */}
@@ -425,10 +425,10 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                     loading="lazy"
                   />
                   <div className="absolute top-3 left-3 flex items-center gap-1.5">
-                    <span className="px-2.5 py-0.5 rounded-md bg-[#003629]/95 text-[#baeed9] text-[11px] font-bold shadow-sm">
+                    <span className="px-2.5 py-0.5 rounded-md bg-[#166534]/95 text-[#bbf7d0] text-[11px] font-bold shadow-sm">
                       {lang === 'MR' ? (post.categoryMarathi || post.category) : post.category}
                     </span>
-                    <span className="px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-[#baeed9] text-[10px] font-mono font-bold shadow-sm">
+                    <span className="px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-[#bbf7d0] text-[10px] font-mono font-bold shadow-sm">
                       #{post.id}
                     </span>
                   </div>
@@ -460,7 +460,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                       e.preventDefault();
                       onSelectBlogSlug(post.id || post.slug);
                     }}
-                    className="block font-heading font-extrabold text-[16px] text-[#003629] group-hover:text-[#a63b00] leading-snug line-clamp-2 mb-2 transition-colors"
+                    className="block font-heading font-extrabold text-[16px] text-[#166534] group-hover:text-[#c2410c] leading-snug line-clamp-2 mb-2 transition-colors"
                   >
                     {lang === 'MR' ? (post.titleMarathi || post.title) : post.title}
                   </a>
@@ -494,7 +494,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                   >
                     <span className="material-symbols-outlined text-[16px]">share</span>
                   </button>
-                  <span className="p-1.5 rounded-lg bg-[#f4efe8] text-[#003629] group-hover:bg-[#003629] group-hover:text-white transition-colors">
+                  <span className="p-1.5 rounded-lg bg-[#f4efe8] text-[#166534] group-hover:bg-[#166534] group-hover:text-white transition-colors">
                     <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                   </span>
                 </div>

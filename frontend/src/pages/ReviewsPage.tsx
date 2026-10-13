@@ -270,7 +270,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
       />
 
       {/* Hero Header */}
-      <div className="bg-gradient-to-r from-[#003629] via-[#004d3b] to-[#1b4d3e] text-white relative overflow-hidden border-b border-[#00261d]">
+      <div className="bg-gradient-to-r from-[#166534] via-[#14532d] to-[#052e16] text-white relative overflow-hidden border-b border-[#052e16]">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-10 relative z-10">
@@ -284,7 +284,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
 
           <div className="mt-4 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#baeed9]/20 text-[#baeed9] border border-[#baeed9]/30 text-[11px] font-bold uppercase tracking-wider mb-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#bbf7d0]/20 text-[#bbf7d0] border border-[#bbf7d0]/30 text-[11px] font-bold uppercase tracking-wider mb-2">
                 <span className="material-symbols-outlined text-[15px]">verified</span>
                 <span>{isMr ? '१००% पारदर्शक व सत्यापित नागरी अभिप्राय' : '100% Verified Community Feedback'}</span>
               </div>
@@ -306,7 +306,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                 }
                 setIsModalOpen(true);
               }}
-              className="px-5 py-3 rounded-xl bg-[#baeed9] hover:bg-[#a3e2c9] text-[#003629] font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+              className="px-5 py-3 rounded-xl bg-[#bbf7d0] hover:bg-[#a3e2c9] text-[#166534] font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[18px]">rate_review</span>
               <span>{isMr ? 'नवीन अभिप्राय नोंदवा' : 'Write a Review'}</span>
@@ -316,7 +316,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
           {/* Metric Stats Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-6">
             <div className="bg-black/20 backdrop-blur-md rounded-2xl p-4 border border-white/10 text-center">
-              <div className="text-[#baeed9] font-black text-2xl sm:text-3xl flex items-center justify-center gap-1">
+              <div className="text-[#bbf7d0] font-black text-2xl sm:text-3xl flex items-center justify-center gap-1">
                 <span>{stats.avg}</span>
                 <span className="material-symbols-outlined text-[20px] text-[#ef9f27] font-fill">star</span>
               </div>
@@ -335,7 +335,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
             </div>
 
             <div className="bg-black/20 backdrop-blur-md rounded-2xl p-4 border border-white/10 text-center">
-              <div className="text-[#baeed9] font-black text-2xl sm:text-3xl">
+              <div className="text-[#bbf7d0] font-black text-2xl sm:text-3xl">
                 {stats.percentPositive}%
               </div>
               <div className="text-[11px] text-[#d6eee4]/80 font-bold mt-1 uppercase tracking-wider">
@@ -382,7 +382,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
             <select
               value={selectedBusinessFilter}
               onChange={(e) => setSelectedBusinessFilter(e.target.value)}
-              className="p-2 rounded-xl bg-white border border-[#e8e2d9] text-xs font-bold text-[#003629] focus:outline-none focus:border-[#006a4e] cursor-pointer"
+              className="p-2 rounded-xl bg-white border border-[#e8e2d9] text-xs font-bold text-[#166534] focus:outline-none focus:border-[#006a4e] cursor-pointer"
             >
               <option value="all">{isMr ? 'सर्व दुकाने (All Shops)' : 'All Businesses'}</option>
               {businesses.map((b) => (
@@ -399,7 +399,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                 const val = e.target.value;
                 setSelectedRatingFilter(val === 'all' ? 'all' : Number(val));
               }}
-              className="p-2 rounded-xl bg-white border border-[#e8e2d9] text-xs font-bold text-[#003629] focus:outline-none focus:border-[#006a4e] cursor-pointer"
+              className="p-2 rounded-xl bg-white border border-[#e8e2d9] text-xs font-bold text-[#166534] focus:outline-none focus:border-[#006a4e] cursor-pointer"
             >
               <option value="all">{isMr ? 'सर्व स्टार (All Ratings)' : 'All Stars'}</option>
               <option value="5">⭐⭐⭐⭐⭐ (५ स्टार)</option>
@@ -465,7 +465,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                     {/* Header: User & Rating */}
                     <div className="flex items-start justify-between gap-3 mb-2.5">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-9 h-9 rounded-full bg-[#003629] text-white flex items-center justify-center font-bold text-xs shrink-0">
+                        <div className="w-9 h-9 rounded-full bg-[#166534] text-white flex items-center justify-center font-bold text-xs shrink-0">
                           {rev.userName.charAt(0).toUpperCase()}
                         </div>
                         <div>
@@ -474,7 +474,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                               {rev.userName}
                             </span>
                             {rev.verifiedCitizen && (
-                              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-[#baeed9]/40 text-[#006a4e] text-[10px] font-bold">
+                              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-[#bbf7d0]/40 text-[#006a4e] text-[10px] font-bold">
                                 <span className="material-symbols-outlined text-[11px]">verified</span>
                                 <span>{isMr ? 'सत्यापित' : 'Verified'}</span>
                               </span>
@@ -491,8 +491,8 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
 
                     {/* Target Business Tag */}
                     <div className="mb-2.5">
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#f9f3ea] text-[#003629] text-[11px] font-bold border border-[#e8e2d9]">
-                        <span className="material-symbols-outlined text-[13px] text-[#a63b00]">storefront</span>
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#f9f3ea] text-[#166534] text-[11px] font-bold border border-[#e8e2d9]">
+                        <span className="material-symbols-outlined text-[13px] text-[#c2410c]">storefront</span>
                         <span>{rev.businessName}</span>
                       </span>
                     </div>
@@ -519,7 +519,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                           if (found && onSelectBusiness) onSelectBusiness(found);
                         }
                       }}
-                      className="text-[#003629] font-bold hover:underline flex items-center gap-0.5 cursor-pointer"
+                      className="text-[#166534] font-bold hover:underline flex items-center gap-0.5 cursor-pointer"
                     >
                       <span>{isMr ? 'दुकान पहा' : 'View Shop'}</span>
                       <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
@@ -546,7 +546,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
             <div className="flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined text-[#006a4e] text-[24px]">rate_review</span>
               <div>
-                <h3 className="font-heading font-extrabold text-[16px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[16px] text-[#166534]">
                   {isMr ? 'नवीन नागरी अभिप्राय नोंदवा' : 'Submit Citizen Review'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">
@@ -556,11 +556,11 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
             </div>
 
             {submitSuccess ? (
-              <div className="p-6 text-center bg-[#baeed9]/20 rounded-xl border border-[#baeed9] my-4">
+              <div className="p-6 text-center bg-[#bbf7d0]/20 rounded-xl border border-[#bbf7d0] my-4">
                 <span className="material-symbols-outlined text-[#006a4e] text-[36px] mb-2 block">
                   check_circle
                 </span>
-                <strong className="text-sm text-[#003629] block">
+                <strong className="text-sm text-[#166534] block">
                   {isMr ? 'अभिप्राय यशस्वीरीत्या नोंदवला गेला!' : 'Review Submitted Successfully!'}
                 </strong>
                 <p className="text-xs text-[#006a4e] mt-1">
@@ -571,7 +571,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
               <form onSubmit={handleSubmitReview} className="space-y-3.5 text-xs">
                 {/* Select Business */}
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {isMr ? 'दुकान किंवा व्यवसाय निवडा *' : 'Select Business *'}
                   </label>
                   <select
@@ -598,7 +598,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
 
                 {/* Rating Stars Picker */}
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {isMr ? 'मानांकन द्या (Star Rating) *' : 'Your Rating *'}
                   </label>
                   <div className="flex items-center gap-2 p-2 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9]">
@@ -618,7 +618,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                         </span>
                       </button>
                     ))}
-                    <span className="ml-auto text-[11px] font-bold text-[#003629]">
+                    <span className="ml-auto text-[11px] font-bold text-[#166534]">
                       {formRating === 5 && (isMr ? 'उत्कृष्ट (5 Star)' : 'Excellent')}
                       {formRating === 4 && (isMr ? 'खूप छान (4 Star)' : 'Very Good')}
                       {formRating === 3 && (isMr ? 'चांगले (3 Star)' : 'Average')}
@@ -630,7 +630,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
 
                 {/* Name */}
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {isMr ? 'तुमचे पूर्ण नाव *' : 'Your Full Name *'}
                   </label>
                   <input
@@ -646,7 +646,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                 {/* Ward */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">
+                    <label className="font-bold text-[#166534] block mb-1">
                       {isMr ? 'आसगाव वॉर्ड' : 'Ward / Area'}
                     </label>
                     <select
@@ -662,7 +662,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                   </div>
 
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">
+                    <label className="font-bold text-[#166534] block mb-1">
                       {isMr ? 'मोबाईल नंबर (ऐच्छिक)' : 'Mobile (Optional)'}
                     </label>
                     <input
@@ -677,7 +677,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
 
                 {/* Comment */}
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {isMr ? 'तुमचा अभिप्राय / अनुभव लिहा *' : 'Your Detailed Review *'}
                   </label>
                   <textarea
@@ -705,7 +705,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-5 py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold shadow-xs cursor-pointer disabled:opacity-50"
+                    className="px-5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold shadow-xs cursor-pointer disabled:opacity-50"
                   >
                     {isSubmitting
                       ? (isMr ? 'नोंदवत आहे...' : 'Saving...')

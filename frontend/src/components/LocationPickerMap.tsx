@@ -45,8 +45,8 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
               width: 28px;
               height: 28px;
               border-radius: 50%;
-              background: #003629;
-              color: #baeed9;
+              background: #166534;
+              color: #bbf7d0;
               border: 2px solid #ffffff;
               box-shadow: 0 2px 8px rgba(0,0,0,0.3);
               display: flex;
@@ -60,7 +60,7 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
               height: 0;
               border-left: 4px solid transparent;
               border-right: 4px solid transparent;
-              border-top: 5px solid #003629;
+              border-top: 5px solid #166534;
               margin-top: -1px;
             "></div>
           </div>
@@ -82,7 +82,7 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
               width: 36px;
               height: 36px;
               border-radius: 50%;
-              background: #a63b00;
+              background: #c2410c;
               color: white;
               border: 3px solid white;
               box-shadow: 0 4px 12px rgba(0,0,0,0.4);
@@ -97,7 +97,7 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
               height: 0;
               border-left: 6px solid transparent;
               border-right: 6px solid transparent;
-              border-top: 7px solid #a63b00;
+              border-top: 7px solid #c2410c;
               margin-top: -2px;
             "></div>
           </div>

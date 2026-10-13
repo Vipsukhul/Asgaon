@@ -105,7 +105,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       title: 'PM-KUSUM Component-B 90% Solar Pump Subsidy',
       sub: 'Grant: 90% capital subsidy directly to bank',
       icon: 'solar_power',
-      iconColor: 'bg-[#baeed9] text-[#002117]',
+      iconColor: 'bg-[#bbf7d0] text-[#002117]',
       url: 'https://pmkusum.mahadiscom.in'
     },
     {
@@ -244,10 +244,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       <div className="bg-white rounded-2xl p-6 shadow-xs border border-[#e8e2d9] flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
         <div className="flex items-center gap-4">
           <div className="relative">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#003629] to-[#006a4e] text-[#baeed9] flex items-center justify-center font-heading font-black text-[28px] border-2 border-[#baeed9] shadow-sm">
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#166534] to-[#006a4e] text-[#bbf7d0] flex items-center justify-center font-heading font-black text-[28px] border-2 border-[#bbf7d0] shadow-sm">
               {currentUser.avatarInitials}
             </div>
-            <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full bg-[#003629] text-[#baeed9] flex items-center justify-center border-2 border-white shadow-xs" title={isMr ? "सत्यापित आसगाव नागरिक" : "Verified Asgaon Citizen"}>
+            <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full bg-[#166534] text-[#bbf7d0] flex items-center justify-center border-2 border-white shadow-xs" title={isMr ? "सत्यापित आसगाव नागरिक" : "Verified Asgaon Citizen"}>
               <span className="material-symbols-outlined text-[15px]">verified</span>
             </div>
           </div>
@@ -257,7 +257,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               <h1 className="font-heading font-extrabold text-[24px] text-[#1d1b16] tracking-tight">
                 {currentUser.fullName}
               </h1>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#baeed9] text-[#002117] text-[11px] font-bold uppercase tracking-wider">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117] text-[11px] font-bold uppercase tracking-wider">
                 <span className="material-symbols-outlined text-[13px]">
                   {currentUser.role === 'BUSINESS_OWNER' ? 'storefront' : currentUser.role === 'ADMIN' ? 'shield_person' : currentUser.role === 'STUDENT' ? 'school' : 'agriculture'}
                 </span>
@@ -267,15 +267,15 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
             <div className="flex flex-wrap items-center gap-4 text-[13px] text-[#707974] mt-1">
               <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[16px] text-[#a63b00]">location_on</span>
+                <span className="material-symbols-outlined text-[16px] text-[#c2410c]">location_on</span>
                 <span>{currentUser.ward || (isMr ? 'प्रभाग २' : 'Ward 2')}, {isMr ? 'आसगाव (पिन ४४१९१०)' : 'Asgaon (PIN 441910)'}</span>
               </span>
               <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[16px] text-[#003629]">smartphone</span>
+                <span className="material-symbols-outlined text-[16px] text-[#166534]">smartphone</span>
                 <span className="font-semibold text-[#1d1b16]">
                   {currentUser.phone ? `+91 ${currentUser.phone}` : (isMr ? 'नोंदणी नसलेला मोबाईल' : 'Unregistered Mobile')}
                 </span>
-                <span className="text-[10px] text-[#376757] font-bold bg-[#baeed9] px-1.5 py-0.2 rounded ml-1">
+                <span className="text-[10px] text-[#376757] font-bold bg-[#bbf7d0] px-1.5 py-0.2 rounded ml-1">
                   {isMr ? 'सक्रिय' : 'Active'}
                 </span>
               </span>
@@ -293,7 +293,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               setEditOccupation(currentUser.occupation || 'Farmer / Cultivator');
               setEditModalOpen(true);
             }}
-            className="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+            className="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
           >
             <span className="material-symbols-outlined text-[16px]">edit</span>
             <span>{isMr ? 'माहिती बदला (Edit)' : 'Edit Profile'}</span>
@@ -310,7 +310,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           ) : (
             <button
               onClick={onOpenLoginModal}
-              className="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+              className="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
             >
               <span className="material-symbols-outlined text-[16px]">login</span>
               <span>{isMr ? 'गुगलने लॉगिन करा' : 'Sign In with Google'}</span>
@@ -325,7 +325,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           <button
             onClick={() => setActiveTab('overview')}
             className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all cursor-pointer ${activeTab === 'overview'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
               }`}
           >
@@ -336,13 +336,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           <button
             onClick={() => setActiveTab('grievances')}
             className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all cursor-pointer ${activeTab === 'grievances'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
               }`}
           >
             <span className="material-symbols-outlined text-[18px]">assignment_turned_in</span>
             <span>{isMr ? 'माझ्या तक्रारी व स्थिती' : 'My Grievances & Tracking'}</span>
-            <span className="bg-[#ffdbce] text-[#a63b00] text-[11px] px-1.5 py-0.2 rounded-full font-bold">
+            <span className="bg-[#fed7aa] text-[#c2410c] text-[11px] px-1.5 py-0.2 rounded-full font-bold">
               {userComplaints.length}
             </span>
           </button>
@@ -350,13 +350,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           <button
             onClick={() => setActiveTab('saved')}
             className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all cursor-pointer ${activeTab === 'saved'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
               }`}
           >
             <span className="material-symbols-outlined text-[18px]">bookmark</span>
             <span>{isMr ? 'जतन केलेल्या योजना' : 'Saved Schemes'}</span>
-            <span className="bg-[#baeed9] text-[#002117] text-[11px] px-1.5 py-0.2 rounded-full font-bold">
+            <span className="bg-[#bbf7d0] text-[#002117] text-[11px] px-1.5 py-0.2 rounded-full font-bold">
               {savedItems.length}
             </span>
           </button>
@@ -364,7 +364,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           <button
             onClick={() => setActiveTab('broadcasts')}
             className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all cursor-pointer ${activeTab === 'broadcasts'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
               }`}
           >
@@ -381,14 +381,14 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             <div className="text-[12px] font-bold text-[#707974]">
               {isMr ? 'नोंदवलेल्या तक्रारी' : 'Logged Grievances'}
             </div>
-            <div className="font-heading font-extrabold text-[26px] text-[#003629] mt-0.5">
+            <div className="font-heading font-extrabold text-[26px] text-[#166534] mt-0.5">
               {userComplaints.length}
             </div>
             <div className="text-[11px] text-[#376757] font-semibold mt-0.5">
               {isMr ? 'डेटाबेसमध्ये नोंदणीकृत' : 'Live in Neon Database'}
             </div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-[#baeed9] text-[#002117] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-[#bbf7d0] text-[#002117] flex items-center justify-center">
             <span className="material-symbols-outlined text-[22px]">assignment</span>
           </div>
         </div>
@@ -398,14 +398,14 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             <div className="text-[12px] font-bold text-[#707974]">
               {isMr ? 'उपलब्ध ग्राम योजना' : 'Village Schemes'}
             </div>
-            <div className="font-heading font-extrabold text-[26px] text-[#a63b00] mt-0.5">
+            <div className="font-heading font-extrabold text-[26px] text-[#c2410c] mt-0.5">
               {schemes.length > 0 ? schemes.length : 3}
             </div>
-            <div className="text-[11px] text-[#a63b00] font-semibold mt-0.5">
+            <div className="text-[11px] text-[#c2410c] font-semibold mt-0.5">
               {isMr ? 'डीबीटी थेट बँक लाभ' : 'DBT Verified Support'}
             </div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-[#ffdbce] text-[#a63b00] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-[#fed7aa] text-[#c2410c] flex items-center justify-center">
             <span className="material-symbols-outlined text-[22px]">policy</span>
           </div>
         </div>
@@ -450,8 +450,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
             <div>
-              <h3 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#a63b00]">badge</span>
+              <h3 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#c2410c]">badge</span>
                 <span>{isMr ? 'आसगाव नागरिक अभिलेख व डिजिटल नोंद' : 'Asgaon Citizen Record & Digital Dossier'}</span>
               </h3>
               <p className="text-[12px] text-[#707974]">
@@ -464,7 +464,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {isMr ? 'पूर्ण कायदेशीर नाव' : 'Full Legal Name'}
                 </div>
-                <div className="font-heading font-extrabold text-[15px] text-[#003629] mt-0.5">
+                <div className="font-heading font-extrabold text-[15px] text-[#166534] mt-0.5">
                   {currentUser.fullName}
                 </div>
                 <div className="text-[11px] text-[#707974] mt-0.5">
@@ -476,7 +476,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {isMr ? 'संपर्क मोबाईल' : 'Contact Phone'}
                 </div>
-                <div className="font-heading font-extrabold text-[15px] text-[#003629] mt-0.5">
+                <div className="font-heading font-extrabold text-[15px] text-[#166534] mt-0.5">
                   +91 {currentUser.phone || '9822104500'}
                 </div>
                 <div className="text-[11px] text-[#376757] font-semibold mt-0.5">
@@ -488,7 +488,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {isMr ? 'प्रभाग व वस्ती' : 'Ward & Settlement'}
                 </div>
-                <div className="font-heading font-extrabold text-[15px] text-[#003629] mt-0.5">
+                <div className="font-heading font-extrabold text-[15px] text-[#166534] mt-0.5">
                   {currentUser.ward || (isMr ? 'प्रभाग २ (गावठाण)' : 'Ward 2 (Gaothan)')}
                 </div>
                 <div className="text-[11px] text-[#707974] mt-0.5">
@@ -500,7 +500,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {isMr ? 'नागरी भूमिका / प्रोफाइल' : 'Civic Role / Profile'}
                 </div>
-                <div className="font-heading font-extrabold text-[15px] text-[#a63b00] mt-0.5">
+                <div className="font-heading font-extrabold text-[15px] text-[#c2410c] mt-0.5">
                   {getRoleLabel(currentUser.role)}
                 </div>
                 <div className="text-[11px] text-[#707974] mt-0.5">
@@ -509,11 +509,11 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </div>
             </div>
 
-            <div className="p-4 bg-[#baeed9]/40 border border-[#006a4e]/30 rounded-xl flex items-center justify-between gap-3">
+            <div className="p-4 bg-[#bbf7d0]/40 border border-[#006a4e]/30 rounded-xl flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5">
                 <span className="material-symbols-outlined text-[24px] text-[#006a4e]">verified_user</span>
                 <div>
-                  <h4 className="font-bold text-[13px] text-[#003629]">
+                  <h4 className="font-bold text-[13px] text-[#166534]">
                     {isMr ? 'डीबीटी थेट बँक खात्याशी जोडणी सक्रिय' : 'DBT Direct-to-Bank Enrolment Active'}
                   </h4>
                   <p className="text-[11px] text-[#404945]">
@@ -531,7 +531,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
           <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs flex flex-col justify-between">
             <div>
-              <h3 className="font-heading font-extrabold text-[16px] text-[#003629] flex items-center gap-2 mb-3">
+              <h3 className="font-heading font-extrabold text-[16px] text-[#166534] flex items-center gap-2 mb-3">
                 <span className="material-symbols-outlined text-[#006a4e]">support_agent</span>
                 <span>{isMr ? 'नागरिक मदत कक्ष (CSC Kiosk)' : 'Civic CSC Assistance Desk'}</span>
               </h3>
@@ -542,15 +542,15 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </p>
               <div className="space-y-2 text-[12px]">
                 <div className="flex items-center gap-2 text-[#707974]">
-                  <span className="material-symbols-outlined text-[16px] text-[#003629]">store</span>
+                  <span className="material-symbols-outlined text-[16px] text-[#166534]">store</span>
                   <span>{isMr ? 'कियोस्क: आसगाव ग्राम सचिवालय' : 'VLE Kiosk: Asgaon Panchayat Bhawan'}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[#707974]">
-                  <span className="material-symbols-outlined text-[16px] text-[#003629]">schedule</span>
+                  <span className="material-symbols-outlined text-[16px] text-[#166534]">schedule</span>
                   <span>{isMr ? 'वेळ: सोम - शनि, सकाळी ०९:३० — ०५:३०' : 'Timings: Mon - Sat, 09:30 AM — 05:30 PM'}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[#707974]">
-                  <span className="material-symbols-outlined text-[16px] text-[#003629]">call</span>
+                  <span className="material-symbols-outlined text-[16px] text-[#166534]">call</span>
                   <span>{isMr ? 'मदत क्रमांक:' : 'Helpline:'} +91 98221 04500</span>
                 </div>
               </div>
@@ -558,7 +558,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
             <button
               onClick={onOpenGrievanceModal}
-              className="mt-6 w-full py-2.5 rounded-xl bg-[#a63b00] hover:bg-[#852f00] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer"
+              className="mt-6 w-full py-2.5 rounded-xl bg-[#c2410c] hover:bg-[#852f00] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer"
             >
               <span className="material-symbols-outlined text-[18px]">campaign</span>
               <span>{isMr ? 'नवीन तक्रार नोंदवा (Lodge Grievance)' : 'Lodge a Grievance Ticket'}</span>
@@ -572,8 +572,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         <div className="flex flex-col gap-6">
           {/* Tracking Search Card */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <h3 className="font-heading font-bold text-[16px] text-[#003629] mb-1 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#a63b00]">search</span>
+            <h3 className="font-heading font-bold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[#c2410c]">search</span>
               <span>{isMr ? 'तक्रार स्थिती तपासा' : 'Track Grievance Token'}</span>
             </h3>
             <p className="text-[12px] text-[#707974] mb-3">
@@ -589,24 +589,24 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 value={trackInput}
                 onChange={(e) => setTrackInput(e.target.value)}
                 placeholder="Enter Token e.g. ASG-2026-41513, KS-6181..."
-                className="flex-1 bg-[#f9f3ea] p-2.5 rounded-xl border border-[#e8e2d9] text-[13px] font-mono uppercase focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                className="flex-1 bg-[#f9f3ea] p-2.5 rounded-xl border border-[#e8e2d9] text-[13px] font-mono uppercase focus:outline-none focus:ring-2 focus:ring-[#166534]"
               />
               <button
                 type="submit"
                 disabled={trackingLoading}
-                className="px-5 py-2.5 bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold rounded-xl text-[13px] flex items-center gap-1 shrink-0 disabled:opacity-50 cursor-pointer"
+                className="px-5 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl text-[13px] flex items-center gap-1 shrink-0 disabled:opacity-50 cursor-pointer"
               >
                 {trackingLoading ? (isMr ? 'तपासत आहे...' : 'Checking...') : (isMr ? 'स्थिती तपासा' : 'Check Status')}
               </button>
             </form>
 
             {trackResult && (
-              <div className="mt-4 p-4 rounded-xl bg-[#baeed9]/40 border border-[#006a4e] flex flex-col gap-2 animate-fadeIn text-[13px]">
+              <div className="mt-4 p-4 rounded-xl bg-[#bbf7d0]/40 border border-[#006a4e] flex flex-col gap-2 animate-fadeIn text-[13px]">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-[#003629] text-[15px]">
+                  <span className="font-mono font-bold text-[#166534] text-[15px]">
                     {isMr ? 'तक्रार टोकन:' : 'Ticket:'} {trackResult.trackingNumber}
                   </span>
-                  <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${trackResult.status === 'RESOLVED' ? 'bg-[#baeed9] text-[#002117]' :
+                  <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${trackResult.status === 'RESOLVED' ? 'bg-[#bbf7d0] text-[#002117]' :
                       trackResult.status === 'IN_PROGRESS' ? 'bg-[#dbe1ff] text-[#002873]' :
                         'bg-[#ffdad6] text-[#ba1a1a]'
                     }`}>
@@ -632,7 +632,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="font-heading font-extrabold text-[18px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[18px] text-[#166534]">
                   {isMr ? `गावातील थेट तक्रारी (${userComplaints.length})` : `Live Village Grievances (${userComplaints.length})`}
                 </h3>
                 <p className="text-[12px] text-[#707974]">
@@ -642,7 +642,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
               <button
                 onClick={onOpenGrievanceModal}
-                className="px-3.5 py-2 rounded-xl bg-[#a63b00] hover:bg-[#852f00] text-white text-[12px] font-bold flex items-center gap-1 shadow-xs cursor-pointer"
+                className="px-3.5 py-2 rounded-xl bg-[#c2410c] hover:bg-[#852f00] text-white text-[12px] font-bold flex items-center gap-1 shadow-xs cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[16px]">add</span>
                 <span>{isMr ? 'नवीन तक्रार नोंदवा' : 'Lodge New Grievance'}</span>
@@ -684,7 +684,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${item.status === 'RESOLVED' ? 'bg-[#baeed9] text-[#002117]' :
+                      <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${item.status === 'RESOLVED' ? 'bg-[#bbf7d0] text-[#002117]' :
                           item.status === 'IN_PROGRESS' ? 'bg-[#dbe1ff] text-[#002873]' :
                             'bg-[#ffdad6] text-[#ba1a1a]'
                         }`}>
@@ -702,8 +702,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       {/* Saved Items Tab */}
       {activeTab === 'saved' && (
         <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
-          <h3 className="font-heading font-extrabold text-[18px] text-[#003629] mb-4 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#a63b00]">bookmarks</span>
+          <h3 className="font-heading font-extrabold text-[18px] text-[#166534] mb-4 flex items-center gap-2">
+            <span className="material-symbols-outlined text-[#c2410c]">bookmarks</span>
             <span>{isMr ? `जतन केलेल्या शासकीय योजना (${savedItems.length})` : `Saved Welfare Schemes & Subsidies (${savedItems.length})`}</span>
           </h3>
 
@@ -739,12 +739,12 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     href={item.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="font-bold text-[#003629] hover:underline flex items-center gap-1"
+                    className="font-bold text-[#166534] hover:underline flex items-center gap-1"
                   >
                     <span>{isMr ? 'पोर्टलवर अर्ज करा' : 'Apply on Portal'}</span>
                     <span className="material-symbols-outlined text-[14px]">open_in_new</span>
                   </a>
-                  <span className="text-[10px] font-semibold text-[#376757] bg-[#baeed9] px-2 py-0.5 rounded">
+                  <span className="text-[10px] font-semibold text-[#376757] bg-[#bbf7d0] px-2 py-0.5 rounded">
                     {isMr ? 'सत्यापित' : 'Verified'}
                   </span>
                 </div>
@@ -757,8 +757,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       {/* Broadcasts Tab */}
       {activeTab === 'broadcasts' && (
         <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs max-w-2xl">
-          <h3 className="font-heading font-extrabold text-[18px] text-[#003629] mb-1 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#a63b00]">tune</span>
+          <h3 className="font-heading font-extrabold text-[18px] text-[#166534] mb-1 flex items-center gap-2">
+            <span className="material-symbols-outlined text-[#c2410c]">tune</span>
             <span>{isMr ? 'एसएमएस व प्रसारण सूचना सदस्यता' : 'SMS & Broadcast Advisory Subscriptions'}</span>
           </h3>
           <p className="text-[12px] text-[#707974] mb-4">
@@ -768,18 +768,18 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           </p>
 
           {/* Web Push Notification Device Card */}
-          <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-[#003629]/10 via-[#baeed9]/20 to-[#003629]/5 border border-[#006a4e]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-[#166534]/10 via-[#bbf7d0]/20 to-[#166534]/5 border border-[#006a4e]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#003629] text-[#baeed9] flex items-center justify-center shrink-0 shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-[#166534] text-[#bbf7d0] flex items-center justify-center shrink-0 shadow-xs">
                 <span className="material-symbols-outlined text-[22px]">
                   {pushEnabled ? 'notifications_active' : 'notifications'}
                 </span>
               </div>
               <div>
-                <div className="font-heading font-extrabold text-[14px] text-[#003629] flex items-center gap-1.5">
+                <div className="font-heading font-extrabold text-[14px] text-[#166534] flex items-center gap-1.5">
                   <span>{isMr ? 'मोबाईल/डेस्कटॉप थेट पुश नोटिफिकेशन्स' : 'Device Push Notifications'}</span>
                   <span className={`px-2 py-0.2 rounded-full text-[10px] font-bold ${
-                    pushEnabled ? 'bg-[#baeed9] text-[#002117]' : 'bg-[#f3ede4] text-[#707974]'
+                    pushEnabled ? 'bg-[#bbf7d0] text-[#002117]' : 'bg-[#f3ede4] text-[#707974]'
                   }`}>
                     {pushEnabled ? (isMr ? 'सक्रिय' : 'Active') : (isMr ? 'बंद' : 'Disabled')}
                   </span>
@@ -799,7 +799,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               className={`px-4 py-2 rounded-xl text-[12px] font-bold transition-all shrink-0 shadow-xs flex items-center gap-1.5 cursor-pointer ${
                 pushEnabled
                   ? 'bg-white hover:bg-[#ffdad6] text-[#ba1a1a] border border-[#ffdad6]'
-                  : 'bg-[#003629] hover:bg-[#1b4d3e] text-white'
+                  : 'bg-[#166534] hover:bg-[#052e16] text-white'
               }`}
             >
               <span className="material-symbols-outlined text-[16px]">
@@ -818,7 +818,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           <div className="space-y-3 text-[13px]">
             <div className="flex items-center justify-between p-3 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9]">
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-[20px] text-[#003629]">trending_up</span>
+                <span className="material-symbols-outlined text-[20px] text-[#166534]">trending_up</span>
                 <div>
                   <div className="font-bold text-[#1d1b16]">
                     {isMr ? 'दैनिक कृषी बाजारभाव (मंडी भाव) एसएमएस' : 'Daily Mandi Price SMS'}
@@ -832,7 +832,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 type="checkbox"
                 checked={mandiSms}
                 onChange={(e) => setMandiSms(e.target.checked)}
-                className="w-4 h-4 accent-[#003629] cursor-pointer"
+                className="w-4 h-4 accent-[#166534] cursor-pointer"
               />
             </div>
 
@@ -852,13 +852,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 type="checkbox"
                 checked={weatherAlerts}
                 onChange={(e) => setWeatherAlerts(e.target.checked)}
-                className="w-4 h-4 accent-[#003629] cursor-pointer"
+                className="w-4 h-4 accent-[#166534] cursor-pointer"
               />
             </div>
 
             <div className="flex items-center justify-between p-3 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9]">
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-[20px] text-[#a63b00]">groups</span>
+                <span className="material-symbols-outlined text-[20px] text-[#c2410c]">groups</span>
                 <div>
                   <div className="font-bold text-[#1d1b16]">
                     {isMr ? 'ग्रामसभा विषयसूची व बैठक सूचना' : 'Gram Sabha Agenda & Meeting Alerts'}
@@ -872,7 +872,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 type="checkbox"
                 checked={gramSabhaSms}
                 onChange={(e) => setGramSabhaSms(e.target.checked)}
-                className="w-4 h-4 accent-[#003629] cursor-pointer"
+                className="w-4 h-4 accent-[#166534] cursor-pointer"
               />
             </div>
 
@@ -892,7 +892,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 type="checkbox"
                 checked={powerSchedule}
                 onChange={(e) => setPowerSchedule(e.target.checked)}
-                className="w-4 h-4 accent-[#003629] cursor-pointer"
+                className="w-4 h-4 accent-[#166534] cursor-pointer"
               />
             </div>
           </div>
@@ -913,7 +913,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             <div className="flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined text-[#006a4e] text-[24px]">edit_note</span>
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {isMr ? 'नागरिक प्रोफाइल संपादन' : 'Edit Citizen Profile'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">
@@ -924,7 +924,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
             <form onSubmit={handleSaveProfile} className="flex flex-col gap-3 text-[12px]">
               <div>
-                <label className="font-bold text-[#003629] block mb-1">
+                <label className="font-bold text-[#166534] block mb-1">
                   {isMr ? 'पूर्ण नाव (Full Name)' : 'Full Name'}
                 </label>
                 <input
@@ -938,7 +938,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </div>
 
               <div>
-                <label className="font-bold text-[#003629] block mb-1">
+                <label className="font-bold text-[#166534] block mb-1">
                   {isMr ? 'मोबाईल नंबर (Mobile Number)' : 'Mobile Number'}
                 </label>
                 <input
@@ -953,7 +953,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {isMr ? 'आसगावमधील प्रभाग (Ward)' : 'Ward in Asgaon'}
                   </label>
                   <select
@@ -969,7 +969,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 </div>
 
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {isMr ? 'नागरी भूमिका (Civic Role)' : 'Civic Role'}
                   </label>
                   <select
@@ -987,7 +987,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </div>
 
               <div>
-                <label className="font-bold text-[#003629] block mb-1">
+                <label className="font-bold text-[#166534] block mb-1">
                   {isMr ? 'व्यवसाय किंवा परिचय (Occupation / Bio)' : 'Occupation / Bio'}
                 </label>
                 <input
@@ -1009,7 +1009,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold shadow-xs cursor-pointer"
+                  className="px-5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold shadow-xs cursor-pointer"
                 >
                   {isMr ? 'माहिती जतन करा' : 'Save Profile'}
                 </button>
@@ -1023,7 +1023,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       <div className="text-center pt-2">
         <button
           onClick={onNavigateHome}
-          className="text-[13px] text-[#003629] font-bold hover:underline inline-flex items-center gap-1 cursor-pointer"
+          className="text-[13px] text-[#166534] font-bold hover:underline inline-flex items-center gap-1 cursor-pointer"
         >
           <span className="material-symbols-outlined text-[16px]">arrow_back</span>
           <span>{isMr ? 'मुख्य पृष्ठावर परत जा (Return to Village Homepage)' : 'Return to Village Homepage & Public Civic Directory'}</span>

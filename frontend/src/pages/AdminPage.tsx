@@ -1357,25 +1357,25 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
   // Unauthenticated / Non-Admin Production-Ready Administrative Login Screen
   if (!isAdmin) {
     return (
-      <div className="w-full min-h-[82vh] flex items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-[#f9f3ea]/60 via-[#fff8f0] to-[#f3ede4]/40">
+      <div className="w-full min-h-[82vh] flex items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-[#f9f3ea]/60 via-[#fef9ee] to-[#f3ede4]/40">
         <div className="w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-[#e8e2d9] overflow-hidden flex flex-col">
           {/* Top Government / Official Header Strip */}
-          <div className="bg-gradient-to-r from-[#003629] via-[#004d3b] to-[#1b4d3e] text-white p-6 sm:p-7 relative overflow-hidden">
+          <div className="bg-gradient-to-r from-[#166534] via-[#14532d] to-[#052e16] text-white p-6 sm:p-7 relative overflow-hidden">
             {/* Background Decorative Pattern */}
             <div className="absolute -right-6 -bottom-6 w-36 h-36 rounded-full bg-white/5 pointer-events-none" />
-            <div className="absolute right-12 -top-10 w-28 h-28 rounded-full bg-[#baeed9]/10 pointer-events-none" />
+            <div className="absolute right-12 -top-10 w-28 h-28 rounded-full bg-[#bbf7d0]/10 pointer-events-none" />
 
             <div className="flex items-start justify-between gap-4 relative z-10">
               <div className="flex items-center gap-3.5">
                 
                 <div>
-                  <span className="text-[11px] font-bold uppercase tracking-widest text-[#baeed9]/90 block">
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-[#bbf7d0]/90 block">
                     आसगाव ग्राम माहिती मंच • स्वतंत्र नागरिक उपक्रम
                   </span>
                   <h1 className="font-heading font-extrabold text-[20px] sm:text-[23px] text-white leading-tight">
                     आसगाव ग्राम माहिती मंच
                   </h1>
-                  <p className="text-[12px] text-[#baeed9] font-medium">
+                  <p className="text-[12px] text-[#bbf7d0] font-medium">
                     माहिती व्यवस्थापन व संपादन कक्ष (Admin Desk)
                   </p>
                 </div>
@@ -1387,7 +1387,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             {/* Security Pill */}
             <div className="mt-4 pt-3 border-t border-white/15 flex items-center justify-between text-[11px] text-white/80">
               <span className="flex items-center gap-1.5 font-medium">
-                <span className="material-symbols-outlined text-[15px] text-[#baeed9]">lock</span>
+                <span className="material-symbols-outlined text-[15px] text-[#bbf7d0]">lock</span>
                 <span>सुरक्षित एनक्रिप्टेड प्रवेश (Secure Access)</span>
               </span>
               
@@ -1397,7 +1397,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           {/* Form Body */}
           <div className="p-6 sm:p-8 flex flex-col gap-5">
             <div>
-              <h2 className="font-heading font-extrabold text-[19px] sm:text-[21px] text-[#003629]">
+              <h2 className="font-heading font-extrabold text-[19px] sm:text-[21px] text-[#166534]">
                 व्यवस्थापक लॉगिन (Admin Sign In)
               </h2>
               <p className="text-[12px] text-[#55605a] mt-0.5 leading-relaxed">
@@ -1427,7 +1427,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <form onSubmit={handleAdminLoginSubmit} className="flex flex-col gap-4">
               {/* Phone / Username */}
               <div className="flex flex-col gap-1.5">
-                <label className="text-[12px] font-bold text-[#003629] flex items-center justify-between">
+                <label className="text-[12px] font-bold text-[#166534] flex items-center justify-between">
                   <span>मोबाईल क्र. / युझरनेम </span>
                   <span className="text-[10px] text-[#707974] font-normal">आवश्यक</span>
                 </label>
@@ -1442,14 +1442,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     placeholder="आपला मोबाईल नंबर प्रविष्ट करा"
                     autoComplete="username"
                     required
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#f9f3ea]/50 border border-[#c4d6cf] text-[#003629] text-[13px] font-medium placeholder:text-[#88938d] focus:outline-none focus:border-[#003629] focus:ring-2 focus:ring-[#003629]/15 transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#f9f3ea]/50 border border-[#c4d6cf] text-[#166534] text-[13px] font-medium placeholder:text-[#88938d] focus:outline-none focus:border-[#166534] focus:ring-2 focus:ring-[#166534]/15 transition-all"
                   />
                 </div>
               </div>
 
               {/* Password */}
               <div className="flex flex-col gap-1.5">
-                <label className="text-[12px] font-bold text-[#003629] flex items-center justify-between">
+                <label className="text-[12px] font-bold text-[#166534] flex items-center justify-between">
                   <span>पासवर्ड </span>
                   <span className="text-[10px] text-[#707974] font-normal">आवश्यक</span>
                 </label>
@@ -1464,12 +1464,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     placeholder="पासवर्ड प्रविष्ट करा"
                     autoComplete="current-password"
                     required
-                    className="w-full pl-10 pr-11 py-2.5 rounded-xl bg-[#f9f3ea]/50 border border-[#c4d6cf] text-[#003629] text-[13px] font-medium placeholder:text-[#88938d] focus:outline-none focus:border-[#003629] focus:ring-2 focus:ring-[#003629]/15 transition-all"
+                    className="w-full pl-10 pr-11 py-2.5 rounded-xl bg-[#f9f3ea]/50 border border-[#c4d6cf] text-[#166534] text-[13px] font-medium placeholder:text-[#88938d] focus:outline-none focus:border-[#166534] focus:ring-2 focus:ring-[#166534]/15 transition-all"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-2.5 p-1 text-[#707974] hover:text-[#003629] transition-colors"
+                    className="absolute right-3 top-2.5 p-1 text-[#707974] hover:text-[#166534] transition-colors"
                     title={showPassword ? 'पासवर्ड लपवा' : 'पासवर्ड दाखवा'}
                   >
                     <span className="material-symbols-outlined text-[19px]">
@@ -1483,7 +1483,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <button
                 type="submit"
                 disabled={loginLoading}
-                className="w-full mt-2 py-3 px-4 rounded-xl bg-gradient-to-r from-[#003629] to-[#004d3b] hover:from-[#00281e] hover:to-[#003629] text-white font-bold text-[14px] flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-60 cursor-pointer"
+                className="w-full mt-2 py-3 px-4 rounded-xl bg-gradient-to-r from-[#166534] to-[#14532d] hover:from-[#052e16] hover:to-[#166534] text-white font-bold text-[14px] flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-60 cursor-pointer"
               >
                 {loginLoading ? (
                   <>
@@ -1502,7 +1502,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             {/* Disclaimer & Info */}
             <div className="pt-4 border-t border-[#f3ede4] flex flex-col gap-2 text-[11px] text-[#707974]">
               <div className="flex items-start gap-1.5 leading-relaxed text-[#55605a]">
-                <span className="material-symbols-outlined text-[15px] text-[#a63b00] shrink-0 mt-0.5">info</span>
+                <span className="material-symbols-outlined text-[15px] text-[#c2410c] shrink-0 mt-0.5">info</span>
                 <span>
                   <strong>टीप:</strong> हे व्यासपीठ आसगाव ग्रामस्थांसाठी चालवले जाणारे स्वतंत्र माहिती पोर्टल आहे. हा कक्ष केवळ अधिकृत पोर्टल व्यवस्थापकांसाठी आहे.
                 </span>
@@ -1528,7 +1528,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       />
 
       {/* Top Banner with responsive mobile and role badge */}
-      <div className="bg-gradient-to-r from-[#003629] via-[#004d3b] to-[#1b4d3e] text-white rounded-2xl p-4 sm:p-6 shadow-sm border border-[#baeed9]/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-[#166534] via-[#14532d] to-[#052e16] text-white rounded-2xl p-4 sm:p-6 shadow-sm border border-[#bbf7d0]/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5 w-full md:w-auto">
           <div className="w-full">
             <div className="flex items-center gap-2 flex-wrap mb-1">
@@ -1538,12 +1538,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   👑 चीफ सुपर अॅडमिन (Master Super Admin)
                 </span>
               ) : (
-                <span className="px-2.5 py-0.5 rounded-full bg-[#baeed9] text-[#002117] font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117] font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
                   <span className="material-symbols-outlined text-[13px]">verified_user</span>
                   🛡️ अधिकृत व्यवस्थापक ({allowedModules.length} मॉड्यूल्स अधिकार)
                 </span>
               )}
-              <span className="text-[11px] text-[#baeed9] font-medium hidden sm:inline">
+              <span className="text-[11px] text-[#bbf7d0] font-medium hidden sm:inline">
                 {currentUser.fullName || (isSuperAdmin ? 'Chief Super Admin' : 'Admin')}
               </span>
             </div>
@@ -1551,7 +1551,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <h1 className="font-heading font-extrabold text-[19px] sm:text-[23px] text-white leading-tight">
               आसगाव ग्राम माहिती व डेटा व्यवस्थापन केंद्र
             </h1>
-            <p className="text-[11px] sm:text-[12px] text-[#baeed9] font-medium mt-0.5">
+            <p className="text-[11px] sm:text-[12px] text-[#bbf7d0] font-medium mt-0.5">
               ग्रामपंचायतीतून मिळणारी खरी माहिती गावकऱ्यांपर्यंत पोहोचवणारा स्वतंत्र मंच
             </p>
           </div>
@@ -1586,7 +1586,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <span className="material-symbols-outlined text-[15px] text-[#006a4e]">tune</span>
             <span>व्यवस्थापन विभाग निवडा:</span>
           </label>
-          <span className="text-[10px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-2 py-0.5 rounded-full">
+          <span className="text-[10px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-2 py-0.5 rounded-full">
             {isSuperAdmin ? 'सर्व १६ मॉड्यूल्स' : `${allowedModules.length} मॉड्यूल्स अधिकार`}
           </span>
         </div>
@@ -1595,7 +1595,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           <select
             value={activeTab}
             onChange={(e) => setActiveTab(e.target.value as any)}
-            className="w-full p-3 pl-10 pr-9 bg-white border-2 border-[#003629] rounded-xl text-xs sm:text-sm font-bold text-[#003629] shadow-xs appearance-none cursor-pointer"
+            className="w-full p-3 pl-10 pr-9 bg-white border-2 border-[#166534] rounded-xl text-xs sm:text-sm font-bold text-[#166534] shadow-xs appearance-none cursor-pointer"
           >
             {[
               { id: 'overview', label: '📊 आढावा (Overview)' },
@@ -1626,10 +1626,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </option>
               ))}
           </select>
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#003629] text-[20px] pointer-events-none">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#166534] text-[20px] pointer-events-none">
             dashboard_customize
           </span>
-          <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#003629] text-[20px] pointer-events-none">
+          <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#166534] text-[20px] pointer-events-none">
             expand_more
           </span>
         </div>
@@ -1673,7 +1673,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 activeTab === t.id
                   ? t.isSuperTag
                     ? 'bg-gradient-to-r from-[#ef9f27] to-[#ba7200] text-white shadow-xs'
-                    : 'bg-[#003629] text-[#baeed9] shadow-xs'
+                    : 'bg-[#166534] text-[#bbf7d0] shadow-xs'
                   : t.isSuperTag
                     ? 'bg-[#fff8e1] text-[#7c4d00] hover:bg-[#ffecb3] border border-[#ffe082]'
                     : 'text-[#55605a] hover:bg-[#f3ede4]'
@@ -1698,7 +1698,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#707974] block mb-1">
                 प्रसिद्ध सूचना
               </span>
-              <span className="font-heading font-black text-[26px] text-[#003629]">
+              <span className="font-heading font-black text-[26px] text-[#166534]">
                 {announcements.length}
               </span>
               <span className="text-[10px] text-[#006a4e] block mt-1 font-semibold">सक्रिय सूचना</span>
@@ -1708,10 +1708,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#707974] block mb-1">
                 सरकारी योजना
               </span>
-              <span className="font-heading font-black text-[26px] text-[#a63b00]">
+              <span className="font-heading font-black text-[26px] text-[#c2410c]">
                 {schemes.length}
               </span>
-              <span className="text-[10px] text-[#a63b00] block mt-1 font-semibold">शेतकरी व नागरिक</span>
+              <span className="text-[10px] text-[#c2410c] block mt-1 font-semibold">शेतकरी व नागरिक</span>
             </div>
 
             <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs text-center">
@@ -1748,7 +1748,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#707974] block mb-1">
                 नागरिक मतदार
               </span>
-              <span className="font-heading font-black text-[26px] text-[#003629]">
+              <span className="font-heading font-black text-[26px] text-[#166534]">
                 {stats.totalCitizens || 1420}
               </span>
               <span className="text-[10px] text-[#006a4e] block mt-1 font-semibold">गावातील लोकसंख्या</span>
@@ -1757,8 +1757,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
           {/* Quick Actions Shortcuts */}
           <div className="bg-white rounded-2xl border border-[#e8e2d9] p-6 shadow-xs">
-            <h2 className="font-heading font-bold text-[16px] text-[#003629] mb-4 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px] text-[#a63b00]">bolt</span>
+            <h2 className="font-heading font-bold text-[16px] text-[#166534] mb-4 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[20px] text-[#c2410c]">bolt</span>
               <span>ग्रामपंचायत भेट दिल्यावर त्वरित करण्याचे काम (Quick Data Entry Shortcuts)</span>
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -1766,7 +1766,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => setActiveTab('admin_management')}
-                  className="p-4 rounded-xl bg-gradient-to-br from-[#003629] to-[#002117] text-white hover:shadow-md transition-all text-left group border border-[#ef9f27]/40 relative overflow-hidden"
+                  className="p-4 rounded-xl bg-gradient-to-br from-[#166534] to-[#002117] text-white hover:shadow-md transition-all text-left group border border-[#ef9f27]/40 relative overflow-hidden"
                 >
                   <span className="material-symbols-outlined text-[24px] text-[#ef9f27] mb-2 block">
                     admin_panel_settings
@@ -1775,7 +1775,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     <span>अॅडमिन व पृष्ठ अधिकार</span>
                     <span className="px-1.5 py-0.2 rounded-full bg-[#ef9f27] text-[#002117] text-[9px] font-black">SUPER</span>
                   </strong>
-                  <p className="text-[11px] text-[#baeed9]">
+                  <p className="text-[11px] text-[#bbf7d0]">
                     इतर अॅडमिन्स जोडा व त्यांच्या पानांचे प्रवेश अधिकार नियंत्रित करा
                   </p>
                 </button>
@@ -1785,9 +1785,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => { setEditingEvent(null); setActiveTab('events'); }}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#baeed9] mb-2 block">
+                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#bbf7d0] mb-2 block">
                     event
                   </span>
                   <strong className="block text-[13px] mb-1">नवीन कार्यक्रम / जत्रा जोडा</strong>
@@ -1801,9 +1801,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => { setEditingSchool(null); setActiveTab('shiksha'); }}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#baeed9] mb-2 block">
+                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#bbf7d0] mb-2 block">
                     school
                   </span>
                   <strong className="block text-[13px] mb-1">शाळा व शिक्षण व्यवस्थापन</strong>
@@ -1817,9 +1817,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => { setEditingAnnouncement(null); setActiveTab('notices'); }}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#003629] group-hover:text-[#baeed9] mb-2 block">
+                  <span className="material-symbols-outlined text-[24px] text-[#166534] group-hover:text-[#bbf7d0] mb-2 block">
                     campaign
                   </span>
                   <strong className="block text-[13px] mb-1">नवीन नोटीस / ठराव टाका</strong>
@@ -1833,9 +1833,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => setActiveTab('water')}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#baeed9] mb-2 block">
+                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#bbf7d0] mb-2 block">
                     water_drop
                   </span>
                   <strong className="block text-[13px] mb-1">पाणी पुरवठा वेळ बदला</strong>
@@ -1849,9 +1849,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => { setEditingScheme(null); setActiveTab('schemes'); }}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#a63b00] group-hover:text-[#baeed9] mb-2 block">
+                  <span className="material-symbols-outlined text-[24px] text-[#c2410c] group-hover:text-[#bbf7d0] mb-2 block">
                     description
                   </span>
                   <strong className="block text-[13px] mb-1">नवीन सरकारी योजना जोडा</strong>
@@ -1865,9 +1865,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => setActiveTab('broadcast')}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#ba1a1a] group-hover:text-[#baeed9] mb-2 block">
+                  <span className="material-symbols-outlined text-[24px] text-[#ba1a1a] group-hover:text-[#bbf7d0] mb-2 block">
                     cell_tower
                   </span>
                   <strong className="block text-[13px] mb-1">तातडीची दवंडी (Push Alert)</strong>
@@ -1881,9 +1881,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => setActiveTab('businesses')}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#baeed9] mb-2 block">
+                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#bbf7d0] mb-2 block">
                     storefront
                   </span>
                   <strong className="block text-[13px] mb-1">स्थानिक दुकाने व पडताळणी</strong>
@@ -1897,9 +1897,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => setActiveTab('reviews')}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#ef9f27] group-hover:text-[#baeed9] mb-2 block">
+                  <span className="material-symbols-outlined text-[24px] text-[#ef9f27] group-hover:text-[#bbf7d0] mb-2 block">
                     rate_review
                   </span>
                   <strong className="block text-[13px] mb-1">नागरिक अभिप्राय व्यवस्थापन</strong>
@@ -1918,7 +1918,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         <div className="flex flex-col gap-6">
           {/* Feedback Toast */}
           {bizFeedbackMsg && (
-            <div className="bg-[#baeed9] border border-[#006a4e] text-[#002117] p-3.5 rounded-xl text-xs font-bold flex items-center justify-between shadow-md transition-all animate-fade-in">
+            <div className="bg-[#bbf7d0] border border-[#006a4e] text-[#002117] p-3.5 rounded-xl text-xs font-bold flex items-center justify-between shadow-md transition-all animate-fade-in">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-[18px] text-[#006a4e]">verified</span>
                 <span>{bizFeedbackMsg}</span>
@@ -1934,7 +1934,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <div>
                 <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#003629] text-[#baeed9] font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#bbf7d0] font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
                     <span className="material-symbols-outlined text-[13px]">verified_user</span>
                     ग्रामपंचायत पडताळणी केंद्र (Verification Desk)
                   </span>
@@ -1942,7 +1942,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     एकूण दुकाने: {adminBusinesses.length}
                   </span>
                 </div>
-                <h2 className="font-heading font-extrabold text-[18px] sm:text-[22px] text-[#003629] flex items-center gap-2">
+                <h2 className="font-heading font-extrabold text-[18px] sm:text-[22px] text-[#166534] flex items-center gap-2">
                   <span className="material-symbols-outlined text-[24px] text-[#006a4e]">storefront</span>
                   <span>स्थानिक दुकाने व व्यवसाय पडताळणी (Shop Verification)</span>
                 </h2>
@@ -1956,7 +1956,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   type="button"
                   onClick={loadData}
                   disabled={loadingBusinesses}
-                  className="px-3.5 py-2 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white text-[#003629] font-bold text-xs flex items-center gap-1.5 transition-all border border-[#e8e2d9] cursor-pointer"
+                  className="px-3.5 py-2 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white text-[#166534] font-bold text-xs flex items-center gap-1.5 transition-all border border-[#e8e2d9] cursor-pointer"
                 >
                   <span className={`material-symbols-outlined text-[16px] ${loadingBusinesses ? 'animate-spin' : ''}`}>
                     refresh
@@ -1970,7 +1970,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
               <div className="p-3.5 rounded-xl bg-[#fcfbf9] border border-[#e8e2d9]">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#707974] block">एकूण दुकाने</span>
-                <span className="font-heading font-black text-[22px] text-[#003629]">{adminBusinesses.length}</span>
+                <span className="font-heading font-black text-[22px] text-[#166534]">{adminBusinesses.length}</span>
                 <span className="text-[10px] text-[#55605a] block">पोर्टलवर नोंदणीकृत</span>
               </div>
 
@@ -2018,7 +2018,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     onClick={() => setBusinessStatusFilter(f.id as any)}
                     className={`px-3 py-1.5 rounded-lg text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
                       businessStatusFilter === f.id
-                        ? 'bg-[#003629] text-white shadow-xs'
+                        ? 'bg-[#166534] text-white shadow-xs'
                         : 'bg-white text-[#55605a] hover:bg-[#f3ede4] border border-[#e8e2d9]'
                     }`}
                   >
@@ -2063,7 +2063,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       <div
                         key={biz.id}
                         className={`bg-white rounded-2xl border p-4 shadow-xs flex flex-col justify-between gap-3.5 transition-all ${
-                          isVerified ? 'border-[#baeed9] hover:border-[#006a4e]' : 'border-[#fde68a] bg-[#fffdfa]'
+                          isVerified ? 'border-[#bbf7d0] hover:border-[#006a4e]' : 'border-[#fde68a] bg-[#fffdfa]'
                         }`}
                       >
                         <div>
@@ -2085,7 +2085,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                                 <span
                                   className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase shrink-0 ${
                                     isVerified
-                                      ? 'bg-[#baeed9] text-[#002117]'
+                                      ? 'bg-[#bbf7d0] text-[#002117]'
                                       : 'bg-[#fef3c7] text-[#92400e]'
                                   }`}
                                 >
@@ -2100,7 +2100,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                               <p className="text-[11px] text-[#707974] flex items-center gap-1.5 mt-1 truncate">
                                 <span className="material-symbols-outlined text-[13px] text-[#006a4e]">call</span>
-                                <a href={`tel:${biz.phone}`} className="hover:underline text-[#003629] font-mono font-bold">
+                                <a href={`tel:${biz.phone}`} className="hover:underline text-[#166534] font-mono font-bold">
                                   {biz.phone || '-'}
                                 </a>
                                 {biz.address && <span>• {biz.address}</span>}
@@ -2111,10 +2111,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           {/* Verification Badge Display */}
                           <div className="mt-3 p-2.5 rounded-xl bg-[#fcfbf9] border border-[#f0eee8] flex items-center justify-between text-[11px]">
                             <div className="flex items-center gap-1.5">
-                              <span className={`material-symbols-outlined text-[16px] ${isVerified ? 'text-[#006a4e]' : 'text-[#a63b00]'}`}>
+                              <span className={`material-symbols-outlined text-[16px] ${isVerified ? 'text-[#006a4e]' : 'text-[#c2410c]'}`}>
                                 {isVerified ? 'verified' : 'pending_actions'}
                               </span>
-                              <span className="font-bold text-[#003629]">
+                              <span className="font-bold text-[#166534]">
                                 {isVerified ? badge : 'पडताळणी प्रलंबित (Not yet verified)'}
                               </span>
                             </div>
@@ -2134,7 +2134,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                               className={`px-3 py-1.5 rounded-xl text-[11px] font-bold flex items-center gap-1 transition-all shadow-xs cursor-pointer active:scale-98 ${
                                 isVerified
                                   ? 'bg-[#fff1f0] hover:bg-[#ffdad6] text-[#ba1a1a] border border-[#ffdad6]'
-                                  : 'bg-[#003629] hover:bg-[#1b4d3e] text-white'
+                                  : 'bg-[#166534] hover:bg-[#052e16] text-white'
                               }`}
                             >
                               <span className="material-symbols-outlined text-[14px]">
@@ -2150,7 +2150,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                                 setSelectedBizForBadge(biz);
                                 setBadgeToAssign(biz.verificationBadge || 'Verified Merchant');
                               }}
-                              className="px-2.5 py-1.5 rounded-xl bg-[#f5ede3] hover:bg-[#e8ded3] text-[#003629] text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer"
+                              className="px-2.5 py-1.5 rounded-xl bg-[#f5ede3] hover:bg-[#e8ded3] text-[#166534] text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer"
                             >
                               <span className="material-symbols-outlined text-[14px]">military_tech</span>
                               <span>बॅज बदला</span>
@@ -2180,10 +2180,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <div className="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-[#e8e2d9] flex flex-col gap-4">
                 <div className="flex items-start justify-between border-b border-[#f0eee8] pb-3">
                   <div>
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#baeed9] text-[#002117] text-[10px] font-black uppercase">
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117] text-[10px] font-black uppercase">
                       ट्रस्ट बॅज व्यवस्थापन (Trust Badge)
                     </span>
-                    <h3 className="font-heading font-black text-[16px] text-[#003629] mt-1">
+                    <h3 className="font-heading font-black text-[16px] text-[#166534] mt-1">
                       {selectedBizForBadge.name}
                     </h3>
                   </div>
@@ -2197,7 +2197,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-[12px] font-bold text-[#003629]">
+                  <label className="text-[12px] font-bold text-[#166534]">
                     अधिकृत पडताळणी बॅज निवडा:
                   </label>
 
@@ -2212,7 +2212,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       key={preset.id}
                       className={`p-2.5 rounded-xl border text-[11px] font-bold flex items-center gap-2 cursor-pointer transition-all ${
                         badgeToAssign === preset.id
-                          ? 'border-[#003629] bg-[#f0fdf4] text-[#003629]'
+                          ? 'border-[#166534] bg-[#f0fdf4] text-[#166534]'
                           : 'border-[#e8e2d9] hover:bg-[#fcfbf9] text-[#55605a]'
                       }`}
                     >
@@ -2221,7 +2221,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         name="badgePreset"
                         checked={badgeToAssign === preset.id}
                         onChange={() => setBadgeToAssign(preset.id)}
-                        className="accent-[#003629]"
+                        className="accent-[#166534]"
                       />
                       <span>{preset.label}</span>
                     </label>
@@ -2250,7 +2250,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   <button
                     type="button"
                     onClick={() => handleUpdateBusinessBadge(selectedBizForBadge, badgeToAssign)}
-                    className="px-5 py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-98 cursor-pointer"
+                    className="px-5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-98 cursor-pointer"
                   >
                     <span className="material-symbols-outlined text-[16px]">save</span>
                     <span>बॅज लागू करा (Save Badge)</span>
@@ -2268,7 +2268,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           <div className="bg-white rounded-2xl border border-[#e8e2d9] p-4 sm:p-6 shadow-xs">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <div>
-                <h2 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#003629] flex items-center gap-2">
+                <h2 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#166534] flex items-center gap-2">
                   <span className="material-symbols-outlined text-[24px] text-[#ef9f27]">rate_review</span>
                   <span>स्थानिक दुकाने - नागरिक अभिप्राय व्यवस्थापन</span>
                 </h2>
@@ -2282,7 +2282,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   href="/reviews"
                   target="_blank"
                   rel="noreferrer"
-                  className="px-3.5 py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
+                  className="px-3.5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[16px]">open_in_new</span>
                   <span>सार्वजनिक अभिप्राय पृष्ठ उघडा</span>
@@ -2309,7 +2309,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <select
                   value={reviewFilterRating}
                   onChange={(e) => setReviewFilterRating(e.target.value)}
-                  className="p-2 bg-white rounded-lg text-xs font-bold text-[#003629] border border-[#e8e2d9] outline-none cursor-pointer"
+                  className="p-2 bg-white rounded-lg text-xs font-bold text-[#166534] border border-[#e8e2d9] outline-none cursor-pointer"
                 >
                   <option value="all">सर्व रेटिंग (All Stars)</option>
                   <option value="5">⭐⭐⭐⭐⭐ (५ स्टार)</option>
@@ -2341,13 +2341,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   >
                     <div className="flex-1 space-y-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-bold text-xs sm:text-sm text-[#003629]">
+                        <span className="font-bold text-xs sm:text-sm text-[#166534]">
                           {rev.userName}
                         </span>
                         <span className="text-[11px] text-[#707974]">
                           ({rev.wardOrArea || 'आसगाव'})
                         </span>
-                        <span className="px-2 py-0.5 rounded-md bg-[#003629] text-white text-[10px] font-bold">
+                        <span className="px-2 py-0.5 rounded-md bg-[#166534] text-white text-[10px] font-bold">
                           {rev.businessName}
                         </span>
                         <div className="flex items-center text-[#ef9f27]">
@@ -2376,7 +2376,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         onClick={() => handleToggleVerifiedReview(rev.id)}
                         className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border cursor-pointer ${
                           rev.verifiedCitizen
-                            ? 'bg-[#baeed9]/40 text-[#006a4e] border-[#baeed9]'
+                            ? 'bg-[#bbf7d0]/40 text-[#006a4e] border-[#bbf7d0]'
                             : 'bg-white text-[#707974] border-[#e8e2d9]'
                         }`}
                         title="सत्यापित स्थिती बदला"
@@ -2406,8 +2406,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           <div className="lg:col-span-7 flex flex-col gap-4">
             <div className="bg-white p-5 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center justify-between">
               <div>
-                <h2 className="font-heading font-extrabold text-[17px] text-[#003629] flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[22px] text-[#a63b00]">celebration</span>
+                <h2 className="font-heading font-extrabold text-[17px] text-[#166534] flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[22px] text-[#c2410c]">celebration</span>
                   <span>गावातील कार्यक्रम व जत्रा ({events.length})</span>
                 </h2>
                 <p className="text-[12px] text-[#707974] mt-0.5">
@@ -2430,7 +2430,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     imageUrl: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=600&q=80'
                   });
                 }}
-                className="px-3 py-1.5 bg-[#003629] text-white text-[12px] font-bold rounded-xl hover:bg-[#1b4d3e] transition-colors flex items-center gap-1 shrink-0"
+                className="px-3 py-1.5 bg-[#166534] text-white text-[12px] font-bold rounded-xl hover:bg-[#052e16] transition-colors flex items-center gap-1 shrink-0"
               >
                 <span className="material-symbols-outlined text-[16px]">add</span>
                 <span>नवीन जोडा</span>
@@ -2445,7 +2445,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             ) : events.length === 0 ? (
               <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-2">
                 <span className="material-symbols-outlined text-[42px] text-[#707974]">event_busy</span>
-                <p className="text-[14px] font-bold text-[#003629]">अद्याप कोणताही कार्यक्रम जोडलेला नाही</p>
+                <p className="text-[14px] font-bold text-[#166534]">अद्याप कोणताही कार्यक्रम जोडलेला नाही</p>
                 <p className="text-[12px] text-[#707974]">उजवीकडील फॉर्म वापरून पहिला कार्यक्रम जोडा.</p>
               </div>
             ) : (
@@ -2464,7 +2464,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
                         <div className="flex items-center gap-2 flex-wrap mb-1">
-                          <span className="bg-[#baeed9] text-[#002117] text-[10px] font-black uppercase px-2 py-0.5 rounded">
+                          <span className="bg-[#bbf7d0] text-[#002117] text-[10px] font-black uppercase px-2 py-0.5 rounded">
                             {evt.badge || 'गावातील कार्यक्रम'}
                           </span>
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#f3ede4] text-[#404945]">
@@ -2473,11 +2473,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                                 evt.category === 'agriculture' ? 'शेती कार्यशाळा' :
                                   evt.category === 'sports' ? 'क्रीडा स्पर्धा' : evt.category}
                           </span>
-                          <span className="text-[11px] font-semibold text-[#a63b00] ml-auto">
+                          <span className="text-[11px] font-semibold text-[#c2410c] ml-auto">
                             {evt.eventDate} • {evt.eventTime}
                           </span>
                         </div>
-                        <h3 className="font-heading font-extrabold text-[15px] text-[#003629] mb-1">
+                        <h3 className="font-heading font-extrabold text-[15px] text-[#166534] mb-1">
                           {evt.title}
                         </h3>
                         <p className="text-[12px] text-[#55605a] line-clamp-2 mb-2 leading-relaxed">
@@ -2487,7 +2487,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                       <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#f3ede4] pt-2 text-[11px]">
                         <div className="flex items-center gap-3 text-[#707974]">
-                          <span className="flex items-center gap-1 text-[#a63b00] font-medium">
+                          <span className="flex items-center gap-1 text-[#c2410c] font-medium">
                             <span className="material-symbols-outlined text-[14px]">location_on</span>
                             {evt.location}
                           </span>
@@ -2511,7 +2511,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                               });
                               window.scrollTo({ top: 300, behavior: 'smooth' });
                             }}
-                            className="px-2.5 py-1 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#003629] font-bold text-[11px] transition-colors flex items-center gap-1"
+                            className="px-2.5 py-1 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#166534] font-bold text-[11px] transition-colors flex items-center gap-1"
                           >
                             <span className="material-symbols-outlined text-[14px]">edit</span>
                             <span>संपादित</span>
@@ -2536,8 +2536,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           {/* RIGHT: Create / Edit Form (5 cols) */}
           <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs sticky top-4">
             <div className="flex items-center justify-between mb-2">
-              <h2 className="font-heading font-extrabold text-[16px] text-[#003629] flex items-center gap-2">
-                <span className="material-symbols-outlined text-[20px] text-[#a63b00]">
+              <h2 className="font-heading font-extrabold text-[16px] text-[#166534] flex items-center gap-2">
+                <span className="material-symbols-outlined text-[20px] text-[#c2410c]">
                   {editingEvent ? 'edit_note' : 'add_circle'}
                 </span>
                 <span>{editingEvent ? 'कार्यक्रम संपादित करा' : 'नवीन कार्यक्रम किंवा जत्रा जोडा'}</span>
@@ -2571,7 +2571,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
             <form onSubmit={handleSaveEvent} className="flex flex-col gap-3 text-[12px]">
               <div>
-                <label className="font-bold text-[#003629] block mb-1">कार्यक्रमाचे नाव (Event Title) *</label>
+                <label className="font-bold text-[#166534] block mb-1">कार्यक्रमाचे नाव (Event Title) *</label>
                 <input
                   type="text"
                   required
@@ -2584,7 +2584,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">श्रेणी (Category) *</label>
+                  <label className="font-bold text-[#166534] block mb-1">श्रेणी (Category) *</label>
                   <select
                     value={eventForm.category}
                     onChange={(e) => setEventForm({ ...eventForm, category: e.target.value })}
@@ -2597,7 +2597,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </select>
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">विशेष बॅज (Badge)</label>
+                  <label className="font-bold text-[#166534] block mb-1">विशेष बॅज (Badge)</label>
                   <input
                     type="text"
                     value={eventForm.badge}
@@ -2611,7 +2611,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">तारीख (Event Date) *</label>
+                  <label className="font-bold text-[#166534] block mb-1">तारीख (Event Date) *</label>
                   <input
                     type="text"
                     required
@@ -2622,7 +2622,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">वेळ (Event Time)</label>
+                  <label className="font-bold text-[#166534] block mb-1">वेळ (Event Time)</label>
                   <input
                     type="text"
                     value={eventForm.eventTime}
@@ -2634,7 +2634,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               </div>
 
               <div>
-                <label className="font-bold text-[#003629] block mb-1">स्थळ / ठिकाण (Location) *</label>
+                <label className="font-bold text-[#166534] block mb-1">स्थळ / ठिकाण (Location) *</label>
                 <input
                   type="text"
                   required
@@ -2646,7 +2646,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               </div>
 
               <div>
-                <label className="font-bold text-[#003629] block mb-1">आयोजक (Organizer)</label>
+                <label className="font-bold text-[#166534] block mb-1">आयोजक (Organizer)</label>
                 <input
                   type="text"
                   value={eventForm.organizer}
@@ -2657,7 +2657,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               </div>
 
               <div>
-                <label className="font-bold text-[#003629] block mb-1">फोटो लिंक (Image URL)</label>
+                <label className="font-bold text-[#166534] block mb-1">फोटो लिंक (Image URL)</label>
                 <input
                   type="url"
                   value={eventForm.imageUrl}
@@ -2668,7 +2668,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               </div>
 
               <div>
-                <label className="font-bold text-[#003629] block mb-1">कार्यक्रमाचा तपशील व वर्णन (Description)</label>
+                <label className="font-bold text-[#166534] block mb-1">कार्यक्रमाचा तपशील व वर्णन (Description)</label>
                 <textarea
                   rows={3}
                   value={eventForm.description}
@@ -2681,7 +2681,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <button
                 type="submit"
                 disabled={savingEvent}
-                className="w-full py-2.5 bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 mt-1 disabled:opacity-50"
+                className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 mt-1 disabled:opacity-50"
               >
                 {savingEvent ? (
                   <>
@@ -2709,7 +2709,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               type="button"
               onClick={() => { setEditingSchool(null); setShikshaSubTab('schools'); }}
               className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all ${shikshaSubTab === 'schools'
-                  ? 'bg-[#003629] text-white shadow-xs'
+                  ? 'bg-[#166534] text-white shadow-xs'
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
@@ -2721,7 +2721,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               type="button"
               onClick={() => { setEditingScholarship(null); setShikshaSubTab('scholarships'); }}
               className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all ${shikshaSubTab === 'scholarships'
-                  ? 'bg-[#003629] text-white shadow-xs'
+                  ? 'bg-[#166534] text-white shadow-xs'
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
@@ -2733,7 +2733,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               type="button"
               onClick={() => setShikshaSubTab('abhyasika')}
               className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all ${shikshaSubTab === 'abhyasika'
-                  ? 'bg-[#003629] text-white shadow-xs'
+                  ? 'bg-[#166534] text-white shadow-xs'
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
@@ -2745,7 +2745,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               type="button"
               onClick={() => { setEditingTutor(null); setShikshaSubTab('tutors'); }}
               className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all ${shikshaSubTab === 'tutors'
-                  ? 'bg-[#003629] text-white shadow-xs'
+                  ? 'bg-[#166534] text-white shadow-xs'
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
@@ -2757,7 +2757,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               type="button"
               onClick={() => setShikshaSubTab('requests')}
               className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all ${shikshaSubTab === 'requests'
-                  ? 'bg-[#003629] text-white shadow-xs'
+                  ? 'bg-[#166534] text-white shadow-xs'
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
@@ -2769,7 +2769,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               type="button"
               onClick={() => setShikshaSubTab('notice')}
               className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all ${shikshaSubTab === 'notice'
-                  ? 'bg-[#003629] text-white shadow-xs'
+                  ? 'bg-[#166534] text-white shadow-xs'
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
@@ -2784,7 +2784,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* Form */}
               <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
                 <div className="flex items-center justify-between mb-2">
-                  <h2 className="font-heading font-extrabold text-[16px] text-[#003629] flex items-center gap-2">
+                  <h2 className="font-heading font-extrabold text-[16px] text-[#166534] flex items-center gap-2">
                     <span className="material-symbols-outlined text-[20px] text-[#006a4e]">
                       {editingSchool ? 'edit' : 'add_circle'}
                     </span>
@@ -2954,7 +2954,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <button
                     type="submit"
-                    className="w-full py-2.5 bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 mt-2"
+                    className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 mt-2"
                   >
                     <span className="material-symbols-outlined text-[18px]">save</span>
                     <span>{editingSchool ? 'बदल जतन करा (Update)' : 'शाळा जोडा (Publish to Portal)'}</span>
@@ -2965,7 +2965,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* School List */}
               <div className="lg:col-span-7 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-heading font-extrabold text-[15px] text-[#003629]">
+                  <h3 className="font-heading font-extrabold text-[15px] text-[#166534]">
                     नोंदणीकृत शाळा व महाविद्यालये ({shikshaSchools.length})
                   </h3>
                   <span className="text-[11px] text-[#707974] bg-[#f4efe8] px-2.5 py-1 rounded-full">
@@ -2990,14 +2990,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         />
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2 flex-wrap mb-1">
-                            <span className="text-[10px] uppercase font-black bg-[#003629]/10 text-[#003629] px-2 py-0.5 rounded-full">
+                            <span className="text-[10px] uppercase font-black bg-[#166534]/10 text-[#166534] px-2 py-0.5 rounded-full">
                               {school.badge}
                             </span>
                             <span className="text-[11px] text-[#707974]">
                               {school.grades} • {school.medium}
                             </span>
                           </div>
-                          <h4 className="font-bold text-[14px] text-[#003629] truncate">{school.name}</h4>
+                          <h4 className="font-bold text-[14px] text-[#166534] truncate">{school.name}</h4>
                           <p className="text-[12px] text-[#555] line-clamp-1">{school.description}</p>
                           <div className="flex items-center gap-3 mt-1.5 text-[11px] text-[#707974]">
                             {school.principalName && (
@@ -3035,7 +3035,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                               imageUrl: school.imageUrl,
                             });
                           }}
-                          className="p-2 rounded-lg bg-[#f0eee8] text-[#003629] hover:bg-[#003629] hover:text-white transition-colors"
+                          className="p-2 rounded-lg bg-[#f0eee8] text-[#166534] hover:bg-[#166534] hover:text-white transition-colors"
                           title="संपादित करा"
                         >
                           <span className="material-symbols-outlined text-[18px]">edit</span>
@@ -3062,8 +3062,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* Form */}
               <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
                 <div className="flex items-center justify-between mb-2">
-                  <h2 className="font-heading font-extrabold text-[16px] text-[#003629] flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[20px] text-[#a63b00]">
+                  <h2 className="font-heading font-extrabold text-[16px] text-[#166534] flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[20px] text-[#c2410c]">
                       {editingScholarship ? 'edit' : 'add_circle'}
                     </span>
                     <span>{editingScholarship ? 'शिष्यवृत्ती संपादित करा' : 'नवीन शिष्यवृत्ती योजना नोंदवा'}</span>
@@ -3202,7 +3202,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <button
                     type="submit"
-                    className="w-full py-2.5 bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 mt-2"
+                    className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 mt-2"
                   >
                     <span className="material-symbols-outlined text-[18px]">save</span>
                     <span>{editingScholarship ? 'बदल जतन करा (Update)' : 'शिष्यवृत्ती जोडा (Publish)'}</span>
@@ -3213,7 +3213,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* Scholarship List */}
               <div className="lg:col-span-7 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-heading font-extrabold text-[15px] text-[#003629]">
+                  <h3 className="font-heading font-extrabold text-[15px] text-[#166534]">
                     प्रसिद्ध शिष्यवृत्ती योजना ({shikshaScholarships.length})
                   </h3>
                   <span className="text-[11px] text-[#707974] bg-[#f4efe8] px-2.5 py-1 rounded-full">
@@ -3225,11 +3225,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   {shikshaScholarships.map((sch) => (
                     <div
                       key={sch.id}
-                      className="p-4 bg-white rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col justify-between hover:border-[#a63b00]/40 transition-all"
+                      className="p-4 bg-white rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col justify-between hover:border-[#c2410c]/40 transition-all"
                     >
                       <div>
                         <div className="flex items-center justify-between gap-2 mb-1.5">
-                          <span className="text-[10px] font-black uppercase bg-[#a63b00]/10 text-[#a63b00] px-2 py-0.5 rounded-full">
+                          <span className="text-[10px] font-black uppercase bg-[#c2410c]/10 text-[#c2410c] px-2 py-0.5 rounded-full">
                             {sch.badge}
                           </span>
                           <span className="text-[11px] font-bold text-red-600 flex items-center gap-1">
@@ -3237,7 +3237,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                             {sch.deadline}
                           </span>
                         </div>
-                        <h4 className="font-bold text-[14px] text-[#003629] mb-1">{sch.title}</h4>
+                        <h4 className="font-bold text-[14px] text-[#166534] mb-1">{sch.title}</h4>
                         <p className="text-[12px] text-[#555] line-clamp-2 mb-2">{sch.description}</p>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-2.5 rounded-xl bg-[#fcfbf9] border border-[#f0eee8] text-[11px] mb-2">
@@ -3279,7 +3279,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                                 eligibility: sch.eligibility,
                               });
                             }}
-                            className="p-1.5 rounded-lg bg-[#f0eee8] text-[#003629] hover:bg-[#003629] hover:text-white transition-colors"
+                            className="p-1.5 rounded-lg bg-[#f0eee8] text-[#166534] hover:bg-[#166534] hover:text-white transition-colors"
                             title="संपादित करा"
                           >
                             <span className="material-symbols-outlined text-[16px]">edit</span>
@@ -3306,7 +3306,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Settings Form */}
               <div className="lg:col-span-7 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
-                <h2 className="font-heading font-extrabold text-[16px] text-[#003629] mb-1 flex items-center gap-2">
+                <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
                   <span className="material-symbols-outlined text-[20px] text-[#006a4e]">tune</span>
                   <span>ग्रामपंचायत अभ्यासिका नियंत्रण केंद्र (Digital Study Room)</span>
                 </h2>
@@ -3327,14 +3327,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="p-3 rounded-xl bg-[#f8f6f0] border border-[#e8e2d9]">
-                      <label className="block font-bold text-[#003629] mb-1">एकूण जागा / टेबल्स (Total Desks)</label>
+                      <label className="block font-bold text-[#166534] mb-1">एकूण जागा / टेबल्स (Total Desks)</label>
                       <input
                         type="number"
                         min="1"
                         max="200"
                         value={shikshaAbhyasika.totalDesks}
                         onChange={(e) => setShikshaAbhyasika({ ...shikshaAbhyasika, totalDesks: parseInt(e.target.value) || 0 })}
-                        className="w-full p-2 rounded-lg border border-[#d8d2c6] bg-white font-mono font-bold text-[16px] text-[#003629]"
+                        className="w-full p-2 rounded-lg border border-[#d8d2c6] bg-white font-mono font-bold text-[16px] text-[#166534]"
                       />
                     </div>
 
@@ -3423,7 +3423,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <button
                     type="submit"
-                    className="w-full py-2.5 bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
+                    className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
                   >
                     <span className="material-symbols-outlined text-[18px]">save</span>
                     <span>अभ्यासिका बदल जतन करा (Save Study Room Config)</span>
@@ -3433,10 +3433,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
               {/* Live Preview Card */}
               <div className="lg:col-span-5 space-y-4">
-                <h3 className="font-heading font-extrabold text-[15px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[15px] text-[#166534]">
                   विद्यार्थ्यांना दिसणारे स्वरूप (Live Preview)
                 </h3>
-                <div className="p-6 bg-gradient-to-br from-[#003629] to-[#00523e] text-white rounded-3xl shadow-lg relative overflow-hidden">
+                <div className="p-6 bg-gradient-to-br from-[#166534] to-[#00523e] text-white rounded-3xl shadow-lg relative overflow-hidden">
                   <div className="flex items-center justify-between mb-4">
                     <span className="px-3 py-1 bg-white/10 rounded-full text-[11px] font-bold backdrop-blur-xs flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -3476,7 +3476,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* Form */}
               <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
                 <div className="flex items-center justify-between mb-2">
-                  <h2 className="font-heading font-extrabold text-[16px] text-[#003629] flex items-center gap-2">
+                  <h2 className="font-heading font-extrabold text-[16px] text-[#166534] flex items-center gap-2">
                     <span className="material-symbols-outlined text-[20px] text-[#006a4e]">
                       {editingTutor ? 'edit' : 'add_circle'}
                     </span>
@@ -3592,7 +3592,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <button
                     type="submit"
-                    className="w-full py-2.5 bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 mt-2"
+                    className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 mt-2"
                   >
                     <span className="material-symbols-outlined text-[18px]">save</span>
                     <span>{editingTutor ? 'बदल जतन करा (Update)' : 'वर्ग जोडा (Publish)'}</span>
@@ -3602,7 +3602,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
               {/* Tutors List */}
               <div className="lg:col-span-7 space-y-4">
-                <h3 className="font-heading font-extrabold text-[15px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[15px] text-[#166534]">
                   नोंदणीकृत शिकवणी व कौशल्य केंद्रे ({shikshaTutors.length})
                 </h3>
 
@@ -3619,7 +3619,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           </span>
                           <span className="text-[11px] font-bold text-[#006a4e]">{tut.feesInfo}</span>
                         </div>
-                        <h4 className="font-bold text-[14px] text-[#003629]">{tut.name}</h4>
+                        <h4 className="font-bold text-[14px] text-[#166534]">{tut.name}</h4>
                         <p className="text-[12px] text-[#555] mt-0.5">{tut.subjects}</p>
                         <div className="flex items-center gap-4 mt-2 text-[11px] text-[#707974]">
                           <span className="flex items-center gap-1">
@@ -3650,7 +3650,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                               feesInfo: tut.feesInfo,
                             });
                           }}
-                          className="p-1.5 rounded-lg bg-[#f0eee8] text-[#003629] hover:bg-[#003629] hover:text-white transition-colors"
+                          className="p-1.5 rounded-lg bg-[#f0eee8] text-[#166534] hover:bg-[#166534] hover:text-white transition-colors"
                           title="संपादित करा"
                         >
                           <span className="material-symbols-outlined text-[16px]">edit</span>
@@ -3676,7 +3676,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <div className="bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h2 className="font-heading font-extrabold text-[16px] text-[#003629] flex items-center gap-2">
+                  <h2 className="font-heading font-extrabold text-[16px] text-[#166534] flex items-center gap-2">
                     <span className="material-symbols-outlined text-[20px] text-[#006a4e]">book_online</span>
                     <span>विद्यार्थी अभ्यासिका आरक्षण अर्ज (Desk Reservations)</span>
                   </h2>
@@ -3684,7 +3684,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     पोर्टलवरून विद्यार्थ्यांनी नोंदवलेले अभ्यासिका डेस्क अर्ज.
                   </p>
                 </div>
-                <span className="text-[12px] font-bold bg-[#f4efe8] px-3 py-1 rounded-full text-[#003629]">
+                <span className="text-[12px] font-bold bg-[#f4efe8] px-3 py-1 rounded-full text-[#166534]">
                   एकूण अर्ज: {deskRequests.length}
                 </span>
               </div>
@@ -3714,7 +3714,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     <tbody className="divide-y divide-[#f0eee8]">
                       {deskRequests.map((req) => (
                         <tr key={req.id} className="hover:bg-[#fcfbf9]">
-                          <td className="p-3 font-bold text-[#003629]">{req.studentName}</td>
+                          <td className="p-3 font-bold text-[#166534]">{req.studentName}</td>
                           <td className="p-3">{req.exam}</td>
                           <td className="p-3">{req.timeSlot}</td>
                           <td className="p-3 font-mono font-bold text-[#006a4e]">डेस्क #{req.deskNumber}</td>
@@ -3742,7 +3742,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           {shikshaSubTab === 'notice' && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               <div className="lg:col-span-6 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
-                <h2 className="font-heading font-extrabold text-[16px] text-[#003629] mb-1 flex items-center gap-2">
+                <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
                   <span className="material-symbols-outlined text-[20px] text-[#006a4e]">campaign</span>
                   <span>शिक्षण सूचना पट्टी संपादन (Live Notice Banner)</span>
                 </h2>
@@ -3791,7 +3791,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       id="noticeActiveToggle"
                       checked={shikshaNotice.isActive}
                       onChange={(e) => setShikshaNotice({ ...shikshaNotice, isActive: e.target.checked })}
-                      className="w-4 h-4 text-[#003629] rounded"
+                      className="w-4 h-4 text-[#166534] rounded"
                     />
                     <label htmlFor="noticeActiveToggle" className="font-bold text-[#2d312e] cursor-pointer">
                       पानावर ही सूचना पट्टी सक्रिय ठेवा (Show on Shiksha Page)
@@ -3800,7 +3800,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <button
                     type="submit"
-                    className="w-full py-2.5 bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
+                    className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
                   >
                     <span className="material-symbols-outlined text-[18px]">save</span>
                     <span>सूचना जतन करा (Save & Publish)</span>
@@ -3810,11 +3810,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
               {/* Notice Preview */}
               <div className="lg:col-span-6 space-y-4">
-                <h3 className="font-heading font-extrabold text-[15px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[15px] text-[#166534]">
                   थेट सूचना पट्टीचे थेट स्वरूप (Preview)
                 </h3>
                 {shikshaNotice.isActive ? (
-                  <div className="bg-[#003629] text-white p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
+                  <div className="bg-[#166534] text-white p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
                         <span className="material-symbols-outlined text-[18px] text-amber-300">notifications_active</span>
@@ -3825,7 +3825,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       </div>
                     </div>
                     {shikshaNotice.actionLabel && (
-                      <span className="px-3 py-1.5 bg-white text-[#003629] rounded-xl text-[12px] font-black shrink-0">
+                      <span className="px-3 py-1.5 bg-white text-[#166534] rounded-xl text-[12px] font-black shrink-0">
                         {shikshaNotice.actionLabel}
                       </span>
                     )}
@@ -3852,7 +3852,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 type="button"
                 onClick={() => { setEditingBus(null); setTransportSubTab('buses'); }}
                 className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all ${transportSubTab === 'buses'
-                    ? 'bg-[#003629] text-white shadow-xs'
+                    ? 'bg-[#166534] text-white shadow-xs'
                     : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                   }`}
               >
@@ -3864,7 +3864,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 type="button"
                 onClick={() => { setEditingAuto(null); setTransportSubTab('autos'); }}
                 className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all ${transportSubTab === 'autos'
-                    ? 'bg-[#003629] text-white shadow-xs'
+                    ? 'bg-[#166534] text-white shadow-xs'
                     : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                   }`}
               >
@@ -3876,7 +3876,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 type="button"
                 onClick={() => setTransportSubTab('depots')}
                 className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all ${transportSubTab === 'depots'
-                    ? 'bg-[#003629] text-white shadow-xs'
+                    ? 'bg-[#166534] text-white shadow-xs'
                     : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                   }`}
               >
@@ -3903,7 +3903,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Form Column */}
               <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
-                <h2 className="font-heading font-extrabold text-[16px] text-[#003629] mb-1 flex items-center gap-2">
+                <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
                   <span className="material-symbols-outlined text-[20px] text-[#006a4e]">
                     {editingBus ? 'edit_calendar' : 'add_circle'}
                   </span>
@@ -4054,13 +4054,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       />
                     </div>
                     <div>
-                      <label className="block font-bold text-[#a63b00] text-xs mb-1">महिला (५०%)</label>
+                      <label className="block font-bold text-[#c2410c] text-xs mb-1">महिला (५०%)</label>
                       <input
                         type="number"
                         required
                         value={busForm.fareMahila}
                         onChange={(e) => setBusForm({ ...busForm, fareMahila: Number(e.target.value) || 0 })}
-                        className="w-full p-2 rounded-lg border border-[#e8e2d9] font-bold text-center text-[#a63b00]"
+                        className="w-full p-2 rounded-lg border border-[#e8e2d9] font-bold text-center text-[#c2410c]"
                       />
                     </div>
                     <div>
@@ -4077,7 +4077,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   <div className="flex gap-2 pt-2">
                     <button
                       type="submit"
-                      className="flex-1 py-2.5 bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
+                      className="flex-1 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
                     >
                       <span className="material-symbols-outlined text-[18px]">save</span>
                       <span>{editingBus ? 'बदल सेव्ह करा' : 'बस फेरी जोडा'}</span>
@@ -4098,7 +4098,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* List Column */}
               <div className="lg:col-span-7 space-y-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-heading font-extrabold text-[15px] text-[#003629]">
+                  <h3 className="font-heading font-extrabold text-[15px] text-[#166534]">
                     नोंदणीकृत एसटी बसेस ({transportBuses.length})
                   </h3>
                   <span className="text-xs text-[#707974]">वेळेनुसार स्वयंचलित क्रमवारी</span>
@@ -4112,7 +4112,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     >
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="font-mono font-bold text-sm bg-[#003629] text-[#baeed9] px-2.5 py-0.5 rounded-lg">
+                          <span className="font-mono font-bold text-sm bg-[#166534] text-[#bbf7d0] px-2.5 py-0.5 rounded-lg">
                             {bus.departureTime}
                           </span>
                           <span className="text-xs font-bold text-[#006a4e] bg-[#e6f7f0] px-2 py-0.5 rounded">
@@ -4122,16 +4122,16 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         </div>
                         <div className="font-bold text-[#1d1b16] text-[15px] flex items-center gap-1.5 mt-1">
                           <span>{bus.sourceMarathi}</span>
-                          <span className="text-[#a63b00]">➜</span>
-                          <span className="text-[#a63b00]">{bus.destinationMarathi}</span>
+                          <span className="text-[#c2410c]">➜</span>
+                          <span className="text-[#c2410c]">{bus.destinationMarathi}</span>
                           <span className="text-xs font-normal text-[#707974] ml-2">~{bus.approxArrivalTime}</span>
                         </div>
                         <div className="text-[11px] text-[#707974] mt-1">
                           थांबे: {(bus.viaMarathi || []).join(' • ')}
                         </div>
-                        <div className="text-[11px] font-bold text-[#003629] mt-1 flex gap-3">
+                        <div className="text-[11px] font-bold text-[#166534] mt-1 flex gap-3">
                           <span>भाडे: ₹{bus.fareGeneral}</span>
-                          <span className="text-[#a63b00]">महिला ५०%: ₹{bus.fareMahila}</span>
+                          <span className="text-[#c2410c]">महिला ५०%: ₹{bus.fareMahila}</span>
                           <span className="text-[#006a4e]">ज्येष्ठ: {bus.fareSenior === 0 ? 'मोफत' : `₹${bus.fareSenior}`}</span>
                         </div>
                       </div>
@@ -4189,7 +4189,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Form */}
               <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
-                <h2 className="font-heading font-extrabold text-[16px] text-[#003629] mb-1 flex items-center gap-2">
+                <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
                   <span className="material-symbols-outlined text-[20px] text-[#006a4e]">
                     {editingAuto ? 'edit' : 'add_circle'}
                   </span>
@@ -4292,9 +4292,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       id="autoAvailable"
                       checked={autoForm.isAvailable}
                       onChange={(e) => setAutoForm({ ...autoForm, isAvailable: e.target.checked })}
-                      className="w-4 h-4 accent-[#003629]"
+                      className="w-4 h-4 accent-[#166534]"
                     />
-                    <label htmlFor="autoAvailable" className="font-bold text-[#003629] text-xs cursor-pointer">
+                    <label htmlFor="autoAvailable" className="font-bold text-[#166534] text-xs cursor-pointer">
                       सध्या सेवेत उपलब्ध (Available)
                     </label>
                   </div>
@@ -4302,7 +4302,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   <div className="flex gap-2 pt-2">
                     <button
                       type="submit"
-                      className="flex-1 py-2.5 bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
+                      className="flex-1 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
                     >
                       <span className="material-symbols-outlined text-[18px]">save</span>
                       <span>{editingAuto ? 'चालक सेव्ह करा' : 'नवीन चालक जोडा'}</span>
@@ -4322,7 +4322,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
               {/* List */}
               <div className="lg:col-span-7 space-y-3">
-                <h3 className="font-heading font-extrabold text-[15px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[15px] text-[#166534]">
                   गावातील स्थानिक चालक सूची ({transportAutos.length})
                 </h3>
 
@@ -4334,7 +4334,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     >
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-[15px] text-[#003629]">{driver.nameMarathi}</span>
+                          <span className="font-bold text-[15px] text-[#166534]">{driver.nameMarathi}</span>
                           <span className="text-xs font-mono font-bold text-[#707974]">({driver.vehicleNumber})</span>
                           <button
                             type="button"
@@ -4350,7 +4350,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         <div className="text-xs text-[#404945] mt-1">
                           {driver.vehicleType} • {driver.standLocationMarathi}
                         </div>
-                        <div className="text-xs font-bold text-[#a63b00] mt-0.5">
+                        <div className="text-xs font-bold text-[#c2410c] mt-0.5">
                           {driver.estimatedFare} • फोन: <span className="font-mono">{driver.phone}</span>
                         </div>
                       </div>
@@ -4396,7 +4396,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           {/* SUBTAB 3: DEPOTS MANAGEMENT */}
           {transportSubTab === 'depots' && (
             <div className="bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs space-y-4">
-              <h2 className="font-heading font-extrabold text-[16px] text-[#003629] mb-1 flex items-center gap-2">
+              <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
                 <span className="material-symbols-outlined text-[20px] text-[#006a4e]">phone_in_talk</span>
                 <span>एसटी आगार व मदत केंद्र दूरध्वनी व्यवस्थापन</span>
               </h2>
@@ -4407,7 +4407,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
                 {transportDepots.map((depot, idx) => (
                   <div key={idx} className="bg-[#f9f3ea] p-4 rounded-2xl border border-[#e8e2d9] space-y-3">
-                    <h3 className="font-bold text-[#003629] text-[14px]">{depot.depotNameMarathi}</h3>
+                    <h3 className="font-bold text-[#166534] text-[14px]">{depot.depotNameMarathi}</h3>
                     <div>
                       <label className="block text-[11px] font-bold text-[#707974] mb-1">चौकशी फोन क्रमांक</label>
                       <input
@@ -4446,7 +4446,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     window.dispatchEvent(new Event('dg_transport_updated'));
                     alert('आगार संपर्क यशस्वीरित्या सेव्ह केले!');
                   }}
-                  className="px-5 py-2.5 bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold rounded-xl transition-all shadow-xs flex items-center gap-2 text-xs"
+                  className="px-5 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center gap-2 text-xs"
                 >
                   <span className="material-symbols-outlined text-[18px]">save</span>
                   <span>सर्व आगार संपर्क सेव्ह करा</span>
@@ -4462,7 +4462,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         <div className="space-y-6">
           <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <h2 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2">
+              <h2 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2">
                 <span className="material-symbols-outlined text-[22px] text-[#006a4e]">menu_book</span>
                 <span>ब्लॉग व माहिती लेख व्यवस्थापन (Knowledge Articles & Guides)</span>
               </h2>
@@ -4485,7 +4485,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Form Column */}
             <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
-              <h3 className="font-heading font-extrabold text-[16px] text-[#003629] mb-1 flex items-center gap-2">
+              <h3 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
                 <span className="material-symbols-outlined text-[20px] text-[#006a4e]">
                   {editingBlog ? 'edit_note' : 'post_add'}
                 </span>
@@ -4536,13 +4536,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                 {/* SEO Friendly URL Slug (Instead of ID) */}
                 <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9]">
-                  <label className="block font-bold text-[#003629] text-xs mb-1 flex items-center gap-1">
+                  <label className="block font-bold text-[#166534] text-xs mb-1 flex items-center gap-1">
                     <span className="material-symbols-outlined text-[16px]">link</span>
                     <span>URL नाव / स्लग (SEO Slug - ID ऐवजी शीर्षकाचे नाव) *</span>
                   </label>
                   <div className="flex items-center gap-1 text-xs font-mono text-[#707974] mb-1">
                     <span>https://asgaon.digital/blogs/</span>
-                    <strong className="text-[#a63b00]">{blogForm.slug || 'your-url-name'}</strong>
+                    <strong className="text-[#c2410c]">{blogForm.slug || 'your-url-name'}</strong>
                   </div>
                   <input
                     type="text"
@@ -4550,7 +4550,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     value={blogForm.slug}
                     onChange={(e) => setBlogForm({ ...blogForm, slug: generateSlugFromTitle(e.target.value) })}
                     placeholder="उदा. gharkul-yojana-2026-online-form-asgaon"
-                    className="w-full p-2 rounded-lg border border-[#e8e2d9] font-mono text-xs focus:border-[#006a4e] outline-none bg-white font-bold text-[#003629]"
+                    className="w-full p-2 rounded-lg border border-[#e8e2d9] font-mono text-xs focus:border-[#006a4e] outline-none bg-white font-bold text-[#166534]"
                   />
                   <div className="text-[11px] text-[#707974] mt-1">
                     Google शोध परिणामांमध्ये (SEO) वर येण्यासाठी आयडी ऐवजी शीर्षकातील कीवर्ड्स वापरा.
@@ -4637,9 +4637,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     id="blogFeatured"
                     checked={blogForm.isFeatured}
                     onChange={(e) => setBlogForm({ ...blogForm, isFeatured: e.target.checked })}
-                    className="w-4 h-4 accent-[#003629]"
+                    className="w-4 h-4 accent-[#166534]"
                   />
-                  <label htmlFor="blogFeatured" className="font-bold text-[#003629] text-xs cursor-pointer">
+                  <label htmlFor="blogFeatured" className="font-bold text-[#166534] text-xs cursor-pointer">
                     ठळक लेख म्हणून मुख्य पानावर दाखवा (Featured Spotlight)
                   </label>
                 </div>
@@ -4647,7 +4647,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <div className="flex gap-2 pt-2">
                   <button
                     type="submit"
-                    className="flex-1 py-2.5 bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
+                    className="flex-1 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
                   >
                     <span className="material-symbols-outlined text-[18px]">publish</span>
                     <span>{editingBlog ? 'बदल सेव्ह करा' : 'लेख प्रसिद्ध करा (Publish)'}</span>
@@ -4668,7 +4668,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             {/* List Column */}
             <div className="lg:col-span-7 space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="font-heading font-extrabold text-[15px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[15px] text-[#166534]">
                   प्रसिद्ध झालेले लेख ({villageBlogs.length})
                 </h3>
                 <span className="text-xs text-[#707974]">सर्व लेख SEO-अनुकूल शीर्षकाने उपलब्ध</span>
@@ -4698,11 +4698,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           <span className="text-[11px] text-[#707974]">{b.publishDate}</span>
                         </div>
 
-                        <h4 className="font-bold text-[#003629] text-[14px] leading-snug mt-1 line-clamp-1">
+                        <h4 className="font-bold text-[#166534] text-[14px] leading-snug mt-1 line-clamp-1">
                           {b.titleMarathi}
                         </h4>
 
-                        <div className="mt-1 flex items-center gap-1 font-mono text-[11px] text-[#a63b00] bg-[#f9f3ea] px-2 py-0.5 rounded w-fit">
+                        <div className="mt-1 flex items-center gap-1 font-mono text-[11px] text-[#c2410c] bg-[#f9f3ea] px-2 py-0.5 rounded w-fit">
                           <span className="material-symbols-outlined text-[13px]">link</span>
                           <span>/blogs/{b.slug}</span>
                         </div>
@@ -4718,7 +4718,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         href={`/blogs/${b.slug}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="p-2 rounded-xl bg-stone-100 text-[#003629] hover:bg-stone-200 transition-colors"
+                        className="p-2 rounded-xl bg-stone-100 text-[#166534] hover:bg-stone-200 transition-colors"
                         title="थेट लेख पहा (Preview URL)"
                       >
                         <span className="material-symbols-outlined text-[18px]">open_in_new</span>
@@ -4768,8 +4768,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Form */}
           <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
-            <h2 className="font-heading font-extrabold text-[16px] text-[#003629] mb-1 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px] text-[#a63b00]">
+            <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[20px] text-[#c2410c]">
                 {editingAnnouncement ? 'edit_note' : 'add_circle'}
               </span>
               <span>{editingAnnouncement ? 'सूचना संपादित करा' : 'नवीन सूचना किंवा ठराव प्रसिद्ध करा'}</span>
@@ -4779,7 +4779,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             </p>
 
             {noticeStatusFeedback && (
-              <div className="mb-4 p-3 rounded-xl bg-[#baeed9] text-[#002117] text-[12px] font-bold flex items-center gap-2">
+              <div className="mb-4 p-3 rounded-xl bg-[#bbf7d0] text-[#002117] text-[12px] font-bold flex items-center gap-2">
                 <span className="material-symbols-outlined text-[18px]">check_circle</span>
                 <span>{noticeStatusFeedback}</span>
               </div>
@@ -4796,7 +4796,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   value={noticeTitle}
                   onChange={(e) => setNoticeTitle(e.target.value)}
                   placeholder="उदा. ग्रामसभा बैठक - १५ ऑक्टोबर रोजी सकाळी १० वाजता"
-                  className="w-full p-2.5 bg-[#f9f3ea] text-[13px] rounded-xl border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#003629]"
+                  className="w-full p-2.5 bg-[#f9f3ea] text-[13px] rounded-xl border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#166534]"
                 />
               </div>
 
@@ -4841,7 +4841,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   value={noticeMessage}
                   onChange={(e) => setNoticeMessage(e.target.value)}
                   placeholder="ग्रामसभेचा विषय, ठिकाण किंवा पाणी पुरवठा बंद राहण्याची वेळ सविस्तर लिहा..."
-                  className="w-full p-2.5 bg-[#f9f3ea] text-[13px] rounded-xl border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#003629]"
+                  className="w-full p-2.5 bg-[#f9f3ea] text-[13px] rounded-xl border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#166534]"
                 />
               </div>
 
@@ -4861,7 +4861,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <div className="flex items-center gap-2 mt-2">
                 <button
                   type="submit"
-                  className="flex-1 py-3 rounded-xl bg-[#003629] text-white font-bold text-[13px] hover:bg-[#1b4d3e] transition-all flex items-center justify-center gap-2 shadow-xs"
+                  className="flex-1 py-3 rounded-xl bg-[#166534] text-white font-bold text-[13px] hover:bg-[#052e16] transition-all flex items-center justify-center gap-2 shadow-xs"
                 >
                   <span className="material-symbols-outlined text-[18px]">publish</span>
                   <span>{editingAnnouncement ? 'बदल जतन करा' : 'सूचना प्रसिद्ध करा'}</span>
@@ -4886,7 +4886,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           {/* List of current notices */}
           <div className="lg:col-span-7 flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <h2 className="font-heading font-bold text-[16px] text-[#003629]">
+              <h2 className="font-heading font-bold text-[16px] text-[#166534]">
                 सध्या सक्रिय असलेल्या सूचना ({announcements.length})
               </h2>
               <button
@@ -4928,7 +4928,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       <button
                         type="button"
                         onClick={() => handleStartEditNotice(a)}
-                        className="p-1.5 rounded-lg text-[#003629] hover:bg-[#f3ede4]"
+                        className="p-1.5 rounded-lg text-[#166534] hover:bg-[#f3ede4]"
                         title="संपादित करा"
                       >
                         <span className="material-symbols-outlined text-[18px]">edit</span>
@@ -4956,14 +4956,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {/* TAB 3: WATER SCHEDULE */}
       {activeTab === 'water' && (
         <div className="flex flex-col gap-6">
-          <div className="bg-[#baeed9]/40 border border-[#006a4e]/20 p-4 rounded-2xl flex items-center justify-between gap-4">
+          <div className="bg-[#bbf7d0]/40 border border-[#006a4e]/20 p-4 rounded-2xl flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <span className="material-symbols-outlined text-[32px] text-[#006a4e]">water_drop</span>
               <div>
                 <strong className="text-[14px] text-[#002117] block">
                   आसगाव पाणी पुरवठा थेट नियंत्रण (Water Rostering Manager)
                 </strong>
-                <p className="text-[12px] text-[#003629]">
+                <p className="text-[12px] text-[#166534]">
                   ग्रामपंचायत जलकुंभ व वॉर्डनिहाय वेळा येथे बदला, जेणेकरून गावकऱ्यांना नळाला पाणी कधी येईल हे स्पष्ट समजेल.
                 </p>
               </div>
@@ -4975,11 +4975,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <div key={w.id} className="bg-white p-5 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="font-bold text-[15px] text-[#003629]">{w.ward}</h3>
+                    <h3 className="font-bold text-[15px] text-[#166534]">{w.ward}</h3>
                     <span className={`inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${w.status === 'NORMAL'
-                        ? 'bg-[#baeed9] text-[#002117]'
+                        ? 'bg-[#bbf7d0] text-[#002117]'
                         : w.status === 'LOW_PRESSURE'
-                          ? 'bg-[#ffdbce] text-[#a63b00]'
+                          ? 'bg-[#fed7aa] text-[#c2410c]'
                           : 'bg-[#ffdad6] text-[#ba1a1a]'
                       }`}>
                       {w.status === 'NORMAL' ? 'सुरळीत पुरवठा' : w.status === 'LOW_PRESSURE' ? 'कमी दाब' : 'दुरुस्ती चालू'}
@@ -4988,7 +4988,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   <button
                     type="button"
                     onClick={() => setEditingWaterWard({ ...w })}
-                    className="px-3 py-1.5 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white text-[12px] font-bold text-[#003629] transition-all flex items-center gap-1 border border-[#e8e2d9]"
+                    className="px-3 py-1.5 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white text-[12px] font-bold text-[#166534] transition-all flex items-center gap-1 border border-[#e8e2d9]"
                   >
                     <span className="material-symbols-outlined text-[16px]">edit</span>
                     <span>वेळ बदला</span>
@@ -5018,7 +5018,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           {editingWaterWard && (
             <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
               <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-[#e8e2d9]">
-                <h3 className="font-heading font-extrabold text-[16px] text-[#003629] mb-3">
+                <h3 className="font-heading font-extrabold text-[16px] text-[#166534] mb-3">
                   {editingWaterWard.ward} - वेळ व स्थिती बदला
                 </h3>
                 <form onSubmit={handleSaveWaterWard} className="flex flex-col gap-3">
@@ -5065,7 +5065,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   <div className="flex items-center gap-2 mt-2">
                     <button
                       type="submit"
-                      className="flex-1 py-3 rounded-xl bg-[#003629] text-white font-bold text-[13px]"
+                      className="flex-1 py-3 rounded-xl bg-[#166534] text-white font-bold text-[13px]"
                     >
                       जतन करा व प्रकाशित करा
                     </button>
@@ -5088,8 +5088,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {activeTab === 'schemes' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
-            <h2 className="font-heading font-extrabold text-[16px] text-[#003629] mb-1 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px] text-[#a63b00]">post_add</span>
+            <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[20px] text-[#c2410c]">post_add</span>
               <span>{editingScheme ? 'योजना संपादित करा' : 'नवीन सरकारी / कृषी योजना जोडा'}</span>
             </h2>
             <p className="text-[12px] text-[#707974] mb-4">
@@ -5184,7 +5184,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <div className="flex items-center gap-2 mt-2">
                 <button
                   type="submit"
-                  className="flex-1 py-3 rounded-xl bg-[#003629] text-white font-bold text-[13px]"
+                  className="flex-1 py-3 rounded-xl bg-[#166534] text-white font-bold text-[13px]"
                 >
                   {editingScheme ? 'बदल जतन करा' : 'योजना प्रकाशित करा'}
                 </button>
@@ -5202,14 +5202,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           </div>
 
           <div className="lg:col-span-7 flex flex-col gap-3">
-            <h2 className="font-heading font-bold text-[16px] text-[#003629]">
+            <h2 className="font-heading font-bold text-[16px] text-[#166534]">
               पोर्टलवरील योजनांची यादी ({schemes.length})
             </h2>
             {schemes.map((s) => (
               <div key={s.id} className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col gap-2">
                 <div className="flex items-start justify-between">
                   <div>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-[#f3ede4] text-[#003629]">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-[#f3ede4] text-[#166534]">
                       {s.category}
                     </span>
                     <h3 className="font-bold text-[14px] text-[#1d1b16] mt-1">{s.title}</h3>
@@ -5232,7 +5232,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           actionLabel: s.actionLabel || 'Check'
                         });
                       }}
-                      className="p-1.5 rounded-lg text-[#003629] hover:bg-[#f3ede4]"
+                      className="p-1.5 rounded-lg text-[#166534] hover:bg-[#f3ede4]"
                       title="संपादित करा"
                     >
                       <span className="material-symbols-outlined text-[18px]">edit</span>
@@ -5261,8 +5261,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {activeTab === 'contacts' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
-            <h2 className="font-heading font-extrabold text-[16px] text-[#003629] mb-1 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px] text-[#a63b00]">person_add</span>
+            <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[20px] text-[#c2410c]">person_add</span>
               <span>{editingContact ? 'संपर्क संपादित करा' : 'नवीन अधिकारी / कर्मचारी संपर्क जोडा'}</span>
             </h2>
             <p className="text-[12px] text-[#707974] mb-4">
@@ -5347,7 +5347,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <div className="flex items-center gap-2 mt-2">
                 <button
                   type="submit"
-                  className="flex-1 py-3 rounded-xl bg-[#003629] text-white font-bold text-[13px]"
+                  className="flex-1 py-3 rounded-xl bg-[#166534] text-white font-bold text-[13px]"
                 >
                   {editingContact ? 'बदल जतन करा' : 'संपर्क जतन करा'}
                 </button>
@@ -5365,7 +5365,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           </div>
 
           <div className="lg:col-span-7 flex flex-col gap-3">
-            <h2 className="font-heading font-bold text-[16px] text-[#003629]">
+            <h2 className="font-heading font-bold text-[16px] text-[#166534]">
               गावातील महत्त्वाचे संपर्क ({contacts.length})
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -5373,7 +5373,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <div key={c.id} className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-start justify-between">
-                      <strong className="text-[14px] text-[#003629] block">{c.name}</strong>
+                      <strong className="text-[14px] text-[#166534] block">{c.name}</strong>
                       <div className="flex items-center gap-1">
                         <button
                           type="button"
@@ -5388,7 +5388,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                               address: c.address || 'आसगाव'
                             });
                           }}
-                          className="p-1 rounded text-[#003629] hover:bg-[#f3ede4]"
+                          className="p-1 rounded text-[#166534] hover:bg-[#f3ede4]"
                         >
                           <span className="material-symbols-outlined text-[16px]">edit</span>
                         </button>
@@ -5405,13 +5405,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         </button>
                       </div>
                     </div>
-                    <span className="text-[12px] text-[#a63b00] font-semibold block">{c.designation}</span>
+                    <span className="text-[12px] text-[#c2410c] font-semibold block">{c.designation}</span>
                     <span className="text-[11px] text-[#707974] block mt-1">{c.officeHours}</span>
                   </div>
 
                   <a
                     href={`tel:${c.phone}`}
-                    className="mt-3 py-1.5 px-3 rounded-xl bg-[#f9f3ea] hover:bg-[#003629] hover:text-white text-[#003629] font-bold text-[12px] flex items-center justify-center gap-1.5 transition-colors border border-[#e8e2d9]"
+                    className="mt-3 py-1.5 px-3 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white text-[#166534] font-bold text-[12px] flex items-center justify-center gap-1.5 transition-colors border border-[#e8e2d9]"
                   >
                     <span className="material-symbols-outlined text-[15px]">call</span>
                     <span>{c.phone}</span>
@@ -5427,8 +5427,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {activeTab === 'projects' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
-            <h2 className="font-heading font-extrabold text-[16px] text-[#003629] mb-1 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px] text-[#a63b00]">construction</span>
+            <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[20px] text-[#c2410c]">construction</span>
               <span>{editingProject ? 'विकासकाम अद्ययावत करा' : 'नवीन विकासकाम किंवा प्रकल्प जोडा'}</span>
             </h2>
             <p className="text-[12px] text-[#707974] mb-4">
@@ -5480,7 +5480,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     max="100"
                     value={projectForm.progressPercent}
                     onChange={(e) => setProjectForm({ ...projectForm, progressPercent: Number(e.target.value) })}
-                    className="w-full accent-[#003629]"
+                    className="w-full accent-[#166534]"
                   />
                 </div>
                 <div>
@@ -5511,7 +5511,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <div className="flex items-center gap-2 mt-2">
                 <button
                   type="submit"
-                  className="flex-1 py-3 rounded-xl bg-[#003629] text-white font-bold text-[13px]"
+                  className="flex-1 py-3 rounded-xl bg-[#166534] text-white font-bold text-[13px]"
                 >
                   {editingProject ? 'बदल जतन करा' : 'विकासकाम जतन करा'}
                 </button>
@@ -5529,14 +5529,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           </div>
 
           <div className="lg:col-span-7 flex flex-col gap-3">
-            <h2 className="font-heading font-bold text-[16px] text-[#003629]">
+            <h2 className="font-heading font-bold text-[16px] text-[#166534]">
               गावातील विकासकामे व पारदर्शकता ट्रॅकर ({projects.length})
             </h2>
             {projects.map((p) => (
               <div key={p.id} className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col gap-2">
                 <div className="flex items-start justify-between">
                   <div>
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${p.status === 'COMPLETED' ? 'bg-[#baeed9] text-[#002117]' : 'bg-[#ffdbce] text-[#a63b00]'
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${p.status === 'COMPLETED' ? 'bg-[#bbf7d0] text-[#002117]' : 'bg-[#fed7aa] text-[#c2410c]'
                       }`}>
                       {p.status === 'COMPLETED' ? 'पूर्ण' : 'काम चालू'}
                     </span>
@@ -5558,7 +5558,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           targetDate: p.targetDate
                         });
                       }}
-                      className="p-1 rounded text-[#003629] hover:bg-[#f3ede4]"
+                      className="p-1 rounded text-[#166534] hover:bg-[#f3ede4]"
                     >
                       <span className="material-symbols-outlined text-[16px]">edit</span>
                     </button>
@@ -5584,7 +5584,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 {/* Progress bar */}
                 <div className="w-full bg-[#f3ede4] rounded-full h-2 overflow-hidden">
                   <div
-                    className="bg-[#003629] h-2 rounded-full transition-all duration-500"
+                    className="bg-[#166534] h-2 rounded-full transition-all duration-500"
                     style={{ width: `${p.progressPercent}%` }}
                   />
                 </div>
@@ -5598,7 +5598,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {activeTab === 'complaints' && (
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between gap-4 flex-wrap">
-            <h2 className="font-heading font-bold text-[16px] text-[#003629]">
+            <h2 className="font-heading font-bold text-[16px] text-[#166534]">
               गावकऱ्यांनी दाखल केलेल्या तक्रारी व अर्ज ({complaints.length})
             </h2>
             <div className="flex items-center gap-2">
@@ -5607,7 +5607,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   key={f}
                   type="button"
                   onClick={() => setComplaintFilter(f)}
-                  className={`px-3 py-1 rounded-lg text-[12px] font-bold ${complaintFilter === f ? 'bg-[#003629] text-white' : 'bg-[#f3ede4] text-[#404945]'
+                  className={`px-3 py-1 rounded-lg text-[12px] font-bold ${complaintFilter === f ? 'bg-[#166534] text-white' : 'bg-[#f3ede4] text-[#404945]'
                     }`}
                 >
                   {f === 'ALL' ? 'सर्व' : f === 'SUBMITTED' ? 'नवीन अर्ज' : f === 'IN_PROGRESS' ? 'काम चालू' : 'निवारण झाले'}
@@ -5622,10 +5622,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <div>
                   <div className="flex items-start justify-between">
                     <div>
-                      <span className="text-[11px] font-black uppercase text-[#a63b00]">{c.trackingNumber || 'KS-REG'}</span>
+                      <span className="text-[11px] font-black uppercase text-[#c2410c]">{c.trackingNumber || 'KS-REG'}</span>
                       <h3 className="font-bold text-[14px] text-[#1d1b16]">{c.title}</h3>
                     </div>
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${c.status === 'RESOLVED' ? 'bg-[#baeed9] text-[#002117]' : 'bg-[#ffdad6] text-[#ba1a1a]'
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${c.status === 'RESOLVED' ? 'bg-[#bbf7d0] text-[#002117]' : 'bg-[#ffdad6] text-[#ba1a1a]'
                       }`}>
                       {c.status}
                     </span>
@@ -5636,7 +5636,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     गावकऱ्याचे नाव: <strong>{c.citizenName || 'नागरिक'}</strong> • वॉर्ड: <strong>{c.ward || 'वॉर्ड २'}</strong>
                   </div>
                   {c.resolutionNote && (
-                    <div className="mt-2 p-2 rounded-lg bg-[#f9f3ea] text-[11px] text-[#003629] border border-[#e8e2d9]">
+                    <div className="mt-2 p-2 rounded-lg bg-[#f9f3ea] text-[11px] text-[#166534] border border-[#e8e2d9]">
                       <strong>व्यवस्थापक टीप: </strong> {c.resolutionNote}
                     </div>
                   )}
@@ -5649,7 +5649,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     setResolutionStatus(c.status || 'IN_PROGRESS');
                     setResolutionNote(c.resolutionNote || '');
                   }}
-                  className="py-2 px-3 rounded-xl bg-[#003629] text-white text-[12px] font-bold flex items-center justify-center gap-1.5"
+                  className="py-2 px-3 rounded-xl bg-[#166534] text-white text-[12px] font-bold flex items-center justify-center gap-1.5"
                 >
                   <span className="material-symbols-outlined text-[16px]">edit_note</span>
                   <span>स्थिती बदला व ग्रामपंचायत कृती नोंदवा</span>
@@ -5661,7 +5661,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           {selectedComplaint && (
             <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
               <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-[#e8e2d9]">
-                <h3 className="font-heading font-extrabold text-[16px] text-[#003629] mb-3">
+                <h3 className="font-heading font-extrabold text-[16px] text-[#166534] mb-3">
                   तक्रार निवारण कृती: {selectedComplaint.title}
                 </h3>
                 <form onSubmit={handleUpdateComplaintStatus} className="flex flex-col gap-3">
@@ -5694,7 +5694,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     <button
                       type="submit"
                       disabled={updatingComplaint}
-                      className="flex-1 py-3 rounded-xl bg-[#003629] text-white font-bold text-[13px]"
+                      className="flex-1 py-3 rounded-xl bg-[#166534] text-white font-bold text-[13px]"
                     >
                       {updatingComplaint ? 'जतन होत आहे...' : 'जतन करा'}
                     </button>
@@ -5721,7 +5721,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <span className="material-symbols-outlined text-[28px]">cell_tower</span>
             </div>
             <div>
-              <h2 className="font-heading font-extrabold text-[18px] text-[#003629]">
+              <h2 className="font-heading font-extrabold text-[18px] text-[#166534]">
                 तातडीची दवंडी (Instant Web Push Broadcast)
               </h2>
               <p className="text-[12px] text-[#707974]">
@@ -5731,7 +5731,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           </div>
 
           {pushFeedback && (
-            <div className="mb-4 p-3 rounded-xl bg-[#baeed9] text-[#002117] text-[12px] font-bold flex items-center gap-2">
+            <div className="mb-4 p-3 rounded-xl bg-[#bbf7d0] text-[#002117] text-[12px] font-bold flex items-center gap-2">
               <span className="material-symbols-outlined text-[18px]">campaign</span>
               <span>{pushFeedback}</span>
             </div>
@@ -5794,7 +5794,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {activeTab === 'users' && (
         <div className="bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col gap-4">
           <div className="flex items-center justify-between gap-4 flex-wrap">
-            <h2 className="font-heading font-bold text-[16px] text-[#003629]">
+            <h2 className="font-heading font-bold text-[16px] text-[#166534]">
               नोंदणीकृत नागरिक ({users.length})
             </h2>
             <input
@@ -5820,12 +5820,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 {users
                   .filter((u) => !userSearch || (u.fullName && u.fullName.toLowerCase().includes(userSearch.toLowerCase())) || (u.phone && u.phone.includes(userSearch)))
                   .map((u) => (
-                    <tr key={u.id} className="hover:bg-[#fff8f0]">
+                    <tr key={u.id} className="hover:bg-[#fef9ee]">
                       <td className="p-3 font-semibold text-[#1d1b16]">{u.fullName || 'नागरिक'}</td>
                       <td className="p-3 text-[#55605a]">{u.phone || '-'}</td>
                       <td className="p-3 text-[#55605a]">{u.wardNumber || 'वॉर्ड २'}</td>
                       <td className="p-3">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-[#baeed9] text-[#002117]">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-[#bbf7d0] text-[#002117]">
                           {u.roles ? Array.from(u.roles).join(', ') : 'CITIZEN'}
                         </span>
                       </td>
@@ -5867,7 +5867,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             </p>
             <button
               onClick={() => setActiveTab('overview')}
-              className="mt-2 px-4 py-2 bg-[#003629] text-white rounded-xl text-xs font-bold cursor-pointer"
+              className="mt-2 px-4 py-2 bg-[#166534] text-white rounded-xl text-xs font-bold cursor-pointer"
             >
               📊 मुख्य आढावा पृष्ठावर जा
             </button>

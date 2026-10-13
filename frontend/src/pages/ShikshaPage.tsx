@@ -161,9 +161,9 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
 
       {/* 1. TOP LIVE NOTICE STRIP (Dynamic) */}
       {notice.isActive && (
-        <div className="bg-[#a63b00] text-white px-4 py-2.5 rounded-xl shadow-xs flex flex-col md:flex-row items-center justify-between gap-3 text-[12px] font-medium">
+        <div className="bg-[#c2410c] text-white px-4 py-2.5 rounded-xl shadow-xs flex flex-col md:flex-row items-center justify-between gap-3 text-[12px] font-medium">
           <div className="flex items-center gap-2">
-            <span className="bg-white/20 text-[#fff8f0] font-black px-2 py-0.5 rounded text-[10px] uppercase tracking-wider">
+            <span className="bg-white/20 text-[#fef9ee] font-black px-2 py-0.5 rounded text-[10px] uppercase tracking-wider">
               {lang === 'MR' ? 'महत्त्वाची सूचना' : 'LIVE NOTICE'}
             </span>
             <span>
@@ -193,18 +193,18 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
               <span>{lang === 'MR' ? 'शिक्षण हेल्पलाईन: ०७१८५-२२४४१० (पवनी)' : 'Education Helpline: 07185-224410 (Pauni)'}</span>
             </span>
             <span className="text-[#707974] hidden md:inline">|</span>
-            <span className="text-[#a63b00] font-semibold hidden md:inline">{lang === 'MR' ? 'जि.प. शिक्षण संचिका' : 'ZP Education Directory'}</span>
+            <span className="text-[#c2410c] font-semibold hidden md:inline">{lang === 'MR' ? 'जि.प. शिक्षण संचिका' : 'ZP Education Directory'}</span>
           </div>
         }
       />
 
       {/* 3. HERO BANNER */}
-      <div className="bg-gradient-to-br from-[#003629]/5 via-white to-[#003629]/10 rounded-2xl p-6 sm:p-8 border border-[#c4d6cf] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="bg-gradient-to-br from-[#166534]/5 via-white to-[#166534]/10 rounded-2xl p-6 sm:p-8 border border-[#c4d6cf] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex-1">
-          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#003629] leading-tight mb-1">
+          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#166534] leading-tight mb-1">
             {lang === 'MR' ? 'शिक्षण आणि युवा विकास मंच' : 'Shiksha & Youth Development Portal'}
           </h1>
-          <h2 className="text-[14px] sm:text-[15px] font-bold text-[#a63b00] mb-2">
+          <h2 className="text-[14px] sm:text-[15px] font-bold text-[#c2410c] mb-2">
             {lang === 'MR' ? 'आसगाव व पवनी परिसर — शैक्षणिक व करिअर दालन' : 'Asgaon & Pauni Educational and Career Guidance Hub'}
           </h2>
           <p className="text-[13px] sm:text-[14px] text-[#404945] max-w-2xl leading-relaxed">
@@ -217,11 +217,11 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
         {/* 3 Dynamic Counters */}
         <div className="grid grid-cols-3 gap-3 shrink-0 self-stretch sm:self-auto">
           <div className="bg-white p-3 rounded-xl border border-[#e8e2d9] text-center shadow-xs flex flex-col justify-center min-w-[85px]">
-            <span className="font-black text-[22px] text-[#003629]">{schools.length}</span>
+            <span className="font-black text-[22px] text-[#166534]">{schools.length}</span>
             <span className="text-[10px] text-[#707974] uppercase font-bold">{lang === 'MR' ? 'शाळा व संस्था' : 'Schools'}</span>
           </div>
           <div className="bg-white p-3 rounded-xl border border-[#e8e2d9] text-center shadow-xs flex flex-col justify-center min-w-[85px]">
-            <span className="font-black text-[22px] text-[#a63b00]">{scholarships.length}</span>
+            <span className="font-black text-[22px] text-[#c2410c]">{scholarships.length}</span>
             <span className="text-[10px] text-[#707974] uppercase font-bold">{lang === 'MR' ? 'शिष्यवृत्ती' : 'Scholarships'}</span>
           </div>
           <div className="bg-white p-3 rounded-xl border border-[#e8e2d9] text-center shadow-xs flex flex-col justify-center min-w-[85px]">
@@ -235,21 +235,21 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <a
           href="#scholarships"
-          className="p-3 bg-[#003629] hover:bg-[#00281e] text-white rounded-xl text-[12px] font-bold flex items-center justify-center gap-2 shadow-xs transition-all text-center"
+          className="p-3 bg-[#166534] hover:bg-[#052e16] text-white rounded-xl text-[12px] font-bold flex items-center justify-center gap-2 shadow-xs transition-all text-center"
         >
           <span className="material-symbols-outlined text-[18px]">school</span>
           <span>{lang === 'MR' ? 'MahaDBT शिष्यवृत्ती अर्ज' : 'Apply for MahaDBT Scholarships'}</span>
         </a>
         <button
           onClick={() => setShowDeskModal(true)}
-          className="p-3 bg-[#a63b00] hover:bg-[#852f00] text-white rounded-xl text-[12px] font-bold flex items-center justify-center gap-2 shadow-xs transition-all text-center"
+          className="p-3 bg-[#c2410c] hover:bg-[#852f00] text-white rounded-xl text-[12px] font-bold flex items-center justify-center gap-2 shadow-xs transition-all text-center"
         >
           <span className="material-symbols-outlined text-[18px]">local_library</span>
           <span>{lang === 'MR' ? 'मोफत डिजिटल अभ्यासिका बुकिंग' : 'Digital Study Room Booking'}</span>
         </button>
         <a
           href="#schools-map"
-          className="p-3 bg-white hover:bg-[#f3ede4] text-[#003629] border border-[#e8e2d9] rounded-xl text-[12px] font-bold flex items-center justify-center gap-2 shadow-xs transition-all text-center"
+          className="p-3 bg-white hover:bg-[#f3ede4] text-[#166534] border border-[#e8e2d9] rounded-xl text-[12px] font-bold flex items-center justify-center gap-2 shadow-xs transition-all text-center"
         >
           <span className="material-symbols-outlined text-[18px]">map</span>
           <span>{lang === 'MR' ? 'शाळा व ग्रंथालय नकाशा' : 'School & Library Map'}</span>
@@ -258,7 +258,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
           href="https://wa.me/919422811204"
           target="_blank"
           rel="noreferrer"
-          className="p-3 bg-white hover:bg-[#f3ede4] text-[#006a4e] border border-[#baeed9] rounded-xl text-[12px] font-bold flex items-center justify-center gap-2 shadow-xs transition-all text-center"
+          className="p-3 bg-white hover:bg-[#f3ede4] text-[#006a4e] border border-[#bbf7d0] rounded-xl text-[12px] font-bold flex items-center justify-center gap-2 shadow-xs transition-all text-center"
         >
           <span className="material-symbols-outlined text-[18px]">chat</span>
           <span>{lang === 'MR' ? 'व्हॉट्सअ‍ॅप समुपदेशक डेस्क' : 'WhatsApp Mentor Desk'}</span>
@@ -280,7 +280,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-[#006a4e] text-[24px]">school</span>
                 <div>
-                  <h2 className="font-heading font-extrabold text-[20px] text-[#003629]">
+                  <h2 className="font-heading font-extrabold text-[20px] text-[#166534]">
                     {lang === 'MR' ? 'स्थानिक शाळा व कनिष्ठ महाविद्यालये' : 'Local Schools & Colleges'}
                   </h2>
                   <p className="text-[12px] text-[#707974]">
@@ -307,7 +307,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   onClick={() => setSchoolCategoryFilter(f.id as any)}
                   className={`px-3 py-1.5 rounded-lg font-bold shrink-0 transition-all ${
                     schoolCategoryFilter === f.id
-                      ? 'bg-[#003629] text-white shadow-xs'
+                      ? 'bg-[#166534] text-white shadow-xs'
                       : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
                   }`}
                 >
@@ -340,17 +340,17 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
                         <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
-                          <span className="bg-[#baeed9] text-[#002117] text-[10px] font-extrabold px-2 py-0.5 rounded">
+                          <span className="bg-[#bbf7d0] text-[#002117] text-[10px] font-extrabold px-2 py-0.5 rounded">
                             {school.badge}
                           </span>
                           <span className="bg-[#f3ede4] text-[#404945] text-[10px] font-bold px-2 py-0.5 rounded">
                             {school.medium}
                           </span>
-                          <span className="bg-[#fff8f0] text-[#a63b00] text-[10px] font-bold px-2 py-0.5 rounded border border-[#ffe0cc]">
+                          <span className="bg-[#fef9ee] text-[#c2410c] text-[10px] font-bold px-2 py-0.5 rounded border border-[#fde68a]">
                             {lang === 'MR' ? 'इयत्ता:' : 'Grades:'} {school.grades}
                           </span>
                         </div>
-                        <h3 className="font-heading font-bold text-[16px] text-[#003629] leading-snug hover:text-[#a63b00] transition-colors">
+                        <h3 className="font-heading font-bold text-[16px] text-[#166534] leading-snug hover:text-[#c2410c] transition-colors">
                           {onSelectShikshaSlug ? (
                             <a
                               href={`/shiksha/${school.id}`}
@@ -398,7 +398,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                           {school.contactPhone ? (
                             <a
                               href={`tel:${school.contactPhone}`}
-                              className="py-1.5 px-3 bg-[#003629] hover:bg-[#00281e] text-white text-[11px] font-bold rounded-lg transition-colors inline-flex items-center gap-1"
+                              className="py-1.5 px-3 bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold rounded-lg transition-colors inline-flex items-center gap-1"
                             >
                               <span className="material-symbols-outlined text-[14px]">call</span>
                               <span>{lang === 'MR' ? 'संपर्क साधा' : 'Call School'}</span>
@@ -416,9 +416,9 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
           <div id="scholarships" className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-4">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#a63b00] text-[24px]">workspace_premium</span>
+                <span className="material-symbols-outlined text-[#c2410c] text-[24px]">workspace_premium</span>
                 <div>
-                  <h2 className="font-heading font-extrabold text-[20px] text-[#003629]">
+                  <h2 className="font-heading font-extrabold text-[20px] text-[#166534]">
                     {lang === 'MR' ? 'विद्यार्थी शिष्यवृत्ती मार्गदर्शन कक्ष' : 'Student Scholarship Guidance Desk'}
                   </h2>
                   <p className="text-[12px] text-[#707974]">
@@ -430,7 +430,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                 href="https://mahadbt.maharashtra.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="text-[11px] font-bold text-[#a63b00] hover:underline flex items-center gap-1 self-start sm:self-auto bg-[#fff8f0] px-3 py-1 rounded-md border border-[#ffe0cc]"
+                className="text-[11px] font-bold text-[#c2410c] hover:underline flex items-center gap-1 self-start sm:self-auto bg-[#fef9ee] px-3 py-1 rounded-md border border-[#fde68a]"
               >
                 <span>{lang === 'MR' ? 'MahaDBT अधिकृत पोर्टल' : 'MahaDBT Official Portal'}</span>
                 <span className="material-symbols-outlined text-[14px]">open_in_new</span>
@@ -451,7 +451,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   onClick={() => setScholarshipFilter(f.id)}
                   className={`px-3 py-1.5 rounded-lg font-bold shrink-0 transition-all ${
                     scholarshipFilter === f.id
-                      ? 'bg-[#a63b00] text-white shadow-xs'
+                      ? 'bg-[#c2410c] text-white shadow-xs'
                       : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
                   }`}
                 >
@@ -476,14 +476,14 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   <div key={sch.id} className="border border-[#e8e2d9] rounded-xl p-4 bg-white flex flex-col justify-between hover:shadow-md transition-all">
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
-                        <span className="bg-[#baeed9] text-[#002117] text-[9px] font-black uppercase px-2 py-0.5 rounded">
+                        <span className="bg-[#bbf7d0] text-[#002117] text-[9px] font-black uppercase px-2 py-0.5 rounded">
                           {sch.badge}
                         </span>
                         <span className="text-[10px] text-[#ba1a1a] font-bold">
                           {lang === 'MR' ? 'शेवटची तारीख:' : 'Deadline:'} {sch.deadline}
                         </span>
                       </div>
-                      <h3 className="font-heading font-bold text-[14px] text-[#003629] leading-snug">
+                      <h3 className="font-heading font-bold text-[14px] text-[#166534] leading-snug">
                         {sch.title}
                       </h3>
                       <p className="text-[11px] text-[#404945] leading-relaxed mt-1 mb-3">
@@ -493,15 +493,15 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                       <div className="bg-[#f3ede4]/50 p-2.5 rounded-lg flex flex-col gap-1 text-[11px]">
                         <div className="flex justify-between">
                           <span className="text-[#707974]">{lang === 'MR' ? 'लाभ / रक्कम:' : 'Benefit / Amount:'}</span>
-                          <strong className="text-[#003629]">{sch.benefit}</strong>
+                          <strong className="text-[#166534]">{sch.benefit}</strong>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-[#707974]">{lang === 'MR' ? 'कौटुंबिक उत्पन्न मर्यादा:' : 'Income Limit:'}</span>
-                          <strong className="text-[#003629]">{sch.incomeLimit}</strong>
+                          <strong className="text-[#166534]">{sch.incomeLimit}</strong>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-[#707974]">{lang === 'MR' ? 'विभाग:' : 'Department:'}</span>
-                          <span className="text-[#003629] text-[10px]">{sch.department}</span>
+                          <span className="text-[#166534] text-[10px]">{sch.department}</span>
                         </div>
                         {sch.eligibility && (
                           <div className="flex justify-between pt-1 border-t border-[#e8e2d9]">
@@ -520,7 +520,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                         href={sch.officialUrl || "https://mahadbt.maharashtra.gov.in"}
                         target="_blank"
                         rel="noreferrer"
-                        className="py-1.5 px-3 bg-[#003629] hover:bg-[#00281e] text-white text-[11px] font-bold rounded-lg transition-colors flex items-center gap-1"
+                        className="py-1.5 px-3 bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold rounded-lg transition-colors flex items-center gap-1"
                       >
                         <span>{lang === 'MR' ? 'अर्ज करा' : 'Apply Online'}</span>
                         <span className="material-symbols-outlined text-[13px]">open_in_new</span>
@@ -532,9 +532,9 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
           </div>
 
           {/* SECTION 3: DOCUMENT CHECKLIST FOR MAHADBT */}
-          <div className="bg-[#fff8f0] rounded-2xl p-5 sm:p-6 border border-[#ffe0cc] shadow-xs flex flex-col gap-4">
-            <div className="border-b border-[#ffe0cc] pb-3">
-              <h3 className="font-heading font-bold text-[16px] text-[#003629]">
+          <div className="bg-[#fef9ee] rounded-2xl p-5 sm:p-6 border border-[#fde68a] shadow-xs flex flex-col gap-4">
+            <div className="border-b border-[#fde68a] pb-3">
+              <h3 className="font-heading font-bold text-[16px] text-[#166534]">
                 {lang === 'MR' ? 'MahaDBT पडताळणीसाठी आवश्यक कागदपत्रे यादी' : 'Document Checklist for MahaDBT Verification'}
               </h3>
               <p className="text-[12px] text-[#707974]">
@@ -545,10 +545,10 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-              <div className="bg-white p-3 rounded-xl border border-[#ffe0cc] flex items-start gap-2.5">
+              <div className="bg-white p-3 rounded-xl border border-[#fde68a] flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-[#006a4e] text-[20px] shrink-0 mt-0.5">badge</span>
                 <div>
-                  <h4 className="font-bold text-[11px] text-[#003629]">
+                  <h4 className="font-bold text-[11px] text-[#166534]">
                     {lang === 'MR' ? 'अधिवास व वयाचा पुरावा (Domicile)' : 'Domicile & Age Proof'}
                   </h4>
                   <p className="text-[10px] text-[#707974] leading-tight mt-0.5">
@@ -557,10 +557,10 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                 </div>
               </div>
 
-              <div className="bg-white p-3 rounded-xl border border-[#ffe0cc] flex items-start gap-2.5">
+              <div className="bg-white p-3 rounded-xl border border-[#fde68a] flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-[#006a4e] text-[20px] shrink-0 mt-0.5">verified_user</span>
                 <div>
-                  <h4 className="font-bold text-[11px] text-[#003629]">
+                  <h4 className="font-bold text-[11px] text-[#166534]">
                     {lang === 'MR' ? 'जातीचा दाखला व वैधता (Caste Validity)' : 'Caste & Validity Certificate'}
                   </h4>
                   <p className="text-[10px] text-[#707974] leading-tight mt-0.5">
@@ -569,10 +569,10 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                 </div>
               </div>
 
-              <div className="bg-white p-3 rounded-xl border border-[#ffe0cc] flex items-start gap-2.5">
+              <div className="bg-white p-3 rounded-xl border border-[#fde68a] flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-[#006a4e] text-[20px] shrink-0 mt-0.5">receipt_long</span>
                 <div>
-                  <h4 className="font-bold text-[11px] text-[#003629]">
+                  <h4 className="font-bold text-[11px] text-[#166534]">
                     {lang === 'MR' ? 'चालू वर्षाचा उत्पन्नाचा दाखला' : 'Income Certificate (2025-26)'}
                   </h4>
                   <p className="text-[10px] text-[#707974] leading-tight mt-0.5">
@@ -581,10 +581,10 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                 </div>
               </div>
 
-              <div className="bg-white p-3 rounded-xl border border-[#ffe0cc] flex items-start gap-2.5">
+              <div className="bg-white p-3 rounded-xl border border-[#fde68a] flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-[#006a4e] text-[20px] shrink-0 mt-0.5">account_balance_wallet</span>
                 <div>
-                  <h4 className="font-bold text-[11px] text-[#003629]">
+                  <h4 className="font-bold text-[11px] text-[#166534]">
                     {lang === 'MR' ? 'आधार-NPCI संलग्न बँक पासबुक' : 'Aadhaar-NPCI Bank Passbook'}
                   </h4>
                   <p className="text-[10px] text-[#707974] leading-tight mt-0.5">
@@ -601,7 +601,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
               <div className="flex items-center gap-2.5">
                 <span className="material-symbols-outlined text-[#006a4e] text-[26px]">local_library</span>
                 <div>
-                  <h2 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#003629]">
+                  <h2 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#166534]">
                     {abhyasika.title}
                   </h2>
                   <p className="text-[12px] text-[#707974]">
@@ -609,7 +609,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   </p>
                 </div>
               </div>
-              <span className="text-[11px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-3 py-1 rounded-full border border-[#baeed9] self-start sm:self-auto">
+              <span className="text-[11px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-3 py-1 rounded-full border border-[#bbf7d0] self-start sm:self-auto">
                 {abhyasika.availableDesks} {lang === 'MR' ? 'जागा उपलब्ध (मोफत प्रवेश)' : 'Desks Available (Free)'}
               </span>
             </div>
@@ -618,7 +618,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
               <div className="bg-[#f3ede4]/40 p-3.5 rounded-xl border border-[#e8e2d9] flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-[#006a4e] text-[22px] shrink-0">desk</span>
                 <div>
-                  <h4 className="font-bold text-[12px] text-[#003629]">
+                  <h4 className="font-bold text-[12px] text-[#166534]">
                     {abhyasika.totalDesks} {lang === 'MR' ? 'रीडिंग डेस्क' : 'Reading Desks'}
                   </h4>
                   <p className="text-[11px] text-[#404945] mt-0.5">
@@ -630,7 +630,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
               <div className="bg-[#f3ede4]/40 p-3.5 rounded-xl border border-[#e8e2d9] flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-[#006a4e] text-[22px] shrink-0">wifi</span>
                 <div>
-                  <h4 className="font-bold text-[12px] text-[#003629]">{abhyasika.wifiSpeed}</h4>
+                  <h4 className="font-bold text-[12px] text-[#166534]">{abhyasika.wifiSpeed}</h4>
                   <p className="text-[11px] text-[#404945] mt-0.5">
                     {lang === 'MR' ? 'ऑनलाइन लेक्चर्स आणि मॉक टेस्टसाठी मोफत हाय-स्पीड इंटरनेट.' : 'Free high-speed internet for online lectures.'}
                   </p>
@@ -640,7 +640,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
               <div className="bg-[#f3ede4]/40 p-3.5 rounded-xl border border-[#e8e2d9] flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-[#006a4e] text-[22px] shrink-0">menu_book</span>
                 <div>
-                  <h4 className="font-bold text-[12px] text-[#003629]">{abhyasika.bookCount}</h4>
+                  <h4 className="font-bold text-[12px] text-[#166534]">{abhyasika.bookCount}</h4>
                   <p className="text-[11px] text-[#404945] mt-0.5">
                     {lang === 'MR' ? 'MPSC, UPSC, पोलिस भरती, बँकिंग व संदर्भ पुस्तके.' : 'MPSC, UPSC, Police Bharti & competitive books.'}
                   </p>
@@ -651,7 +651,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-[#f3ede4]">
               <div>
                 <span className="text-[10px] text-[#707974] block">{lang === 'MR' ? 'अभ्यासिका दैनंदिन वेळ:' : 'Daily Timings:'}</span>
-                <strong className="text-[12px] text-[#003629]">{abhyasika.timings}</strong>
+                <strong className="text-[12px] text-[#166534]">{abhyasika.timings}</strong>
                 <span className="text-[10px] text-[#55605a] block mt-0.5">
                   {lang === 'MR' ? 'व्यवस्थापक:' : 'Caretaker:'} {abhyasika.caretakerName} ({abhyasika.caretakerRole})
                 </span>
@@ -669,7 +669,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                 )}
                 <button
                   onClick={() => setShowDeskModal(true)}
-                  className="py-2.5 px-4 bg-[#003629] hover:bg-[#00281e] text-white text-[12px] font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto shrink-0"
+                  className="py-2.5 px-4 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto shrink-0"
                 >
                   <span className="material-symbols-outlined text-[16px]">how_to_reg</span>
                   <span>{lang === 'MR' ? 'मोफत जागा आरक्षित करा' : 'Book Free Desk'}</span>
@@ -683,8 +683,8 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             <div className="border-b border-[#f3ede4] pb-4 flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[#a63b00] text-[22px]">diversity_3</span>
-                  <h2 className="font-heading font-extrabold text-[20px] text-[#003629]">
+                  <span className="material-symbols-outlined text-[#c2410c] text-[22px]">diversity_3</span>
+                  <h2 className="font-heading font-extrabold text-[20px] text-[#166534]">
                     {lang === 'MR' ? `स्थानिक शिकवणी व प्रशिक्षण केंद्रे (${tutors.length})` : `Local Tutors, Coaching & Skill Centers (${tutors.length})`}
                   </h2>
                 </div>
@@ -701,7 +701,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                     <span className="bg-[#f3ede4] text-[#404945] text-[9px] font-bold px-2 py-0.5 rounded">
                       {tutor.category}
                     </span>
-                    <h3 className="font-heading font-bold text-[14px] text-[#003629] leading-snug mt-1.5">
+                    <h3 className="font-heading font-bold text-[14px] text-[#166534] leading-snug mt-1.5">
                       {tutor.name}
                     </h3>
                     <p className="text-[11px] text-[#404945] leading-relaxed mt-1">
@@ -714,7 +714,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   <div className="pt-3 mt-3 border-t border-[#f3ede4] flex items-center justify-between text-[11px]">
                     <span className="text-[#006a4e] font-bold">{tutor.feesInfo || (lang === 'MR' ? 'सवलत दर' : 'Affordable')}</span>
                     {tutor.phone ? (
-                      <a href={`tel:${tutor.phone}`} className="text-[#003629] font-bold hover:underline flex items-center gap-1">
+                      <a href={`tel:${tutor.phone}`} className="text-[#166534] font-bold hover:underline flex items-center gap-1">
                         <span className="material-symbols-outlined text-[14px]">call</span>
                         <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
                       </a>
@@ -731,12 +731,12 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
         {/* RIGHT SIDEBAR COLUMN: 4 WIDGETS (4 cols) */}
         <div className="lg:col-span-4 flex flex-col gap-6">
           {/* WIDGET 1: CAREER COUNSELING CLINIC */}
-          <div className="bg-[#003629] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3.5">
+          <div className="bg-[#166534] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3.5">
             <div className="flex items-center justify-between">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-[#baeed9]">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-[#bbf7d0]">
                 {lang === 'MR' ? 'करिअर क्लिनिक' : 'CAREER CLINIC'}
               </span>
-              <span className="bg-[#baeed9]/20 text-[#baeed9] text-[9px] font-bold px-2 py-0.5 rounded">
+              <span className="bg-[#bbf7d0]/20 text-[#bbf7d0] text-[9px] font-bold px-2 py-0.5 rounded">
                 {lang === 'MR' ? 'दर मंगळवारी' : 'Every Tuesday'}
               </span>
             </div>
@@ -753,18 +753,18 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
 
             <div className="bg-white/10 p-2.5 rounded-xl text-[11px] flex flex-col gap-1">
               <div className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[14px] text-[#baeed9]">event</span>
+                <span className="material-symbols-outlined text-[14px] text-[#bbf7d0]">event</span>
                 <span>{lang === 'MR' ? 'वेळ:' : 'Timing:'} <strong>{lang === 'MR' ? 'मंगळवारी सकाळी १० ते दुपारी १' : 'Tuesday, 10:00 AM – 1:00 PM'}</strong></span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[14px] text-[#baeed9]">location_on</span>
+                <span className="material-symbols-outlined text-[14px] text-[#bbf7d0]">location_on</span>
                 <span>{lang === 'MR' ? 'स्थानिक समाज सभागृह, आसगाव ४४१९१०' : 'Community Hall, Asgaon 441910'}</span>
               </div>
             </div>
 
             <button
               onClick={() => setShowCounselingModal(true)}
-              className="w-full py-2.5 bg-white hover:bg-[#fff8f0] text-[#003629] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+              className="w-full py-2.5 bg-white hover:bg-[#fef9ee] text-[#166534] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors shadow-xs"
             >
               <span className="material-symbols-outlined text-[16px]">calendar_month</span>
               <span>{lang === 'MR' ? '२० मिनिटांचा स्लॉट बुक करा' : 'Book 20-Min Slot'}</span>
@@ -776,7 +776,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             <div className="flex items-center gap-2 border-b border-[#f3ede4] pb-3">
               <span className="material-symbols-outlined text-[#006a4e] text-[22px]">download_for_offline</span>
               <div>
-                <h3 className="font-heading font-bold text-[14px] text-[#003629]">
+                <h3 className="font-heading font-bold text-[14px] text-[#166534]">
                   {lang === 'MR' ? 'मागील वर्षांच्या प्रश्नपत्रिका (PDF)' : 'Previous Year Question Papers'}
                 </h3>
                 <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'मोफत डाऊनलोड (शिक्षक तपासित)' : 'Free PDF downloads'}</span>
@@ -786,10 +786,10 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             <div className="flex flex-col gap-2 text-[11px]">
               <a
                 href="#download"
-                className="p-2.5 rounded-lg border border-[#e8e2d9] hover:border-[#006a4e] hover:bg-[#baeed9]/10 transition-all flex items-center justify-between group"
+                className="p-2.5 rounded-lg border border-[#e8e2d9] hover:border-[#006a4e] hover:bg-[#bbf7d0]/10 transition-all flex items-center justify-between group"
               >
                 <div>
-                  <strong className="text-[#003629] block group-hover:text-[#006a4e]">
+                  <strong className="text-[#166534] block group-hover:text-[#006a4e]">
                     {lang === 'MR' ? '१०वी बोर्ड परीक्षा प्रश्नपत्रिका (२०२१-२०२६)' : 'SSC 10th Board (2021-2026)'}
                   </strong>
                   <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'मराठी / गणित / विज्ञान सोडवलेल्या पत्रिका' : 'Marathi / Maths / Science Solved Papers'}</span>
@@ -799,10 +799,10 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
 
               <a
                 href="#download"
-                className="p-2.5 rounded-lg border border-[#e8e2d9] hover:border-[#006a4e] hover:bg-[#baeed9]/10 transition-all flex items-center justify-between group"
+                className="p-2.5 rounded-lg border border-[#e8e2d9] hover:border-[#006a4e] hover:bg-[#bbf7d0]/10 transition-all flex items-center justify-between group"
               >
                 <div>
-                  <strong className="text-[#003629] block group-hover:text-[#006a4e]">
+                  <strong className="text-[#166534] block group-hover:text-[#006a4e]">
                     {lang === 'MR' ? '१२वी बोर्ड परीक्षा (विज्ञान व कला)' : 'HSC 12th Board Science & Arts'}
                   </strong>
                   <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'भौतिकशास्त्र / रसायनशास्त्र / कृषी' : 'Physics / Chemistry / Agri / Political'}</span>
@@ -812,10 +812,10 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
 
               <a
                 href="#download"
-                className="p-2.5 rounded-lg border border-[#e8e2d9] hover:border-[#006a4e] hover:bg-[#baeed9]/10 transition-all flex items-center justify-between group"
+                className="p-2.5 rounded-lg border border-[#e8e2d9] hover:border-[#006a4e] hover:bg-[#bbf7d0]/10 transition-all flex items-center justify-between group"
               >
                 <div>
-                  <strong className="text-[#003629] block group-hover:text-[#006a4e]">
+                  <strong className="text-[#166534] block group-hover:text-[#006a4e]">
                     {lang === 'MR' ? 'TET / TAIT शिक्षक भरती सराव पत्रिका' : 'TET / TAIT Model Papers (2025)'}
                   </strong>
                   <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'पेपर १ व २ सविस्तर उत्तरपत्रिका' : 'Teacher Eligibility Paper 1 & 2'}</span>
@@ -825,10 +825,10 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
 
               <a
                 href="#download"
-                className="p-2.5 rounded-lg border border-[#e8e2d9] hover:border-[#006a4e] hover:bg-[#baeed9]/10 transition-all flex items-center justify-between group"
+                className="p-2.5 rounded-lg border border-[#e8e2d9] hover:border-[#006a4e] hover:bg-[#bbf7d0]/10 transition-all flex items-center justify-between group"
               >
                 <div>
-                  <strong className="text-[#003629] block group-hover:text-[#006a4e]">
+                  <strong className="text-[#166534] block group-hover:text-[#006a4e]">
                     {lang === 'MR' ? 'महाराष्ट्र पोलीस भरती सराव संच' : 'Maharashtra Police Constable'}
                   </strong>
                   <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'भंडारा जिल्हा मागील ५ वर्षांचे पेपर्स' : 'Previous 5-year Bhandara district papers'}</span>
@@ -837,18 +837,18 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
               </a>
             </div>
 
-            <button className="w-full py-2 border border-[#e8e2d9] text-[#003629] hover:bg-[#f3ede4] text-[11px] font-bold rounded-lg transition-colors flex items-center justify-center gap-1">
+            <button className="w-full py-2 border border-[#e8e2d9] text-[#166534] hover:bg-[#f3ede4] text-[11px] font-bold rounded-lg transition-colors flex items-center justify-center gap-1">
               <span>{lang === 'MR' ? 'सर्व २५+ सराव पत्रिका पहा' : 'View Complete 25+ PDF Repository'}</span>
               <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
             </button>
           </div>
 
           {/* WIDGET 3: EDUCATION GRIEVANCE DESK */}
-          <div className="bg-[#fff8f0] rounded-2xl p-5 border border-[#ffe0cc] shadow-xs flex flex-col gap-3.5">
-            <div className="flex items-center gap-2 border-b border-[#ffe0cc] pb-3">
-              <span className="material-symbols-outlined text-[#a63b00] text-[20px]">report</span>
+          <div className="bg-[#fef9ee] rounded-2xl p-5 border border-[#fde68a] shadow-xs flex flex-col gap-3.5">
+            <div className="flex items-center gap-2 border-b border-[#fde68a] pb-3">
+              <span className="material-symbols-outlined text-[#c2410c] text-[20px]">report</span>
               <div>
-                <h3 className="font-heading font-bold text-[14px] text-[#a63b00]">
+                <h3 className="font-heading font-bold text-[14px] text-[#c2410c]">
                   {lang === 'MR' ? 'शालेय तक्रार व विचारणा कक्ष' : 'Education Grievance Desk'}
                 </h3>
                 <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'थेट नागरिक नोंदणी' : 'Direct reporting'}</span>
@@ -856,8 +856,8 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             </div>
 
             <div className="flex flex-col gap-2.5 text-[11px] text-[#404945]">
-              <div className="bg-white p-2.5 rounded-lg border border-[#ffe0cc]">
-                <strong className="text-[#003629] block">
+              <div className="bg-white p-2.5 rounded-lg border border-[#fde68a]">
+                <strong className="text-[#166534] block">
                   {lang === 'MR' ? 'शालेय पोषण आहार (PM पोषण) गुणवत्ता:' : 'Mid-Day Meal Quality Complaint:'}
                 </strong>
                 <p className="text-[10px] text-[#707974] mt-0.5 leading-tight">
@@ -865,8 +865,8 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                 </p>
               </div>
 
-              <div className="bg-white p-2.5 rounded-lg border border-[#ffe0cc]">
-                <strong className="text-[#003629] block">
+              <div className="bg-white p-2.5 rounded-lg border border-[#fde68a]">
+                <strong className="text-[#166534] block">
                   {lang === 'MR' ? 'RTE २५% मोफत प्रवेश सहाय्यता:' : 'RTE 25% Free Admission Desk:'}
                 </strong>
                 <p className="text-[10px] text-[#707974] mt-0.5 leading-tight">
@@ -877,7 +877,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
 
             <button
               onClick={() => setShowGrievanceModal(true)}
-              className="w-full py-2 bg-[#a63b00] hover:bg-[#852f00] text-white text-[11px] font-bold rounded-lg transition-all shadow-xs flex items-center justify-center gap-1.5"
+              className="w-full py-2 bg-[#c2410c] hover:bg-[#852f00] text-white text-[11px] font-bold rounded-lg transition-all shadow-xs flex items-center justify-center gap-1.5"
             >
               <span className="material-symbols-outlined text-[14px]">edit_note</span>
               <span>{lang === 'MR' ? 'शैक्षणिक तक्रार / विचारणा नोंदवा' : 'Submit an Education Complaint / Inquiry'}</span>
@@ -886,11 +886,11 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
 
           {/* WIDGET 4: CIVIC EDUCATION VISION */}
           <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#003629] text-[#baeed9] font-bold text-[12px] flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-full bg-[#166534] text-[#bbf7d0] font-bold text-[12px] flex items-center justify-center shrink-0">
               <span className="material-symbols-outlined text-[20px]">auto_stories</span>
             </div>
             <div className="text-[11px] text-[#404945] leading-relaxed">
-              <strong className="text-[#003629] block">
+              <strong className="text-[#166534] block">
                 {lang === 'MR' ? 'आसगाव ग्राम शिक्षण संकल्प' : 'Asgaon Village Education Mission'}
               </strong>
               <span className="text-[10px] text-[#707974] block mb-1">{lang === 'MR' ? 'ज्ञान समृद्ध गाव — उज्वल भविष्य' : 'Knowledge Empowerment for Rural Youth'}</span>
@@ -918,7 +918,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             <div className="flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined text-[#006a4e] text-[24px]">local_library</span>
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'अभ्यासिका डेस्क आरक्षित करा' : 'Reserve Study Room Desk'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">
@@ -928,9 +928,9 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             </div>
 
             {bookingSuccess ? (
-              <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
+              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">
+                <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'अभ्यासिका डेस्क आरक्षित झाला!' : 'Study Desk Reserved!'}
                 </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
@@ -942,7 +942,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             ) : (
               <form onSubmit={handleBookingSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'विद्यार्थ्याचे पूर्ण नाव' : 'Student Full Name'}
                   </label>
                   <input
@@ -955,7 +955,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'मोबाईल नंबर (एसएमएस कन्फर्मेशनसाठी)' : 'Mobile Number (For Confirmation)'}
                   </label>
                   <input
@@ -968,7 +968,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'तयारी करत असलेली परीक्षा / अभ्यासक्रम' : 'Target Examination / Course'}
                   </label>
                   <select
@@ -984,7 +984,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   </select>
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'वेळ सत्र निवड (Time Slot)' : 'Time Slot Preference'}
                   </label>
                   <select
@@ -998,12 +998,12 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                     <option value="Night Study (09:00 PM - 11:00 PM)">{lang === 'MR' ? 'रात्र सत्र (रात्री ०९:०० ते ११:००)' : 'Night Study (09:00 PM – 11:00 PM)'}</option>
                   </select>
                 </div>
-                <div className="bg-[#baeed9]/30 p-2.5 rounded-lg border border-[#006a4e]/20 text-[11px] text-[#003629]">
+                <div className="bg-[#bbf7d0]/30 p-2.5 rounded-lg border border-[#006a4e]/20 text-[11px] text-[#166534]">
                   {lang === 'MR' ? 'आसगाव परिसरातील सर्व विद्यार्थ्यांसाठी १००% मोफत. हाय-स्पीड वायफाय व इन्व्हर्टर बॅकअप सक्रिय.' : '100% Free for all students. High-speed WiFi & power backup active.'}
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-[#003629] hover:bg-[#00281e] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
+                  className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
                 >
                   {lang === 'MR' ? 'मोफत डेस्क आरक्षण निश्चित करा' : 'Confirm Free Desk Reservation'}
                 </button>
@@ -1027,7 +1027,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             <div className="flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined text-[#006a4e] text-[24px]">psychology</span>
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'करिअर समुपदेशन वेळ बुक करा' : 'Book Career Counseling Slot'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">
@@ -1037,9 +1037,9 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             </div>
 
             {bookingSuccess ? (
-              <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
+              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">
+                <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'समुपदेशन सत्र निश्चित झाले!' : 'Session Confirmed!'}
                 </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
@@ -1051,7 +1051,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             ) : (
               <form onSubmit={handleBookingSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'विद्यार्थी किंवा पालकांचे नाव' : 'Student / Parent Name'}
                   </label>
                   <input
@@ -1062,7 +1062,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'सध्याची इयत्ता किंवा शिक्षण पातळी' : 'Current Class / Education Level'}
                   </label>
                   <input
@@ -1073,7 +1073,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'तुम्हाला कोणत्या विषयावर मार्गदर्शन हवे आहे?' : 'What would you like guidance on?'}
                   </label>
                   <textarea
@@ -1084,7 +1084,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-[#003629] hover:bg-[#00281e] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
+                  className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
                 >
                   {lang === 'MR' ? 'समुपदेशन वेळ निश्चित करा' : 'Confirm Appointment'}
                 </button>
@@ -1106,9 +1106,9 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#a63b00] text-[24px]">report</span>
+              <span className="material-symbols-outlined text-[#c2410c] text-[24px]">report</span>
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'शालेय तक्रार व विचारणा कक्ष' : 'Education Grievance Desk'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">
@@ -1118,9 +1118,9 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             </div>
 
             {bookingSuccess ? (
-              <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
+              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">
+                <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'तक्रार / विचारणा नोंदवली गेली!' : 'Grievance Registered!'}
                 </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
@@ -1132,7 +1132,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             ) : (
               <form onSubmit={handleBookingSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'संबंधित शाळा किंवा संस्था' : 'Concern School / Institution'}
                   </label>
                   <select className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none bg-white">
@@ -1144,7 +1144,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   </select>
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'मुद्द्याचा प्रकार (Category)' : 'Issue Category'}
                   </label>
                   <select className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none bg-white">
@@ -1156,7 +1156,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   </select>
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'सविस्तर तपशील व निरीक्षण' : 'Details & Observations'}
                   </label>
                   <textarea
@@ -1168,7 +1168,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-[#a63b00] hover:bg-[#852f00] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
+                  className="w-full py-2.5 bg-[#c2410c] hover:bg-[#852f00] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
                 >
                   {lang === 'MR' ? 'तक्रार / विचारणा सादर करा' : 'Submit Official Education Report'}
                 </button>

@@ -74,7 +74,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
       rating: 4.9,
       image: 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=600&q=80',
       icon: 'account_balance',
-      color: '#003629',
+      color: '#166534',
       openingHours: '10:00 AM - 05:30 PM (सोमवार - शनिवार)',
       facilities: ['नागरिक सेवा केंद्र', 'दाखले कक्ष', 'पाणी पुरवठा नियंत्रण कक्ष', 'लोक तक्रार निवारण']
     });
@@ -302,9 +302,9 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
     >
       <div className="relative w-full max-w-5xl h-[92vh] max-h-[860px] bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-[#e8e2d9] overflow-hidden flex flex-col">
         {/* 1. Modal Top Bar */}
-        <div className="px-4 sm:px-6 py-3.5 bg-gradient-to-r from-[#003629] via-[#004d3b] to-[#1b4d3e] text-white flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 shrink-0">
+        <div className="px-4 sm:px-6 py-3.5 bg-gradient-to-r from-[#166534] via-[#14532d] to-[#052e16] text-white flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#baeed9] shadow-inner shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#bbf7d0] shadow-inner shrink-0">
               <span className="material-symbols-outlined text-[24px]">explore</span>
             </div>
             <div>
@@ -313,7 +313,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                   आसगाव समग्र ग्राम नकाशा
                 </h3>
               </div>
-              <p className="text-[11px] sm:text-[12px] text-[#baeed9]/90 font-medium">
+              <p className="text-[11px] sm:text-[12px] text-[#bbf7d0]/90 font-medium">
                 • {allPins.length} नोंदणीकृत ठिकाणे
               </p>
             </div>
@@ -347,8 +347,8 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                         }}
                         className="w-full px-3 py-2 text-left hover:bg-[#f9f3ea] flex items-center justify-between text-[11px] border-b border-[#f3ede4] last:border-0"
                       >
-                        <span className="font-bold text-[#003629] truncate">{lang === 'MR' && p.nameMr ? p.nameMr : p.name}</span>
-                        <span className="text-[#a63b00] shrink-0 text-[10px]">{p.categoryLabelMr}</span>
+                        <span className="font-bold text-[#166534] truncate">{lang === 'MR' && p.nameMr ? p.nameMr : p.name}</span>
+                        <span className="text-[#c2410c] shrink-0 text-[10px]">{p.categoryLabelMr}</span>
                       </button>
                     ))
                   )}
@@ -359,7 +359,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
             <button
               type="button"
               onClick={handleFlyToCenter}
-              className="px-3 py-1.5 rounded-lg bg-[#baeed9] hover:bg-[#a3e5cd] text-[#002117] text-[11px] font-bold flex items-center gap-1 shadow-xs transition-all shrink-0"
+              className="px-3 py-1.5 rounded-lg bg-[#bbf7d0] hover:bg-[#a3e5cd] text-[#002117] text-[11px] font-bold flex items-center gap-1 shadow-xs transition-all shrink-0"
               title="ग्रामपंचायत केंद्रस्थानी जा (Center GP)"
             >
               <span className="material-symbols-outlined text-[16px]">my_location</span>
@@ -394,7 +394,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
               key={cat.id}
               onClick={() => setActiveCategory(cat.id as any)}
               className={`px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shrink-0 transition-all ${activeCategory === cat.id
-                  ? 'bg-[#003629] text-white shadow-xs'
+                  ? 'bg-[#166534] text-white shadow-xs'
                   : 'bg-white text-[#404945] hover:bg-[#e8e2d9] border border-[#d0dcd5]'
                 }`}
             >
@@ -428,18 +428,18 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                     </div>
                   )}
                   <div>
-                    <h4 className="font-heading font-extrabold text-[15px] text-[#003629] leading-tight">
+                    <h4 className="font-heading font-extrabold text-[15px] text-[#166534] leading-tight">
                       {lang === 'MR' && activePin.nameMr ? activePin.nameMr : activePin.name}
                     </h4>
                     <p className="text-[11px] text-[#707974] mt-0.5 line-clamp-1">
                       {activePin.landmark ? `${activePin.landmark}, ` : ''}{activePin.address || 'आसगाव परिसर'}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-[11px] text-[#a63b00] font-bold flex items-center gap-0.5">
+                      <span className="text-[11px] text-[#c2410c] font-bold flex items-center gap-0.5">
                         <span className="material-symbols-outlined text-[14px]">star</span>
                         <span>{activePin.rating || 4.8}</span>
                       </span>
-                      <span className="text-[10px] bg-[#baeed9]/60 text-[#002117] font-semibold px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] bg-[#bbf7d0]/60 text-[#002117] font-semibold px-2 py-0.5 rounded-full">
                         {lang === 'MR' ? activePin.categoryLabelMr : activePin.categoryLabel}
                       </span>
                     </div>
@@ -461,7 +461,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                 {activePin.phone ? (
                   <a
                     href={`tel:${activePin.phone}`}
-                    className="py-2 px-2 bg-[#003629] hover:bg-[#00281e] text-white text-[11px] font-bold rounded-xl flex items-center justify-center gap-1 transition-colors text-center shadow-xs"
+                    className="py-2 px-2 bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold rounded-xl flex items-center justify-center gap-1 transition-colors text-center shadow-xs"
                   >
                     <span className="material-symbols-outlined text-[15px]">call</span>
                     <span>कॉल करा</span>
@@ -498,7 +498,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                   href={`https://www.google.com/maps/dir/?api=1&destination=${activePin.latitude},${activePin.longitude}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="py-2 px-2 bg-[#fff8f0] hover:bg-[#f9f3ea] text-[#a63b00] border border-[#ffe0cc] text-[11px] font-bold rounded-xl flex items-center justify-center gap-1 transition-colors text-center"
+                  className="py-2 px-2 bg-[#fef9ee] hover:bg-[#f9f3ea] text-[#c2410c] border border-[#fde68a] text-[11px] font-bold rounded-xl flex items-center justify-center gap-1 transition-colors text-center"
                 >
                   <span className="material-symbols-outlined text-[15px]">navigation</span>
                   <span>रस्ता पहा</span>

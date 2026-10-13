@@ -183,7 +183,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
       <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-[#e8e2d9] overflow-hidden p-6 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between pb-3 border-b border-[#f3ede4] mb-4">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#a63b00] text-[24px]">storefront</span>
+            <span className="material-symbols-outlined text-[#c2410c] text-[24px]">storefront</span>
             <div>
               <h3 className="font-heading font-bold text-[18px] text-[#1d1b16]">
                 List Your Shop Free (आपला व्यापार)
@@ -207,7 +207,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Om Sai Electricals & Solar"
-              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
           </div>
 
@@ -218,7 +218,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             >
               <option>Krishi &amp; Agro Stores</option>
               <option>Clinics &amp; Pharmacies</option>
@@ -240,7 +240,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="e.g. Shop 12, Market Yard Road"
-              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
           </div>
 
@@ -255,7 +255,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
                 value={landmark}
                 onChange={(e) => setLandmark(e.target.value)}
                 placeholder="e.g. Near Bus Stand"
-                className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
               />
             </div>
             <div>
@@ -268,7 +268,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="10-digit number"
-                className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
               />
             </div>
           </div>
@@ -277,8 +277,8 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
           <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] space-y-2.5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
               <div>
-                <label className="block text-[12px] font-extrabold text-[#003629] flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[16px] text-[#a63b00]">location_on</span>
+                <label className="block text-[12px] font-extrabold text-[#166534] flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[16px] text-[#c2410c]">location_on</span>
                   <span>Shop Location on Map (नकाशावर दुकानाचे थेट स्थान)</span>
                 </label>
                 <p className="text-[10px] text-[#707974]">
@@ -287,8 +287,8 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
               </div>
 
               {/* Coordinates Pill */}
-              <div className="bg-white px-2 py-0.5 rounded-lg border border-[#e8e2d9] text-[10px] font-bold text-[#003629] shrink-0 self-start sm:self-auto flex items-center gap-1">
-                <span className="material-symbols-outlined text-[12px] text-[#a63b00]">pin_drop</span>
+              <div className="bg-white px-2 py-0.5 rounded-lg border border-[#e8e2d9] text-[10px] font-bold text-[#166534] shrink-0 self-start sm:self-auto flex items-center gap-1">
+                <span className="material-symbols-outlined text-[12px] text-[#c2410c]">pin_drop</span>
                 <span>{latitude.toFixed(4)}° N, {longitude.toFixed(4)}° E</span>
               </div>
             </div>
@@ -299,16 +299,16 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
                 type="button"
                 onClick={handleDetectGps}
                 disabled={locatingGps}
-                className="px-3 py-1.5 rounded-lg bg-[#003629] hover:bg-[#1b4d3e] text-white text-[11px] font-bold flex items-center gap-1.5 shadow-xs transition-colors disabled:opacity-50"
+                className="px-3 py-1.5 rounded-lg bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold flex items-center gap-1.5 shadow-xs transition-colors disabled:opacity-50"
               >
-                <span className="material-symbols-outlined text-[15px] text-[#baeed9]">my_location</span>
+                <span className="material-symbols-outlined text-[15px] text-[#bbf7d0]">my_location</span>
                 <span>{locatingGps ? 'GPS शोधत आहे...' : '🎯 माझे थेट GPS स्थान मिळवा'}</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setShowMapPicker(!showMapPicker)}
-                className="px-3 py-1.5 rounded-lg bg-white hover:bg-[#f3ede4] text-[#a63b00] border border-[#ffdbce] text-[11px] font-bold flex items-center gap-1.5 transition-colors shadow-2xs"
+                className="px-3 py-1.5 rounded-lg bg-white hover:bg-[#f3ede4] text-[#c2410c] border border-[#fed7aa] text-[11px] font-bold flex items-center gap-1.5 transition-colors shadow-2xs"
               >
                 <span className="material-symbols-outlined text-[15px]">map</span>
                 <span>{showMapPicker ? 'नकाशा लपवा' : '🗺️ नकाशावर जागा निवडा'}</span>
@@ -319,7 +319,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
             <div>
               <select
                 onChange={handlePresetChange}
-                className="w-full bg-white text-[#1d1b16] p-2 rounded-lg text-[11px] font-medium border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#003629]"
+                className="w-full bg-white text-[#1d1b16] p-2 rounded-lg text-[11px] font-medium border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#166534]"
               >
                 {ASGAON_PRESETS.map((p, idx) => (
                   <option key={idx} value={p.label}>
@@ -333,7 +333,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
             {gpsStatus && (
               <div className={`p-2 rounded-lg text-[11px] font-medium flex items-center gap-1.5 ${
                 gpsStatus.startsWith('✓') 
-                  ? 'bg-[#baeed9] text-[#002117]' 
+                  ? 'bg-[#bbf7d0] text-[#002117]' 
                   : 'bg-[#ffdad6] text-[#ba1a1a]'
               }`}>
                 <span className="material-symbols-outlined text-[15px]">
@@ -368,7 +368,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
               value={hours}
               onChange={(e) => setHours(e.target.value)}
               placeholder="e.g. 7:00 AM - 9:00 PM"
-              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
           </div>
 
@@ -378,7 +378,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
               Shop Front / Board Photo (दुकानाचे छायाचित्र)
             </label>
             <div className="flex items-center gap-3">
-              <label className="cursor-pointer inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#003629] text-white text-[12px] font-bold hover:bg-[#1b4d3e] transition-colors shadow-xs">
+              <label className="cursor-pointer inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#166534] text-white text-[12px] font-bold hover:bg-[#052e16] transition-colors shadow-xs">
                 <span className="material-symbols-outlined text-[18px]">add_a_photo</span>
                 <span>{uploadingImage ? 'Uploading to Cloudinary...' : 'Upload Photo'}</span>
                 <input
@@ -427,7 +427,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
               placeholder="What goods or services do you provide to villagers?"
-              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
           </div>
 
@@ -442,7 +442,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
             <button
               type="submit"
               disabled={loading}
-              className="px-5 py-2 rounded-xl bg-[#a63b00] text-white text-[13px] font-bold hover:bg-[#852f00] transition-colors shadow-xs disabled:opacity-50"
+              className="px-5 py-2 rounded-xl bg-[#c2410c] text-white text-[13px] font-bold hover:bg-[#852f00] transition-colors shadow-xs disabled:opacity-50"
             >
               {loading ? 'Registering...' : 'Publish Free Listing'}
             </button>

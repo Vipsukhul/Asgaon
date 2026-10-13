@@ -60,7 +60,7 @@ export const EDUCATION_INSTITUTES: EducationMapItem[] = [
     latitude: 20.7858,
     longitude: 79.6345,
     icon: 'school',
-    color: '#003629'
+    color: '#166534'
   },
   {
     id: 'edu-saraswati',
@@ -78,7 +78,7 @@ export const EDUCATION_INSTITUTES: EducationMapItem[] = [
     latitude: 20.7842,
     longitude: 79.6360,
     icon: 'child_care',
-    color: '#a63b00'
+    color: '#c2410c'
   },
   {
     id: 'edu-iti-pauni',
@@ -256,7 +256,7 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
               २०°४७'०६"N ७९°३८'०६"E
             </span>
           </div>
-          <h3 className="font-heading font-extrabold text-lg sm:text-xl text-[#003629]">
+          <h3 className="font-heading font-extrabold text-lg sm:text-xl text-[#166534]">
             {lang === 'MR' ? 'शाळा, कनिष्ठ महाविद्यालय व अभ्यासिका नकाशा' : 'Schools, Colleges & Village Library Map'}
           </h3>
           <p className="text-xs text-stone-600">
@@ -282,7 +282,7 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
                 setSelectedItem(null);
               }}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeCategory === tab.id
-                  ? 'bg-[#003629] text-white shadow-xs'
+                  ? 'bg-[#166534] text-white shadow-xs'
                   : 'bg-white text-stone-700 hover:bg-stone-100 border border-stone-200'
                 }`}
             >
@@ -292,7 +292,7 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
 
           <button
             onClick={handleRecenter}
-            className="p-1.5 bg-white hover:bg-stone-100 text-[#003629] rounded-xl border border-stone-200 transition-all cursor-pointer"
+            className="p-1.5 bg-white hover:bg-stone-100 text-[#166534] rounded-xl border border-stone-200 transition-all cursor-pointer"
             title={lang === 'MR' ? 'आसगाव केंद्रावर पुन्हा या' : 'Recenter to Asgaon'}
           >
             <span className="material-symbols-outlined text-[18px]">my_location</span>
@@ -350,7 +350,7 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-stone-500">{lang === 'MR' ? 'संपर्क क्रमांक:' : 'Phone:'}</span>
-                  <a href={`tel:${selectedItem.phone}`} className="font-bold text-[#003629] hover:underline flex items-center gap-1">
+                  <a href={`tel:${selectedItem.phone}`} className="font-bold text-[#166534] hover:underline flex items-center gap-1">
                     <span className="material-symbols-outlined text-[14px]">call</span>
                     <span>{selectedItem.phone}</span>
                   </a>
@@ -378,7 +378,7 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
                 href={`https://www.google.com/maps/dir/?api=1&destination=${selectedItem.latitude},${selectedItem.longitude}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 py-2.5 px-4 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all"
+                className="flex-1 py-2.5 px-4 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all"
               >
                 <span className="material-symbols-outlined text-[16px]">navigation</span>
                 <span>{lang === 'MR' ? 'गूगल मॅपवर दिशा पहा' : 'Get Directions'}</span>

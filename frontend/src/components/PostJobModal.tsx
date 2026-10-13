@@ -83,7 +83,7 @@ export const PostJobModal: React.FC<PostJobModalProps> = ({ isOpen, onClose, onA
       <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-[#e8e2d9] overflow-hidden p-6 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between pb-3 border-b border-[#f3ede4] mb-4">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#003629] text-[24px]">post_add</span>
+            <span className="material-symbols-outlined text-[#166534] text-[24px]">post_add</span>
             <div>
               <h3 className="font-heading font-bold text-[18px] text-[#1d1b16]">
                 Post Free Job Vacancy (रोजगार जाहिरात)
@@ -107,7 +107,7 @@ export const PostJobModal: React.FC<PostJobModalProps> = ({ isOpen, onClose, onA
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Tractor Driver / Shop Assistant / Electrician"
-              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
           </div>
 
@@ -121,7 +121,7 @@ export const PostJobModal: React.FC<PostJobModalProps> = ({ isOpen, onClose, onA
               value={employer}
               onChange={(e) => setEmployer(e.target.value)}
               placeholder="e.g. Kisan Agro Center / Dr. Clinic"
-              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
           </div>
 
@@ -133,7 +133,7 @@ export const PostJobModal: React.FC<PostJobModalProps> = ({ isOpen, onClose, onA
               <select
                 value={type}
                 onChange={(e) => setType(e.target.value as any)}
-                className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
               >
                 <option value="Daily Wage">Daily Wage (रोजंदारी)</option>
                 <option value="Full-Time Staff">Full-Time Staff (पूर्ण वेळ)</option>
@@ -150,7 +150,7 @@ export const PostJobModal: React.FC<PostJobModalProps> = ({ isOpen, onClose, onA
                 value={salary}
                 onChange={(e) => setSalary(e.target.value)}
                 placeholder="e.g. ₹800 / Day or ₹15,000 / Mo"
-                className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
               />
             </div>
           </div>
@@ -165,7 +165,7 @@ export const PostJobModal: React.FC<PostJobModalProps> = ({ isOpen, onClose, onA
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="10-digit number"
-              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
           </div>
 
@@ -178,7 +178,7 @@ export const PostJobModal: React.FC<PostJobModalProps> = ({ isOpen, onClose, onA
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
               placeholder="Describe tasks, working hours, meals or requirements..."
-              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+              className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
           </div>
 
@@ -193,7 +193,7 @@ export const PostJobModal: React.FC<PostJobModalProps> = ({ isOpen, onClose, onA
             <button
               type="submit"
               disabled={loading}
-              className="px-5 py-2 rounded-xl bg-[#003629] text-white text-[13px] font-bold hover:bg-[#1b4d3e] transition-colors shadow-xs disabled:opacity-50"
+              className="px-5 py-2 rounded-xl bg-[#166534] text-white text-[13px] font-bold hover:bg-[#052e16] transition-colors shadow-xs disabled:opacity-50"
             >
               {loading ? 'Posting...' : 'Publish Job Vacancy'}
             </button>

@@ -35,7 +35,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, rightBadge }) => 
                 <button
                   type="button"
                   onClick={item.onClick}
-                  className="hover:text-[#003629] hover:underline font-medium text-[#55605a] transition-colors flex items-center gap-1 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#003629] rounded px-1 -mx-1"
+                  className="hover:text-[#166534] hover:underline font-medium text-[#55605a] transition-colors flex items-center gap-1 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#166534] rounded px-1 -mx-1"
                 >
                   {index === 0 && (
                     <span className="material-symbols-outlined text-[15px]">home</span>

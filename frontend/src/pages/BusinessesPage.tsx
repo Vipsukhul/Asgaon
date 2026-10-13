@@ -146,7 +146,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
           { label: t('nav_businesses', 'स्थानिक दुकाने व सेवा'), active: true }
         ]}
         rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#baeed9] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
+          <div className="flex items-center gap-1.5 bg-[#bbf7d0] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
             <span className="material-symbols-outlined text-[15px] text-[#002117]">verified_user</span>
             <span>{lang === 'MR' ? 'प्रभाग नागरी ग्राहक मदत केंद्र पडताळणीकृत • आज सकाळी ०८:०० वा. अद्ययावत' : 'Ward Civic Consumer Cell Hotline Verified • Updated today 08:00 AM'}</span>
           </div>
@@ -156,18 +156,18 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
       {/* 2. Hero / Header Banner */}
       <div className="bg-white rounded-2xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
         <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#baeed9] text-[#002117] text-[10px] font-extrabold uppercase tracking-wider mb-2">
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#bbf7d0] text-[#002117] text-[10px] font-extrabold uppercase tracking-wider mb-2">
             {allBusinesses.length} {lang === 'MR' ? 'नोंदणीकृत स्थानिक दुकाने व सेवा केंद्र' : 'VERIFIED LOCAL OUTLETS IN WARD REGISTRY'}
           </span>
 
-          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#003629] leading-tight mb-1">
+          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#166534] leading-tight mb-1">
             {lang === 'MR' ? 'स्थानिक दुकाने व सेवा निर्देशिका' : 'Local Business & Service Directory'}
           </h1>
-          <p className="font-heading font-bold text-[15px] text-[#a63b00] mb-3">
+          <p className="font-heading font-bold text-[15px] text-[#c2410c] mb-3">
             {lang === 'MR' ? 'आसगाव - पवनी तालुका व्यापारी व सेवा केंद्र सूची' : 'Local Business & Service Directory (Asgaon - Pauni Cluster)'}
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 text-[12px] font-bold text-[#003629]">
+          <div className="flex flex-wrap items-center gap-4 text-[12px] font-bold text-[#166534]">
             <span className="flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px] text-[#376757]">check_circle</span>
               <span>{lang === 'MR' ? '१००% शून्य-दलाली थेट निर्देशिका' : '100% Zero-Commission Directory'}</span>
@@ -184,10 +184,10 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
         </div>
 
         {/* Right CTA Box */}
-        <div className="bg-[#1b4d3e] text-white p-5 rounded-2xl border border-[#003629] shadow-sm flex flex-col gap-3 w-full lg:w-72 shrink-0">
+        <div className="bg-[#052e16] text-white p-5 rounded-2xl border border-[#166534] shadow-sm flex flex-col gap-3 w-full lg:w-72 shrink-0">
           <button
             onClick={onRegisterShop}
-            className="w-full py-2.5 px-4 rounded-xl bg-[#a63b00] hover:bg-[#852f00] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+            className="w-full py-2.5 px-4 rounded-xl bg-[#c2410c] hover:bg-[#852f00] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
           >
             <span className="material-symbols-outlined text-[18px]">add_business</span>
             <span>{t('btn_register_shop', lang === 'MR' ? 'दुकान नोंदवा' : 'Register Business')} ({lang === 'MR' ? 'मोफत' : 'FREE'})</span>
@@ -200,8 +200,8 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
             }}
             className={`w-full py-2 px-4 rounded-xl text-[12px] font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs ${
               viewMode === 'map'
-                ? 'bg-[#baeed9] text-[#002117] hover:bg-white'
-                : 'bg-white text-[#003629] hover:bg-[#baeed9]'
+                ? 'bg-[#bbf7d0] text-[#002117] hover:bg-white'
+                : 'bg-white text-[#166534] hover:bg-[#bbf7d0]'
             }`}
           >
             <span className="material-symbols-outlined text-[16px]">map</span>
@@ -220,12 +220,12 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={lang === 'MR' ? "दुकानाचे नाव, मालक, प्रकार, खूण शोधा (उदा. कृषी केंद्र, किराणा, ट्रॅक्टर दुरुस्ती, डॉक्टर)..." : "Search by shop name, owner, category, landmark (e.g. Krishi, Kirana, Tractor, Clinic)..."}
-              className="w-full pl-10 pr-10 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+              className="w-full pl-10 pr-10 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
             <button
               type="button"
               onClick={() => alert(lang === 'MR' ? 'व्हॉइस सर्च तयार आहे! बोला...' : 'Voice search ready!')}
-              className="absolute right-3 top-2.5 text-[#003629] hover:text-[#1b4d3e]"
+              className="absolute right-3 top-2.5 text-[#166534] hover:text-[#052e16]"
               title={lang === 'MR' ? 'व्हॉइस सर्च' : 'Voice Search'}
             >
               <span className="material-symbols-outlined text-[19px]">mic</span>
@@ -237,7 +237,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
             <button
               type="button"
               onClick={() => setLang(lang === 'MR' ? 'EN' : 'MR')}
-              className="px-2.5 py-1.5 rounded-xl text-[12px] font-bold bg-[#f9f3ea] hover:bg-[#e8e2d9] text-[#003629] border border-[#e8e2d9] flex items-center gap-1 transition-all"
+              className="px-2.5 py-1.5 rounded-xl text-[12px] font-bold bg-[#f9f3ea] hover:bg-[#e8e2d9] text-[#166534] border border-[#e8e2d9] flex items-center gap-1 transition-all"
               title={lang === 'MR' ? 'Switch to English' : 'मराठीत बदला'}
             >
               <span className="material-symbols-outlined text-[15px]">translate</span>
@@ -268,7 +268,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               onClick={() => setSelectedCat(cat.id)}
               className={`px-3 py-1.5 rounded-xl text-[12px] font-bold transition-all whitespace-nowrap ${
                 selectedCat === cat.id
-                  ? 'bg-[#003629] text-white shadow-xs'
+                  ? 'bg-[#166534] text-white shadow-xs'
                   : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9] border border-[#e8e2d9]'
               }`}
             >
@@ -284,7 +284,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               type="checkbox"
               checked={openNow}
               onChange={(e) => { setOpenNow(e.target.checked); setCurrentPage(1); }}
-              className="w-4 h-4 accent-[#003629]"
+              className="w-4 h-4 accent-[#166534]"
             />
             <span>{lang === 'MR' ? 'सध्या सुरू' : 'Open Now'}</span>
           </label>
@@ -293,7 +293,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               type="checkbox"
               checked={whatsappOnly}
               onChange={(e) => { setWhatsappOnly(e.target.checked); setCurrentPage(1); }}
-              className="w-4 h-4 accent-[#003629]"
+              className="w-4 h-4 accent-[#166534]"
             />
             <span>{lang === 'MR' ? 'व्हॉट्सॲप ऑर्डर' : 'WhatsApp Orders'}</span>
           </label>
@@ -302,7 +302,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               type="checkbox"
               checked={homeDelivery}
               onChange={(e) => { setHomeDelivery(e.target.checked); setCurrentPage(1); }}
-              className="w-4 h-4 accent-[#003629]"
+              className="w-4 h-4 accent-[#166534]"
             />
             <span>{lang === 'MR' ? 'होम डिलिव्हरी' : 'Home Delivery'}</span>
           </label>
@@ -311,7 +311,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               type="checkbox"
               checked={panchayatAccredited}
               onChange={(e) => { setPanchayatAccredited(e.target.checked); setCurrentPage(1); }}
-              className="w-4 h-4 accent-[#003629]"
+              className="w-4 h-4 accent-[#166534]"
             />
             <span>{lang === 'MR' ? 'प्रमाणित दुकाने' : 'Accredited Outlets'}</span>
           </label>
@@ -320,7 +320,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               type="checkbox"
               checked={fssaiOnly}
               onChange={(e) => { setFssaiOnly(e.target.checked); setCurrentPage(1); }}
-              className="w-4 h-4 accent-[#003629]"
+              className="w-4 h-4 accent-[#166534]"
             />
             <span>{lang === 'MR' ? 'FSSAI / औषध परवाना' : 'FSSAI / Drug License'}</span>
           </label>
@@ -341,8 +341,8 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 onClick={() => setViewMode('list')}
                 className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[12px] font-bold flex items-center gap-1 transition-all ${
                   viewMode === 'list'
-                    ? 'bg-[#003629] text-white shadow-xs'
-                    : 'text-[#404945] hover:text-[#003629]'
+                    ? 'bg-[#166534] text-white shadow-xs'
+                    : 'text-[#404945] hover:text-[#166534]'
                 }`}
               >
                 <span className="material-symbols-outlined text-[16px]">view_list</span>
@@ -357,8 +357,8 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 }}
                 className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[12px] font-bold flex items-center gap-1 transition-all ${
                   viewMode === 'map'
-                    ? 'bg-[#003629] text-white shadow-xs'
-                    : 'text-[#404945] hover:text-[#003629]'
+                    ? 'bg-[#166534] text-white shadow-xs'
+                    : 'text-[#404945] hover:text-[#166534]'
                 }`}
               >
                 <span className="material-symbols-outlined text-[16px]">map</span>
@@ -373,8 +373,8 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 }}
                 className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[12px] font-bold flex items-center gap-1 transition-all ${
                   viewMode === 'both'
-                    ? 'bg-[#003629] text-white shadow-xs'
-                    : 'text-[#404945] hover:text-[#003629]'
+                    ? 'bg-[#166534] text-white shadow-xs'
+                    : 'text-[#404945] hover:text-[#166534]'
                 }`}
               >
                 <span className="material-symbols-outlined text-[16px]">vertical_split</span>
@@ -402,13 +402,13 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
           {/* Cards List or Empty State */}
           {allBusinesses.length === 0 ? (
             <div className="bg-white rounded-2xl p-12 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-              <div className="w-8 h-8 border-3 border-[#003629] border-t-transparent rounded-full animate-spin mb-1" />
-              <p className="text-[13px] font-bold text-[#003629]">{lang === 'MR' ? 'डेटाबेसशी जोडत आहे व दुकाने लोड होत आहेत...' : 'Connecting to database & loading businesses...'}</p>
+              <div className="w-8 h-8 border-3 border-[#166534] border-t-transparent rounded-full animate-spin mb-1" />
+              <p className="text-[13px] font-bold text-[#166534]">{lang === 'MR' ? 'डेटाबेसशी जोडत आहे व दुकाने लोड होत आहेत...' : 'Connecting to database & loading businesses...'}</p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-              <span className="material-symbols-outlined text-[48px] text-[#a63b00]">storefront</span>
-              <h3 className="font-heading font-bold text-[18px] text-[#003629]">{lang === 'MR' ? 'कोणताही व्यवसाय सापडला नाही' : 'No matching enterprises found'}</h3>
+              <span className="material-symbols-outlined text-[48px] text-[#c2410c]">storefront</span>
+              <h3 className="font-heading font-bold text-[18px] text-[#166534]">{lang === 'MR' ? 'कोणताही व्यवसाय सापडला नाही' : 'No matching enterprises found'}</h3>
               <p className="text-[13px] text-[#707974] max-w-md">{lang === 'MR' ? 'तुमच्या निवडलेल्या फिल्टरनुसार कोणतीही दुकाने सापडली नाहीत. कृपया फिल्टर बदला किंवा पुन्हा शोधा.' : 'No shops or local services match your selected category and filters. Try clearing some filters or searching with different terms.'}</p>
               <button
                 onClick={() => {
@@ -421,7 +421,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                   setFssaiOnly(false);
                   setCurrentPage(1);
                 }}
-                className="px-4 py-2 bg-[#003629] text-white text-[12px] font-bold rounded-xl hover:bg-[#1b4d3e] transition-colors"
+                className="px-4 py-2 bg-[#166534] text-white text-[12px] font-bold rounded-xl hover:bg-[#052e16] transition-colors"
               >
                 {lang === 'MR' ? 'सर्व फिल्टर्स रीसेट करा' : 'Reset All Filters'}
               </button>
@@ -435,7 +435,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 {/* Image Thumbnail */}
                 <div className="sm:w-44 h-40 sm:h-auto rounded-xl overflow-hidden bg-[#f3ede4] shrink-0 relative">
                   <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                  <span className="absolute top-2 left-2 bg-[#003629] text-white text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded">
+                  <span className="absolute top-2 left-2 bg-[#166534] text-white text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded">
                     {item.badge === 'VERIFIED MERCHANT' ? (lang === 'MR' ? 'प्रमाणित व्यावसायिक' : 'VERIFIED MERCHANT') : item.badge}
                   </span>
                 </div>
@@ -445,7 +445,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                   <div>
                     <div className="flex items-start justify-between gap-2 mb-1">
                       <h3
-                        className="font-heading font-bold text-[17px] text-[#1d1b16] hover:text-[#003629] transition-colors leading-snug"
+                        className="font-heading font-bold text-[17px] text-[#1d1b16] hover:text-[#166534] transition-colors leading-snug"
                       >
                         {onSelectBusinessSlug ? (
                           <a
@@ -467,7 +467,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                           </span>
                         )}
                       </h3>
-                      <div className="flex items-center gap-1 text-[12px] font-bold text-[#a63b00] shrink-0 bg-[#fff8f0] px-1.5 py-0.5 rounded border border-[#ffdbce]">
+                      <div className="flex items-center gap-1 text-[12px] font-bold text-[#c2410c] shrink-0 bg-[#fef9ee] px-1.5 py-0.5 rounded border border-[#fed7aa]">
                         <span>★ {item.rating}</span>
                         <span className="text-[#707974] text-[10px]">({item.ratingCount})</span>
                       </div>
@@ -477,10 +477,10 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                       <button
                         type="button"
                         onClick={() => setLocationModalBiz(item)}
-                        className="text-[12px] text-[#707974] hover:text-[#003629] flex items-center gap-1 group text-left transition-colors"
+                        className="text-[12px] text-[#707974] hover:text-[#166534] flex items-center gap-1 group text-left transition-colors"
                         title={lang === 'MR' ? 'नकाशावर स्थान पहा' : 'Click to view shop location on map'}
                       >
-                        <span className="material-symbols-outlined text-[15px] text-[#a63b00] group-hover:scale-110 transition-transform">location_on</span>
+                        <span className="material-symbols-outlined text-[15px] text-[#c2410c] group-hover:scale-110 transition-transform">location_on</span>
                         <span>{item.address} • <strong className="text-[#1d1b16]">{item.distance}</strong></span>
                       </button>
                     </div>
@@ -490,7 +490,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                     </div>
 
                     <div className="text-[11px] text-[#707974] flex items-center gap-1 mb-2">
-                      <span className="material-symbols-outlined text-[14px] text-[#003629]">schedule</span>
+                      <span className="material-symbols-outlined text-[14px] text-[#166534]">schedule</span>
                       <span>{item.hours}</span>
                     </div>
 
@@ -529,7 +529,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                     <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                       <a
                         href={`tel:${item.phone}`}
-                        className="px-3 py-1.5 rounded-lg bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] font-bold flex items-center gap-1 transition-colors shadow-xs"
+                        className="px-3 py-1.5 rounded-lg bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold flex items-center gap-1 transition-colors shadow-xs"
                       >
                         <span className="material-symbols-outlined text-[14px]">call</span>
                         <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
@@ -539,11 +539,12 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                         href={`https://wa.me/91${item.whatsapp}?text=Hello%20${encodeURIComponent(item.name)},%20I%20saw%20your%20shop%20on%20Digital%20Gaon%20Asgaon.`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3 py-1.5 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#003629] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9] transition-colors"
+                        className="px-3 py-1.5 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#166534] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9] transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px] text-[#25D366]">chat</span>
                         <span>{lang === 'MR' ? 'व्हॉट्सॲप' : 'WhatsApp'}</span>
                       </a>
+                      {/* Dedicated Shop Location Map button */}
 
                       {/* Dedicated Shop Location on Map Button */}
                       <button
@@ -580,7 +581,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                         href={`https://www.google.com/maps/dir/?api=1&destination=${item.latitude},${item.longitude}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-1.5 rounded-lg bg-[#f3ede4] text-[#707974] hover:text-[#003629] hover:bg-[#e8e2d9] transition-colors border border-[#e8e2d9]"
+                        className="p-1.5 rounded-lg bg-[#f3ede4] text-[#707974] hover:text-[#166534] hover:bg-[#e8e2d9] transition-colors border border-[#e8e2d9]"
                         title={lang === 'MR' ? 'Google Maps थेट दिशानिर्देश' : 'Google Maps Directions'}
                       >
                         <span className="material-symbols-outlined text-[15px]">navigation</span>
@@ -591,8 +592,8 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                       onClick={() => toggleBookmark(item.id, item.name)}
                       className={`p-1.5 rounded-lg transition-colors ${
                         bookmarkedIds.includes(item.id)
-                          ? 'text-[#a63b00] bg-[#ffdbce]'
-                          : 'text-[#707974] hover:text-[#003629] hover:bg-[#f3ede4]'
+                          ? 'text-[#c2410c] bg-[#fed7aa]'
+                          : 'text-[#707974] hover:text-[#166534] hover:bg-[#f3ede4]'
                       }`}
                       title={lang === 'MR' ? 'जतन करा (बुकमार्क)' : 'Bookmark this shop'}
                     >
@@ -631,7 +632,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                       onClick={() => setCurrentPage(pageNum)}
                       className={`w-7 h-7 rounded-lg font-bold flex items-center justify-center transition-colors ${
                         validCurrentPage === pageNum
-                          ? 'bg-[#003629] text-white shadow-xs'
+                          ? 'bg-[#166534] text-white shadow-xs'
                           : 'bg-[#f3ede4] text-[#1d1b16] hover:bg-[#e8e2d9]'
                       }`}
                     >
@@ -658,11 +659,11 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
         <div className="flex flex-col gap-5">
           {/* Widget 1: Civic Initiative - Are You a Local Shopkeeper? */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#a63b00] bg-[#fff8f0] px-2 py-0.5 rounded border border-[#ffdbce]">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#c2410c] bg-[#fef9ee] px-2 py-0.5 rounded border border-[#fed7aa]">
               {lang === 'MR' ? 'नागरिक पुढाकार' : 'CIVIC INITIATIVE'}
             </span>
 
-            <h3 className="font-heading font-extrabold text-[16px] text-[#003629] mt-2 mb-2">
+            <h3 className="font-heading font-extrabold text-[16px] text-[#166534] mt-2 mb-2">
               {lang === 'MR' ? 'तुम्ही स्थानिक व्यावसायिक किंवा कारागीर आहात का?' : 'Are You a Local Shopkeeper or Artisan?'}
             </h3>
 
@@ -697,7 +698,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               <span className="material-symbols-outlined text-[18px] text-[#707974]">gavel</span>
             </div>
 
-            <h3 className="font-heading font-extrabold text-[15px] text-[#003629] mt-2 mb-1">
+            <h3 className="font-heading font-extrabold text-[15px] text-[#166534] mt-2 mb-1">
               {lang === 'MR' ? 'ग्रामसभा प्रमाणित दरपत्रक' : 'Gram Sabha Rate Card'}
             </h3>
             <p className="text-[11px] text-[#707974] mb-3">
@@ -707,23 +708,23 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
             <div className="space-y-2 text-[12px]">
               <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
                 <span className="text-[#1d1b16] font-semibold">{lang === 'MR' ? 'ट्रॅक्टर नांगरणी (रोटाव्हेटर)' : 'Tractor Tillage (Rotavator)'}</span>
-                <span className="font-extrabold text-[#003629]">{lang === 'MR' ? '₹९०० - १,००० / तास' : '₹900 - 1,000 / hr'}</span>
+                <span className="font-extrabold text-[#166534]">{lang === 'MR' ? '₹९०० - १,००० / तास' : '₹900 - 1,000 / hr'}</span>
               </div>
               <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
                 <span className="text-[#1d1b16] font-semibold">{lang === 'MR' ? 'धान कापणी यंत्र (हार्वेस्टर)' : 'Combine Harvester (Paddy)'}</span>
-                <span className="font-extrabold text-[#003629]">{lang === 'MR' ? '₹२,२०० - २,५०० / एकर' : '₹2,200 - 2,500 / ac'}</span>
+                <span className="font-extrabold text-[#166534]">{lang === 'MR' ? '₹२,२०० - २,५०० / एकर' : '₹2,200 - 2,500 / ac'}</span>
               </div>
               <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
                 <span className="text-[#1d1b16] font-semibold">{lang === 'MR' ? 'दैनिक शेतमजुरी (महिला)' : 'Daily Farm Labour (Female)'}</span>
-                <span className="font-extrabold text-[#003629]">{lang === 'MR' ? '₹३५० - ४०० / दिवस' : '₹350 - 400 / day'}</span>
+                <span className="font-extrabold text-[#166534]">{lang === 'MR' ? '₹३५० - ४०० / दिवस' : '₹350 - 400 / day'}</span>
               </div>
               <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
                 <span className="text-[#1d1b16] font-semibold">{lang === 'MR' ? 'दैनिक शेतमजुरी (पुरुष)' : 'Daily Farm Labour (Male)'}</span>
-                <span className="font-extrabold text-[#003629]">{lang === 'MR' ? '₹४५० - ५०० / दिवस' : '₹450 - 500 / day'}</span>
+                <span className="font-extrabold text-[#166534]">{lang === 'MR' ? '₹४५० - ५०० / दिवस' : '₹450 - 500 / day'}</span>
               </div>
               <div className="flex items-center justify-between p-2 rounded-lg bg-[#f9f3ea] border border-[#e8e2d9]">
                 <span className="text-[#1d1b16] font-semibold">{lang === 'MR' ? 'गवंडी / मिस्त्री (कुशल बांधकाम)' : 'Mason / Mistri (Skilled Civil)'}</span>
-                <span className="font-extrabold text-[#003629]">{lang === 'MR' ? '₹८०० - ९०० / दिवस' : '₹800 - 900 / day'}</span>
+                <span className="font-extrabold text-[#166534]">{lang === 'MR' ? '₹८०० - ९०० / दिवस' : '₹800 - 900 / day'}</span>
               </div>
             </div>
 
@@ -742,7 +743,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               {lang === 'MR' ? 'तातडीची मदत' : 'URGENT VILLAGE HELP'}
             </span>
 
-            <h3 className="font-heading font-extrabold text-[15px] text-[#003629] mt-2 mb-1">
+            <h3 className="font-heading font-extrabold text-[15px] text-[#166534] mt-2 mb-1">
               {lang === 'MR' ? 'मेकॅनिक किंवा दुरुस्ती तंत्रज्ञ हवे आहेत?' : 'Need an On-Demand Mechanic or Repair?'}
             </h3>
             <p className="text-[11px] text-[#707974] mb-3">
@@ -754,7 +755,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 href="tel:8888172233"
                 className="p-2.5 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9] hover:bg-[#f3ede4] transition-colors flex flex-col justify-between"
               >
-                <div className="flex items-center gap-1 text-[#a63b00] font-bold">
+                <div className="flex items-center gap-1 text-[#c2410c] font-bold">
                   <span className="material-symbols-outlined text-[16px]">bolt</span>
                   <span>{lang === 'MR' ? 'इलेक्ट्रिशियन' : 'Village Electrician'}</span>
                 </div>
@@ -767,7 +768,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 href="tel:9765432100"
                 className="p-2.5 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9] hover:bg-[#f3ede4] transition-colors flex flex-col justify-between"
               >
-                <div className="flex items-center gap-1 text-[#003629] font-bold">
+                <div className="flex items-center gap-1 text-[#166534] font-bold">
                   <span className="material-symbols-outlined text-[16px]">precision_manufacturing</span>
                   <span>{lang === 'MR' ? 'मोटार रिवायंडिंग' : 'Submersible Motor'}</span>
                 </div>
@@ -780,7 +781,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 href="tel:9822100000"
                 className="p-2.5 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9] hover:bg-[#f3ede4] transition-colors flex flex-col justify-between"
               >
-                <div className="flex items-center gap-1 text-[#a63b00] font-bold">
+                <div className="flex items-center gap-1 text-[#c2410c] font-bold">
                   <span className="material-symbols-outlined text-[16px]">plumbing</span>
                   <span>{lang === 'MR' ? 'बोअरवेल प्लंबर' : 'Borewell Plumber'}</span>
                 </div>
@@ -808,7 +809,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               {lang === 'MR' ? 'आठवडी बाजार सूचना' : 'WEEKLY HAAT NOTICE'}
             </span>
 
-            <h3 className="font-heading font-extrabold text-[15px] text-[#003629] mt-2 mb-1">
+            <h3 className="font-heading font-extrabold text-[15px] text-[#166534] mt-2 mb-1">
               {lang === 'MR' ? 'आसगाव बुधवार बाजार' : 'Asgaon Budhwar Bazaar'}
             </h3>
             <p className="text-[12px] text-[#404945] leading-relaxed mb-3">
@@ -819,7 +820,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
 
             <div className="flex items-center justify-between bg-white p-2.5 rounded-xl border border-[#e8e2d9] text-[12px]">
               <span className="font-bold text-[#707974]">{lang === 'MR' ? 'पुढील बाजाराचा वार:' : 'Next Haat Day:'}</span>
-              <span className="font-extrabold text-[#a63b00]">{lang === 'MR' ? 'या बुधवारी, सकाळी ०७:०० वा.' : 'This Wednesday, 07:00 AM'}</span>
+              <span className="font-extrabold text-[#c2410c]">{lang === 'MR' ? 'या बुधवारी, सकाळी ०७:०० वा.' : 'This Wednesday, 07:00 AM'}</span>
             </div>
           </div>
         </div>

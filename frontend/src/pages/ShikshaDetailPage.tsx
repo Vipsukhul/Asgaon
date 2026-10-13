@@ -192,7 +192,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
             <span className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#dbe1ff] text-[#002873]">
               {category}
             </span>
-            <span className="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#baeed9] text-[#002117]">
+            <span className="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#bbf7d0] text-[#002117]">
               {lang === 'MR' ? 'जि.प. व शासकीय मान्यताप्राप्त' : 'ZP & Govt Accredited'}
             </span>
           </div>
@@ -208,12 +208,12 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
           </div>
         </div>
 
-        <h1 className="font-heading font-extrabold text-[24px] sm:text-[32px] text-[#003629] leading-tight mb-2">
+        <h1 className="font-heading font-extrabold text-[24px] sm:text-[32px] text-[#166534] leading-tight mb-2">
           {title}
         </h1>
 
         <div className="flex items-center gap-2 text-[14px] text-[#707974] mb-4">
-          <span className="material-symbols-outlined text-[18px] text-[#a63b00]">location_on</span>
+          <span className="material-symbols-outlined text-[18px] text-[#c2410c]">location_on</span>
           <span>
             {type === 'school'
               ? (data as SchoolItem).address
@@ -231,7 +231,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'इयत्ता व वर्ग' : 'Grades & Classes'}
                 </div>
-                <div className="font-heading font-extrabold text-[16px] text-[#003629] mt-1">
+                <div className="font-heading font-extrabold text-[16px] text-[#166534] mt-1">
                   {(data as SchoolItem).grades}
                 </div>
               </div>
@@ -239,7 +239,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'शिक्षणाचे माध्यम' : 'Medium of Instruction'}
                 </div>
-                <div className="font-heading font-extrabold text-[16px] text-[#003629] mt-1">
+                <div className="font-heading font-extrabold text-[16px] text-[#166534] mt-1">
                   {(data as SchoolItem).medium}
                 </div>
               </div>
@@ -255,7 +255,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'संपर्क दूरध्वनी' : 'Contact Telephone'}
                 </div>
-                <div className="font-heading font-extrabold text-[16px] text-[#a63b00] mt-1">
+                <div className="font-heading font-extrabold text-[16px] text-[#c2410c] mt-1">
                   +91 {(data as SchoolItem).contactPhone}
                 </div>
               </div>
@@ -266,7 +266,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'एकूण अभ्यासिका जागा' : 'Total Study Desks'}
                 </div>
-                <div className="font-heading font-extrabold text-[16px] text-[#003629] mt-1">
+                <div className="font-heading font-extrabold text-[16px] text-[#166534] mt-1">
                   {(data as AbhyasikaConfig).totalDesks} {lang === 'MR' ? 'जागा' : 'Study Desks'}
                 </div>
               </div>
@@ -290,7 +290,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'हाय-स्पीड वायफाय' : 'High-Speed WiFi'}
                 </div>
-                <div className="font-heading font-extrabold text-[16px] text-[#a63b00] mt-1">
+                <div className="font-heading font-extrabold text-[16px] text-[#c2410c] mt-1">
                   {(data as AbhyasikaConfig).wifiSpeed} Fiber
                 </div>
               </div>
@@ -301,7 +301,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'शिकवले जाणारे विषय' : 'Subjects Taught'}
                 </div>
-                <div className="font-heading font-extrabold text-[16px] text-[#003629] mt-1">
+                <div className="font-heading font-extrabold text-[16px] text-[#166534] mt-1">
                   {(data as TutorCenterItem).subjects}
                 </div>
               </div>
@@ -309,7 +309,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'बॅच वेळ' : 'Batches Timing'}
                 </div>
-                <div className="font-heading font-extrabold text-[16px] text-[#003629] mt-1">
+                <div className="font-heading font-extrabold text-[16px] text-[#166534] mt-1">
                   {(data as TutorCenterItem).timing}
                 </div>
               </div>
@@ -325,7 +325,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'संचालक संपर्क' : 'Director Phone'}
                 </div>
-                <div className="font-heading font-extrabold text-[16px] text-[#a63b00] mt-1">
+                <div className="font-heading font-extrabold text-[16px] text-[#c2410c] mt-1">
                   +91 {(data as TutorCenterItem).phone}
                 </div>
               </div>
@@ -340,7 +340,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
         <div className="lg:col-span-2 flex flex-col gap-6">
           {/* Overview & Description */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
-            <h2 className="font-heading font-extrabold text-[18px] text-[#003629] mb-3 flex items-center gap-2">
+            <h2 className="font-heading font-extrabold text-[18px] text-[#166534] mb-3 flex items-center gap-2">
               <span className="material-symbols-outlined text-[#376757]">school</span>
               <span>{lang === 'MR' ? 'शाळा व अभ्यासक्रम माहिती (Overview)' : 'Overview & Programs'}</span>
             </h2>
@@ -357,7 +357,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
             {/* Key Tags / Features */}
             {type === 'school' && (
               <div className="mt-5 pt-5 border-t border-[#f3ede4]">
-                <h3 className="font-bold text-[13px] text-[#003629] mb-2">
+                <h3 className="font-bold text-[13px] text-[#166534] mb-2">
                   {lang === 'MR' ? 'प्रमुख वैशिष्ट्ये व सुविधा:' : 'Key Highlights & Facilities:'}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[13px]">
@@ -373,7 +373,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
 
             {type === 'abhyasika' && (
               <div className="mt-5 pt-5 border-t border-[#f3ede4]">
-                <h3 className="font-bold text-[13px] text-[#003629] mb-3">
+                <h3 className="font-bold text-[13px] text-[#166534] mb-3">
                   {lang === 'MR' ? 'अभ्यासिका सुविधा:' : 'Study Hall Amenities:'}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[13px]">
@@ -385,7 +385,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                     </div>
                   </div>
                   <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[18px] text-[#a63b00]">menu_book</span>
+                    <span className="material-symbols-outlined text-[18px] text-[#c2410c]">menu_book</span>
                     <div>
                       <div className="font-bold">{lang === 'MR' ? 'संदर्भ ग्रंथालय' : 'Reference Library'}</div>
                       <div className="text-[11px] text-[#707974]">{(data as AbhyasikaConfig).bookCount} {lang === 'MR' ? 'MPSC/पोलीस भरती पुस्तके' : 'MPSC/UPSC/Police Bharti books'}</div>
@@ -399,7 +399,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                     </div>
                   </div>
                   <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[18px] text-[#003629]">water_drop</span>
+                    <span className="material-symbols-outlined text-[18px] text-[#166534]">water_drop</span>
                     <div>
                       <div className="font-bold">{lang === 'MR' ? 'आरओ शुद्ध पेयजल' : 'RO Filtered Drinking Water'}</div>
                       <div className="text-[11px] text-[#707974]">{lang === 'MR' ? 'स्वच्छ पाणी व स्वच्छतागृह' : 'Clean hygienic water & washrooms'}</div>
@@ -412,18 +412,18 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
 
           {/* Admission & Enrolment Roadmap */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
-            <h2 className="font-heading font-extrabold text-[18px] text-[#003629] mb-4 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#a63b00]">how_to_reg</span>
+            <h2 className="font-heading font-extrabold text-[18px] text-[#166534] mb-4 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[#c2410c]">how_to_reg</span>
               <span>{lang === 'MR' ? 'प्रवेश व नावनोंदणी प्रक्रिया' : 'Admission & Registration Process'}</span>
             </h2>
 
             <div className="space-y-3">
               <div className="flex items-start gap-3 bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
-                <div className="w-7 h-7 rounded-full bg-[#003629] text-white flex items-center justify-center font-bold text-[12px] shrink-0">
+                <div className="w-7 h-7 rounded-full bg-[#166534] text-white flex items-center justify-center font-bold text-[12px] shrink-0">
                   1
                 </div>
                 <div>
-                  <h3 className="font-bold text-[13px] text-[#003629]">
+                  <h3 className="font-bold text-[13px] text-[#166534]">
                     {lang === 'MR' ? 'आवश्यक कागदपत्रे जमा करा' : 'Prepare Required Documents'}
                   </h3>
                   <p className="text-[12px] text-[#404945] mt-0.5">
@@ -435,11 +435,11 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
               </div>
 
               <div className="flex items-start gap-3 bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
-                <div className="w-7 h-7 rounded-full bg-[#003629] text-white flex items-center justify-center font-bold text-[12px] shrink-0">
+                <div className="w-7 h-7 rounded-full bg-[#166534] text-white flex items-center justify-center font-bold text-[12px] shrink-0">
                   2
                 </div>
                 <div>
-                  <h3 className="font-bold text-[13px] text-[#003629]">
+                  <h3 className="font-bold text-[13px] text-[#166534]">
                     {lang === 'MR' ? 'प्रवेश अर्ज सादर करा' : 'Submit Admission Form'}
                   </h3>
                   <p className="text-[12px] text-[#404945] mt-0.5">
@@ -451,11 +451,11 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
               </div>
 
               <div className="flex items-start gap-3 bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
-                <div className="w-7 h-7 rounded-full bg-[#003629] text-white flex items-center justify-center font-bold text-[12px] shrink-0">
+                <div className="w-7 h-7 rounded-full bg-[#166534] text-white flex items-center justify-center font-bold text-[12px] shrink-0">
                   3
                 </div>
                 <div>
-                  <h3 className="font-bold text-[13px] text-[#003629]">
+                  <h3 className="font-bold text-[13px] text-[#166534]">
                     {lang === 'MR' ? 'शासकीय सवलती व शिष्यवृत्ती अर्ज' : 'Scholarships & Fee Concessions'}
                   </h3>
                   <p className="text-[12px] text-[#404945] mt-0.5">
@@ -470,7 +470,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
 
           {/* Related Education Centers */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
-            <h2 className="font-heading font-extrabold text-[17px] text-[#003629] mb-3">
+            <h2 className="font-heading font-extrabold text-[17px] text-[#166534] mb-3">
               {lang === 'MR' ? 'आसगाव परिसरातील इतर शैक्षणिक संस्था' : 'Explore More Institutions in Asgaon'}
             </h2>
 
@@ -492,7 +492,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                       {other.name}
                     </h3>
                   </div>
-                  <div className="mt-3 text-[11px] font-bold text-[#a63b00] flex items-center gap-1">
+                  <div className="mt-3 text-[11px] font-bold text-[#c2410c] flex items-center gap-1">
                     <span>{lang === 'MR' ? 'माहिती पहा' : 'View Campus'}</span>
                     <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
                   </div>
@@ -514,7 +514,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                     {lang === 'MR' ? 'डॉ. आंबेडकर अभ्यासिका (४० जागा)' : 'Dr. Ambedkar Abhyasika (40 Desks)'}
                   </h3>
                 </div>
-                <div className="mt-3 text-[11px] font-bold text-[#a63b00] flex items-center gap-1">
+                <div className="mt-3 text-[11px] font-bold text-[#c2410c] flex items-center gap-1">
                   <span>{lang === 'MR' ? 'जागा आरक्षित करा' : 'Book Desk'}</span>
                   <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
                 </div>
@@ -527,7 +527,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
         <aside className="flex flex-col gap-5">
           {/* Quick Action Box */}
           <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
-            <h3 className="font-heading font-extrabold text-[16px] text-[#003629]">
+            <h3 className="font-heading font-extrabold text-[16px] text-[#166534]">
               {type === 'abhyasika'
                 ? (lang === 'MR' ? 'मोफत अभ्यासिका जागा बुक करा' : 'Book Free Study Desk')
                 : (lang === 'MR' ? 'प्रवेश विचारणा' : 'Admission Inquiry')}
@@ -542,7 +542,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 </p>
                 <button
                   onClick={() => setBookingDeskOpen(true)}
-                  className="w-full py-3 px-4 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
+                  className="w-full py-3 px-4 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
                 >
                   <span className="material-symbols-outlined text-[18px]">desk</span>
                   <span>{lang === 'MR' ? 'अभ्यासिका जागा आता बुक करा' : 'Book a Study Desk Now'}</span>
@@ -557,7 +557,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 </p>
                 <a
                   href={`tel:${type === 'school' ? (data as SchoolItem).contactPhone : (data as TutorCenterItem).phone}`}
-                  className="w-full py-3 px-4 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
+                  className="w-full py-3 px-4 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
                 >
                   <span className="material-symbols-outlined text-[18px]">call</span>
                   <span>
@@ -582,21 +582,21 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
               {lang === 'MR' ? 'परिसर माहिती' : 'CAMPUS DETAILS'}
             </span>
 
-            <h3 className="font-heading font-extrabold text-[15px] text-[#003629] mt-2 mb-2">
+            <h3 className="font-heading font-extrabold text-[15px] text-[#166534] mt-2 mb-2">
               {lang === 'MR' ? 'वेळापत्रक व संपर्क अधिकारी' : 'Working Timings & In-Charge'}
             </h3>
 
             <div className="space-y-2 text-[12px] text-[#404945]">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[16px] text-[#003629]">schedule</span>
+                <span className="material-symbols-outlined text-[16px] text-[#166534]">schedule</span>
                 <span><strong>{lang === 'MR' ? 'वेळ:' : 'Timing:'}</strong> {lang === 'MR' ? 'सकाळी ८:०० ते संध्याकाळी ५:३० (सोम-शनि)' : '8:00 AM - 5:30 PM (Mon-Sat)'}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[16px] text-[#003629]">person</span>
+                <span className="material-symbols-outlined text-[16px] text-[#166534]">person</span>
                 <span><strong>{lang === 'MR' ? 'प्रमुख:' : 'In-Charge:'}</strong> {type === 'school' ? (data as SchoolItem).principalName : (lang === 'MR' ? 'स्थानिक शिक्षण कक्ष समन्वयक' : 'Civic Education Desk')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[16px] text-[#003629]">location_on</span>
+                <span className="material-symbols-outlined text-[16px] text-[#166534]">location_on</span>
                 <span><strong>{lang === 'MR' ? 'पत्ता:' : 'Area:'}</strong> {lang === 'MR' ? 'गावठाण, वॉर्ड २, आसगाव (पिन ४४१९१०)' : 'Gaothan, Ward 2, Asgaon (PIN 441910)'}</span>
               </div>
             </div>
@@ -614,7 +614,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
           <div className="bg-white rounded-2xl max-w-md w-full p-6 border border-[#e8e2d9] shadow-xl flex flex-col gap-4">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="font-heading font-extrabold text-[18px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[18px] text-[#166534]">
                   {lang === 'MR' ? 'मोफत अभ्यासिका जागा बुक करा' : 'Book Free Study Desk'}
                 </h3>
                 <p className="text-[12px] text-[#707974]">
@@ -640,7 +640,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   value={deskName}
                   onChange={(e) => setDeskName(e.target.value)}
                   placeholder={lang === 'MR' ? 'विद्यार्थ्याचे नाव प्रविष्ट करा' : 'Enter student full name'}
-                  className="w-full px-3 py-2 bg-[#f9f3ea] border border-[#e8e2d9] rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                  className="w-full px-3 py-2 bg-[#f9f3ea] border border-[#e8e2d9] rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-[#166534]"
                 />
               </div>
 
@@ -654,7 +654,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   value={deskPhone}
                   onChange={(e) => setDeskPhone(e.target.value)}
                   placeholder={lang === 'MR' ? '१०-अंकी मोबाईल नंबर' : '10-digit mobile number'}
-                  className="w-full px-3 py-2 bg-[#f9f3ea] border border-[#e8e2d9] rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                  className="w-full px-3 py-2 bg-[#f9f3ea] border border-[#e8e2d9] rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-[#166534]"
                 />
               </div>
 
@@ -665,7 +665,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 <select
                   value={deskSlot}
                   onChange={(e) => setDeskSlot(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#f9f3ea] border border-[#e8e2d9] rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                  className="w-full px-3 py-2 bg-[#f9f3ea] border border-[#e8e2d9] rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-[#166534]"
                 >
                   <option>{lang === 'MR' ? 'संपूर्ण दिवस (सकाळी ८:०० - रात्री १०:००)' : 'Full Day (8:00 AM - 10:00 PM)'}</option>
                   <option>{lang === 'MR' ? 'सकाळ सत्र (सकाळी ८:०० - दुपारी २:००)' : 'Morning Slot (8:00 AM - 2:00 PM)'}</option>
@@ -684,7 +684,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 <button
                   type="submit"
                   disabled={bookingSuccess}
-                  className="px-4 py-2 rounded-xl bg-[#003629] text-white font-bold text-[12px] flex items-center gap-1"
+                  className="px-4 py-2 rounded-xl bg-[#166534] text-white font-bold text-[12px] flex items-center gap-1"
                 >
                   <span>{bookingSuccess ? (lang === 'MR' ? 'नोंदणी करत आहे...' : 'Booking...') : (lang === 'MR' ? 'जागा आरक्षित करा' : 'Confirm Desk Booking')}</span>
                 </button>

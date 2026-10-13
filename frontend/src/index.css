@@ -1,41 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #003629;
-  --color-primary-container: #1b4d3e;
+  --color-primary: #166534;
+  --color-primary-container: #14532d;
+  --color-primary-light: #dcfce7;
   --color-on-primary: #ffffff;
-  --color-on-primary-container: #8abda9;
-  --color-secondary: #a63b00;
-  --color-secondary-container: #ff793f;
+  --color-on-primary-container: #bbf7d0;
+  --color-secondary: #c2410c;
+  --color-secondary-container: #ea580c;
   --color-on-secondary: #ffffff;
-  --color-surface: #fff8f0;
-  --color-surface-container: #f3ede4;
-  --color-surface-container-low: #f9f3ea;
+  --color-accent-amber: #d97706;
+  --color-surface: #fdfbf7;
+  --color-surface-container: #f7f3ea;
+  --color-surface-container-low: #faf6ee;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-high: #ede7df;
-  --color-surface-container-highest: #e8e2d9;
-  --color-surface-variant: #e8e2d9;
-  --color-on-surface: #1d1b16;
-  --color-on-surface-variant: #404945;
-  --color-error: #ba1a1a;
-  --color-error-container: #ffdad6;
-  --color-on-error-container: #93000a;
-  --color-tertiary: #002873;
+  --color-surface-container-high: #f2ece0;
+  --color-surface-container-highest: #ebe3d5;
+  --color-surface-variant: #ebe3d5;
+  --color-on-surface: #1c1917;
+  --color-on-surface-variant: #44403c;
+  --color-error: #dc2626;
+  --color-error-container: #fee2e2;
+  --color-on-error-container: #991b1b;
+  --color-tertiary: #1e3a8a;
 
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Inter', 'Noto Sans Devanagari', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', 'Baloo 2', system-ui, -apple-system, sans-serif;
 }
 
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #fff8f0;
-  color: #1d1b16;
-  font-family: 'Inter', sans-serif;
+  background-color: #fdfbf7;
+  color: #1c1917;
+  font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
 }
 
 .font-heading {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Baloo 2', sans-serif;
 }
 
 .material-symbols-outlined {

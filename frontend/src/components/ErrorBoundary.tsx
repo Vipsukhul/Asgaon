@@ -26,12 +26,12 @@ export class ErrorBoundary extends Component<Props, State> {
   public render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-[#fff8f0] flex flex-col items-center justify-center p-6 text-center font-sans">
+        <div className="min-h-screen bg-[#fef9ee] flex flex-col items-center justify-center p-6 text-center font-sans">
           <div className="max-w-md bg-white p-8 rounded-2xl shadow-lg border border-[#e8e2d9]">
             <div className="w-16 h-16 rounded-full bg-[#ffdad6] text-[#ba1a1a] flex items-center justify-center mx-auto mb-4">
               <span className="material-symbols-outlined text-[32px]">warning</span>
             </div>
-            <h2 className="font-heading font-extrabold text-[20px] text-[#003629] mb-2">
+            <h2 className="font-heading font-extrabold text-[20px] text-[#166534] mb-2">
               Something went wrong
             </h2>
             <p className="text-[13px] text-[#707974] mb-6">
@@ -42,7 +42,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 this.setState({ hasError: false, errorMessage: '' });
                 window.location.reload();
               }}
-              className="px-6 py-2.5 rounded-xl bg-[#003629] text-white text-[13px] font-bold hover:bg-[#1b4d3e] transition-colors shadow-xs"
+              className="px-6 py-2.5 rounded-xl bg-[#166534] text-white text-[13px] font-bold hover:bg-[#052e16] transition-colors shadow-xs"
             >
               Reload Page
             </button>

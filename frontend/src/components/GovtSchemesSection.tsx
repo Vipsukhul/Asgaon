@@ -22,11 +22,11 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-5 gap-3">
         <div>
-          <h2 className="font-heading font-extrabold text-[22px] text-[#003629] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#002873]">verified_user</span>
+          <h2 className="font-heading font-extrabold text-[24px] text-emerald-950 flex items-center gap-2">
+            <span className="material-symbols-outlined text-indigo-800 text-[28px]">verified_user</span>
             <span>{lang === 'MR' ? 'शासकीय योजना व थेट लाभ मार्गदर्शन कक्ष' : 'Sarkari Yojana Guidance Desk (Direct Welfare)'}</span>
           </h2>
-          <p className="text-[13px] text-[#404945]">
+          <p className="text-[13px] text-stone-600">
             {lang === 'MR'
               ? 'शासकीय अनुदान, घरकुल व शिष्यवृत्तीसाठी सीएससी केंद्र किंवा अधिकृत पोर्टलवर थेट अर्ज करा'
               : 'Apply for govt subsidies & scholarships at CSC Kiosk or official portal links'}
@@ -36,10 +36,10 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
         <button
           type="button"
           onClick={onOpenCSC}
-          className="px-4 py-2 rounded-xl bg-[#002873] text-white text-[13px] font-bold hover:bg-[#00174b] transition-colors flex items-center gap-1.5 shadow-xs"
+          className="px-4 py-2 rounded-xl bg-indigo-800 hover:bg-indigo-900 text-white text-[13px] font-extrabold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
         >
           <span className="material-symbols-outlined text-[18px]">contact_support</span>
-          <span>{lang === 'MR' ? 'सीएससी / आपले सरकार केंद्र' : 'Visit CSC Kiosk for Enrolment'}</span>
+          <span>{lang === 'MR' ? 'सीएससी / आपले सरकार केंद्र' : 'Visit CSC Kiosk'}</span>
         </button>
       </div>
 
@@ -48,26 +48,26 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
         {schemes.map((scheme) => (
           <div
             key={scheme.id}
-            className="bg-white rounded-2xl p-5 shadow-xs hover:shadow-md transition-all border border-[#e8e2d9] flex flex-col justify-between"
+            className="bg-white rounded-2xl p-5 shadow-xs hover:shadow-md transition-all border border-[#efe7dc] hover:border-indigo-700 flex flex-col justify-between"
           >
             <div>
               {/* Sponsoring Agency & Deadline */}
               <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#dbe1ff] text-[#002873]">
+                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-indigo-100 text-indigo-950 border border-indigo-200">
                   {scheme.sponsoringAgency}
                 </span>
-                <span className="text-[11px] font-bold text-[#ba1a1a]">
+                <span className="text-[11px] font-extrabold text-amber-800">
                   {scheme.deadlineText}
                 </span>
               </div>
 
               {/* Title */}
-              <h3 className="font-heading font-bold text-[17px] text-[#1d1b16] mb-2 hover:text-[#003629] transition-colors">
+              <h3 className="font-heading font-extrabold text-[17px] text-stone-900 mb-2 hover:text-emerald-800 transition-colors">
                 {onSelectScheme ? (
                   <button
                     type="button"
                     onClick={() => onSelectScheme(scheme.slug)}
-                    className="text-left hover:underline"
+                    className="text-left hover:underline cursor-pointer"
                   >
                     {scheme.title}
                   </button>
@@ -77,20 +77,20 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
               </h3>
 
               {/* Description */}
-              <p className="text-[12px] text-[#404945] mb-4 leading-relaxed">
+              <p className="text-[12px] text-stone-600 mb-4 leading-relaxed">
                 {scheme.description}
               </p>
 
               {/* Documents Required Checklist */}
-              <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] mb-4">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-[#003629] mb-2 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[15px]">task_alt</span>
+              <div className="bg-[#faf6ee] p-3 rounded-xl border border-[#efe7dc] mb-4">
+                <div className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-900 mb-2 flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[16px] text-emerald-700">task_alt</span>
                   <span>{lang === 'MR' ? 'आवश्यक कागदपत्रे' : 'Required Documents'}</span>
                 </div>
                 <ul className="space-y-1.5">
                   {scheme.documentsRequired.map((doc, idx) => (
-                    <li key={idx} className="text-[12px] text-[#1d1b16] flex items-center gap-1.5">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#a63b00] shrink-0"></span>
+                    <li key={idx} className="text-[12px] text-stone-800 flex items-center gap-1.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#c2410c] shrink-0"></span>
                       <span>{doc}</span>
                     </li>
                   ))}
@@ -99,12 +99,12 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
             </div>
 
             {/* Bottom Actions */}
-            <div className="mt-2 pt-3 border-t border-[#f3ede4] flex items-center justify-between gap-2">
+            <div className="mt-2 pt-3 border-t border-[#efe7dc] flex items-center justify-between gap-2">
               <a
                 href={scheme.officialUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[12px] text-[#002873] font-bold hover:underline flex items-center gap-0.5"
+                className="text-[12px] text-indigo-800 font-extrabold hover:underline flex items-center gap-0.5"
               >
                 <span>{scheme.actionLabel || (lang === 'MR' ? 'अधिकृत पोर्टलवर अर्ज करा' : 'Apply on Portal')}</span>
                 <span className="material-symbols-outlined text-[14px]">open_in_new</span>
@@ -112,7 +112,7 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
 
               <div className="flex items-center gap-2">
                 {scheme.badgeText && (
-                  <span className="text-[11px] font-semibold text-[#376757] bg-[#baeed9] px-2 py-0.5 rounded">
+                  <span className="text-[11px] font-bold text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-300">
                     {scheme.badgeText}
                   </span>
                 )}
@@ -120,7 +120,7 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
                   type="button"
                   onClick={() => onSaveScheme(scheme)}
                   title={lang === 'MR' ? 'योजना जतन करा' : 'Bookmark this Scheme'}
-                  className="p-1 rounded-lg text-[#707974] hover:text-[#003629] hover:bg-[#f3ede4] transition-colors"
+                  className="p-1 rounded-lg text-stone-500 hover:text-emerald-900 hover:bg-[#faf6ee] transition-colors cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[20px]">bookmark_border</span>
                 </button>

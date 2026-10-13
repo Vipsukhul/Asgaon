@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { getStoredHeroSlides } from '../data/heroSlidesData';
+import { WarliTreeOfLife, WarliFarmerWithBullocks, WarliTarpaDance, WarliVillageHutAndSun } from './WarliWallGraffiti';
 import type { HeroSlide } from '../types';
 
 interface HeroSectionProps {
@@ -71,65 +72,75 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
           SLIDE 1: WELCOME & UNIVERSAL SEARCH HUB
           ======================================================== */}
       {currentSlide.type === 'welcome' ? (
-        <div className="relative w-full h-full bg-[#f9f3ea] p-6 sm:p-10 flex-1 flex flex-col justify-center items-center text-center overflow-hidden transition-all duration-700">
-          {/* Radial ambient lighting */}
-          <div className="absolute -right-20 -bottom-20 w-96 h-96 bg-[#003629]/5 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="absolute -left-10 -top-10 w-72 h-72 bg-[#a63b00]/5 rounded-full blur-2xl pointer-events-none"></div>
+        <div className="relative w-full h-full bg-gradient-to-br from-[#faf7f0] via-[#f5f1e6] to-[#ece5d4] p-6 sm:p-10 flex-1 flex flex-col justify-center items-center text-center overflow-hidden transition-all duration-700 border-b border-[#e2dcd0]">
+          {/* Ambient lighting */}
+          <div className="absolute -right-16 -bottom-16 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute -left-12 -top-12 w-80 h-80 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+          {/* Authentic Gramin Warli Folk Graffiti Watermarks on Left & Right */}
+          <div className="absolute left-2 sm:left-6 top-8 bottom-8 flex flex-col justify-between pointer-events-none opacity-[0.14] text-emerald-950 select-none hidden md:flex">
+            <WarliTreeOfLife className="w-36 lg:w-44 h-auto" />
+            <WarliFarmerWithBullocks className="w-48 lg:w-56 h-auto" />
+          </div>
+          <div className="absolute right-2 sm:right-6 top-8 bottom-8 flex flex-col justify-between pointer-events-none opacity-[0.14] text-amber-950 select-none hidden md:flex items-end">
+            <WarliVillageHutAndSun className="w-36 lg:w-42 h-auto" />
+            <WarliTarpaDance className="w-44 lg:w-52 h-auto" />
+          </div>
 
           <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
-            {/* Top Badges */}
-            <div className="flex flex-wrap items-center justify-center gap-2 mb-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white text-[#003629] text-[12px] font-semibold shadow-xs border border-[#e8e2d9]">
-                <span className="material-symbols-outlined text-[16px] text-[#376757]">verified</span>
+            {/* Top Village Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-2 mb-3.5">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white text-emerald-800 text-[12px] font-bold shadow-xs border border-emerald-200">
+                <span className="material-symbols-outlined text-[16px] text-emerald-700">location_on</span>
                 <span>{t('village_full_location')}</span>
               </span>
 
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#baeed9] text-[#002117] text-[12px] font-bold shadow-xs">
-                <span className="material-symbols-outlined text-[16px]">volunteer_activism</span>
-                <span>{lang === 'MR' ? 'गावकऱ्यांसाठी स्वतंत्र माहिती मंच' : 'Independent Village Civic Forum'}</span>
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-100 text-amber-900 text-[12px] font-bold shadow-xs border border-amber-300">
+                <span className="material-symbols-outlined text-[16px] text-amber-700">spa</span>
+                <span>{lang === 'MR' ? 'शेती, नागरिक व गावहित मंच' : 'Farmer & Village Civic Forum'}</span>
               </span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="font-heading font-extrabold text-[32px] sm:text-[44px] text-[#003629] tracking-tight mb-2 leading-tight">
-              {lang === 'MR' ? 'आपल्या गावाची सर्व माहिती, एकाच ठिकाणी.' : 'All Village Civic Services & Information in One Place.'}
+            <h1 className="font-heading font-extrabold text-[32px] sm:text-[46px] text-emerald-900 tracking-tight mb-2 leading-tight">
+              {lang === 'MR' ? 'आपलं डिजिटल आसगाव' : 'Digital Asgaon Village Portal'}
             </h1>
-            <p className="font-heading font-semibold text-[17px] sm:text-[20px] text-[#a63b00] mb-3">
-              {lang === 'MR' ? 'ग्रामपंचायत, कृषी योजना, पाणी पुरवठा व स्थानिक बाजारपेठेची ताजी माहिती' : 'Gram Panchayat, Crop Schemes, Water Supply & Local Market Updates'}
+            <p className="font-heading font-bold text-[17px] sm:text-[21px] text-[#c2410c] mb-2 leading-snug max-w-2xl">
+              {lang === 'MR' ? 'गावातील सर्व सेवा, कृषी योजना, बाजारभाव व एसटी वेळापत्रक थेट मोबाईलवर!' : 'Village civic services, agriculture schemes, mandi rates & bus timings in one place!'}
+            </p>
+            <p className="text-[13px] sm:text-[14px] text-stone-600 mb-5 max-w-xl">
+              {lang === 'MR' ? 'ग्रामपंचायत • पवनी APMC बाजारभाव • प्राथमिक आरोग्य केंद्र • एसटी बस थांबा' : 'Gram Panchayat • Pauni APMC • Primary Health Centre • ST Bus Stand'}
             </p>
 
-            
-
-            {/* Universal Search Bar */}
-            <form onSubmit={handleSearch} className="w-full bg-white rounded-2xl shadow-md p-2 flex flex-col md:flex-row items-center gap-2 border border-[#e8e2d9]">
+            {/* High-Contrast Universal Village Search Bar */}
+            <form onSubmit={handleSearch} className="w-full max-w-3xl bg-white rounded-2xl shadow-md p-2 flex flex-col md:flex-row items-center gap-2 border-2 border-emerald-700/20 focus-within:border-emerald-700 transition-all">
               <div className="flex items-center w-full px-3 py-2">
-                <span className="material-symbols-outlined text-[#003629] text-[24px] mr-2">travel_explore</span>
+                <span className="material-symbols-outlined text-emerald-800 text-[26px] mr-2.5 shrink-0">search</span>
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder={lang === 'MR' ? 'खते व औषधे, ट्रॅक्टर भाडे, नोकऱ्या, पीएम किसान स्थिती, दवाखाना शोधा...' : 'Search fertilizer shops, tractor rental, jobs, PM-Kisan status, PHC doctor...'}
-                  className="w-full bg-transparent text-[#1d1b16] text-[15px] placeholder:text-[#707974] focus:outline-none"
+                  placeholder={lang === 'MR' ? 'खते, ट्रॅक्टर भाडे, लाडकी बहीण, एसटी बस, दवाखाना शोधा...' : 'Search fertilizer, tractor rental, Ladki Bahin, ST bus, clinic...'}
+                  className="w-full bg-transparent text-stone-900 text-[15px] sm:text-[16px] font-medium placeholder:text-stone-400 focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={() => alert(lang === 'MR' ? 'व्हॉइस सर्च सुरू आहे! बोला...' : 'Microphone activated. Please speak your query in Marathi, Hindi, or English.')}
-                  className="p-2 rounded-lg bg-[#f9f3ea] text-[#003629] hover:bg-[#f3ede4] transition-colors cursor-pointer"
+                  className="p-2 rounded-xl bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors cursor-pointer border border-amber-200"
                   title={t('header_voice_search_title')}
                 >
-                  <span className="material-symbols-outlined text-[20px]">mic</span>
+                  <span className="material-symbols-outlined text-[22px]">mic</span>
                 </button>
               </div>
               <button
                 type="submit"
-                className="w-full md:w-auto px-7 py-3 rounded-xl bg-[#003629] text-white text-[14px] font-bold whitespace-nowrap hover:bg-[#1b4d3e] transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                className="w-full md:w-auto px-8 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white text-[15px] font-extrabold whitespace-nowrap transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[20px]">search</span>
-                <span>{lang === 'MR' ? 'माहिती शोधा' : 'Search Portal'}</span>
+                <span className="material-symbols-outlined text-[20px]">travel_explore</span>
+                <span>{lang === 'MR' ? 'शोधा' : 'Search'}</span>
               </button>
             </form>
 
-            {/* Discovery Tags */}
             
           </div>
         </div>
@@ -177,7 +188,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
                         onNavigate(currentSlide.ctaLink);
                       }
                     }}
-                    className="px-6 py-2.5 rounded-xl bg-white text-stone-950 font-bold text-sm hover:bg-[#baeed9] hover:text-[#002117] transition-all inline-flex items-center gap-2 shadow-lg cursor-pointer"
+                    className="px-6 py-2.5 rounded-xl bg-white text-stone-950 font-bold text-sm hover:bg-[#bbf7d0] hover:text-[#002117] transition-all inline-flex items-center gap-2 shadow-lg cursor-pointer"
                   >
                     <span>{lang === 'MR' ? currentSlide.ctaTextMarathi : (currentSlide.ctaTextEnglish || currentSlide.ctaTextMarathi)}</span>
                     <span className="material-symbols-outlined text-[18px]">arrow_forward</span>

@@ -37,7 +37,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
       id: 1,
       name: 'Soybean (सोयाबीन - JS 335)',
       badge: '+₹45',
-      badgeColor: 'bg-[#baeed9] text-[#002117]',
+      badgeColor: 'bg-[#bbf7d0] text-[#002117]',
       price: '₹4,820',
       unit: '/ Quintal (Mandi)',
       msp: 'Pauni Mandi MSP: ₹4,892',
@@ -49,7 +49,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
       id: 2,
       name: 'Cotton (कापूस - Med. Staple)',
       badge: '+₹120',
-      badgeColor: 'bg-[#baeed9] text-[#002117]',
+      badgeColor: 'bg-[#bbf7d0] text-[#002117]',
       price: '₹7,400',
       unit: '/ Quintal (Mandi)',
       msp: 'Govt MSP: ₹7,121',
@@ -73,7 +73,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
       id: 4,
       name: 'Cow Milk (गाय दूध - Gir A2)',
       badge: '+₹1.50',
-      badgeColor: 'bg-[#baeed9] text-[#002117]',
+      badgeColor: 'bg-[#bbf7d0] text-[#002117]',
       price: '₹41.50',
       unit: '/ Litre (Dairy)',
       msp: 'Asgaon Dairy Union MSP: ₹40.00',
@@ -88,7 +88,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
         id: p.id || idx + 1,
         name: p.commodityName || 'Produce',
         badge: (p.priceChange !== undefined && p.priceChange !== 0) ? `${p.priceChange > 0 ? '+' : ''}₹${p.priceChange}` : 'Official Rate',
-        badgeColor: (p.trend === 'up' || (p.priceChange && p.priceChange > 0)) ? 'bg-[#baeed9] text-[#002117]' : (p.trend === 'down' || (p.priceChange && p.priceChange < 0)) ? 'bg-[#ffdad6] text-[#93000a]' : 'bg-[#f3ede4] text-[#404945]',
+        badgeColor: (p.trend === 'up' || (p.priceChange && p.priceChange > 0)) ? 'bg-[#bbf7d0] text-[#002117]' : (p.trend === 'down' || (p.priceChange && p.priceChange < 0)) ? 'bg-[#ffdad6] text-[#93000a]' : 'bg-[#f3ede4] text-[#404945]',
         price: `₹${Number(p.modalPrice || p.price || 4500).toLocaleString('en-IN')}`,
         unit: `/ ${p.unit || 'Quintal'} (Mandi)`,
         msp: `${p.marketName || 'Pauni APMC'} • Variety: ${p.variety || 'Standard'}`,
@@ -144,16 +144,16 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
   return (
     <div className="w-full flex flex-col gap-6 font-sans">
       {/* 1. Canal Irrigation Top Notice Banner */}
-      <div className="w-full bg-[#ffdad6] text-[#93000a] py-2.5 px-4 rounded-xl shadow-xs border border-[#ffb4ab] flex items-center justify-between gap-3">
+      <div className="w-full bg-amber-50 text-amber-950 py-2.5 px-4 rounded-xl shadow-xs border border-amber-300 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="material-symbols-outlined text-[20px] text-[#ba1a1a] shrink-0">water_drop</span>
+          <span className="material-symbols-outlined text-[20px] text-amber-700 shrink-0">water_drop</span>
           <span className="text-[13px] font-semibold truncate">
             <strong>Canal Irrigation Alert:</strong> Rotational irrigation release commences tomorrow 06:00 AM for Sector 3 &amp; 4.
           </span>
         </div>
         <button
           onClick={() => alert('Viewing Sector 3 & 4 Canal Roster.')}
-          className="text-[#ba1a1a] text-[12px] font-bold underline shrink-0"
+          className="text-amber-900 text-[12px] font-bold underline shrink-0 cursor-pointer"
         >
           View Roster ↗
         </button>
@@ -166,20 +166,20 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
           { label: lang === 'MR' ? 'कृषी व शेती केंद्र' : 'Krishi', active: true }
         ]}
         rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#baeed9] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
-            <span className="material-symbols-outlined text-[15px]">verified</span>
+          <div className="flex items-center gap-1.5 bg-emerald-100 text-emerald-900 border border-emerald-300 px-3 py-1 rounded-full text-[11px] font-bold">
+            <span className="material-symbols-outlined text-[15px] text-emerald-700">verified</span>
             <span>{lang === 'MR' ? 'जि. प. कृषी विभाग अधिकृत' : 'ZP Agriculture Directorate Accredited'}</span>
           </div>
         }
       />
 
       {/* 3. Hero Header Banner */}
-      <div className="bg-white rounded-2xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+      <div className="bg-white rounded-2xl p-6 sm:p-7 border border-[#efe7dc] shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
         <div className="max-w-2xl">
-          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#003629] leading-tight mb-2">
+          <h1 className="font-heading font-extrabold text-[26px] sm:text-[32px] text-emerald-950 leading-tight mb-2">
             {lang === 'MR' ? 'कृषी व शेती केंद्र — बाजारभाव व अवजारे' : 'Krishi & Agriculture Hub — Mandi & Tools'}
           </h1>
-          <p className="text-[13px] text-[#404945] leading-relaxed">
+          <p className="text-[13px] text-stone-600 leading-relaxed">
             {lang === 'MR'
               ? 'थेट एपीएमसी बाजारभाव, माती परीक्षण मार्गदर्शन, ट्रॅक्टर व हार्वेस्टर भाडे आणि आसगावच्या शेतकऱ्यांसाठी शासकीय अनुदानित सेवा.'
               : 'Live APMC Mandi rates, soil health guidance, crop disease diagnostics, tractor & harvester rental pool, and subsidized agricultural inputs for Asgaon farmers.'}
@@ -187,16 +187,16 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
         </div>
 
         {/* Right Kisan Call Center Badge */}
-        <div className="bg-[#1b4d3e] text-white p-4 rounded-2xl border border-[#003629] shadow-sm flex items-center justify-between gap-4 w-full lg:w-72 shrink-0">
+        <div className="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white p-4 rounded-2xl border border-emerald-950 shadow-sm flex items-center justify-between gap-4 w-full lg:w-72 shrink-0">
           <div>
-            <div className="text-[10px] text-[#baeed9] font-bold uppercase tracking-wider">
+            <div className="text-[10px] text-amber-300 font-extrabold uppercase tracking-wider">
               {lang === 'MR' ? 'किसान कॉल सेंटर (२४/७)' : 'KISAN CALL CENTER (24x7)'}
             </div>
             <div className="font-heading font-extrabold text-[17px] text-white mt-0.5">1800-180-1551</div>
           </div>
           <a
             href="tel:18001801551"
-            className="px-3.5 py-1.5 rounded-xl bg-[#baeed9] text-[#002117] text-[12px] font-bold hover:bg-white transition-colors"
+            className="px-3.5 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-[12px] font-extrabold transition-colors shadow-xs"
           >
             {lang === 'MR' ? 'मोफत कॉल' : 'Toll-Free Call'}
           </a>
@@ -207,14 +207,14 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <button
           onClick={() => setActiveTab('mandi')}
-          className={`p-3.5 rounded-2xl text-left border transition-all flex items-center justify-between ${
+          className={`p-3.5 rounded-2xl text-left border transition-all flex items-center justify-between cursor-pointer ${
             activeTab === 'mandi'
-              ? 'bg-[#003629] text-white border-[#003629] shadow-xs'
-              : 'bg-white text-[#1d1b16] border-[#e8e2d9] hover:bg-[#f9f3ea]'
+              ? 'bg-emerald-800 text-white border-emerald-800 shadow-sm'
+              : 'bg-white text-stone-900 border-[#efe7dc] hover:bg-[#faf6ee]'
           }`}
         >
           <div>
-            <div className={`text-[10px] font-bold uppercase ${activeTab === 'mandi' ? 'text-[#baeed9]' : 'text-[#707974]'}`}>
+            <div className={`text-[10px] font-bold uppercase ${activeTab === 'mandi' ? 'text-emerald-200' : 'text-stone-500'}`}>
               {lang === 'MR' ? 'थेट बाजारभाव' : 'APMC Live Rates'}
             </div>
             <div className="font-heading font-bold text-[14px]">
@@ -226,14 +226,14 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
         <button
           onClick={() => setActiveTab('machinery')}
-          className={`p-3.5 rounded-2xl text-left border transition-all flex items-center justify-between ${
+          className={`p-3.5 rounded-2xl text-left border transition-all flex items-center justify-between cursor-pointer ${
             activeTab === 'machinery'
-              ? 'bg-[#003629] text-white border-[#003629] shadow-xs'
-              : 'bg-white text-[#1d1b16] border-[#e8e2d9] hover:bg-[#f9f3ea]'
+              ? 'bg-emerald-800 text-white border-emerald-800 shadow-sm'
+              : 'bg-white text-stone-900 border-[#efe7dc] hover:bg-[#faf6ee]'
           }`}
         >
           <div>
-            <div className={`text-[10px] font-bold uppercase ${activeTab === 'machinery' ? 'text-[#baeed9]' : 'text-[#707974]'}`}>
+            <div className={`text-[10px] font-bold uppercase ${activeTab === 'machinery' ? 'text-emerald-200' : 'text-stone-500'}`}>
               {lang === 'MR' ? 'अवजारे भाडे' : 'Rent Machinery'}
             </div>
             <div className="font-heading font-bold text-[14px]">
@@ -245,36 +245,38 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
         <button
           onClick={() => setActiveTab('soil')}
-          className={`p-3.5 rounded-2xl text-left border transition-all flex items-center justify-between ${
+          className={`p-3.5 rounded-2xl text-left border transition-all flex items-center justify-between cursor-pointer ${
             activeTab === 'soil'
-              ? 'bg-[#003629] text-white border-[#003629] shadow-xs'
-              : 'bg-white text-[#1d1b16] border-[#e8e2d9] hover:bg-[#f9f3ea]'
+              ? 'bg-emerald-800 text-white border-emerald-800 shadow-sm'
+              : 'bg-white text-stone-900 border-[#efe7dc] hover:bg-[#faf6ee]'
           }`}
         >
           <div>
-            <div className={`text-[10px] font-bold uppercase ${activeTab === 'soil' ? 'text-[#baeed9]' : 'text-[#707974]'}`}>
-              {lang === 'MR' ? 'माती परीक्षण' : 'Ward Testing'}
+            <div className={`text-[10px] font-bold uppercase ${activeTab === 'soil' ? 'text-emerald-200' : 'text-stone-500'}`}>
+              {lang === 'MR' ? 'माती परीक्षण' : 'Soil Testing'}
             </div>
             <div className="font-heading font-bold text-[14px]">
-              {lang === 'MR' ? 'मृदा आरोग्य कार्ड' : 'Soil Health Card'}
+              {lang === 'MR' ? 'मृदा आरोग्य कार्ड' : 'Soil Health'}
             </div>
           </div>
-          <span className="material-symbols-outlined text-[22px]">biotech</span>
+          <span className="material-symbols-outlined text-[22px]">spa</span>
         </button>
 
         <button
           onClick={() => setActiveTab('pest')}
-          className={`p-3.5 rounded-2xl text-left border transition-all flex items-center justify-between ${
+          className={`p-3.5 rounded-2xl text-left border transition-all flex items-center justify-between cursor-pointer ${
             activeTab === 'pest'
-              ? 'bg-[#003629] text-white border-[#003629] shadow-xs'
-              : 'bg-white text-[#1d1b16] border-[#e8e2d9] hover:bg-[#f9f3ea]'
+              ? 'bg-emerald-800 text-white border-emerald-800 shadow-sm'
+              : 'bg-white text-stone-900 border-[#efe7dc] hover:bg-[#faf6ee]'
           }`}
         >
           <div>
-            <div className={`text-[10px] font-bold uppercase ${activeTab === 'pest' ? 'text-[#baeed9]' : 'text-[#707974]'}`}>
-              Pest Advisory
+            <div className={`text-[10px] font-bold uppercase ${activeTab === 'pest' ? 'text-emerald-200' : 'text-stone-500'}`}>
+              {lang === 'MR' ? 'पीक संरक्षण' : 'Pest Advisory'}
             </div>
-            <div className="font-heading font-bold text-[14px]">Pest Diagnostics &amp; Alerts</div>
+            <div className="font-heading font-bold text-[14px]">
+              {lang === 'MR' ? 'रोग व कीड सल्ला' : 'Pest & Crops'}
+            </div>
           </div>
           <span className="material-symbols-outlined text-[22px]">pest_control</span>
         </button>
@@ -288,10 +290,10 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
           <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#003629] text-[22px]">trending_up</span>
+                <span className="material-symbols-outlined text-[#166534] text-[22px]">trending_up</span>
                 <div>
-                  <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
-                    Live APMC Mandi Rates <span className="text-[12px] font-bold text-[#baeed9] bg-[#003629] px-2 py-0.5 rounded ml-1">PAUNI &amp; HAVELI APMC</span>
+                  <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
+                    Live APMC Mandi Rates <span className="text-[12px] font-bold text-[#bbf7d0] bg-[#166534] px-2 py-0.5 rounded ml-1">PAUNI &amp; HAVELI APMC</span>
                   </h3>
                   <p className="text-[11px] text-[#707974]">Updated Today, 06:30 AM (Official Computer Type Mandi Weighbridge)</p>
                 </div>
@@ -299,7 +301,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
               <button
                 onClick={() => alert('Full APMC 45-commodity rate sheet downloaded.')}
-                className="px-3 py-1.5 rounded-xl bg-[#003629] text-white text-[12px] font-bold hover:bg-[#1b4d3e] transition-colors"
+                className="px-3 py-1.5 rounded-xl bg-[#166534] text-white text-[12px] font-bold hover:bg-[#052e16] transition-colors"
               >
                 Full APMC Sheet
               </button>
@@ -318,7 +320,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                     </div>
 
                     <div className="flex items-baseline gap-1 my-2">
-                      <span className="font-heading font-extrabold text-[24px] text-[#003629]">{item.price}</span>
+                      <span className="font-heading font-extrabold text-[24px] text-[#166534]">{item.price}</span>
                       <span className="text-[12px] text-[#707974]">{item.unit}</span>
                     </div>
 
@@ -328,7 +330,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                     </div>
                   </div>
 
-                  <div className="mt-3 pt-2 border-t border-[#e8e2d9] text-[11px] font-bold text-[#a63b00]">
+                  <div className="mt-3 pt-2 border-t border-[#e8e2d9] text-[11px] font-bold text-[#c2410c]">
                     ✓ {item.note}
                   </div>
                 </div>
@@ -336,9 +338,9 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
             </div>
 
             {/* Tur Banner */}
-            <div className="bg-[#fff8f0] rounded-xl p-3.5 border border-[#ffdbce] mt-4 flex items-center justify-between gap-3">
+            <div className="bg-[#fef9ee] rounded-xl p-3.5 border border-[#fed7aa] mt-4 flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#a63b00] text-white flex items-center justify-center font-bold text-[14px]">
+                <div className="w-8 h-8 rounded-lg bg-[#c2410c] text-white flex items-center justify-center font-bold text-[14px]">
                   तुर
                 </div>
                 <div className="text-[12px] text-[#1d1b16]">
@@ -347,7 +349,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
               </div>
               <button
                 onClick={() => alert('Displaying 8 authorized Tur procurement centers in Pauni.')}
-                className="px-3 py-1.5 rounded-lg bg-[#003629] text-white text-[11px] font-bold shrink-0 hover:bg-[#1b4d3e]"
+                className="px-3 py-1.5 rounded-lg bg-[#166534] text-white text-[11px] font-bold shrink-0 hover:bg-[#052e16]"
               >
                 View Buyer Contacts
               </button>
@@ -358,7 +360,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
           <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   Kisan Tractor, Drone &amp; Implement Rental Pool
                 </h3>
                 <p className="text-[12px] text-[#707974]">
@@ -368,7 +370,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
               <button
                 onClick={() => alert('List your tractor or farm implement modal opened.')}
-                className="px-3.5 py-1.5 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] text-[#003629] text-[12px] font-bold border border-[#e8e2d9] flex items-center gap-1 shrink-0"
+                className="px-3.5 py-1.5 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] text-[#166534] text-[12px] font-bold border border-[#e8e2d9] flex items-center gap-1 shrink-0"
               >
                 <span className="material-symbols-outlined text-[16px]">add_circle</span>
                 <span>List Your Machinery</span>
@@ -380,7 +382,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                 <div key={m.id} className="bg-[#f9f3ea] rounded-xl overflow-hidden border border-[#e8e2d9] flex flex-col justify-between">
                   <div className="h-36 w-full relative bg-[#f3ede4]">
                     <img src={m.image} alt={m.name} className="w-full h-full object-cover" />
-                    <span className="absolute top-2 left-2 bg-[#003629] text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                    <span className="absolute top-2 left-2 bg-[#166534] text-white text-[10px] font-bold px-2 py-0.5 rounded">
                       {m.badge}
                     </span>
                     <span className="absolute bottom-2 right-2 bg-black/70 text-white text-[11px] font-extrabold px-2 py-0.5 rounded backdrop-blur-xs">
@@ -397,7 +399,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
                     <a
                       href={`tel:${m.phone}`}
-                      className="w-full py-2 bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1 transition-colors shadow-xs"
+                      className="w-full py-2 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1 transition-colors shadow-xs"
                     >
                       <span className="material-symbols-outlined text-[14px]">call</span>
                       <span>Call Owner ({m.phone})</span>
@@ -412,7 +414,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
           <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   Soil Health Card &amp; Fertilizer Stock Roster
                 </h3>
                 <p className="text-[12px] text-[#707974]">
@@ -422,7 +424,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
               <button
                 onClick={() => alert('Soil health card report downloaded.')}
-                className="px-3 py-1.5 rounded-xl bg-[#003629] text-white text-[12px] font-bold flex items-center gap-1 shrink-0"
+                className="px-3 py-1.5 rounded-xl bg-[#166534] text-white text-[12px] font-bold flex items-center gap-1 shrink-0"
               >
                 <span className="material-symbols-outlined text-[15px]">download</span>
                 <span>Download Soil Card</span>
@@ -447,7 +449,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
               <div className="bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
                 <div className="flex items-center justify-between text-[11px] font-bold mb-1">
                   <span className="text-[#707974]">PHOSPHORUS (P2O5)</span>
-                  <span className="text-[#002117] bg-[#baeed9] px-1.5 py-0.2 rounded">MEDIUM (Balanced)</span>
+                  <span className="text-[#002117] bg-[#bbf7d0] px-1.5 py-0.2 rounded">MEDIUM (Balanced)</span>
                 </div>
                 <div className="font-heading font-extrabold text-[22px] text-[#1d1b16]">
                   18.4 <span className="text-[11px] font-normal text-[#707974]">kg/ha (Ideal: 15-25)</span>
@@ -473,24 +475,24 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
             {/* Fertilizer Stock Availability */}
             <div className="bg-white p-3.5 rounded-xl border border-[#e8e2d9]">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-[#003629] mb-2 flex items-center gap-1">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-[#166534] mb-2 flex items-center gap-1">
                 <span className="material-symbols-outlined text-[16px]">inventory_2</span>
                 <span>Official Certified Fertilizer Stock Availability (खत साठा उपलब्धता)</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-[12px]">
                 <div className="bg-[#f9f3ea] p-2.5 rounded-lg border border-[#e8e2d9]">
                   <div className="text-[10px] text-[#707974]">DAP (Di-Ammonium Phosphate)</div>
-                  <div className="font-bold text-[#003629]">120 Bags Available</div>
+                  <div className="font-bold text-[#166534]">120 Bags Available</div>
                   <div className="text-[10px] text-[#707974]">Price: ₹1,350 / 50kg bag</div>
                 </div>
                 <div className="bg-[#f9f3ea] p-2.5 rounded-lg border border-[#e8e2d9]">
                   <div className="text-[10px] text-[#707974]">Neem Coated Urea</div>
-                  <div className="font-bold text-[#003629]">280 Bags in Stock</div>
+                  <div className="font-bold text-[#166534]">280 Bags in Stock</div>
                   <div className="text-[10px] text-[#707974]">Price: ₹266.50 / 45kg bag</div>
                 </div>
                 <div className="bg-[#f9f3ea] p-2.5 rounded-lg border border-[#e8e2d9]">
                   <div className="text-[10px] text-[#707974]">IFFCO Nano Urea Liquid</div>
-                  <div className="font-bold text-[#a63b00]">Unlimited Stock</div>
+                  <div className="font-bold text-[#c2410c]">Unlimited Stock</div>
                   <div className="text-[10px] text-[#707974]">Price: ₹225 / 500ml Bottle</div>
                 </div>
               </div>
@@ -516,14 +518,14 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                 <span className="text-[10px] font-bold text-[#ba1a1a] bg-[#ffdad6] px-1.5 py-0.2 rounded">Harbhara Crop</span>
                 <h5 className="font-bold text-[14px] mt-1 mb-1">Helicoverpa Pod Borer (घाटे अळी)</h5>
                 <p className="text-[11px] text-[#707974] mb-2">Larvae feeding on developing pods with circular holes.</p>
-                <div className="text-[11px] font-semibold text-[#003629]">Remedy: Emamectin Benzoate 5% SG @ 4g/10L water</div>
+                <div className="text-[11px] font-semibold text-[#166534]">Remedy: Emamectin Benzoate 5% SG @ 4g/10L water</div>
               </div>
 
               <div className="bg-white text-[#1d1b16] p-3 rounded-xl border border-[#ffb4ab] text-[12px]">
                 <span className="text-[10px] font-bold text-[#ba1a1a] bg-[#ffdad6] px-1.5 py-0.2 rounded">Mustard &amp; Wheat</span>
                 <h5 className="font-bold text-[14px] mt-1 mb-1">Sucking Pest Complex &amp; Leaf Curl (मावा, तुडतुडे)</h5>
                 <p className="text-[11px] text-[#707974] mb-2">Upward curling of leaf margins, yellowing between veins.</p>
-                <div className="text-[11px] font-semibold text-[#003629]">Remedy: Imidacloprid 17.8% SL @ 0.3ml/L water</div>
+                <div className="text-[11px] font-semibold text-[#166534]">Remedy: Imidacloprid 17.8% SL @ 0.3ml/L water</div>
               </div>
             </div>
           </div>
@@ -539,7 +541,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
             </div>
 
             <div className="flex items-baseline justify-between my-2">
-              <div className="font-heading font-extrabold text-[36px] text-[#003629]">28°C</div>
+              <div className="font-heading font-extrabold text-[36px] text-[#166534]">28°C</div>
               <div className="text-right">
                 <div className="font-bold text-[13px] text-[#1d1b16]">Asgaon Farm Outskirts</div>
                 <div className="text-[11px] text-[#707974]">Sunny &amp; Clear Sky</div>
@@ -557,7 +559,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
               </div>
               <div>
                 <div className="text-[#707974]">Cloud Cover</div>
-                <div className="font-bold text-[#003629]">Zero</div>
+                <div className="font-bold text-[#166534]">Zero</div>
               </div>
             </div>
 
@@ -568,7 +570,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
           {/* Designated Agri Officer */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#003629] bg-[#baeed9] px-2 py-0.5 rounded">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#166534] bg-[#bbf7d0] px-2 py-0.5 rounded">
               DESIGNATED OFFICER • ON FIELD DUTY
             </span>
 
@@ -593,7 +595,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
             <div className="grid grid-cols-2 gap-2">
               <a
                 href="tel:9822104500"
-                className="py-2 bg-[#003629] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-1 hover:bg-[#1b4d3e]"
+                className="py-2 bg-[#166534] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-1 hover:bg-[#052e16]"
               >
                 <span className="material-symbols-outlined text-[14px]">call</span>
                 <span>Call Desk</span>
@@ -602,7 +604,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                 href="https://wa.me/919822104500"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-2 bg-[#f9f3ea] text-[#003629] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1 border border-[#e8e2d9]"
+                className="py-2 bg-[#f9f3ea] text-[#166534] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1 border border-[#e8e2d9]"
               >
                 <span className="material-symbols-outlined text-[14px] text-[#25D366]">chat</span>
                 <span>WhatsApp</span>
@@ -612,11 +614,11 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
           {/* Kisan Credit Card Camp */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#a63b00] bg-[#fff8f0] px-2 py-0.5 rounded border border-[#ffdbce]">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#c2410c] bg-[#fef9ee] px-2 py-0.5 rounded border border-[#fed7aa]">
               KCC SHIBIR NOTICE
             </span>
 
-            <h4 className="font-heading font-extrabold text-[15px] text-[#003629] mt-2 mb-1">
+            <h4 className="font-heading font-extrabold text-[15px] text-[#166534] mt-2 mb-1">
               Kisan Credit Card Camp
             </h4>
             <p className="text-[11px] text-[#707974] leading-relaxed mb-3">
@@ -632,7 +634,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
             <button
               onClick={() => alert('Registration confirmed for Kisan Credit Card camp.')}
-              className="w-full py-2 bg-[#a63b00] hover:bg-[#852f00] text-white text-[12px] font-bold rounded-xl transition-colors shadow-xs"
+              className="w-full py-2 bg-[#c2410c] hover:bg-[#852f00] text-white text-[12px] font-bold rounded-xl transition-colors shadow-xs"
             >
               Register for Camp Drive
             </button>
@@ -640,12 +642,12 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
           {/* Village Kisan Chawadi */}
           <div className="bg-[#f9f3ea] rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <div className="flex items-center justify-between text-[13px] font-bold text-[#003629] mb-2">
+            <div className="flex items-center justify-between text-[13px] font-bold text-[#166534] mb-2">
               <span className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-[16px]">forum</span>
                 <span>Village Kisan Chawadi (शेतकरी मंच)</span>
               </span>
-              <span className="text-[10px] text-[#a63b00]">14 Active Topics</span>
+              <span className="text-[10px] text-[#c2410c]">14 Active Topics</span>
             </div>
 
             <div className="space-y-2 text-[11px] text-[#1d1b16]">
@@ -661,7 +663,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
             <button
               onClick={() => alert('Chawadi discussion portal opened.')}
-              className="w-full mt-3 py-1.5 bg-[#003629] text-white text-[11px] font-bold rounded-lg hover:bg-[#1b4d3e]"
+              className="w-full mt-3 py-1.5 bg-[#166534] text-white text-[11px] font-bold rounded-lg hover:bg-[#052e16]"
             >
               Post a Question to Village Farmers
             </button>

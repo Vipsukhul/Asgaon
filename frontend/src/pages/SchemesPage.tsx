@@ -256,7 +256,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
           { label: lang === 'MR' ? 'शासकीय योजना व सबसिडी मार्गदर्शक' : 'Government Schemes & Subsidies', active: true }
         ]}
         rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#baeed9] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
+          <div className="flex items-center gap-1.5 bg-[#bbf7d0] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
             <span className="material-symbols-outlined text-[15px] text-[#002117]">verified</span>
             <span>{lang === 'MR' ? 'पवनी तहसील डीबीटी (DBT) मदत कक्ष प्रमाणित' : 'Pauni Tehsil Direct Benefit Transfer (DBT) Verified'}</span>
           </div>
@@ -266,14 +266,14 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
       {/* 3. Hero Header Banner */}
       <header className="bg-white rounded-2xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
         <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#baeed9] text-[#002117] text-[10px] font-extrabold uppercase tracking-wider mb-2">
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#bbf7d0] text-[#002117] text-[10px] font-extrabold uppercase tracking-wider mb-2">
             {lang === 'MR' ? 'डीबीटी पडताळणीकृत • मोफत नागरी सेवा • थेट शासकीय लाभ' : 'DBT VERIFIED | ZERO FEE | DIRECT WELFARE ASSISTANCE'}
           </span>
 
-          <h1 className="font-heading font-extrabold text-[24px] sm:text-[28px] text-[#003629] leading-tight mb-1">
+          <h1 className="font-heading font-extrabold text-[24px] sm:text-[28px] text-[#166534] leading-tight mb-1">
             {lang === 'MR' ? 'शासकीय योजना व घरकुल मार्गदर्शन दालन' : 'Sarkari Yojana & Gharkul Guidance Portal'}
           </h1>
-          <p className="font-heading font-bold text-[14px] sm:text-[15px] text-[#a63b00] mb-2">
+          <p className="font-heading font-bold text-[14px] sm:text-[15px] text-[#c2410c] mb-2">
             {lang === 'MR' ? 'सर्व शासकीय योजना, ग्रामीण घरकुल योजना व कृषी अनुदान — अधिकृत माहिती व थेट अर्ज' : 'Central & Maharashtra Govt Welfare Schemes, Housing Grants & Farm Subsidies'}
           </p>
 
@@ -291,7 +291,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               setSelectedCat('housing');
               setCurrentPage(1);
             }}
-            className="w-full py-2.5 px-4 rounded-xl bg-[#a63b00] hover:bg-[#852f00] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+            className="w-full py-2.5 px-4 rounded-xl bg-[#c2410c] hover:bg-[#852f00] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
           >
             <span className="material-symbols-outlined text-[18px]">home</span>
             <span>{lang === 'MR' ? 'सर्व घरकुल योजना पहा (घरकुल यादी)' : 'View All Gharkul Schemes'}</span>
@@ -309,7 +309,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
             <button
               type="button"
               onClick={() => setLang(lang === 'MR' ? 'EN' : 'MR')}
-              className="px-3 py-2 rounded-xl bg-[#f9f3ea] hover:bg-[#e8e2d9] text-[#003629] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9] transition-all"
+              className="px-3 py-2 rounded-xl bg-[#f9f3ea] hover:bg-[#e8e2d9] text-[#166534] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9] transition-all"
               title={lang === 'MR' ? 'Switch to English' : 'मराठीत बदला'}
             >
               <span className="material-symbols-outlined text-[15px]">translate</span>
@@ -320,14 +320,14 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
       </header>
 
       {/* 4. Gharkul Special Info Spotlight Card (Always visible or prominently shown) */}
-      <section className="bg-gradient-to-r from-[#003629] to-[#0f533f] text-white rounded-2xl p-5 sm:p-6 shadow-sm border border-[#00261d]">
+      <section className="bg-gradient-to-r from-[#166534] to-[#0f533f] text-white rounded-2xl p-5 sm:p-6 shadow-sm border border-[#052e16]">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4 pb-4 border-b border-white/15">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 text-[#baeed9]">
+            <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 text-[#bbf7d0]">
               <span className="material-symbols-outlined text-[28px]">cottage</span>
             </div>
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-[#baeed9]">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-[#bbf7d0]">
                 {lang === 'MR' ? 'महाराष्ट्र ग्रामीण घरकुल अभियान • आसगाव' : 'MAHARASHTRA RURAL HOUSING MISSION | ASGAON'}
               </div>
               <h2 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-white">
@@ -341,7 +341,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               setSelectedCat('housing');
               setCurrentPage(1);
             }}
-            className="px-3.5 py-1.5 rounded-xl bg-[#baeed9] text-[#002117] hover:bg-white text-[12px] font-bold shrink-0 transition-colors"
+            className="px-3.5 py-1.5 rounded-xl bg-[#bbf7d0] text-[#002117] hover:bg-white text-[12px] font-bold shrink-0 transition-colors"
           >
             {lang === 'MR'
               ? `घरकुल योजना फिल्टर करा (${allSchemes.filter((s) => s.categoryKey === 'housing').length})`
@@ -353,40 +353,40 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-[12px]">
           <div className="bg-white/10 p-3 rounded-xl border border-white/10 flex flex-col justify-between">
             <div>
-              <div className="font-bold text-[#baeed9] text-[13px] flex items-center gap-1">
+              <div className="font-bold text-[#bbf7d0] text-[13px] flex items-center gap-1">
                 <span>PMAY-G ({lang === 'MR' ? 'केंद्र सरकार' : 'Central Govt'})</span>
               </div>
               <div className="font-bold text-white text-[15px] my-1">{lang === 'MR' ? '₹१.५७ लाख एकूण' : '₹1.57 Lakhs Total'}</div>
               <p className="text-white/80 text-[11px]">{lang === 'MR' ? 'SECC / आवास+ प्रतीक्षा यादीतील बेघर कुटुंबांसाठी.' : 'For houseless families in SECC / Awaas+ waitlist.'}</p>
             </div>
-            <div className="mt-2 text-[10px] text-[#baeed9] font-medium">{lang === 'MR' ? 'सर्व प्रवर्ग (SECC यादी)' : 'All Castes (SECC List)'}</div>
+            <div className="mt-2 text-[10px] text-[#bbf7d0] font-medium">{lang === 'MR' ? 'सर्व प्रवर्ग (SECC यादी)' : 'All Castes (SECC List)'}</div>
           </div>
 
           <div className="bg-white/10 p-3 rounded-xl border border-white/10 flex flex-col justify-between">
             <div>
-              <div className="font-bold text-[#baeed9] text-[13px]">{lang === 'MR' ? 'रमाई आवास योजना' : 'Ramai Awas Yojana'}</div>
+              <div className="font-bold text-[#bbf7d0] text-[13px]">{lang === 'MR' ? 'रमाई आवास योजना' : 'Ramai Awas Yojana'}</div>
               <div className="font-bold text-white text-[15px] my-1">{lang === 'MR' ? '₹१.३० लाख + मनरेगा' : '₹1.30L + MGNREGA'}</div>
               <p className="text-white/80 text-[11px]">{lang === 'MR' ? 'ग्रामीण भागातील अनुसूचित जाती (SC) व नवबौद्ध कुटुंबांसाठी.' : 'Dedicated grant for rural SC & Neo-Buddhist families.'}</p>
             </div>
-            <div className="mt-2 text-[10px] text-[#baeed9] font-medium">{lang === 'MR' ? 'अनुसूचित जाती (SC) प्रवर्ग' : 'SC / Nav-Bouddha'}</div>
+            <div className="mt-2 text-[10px] text-[#bbf7d0] font-medium">{lang === 'MR' ? 'अनुसूचित जाती (SC) प्रवर्ग' : 'SC / Nav-Bouddha'}</div>
           </div>
 
           <div className="bg-white/10 p-3 rounded-xl border border-white/10 flex flex-col justify-between">
             <div>
-              <div className="font-bold text-[#baeed9] text-[13px]">{lang === 'MR' ? 'शबरी आवास योजना' : 'Shabari Awas Yojana'}</div>
+              <div className="font-bold text-[#bbf7d0] text-[13px]">{lang === 'MR' ? 'शबरी आवास योजना' : 'Shabari Awas Yojana'}</div>
               <div className="font-bold text-white text-[15px] my-1">{lang === 'MR' ? '₹१.३० लाख + मनरेगा' : '₹1.30L + MGNREGA'}</div>
               <p className="text-white/80 text-[11px]">{lang === 'MR' ? 'अनुसूचित जमाती (ST) आदिवासी कुटुंबांसाठी पक्के घर अनुदान.' : 'Pukka house financial aid for Scheduled Tribe (ST) families.'}</p>
             </div>
-            <div className="mt-2 text-[10px] text-[#baeed9] font-medium">{lang === 'MR' ? 'अनुसूचित जमाती (ST) प्रवर्ग' : 'ST / Tribal Families'}</div>
+            <div className="mt-2 text-[10px] text-[#bbf7d0] font-medium">{lang === 'MR' ? 'अनुसूचित जमाती (ST) प्रवर्ग' : 'ST / Tribal Families'}</div>
           </div>
 
           <div className="bg-white/10 p-3 rounded-xl border border-white/10 flex flex-col justify-between">
             <div>
-              <div className="font-bold text-[#baeed9] text-[13px]">{lang === 'MR' ? 'मोदी आवास योजना' : 'Modi Awas Yojana'}</div>
+              <div className="font-bold text-[#bbf7d0] text-[13px]">{lang === 'MR' ? 'मोदी आवास योजना' : 'Modi Awas Yojana'}</div>
               <div className="font-bold text-white text-[15px] my-1">{lang === 'MR' ? '₹१.२० लाख + मनरेगा' : '₹1.20L + MGNREGA'}</div>
               <p className="text-white/80 text-[11px]">{lang === 'MR' ? 'ग्रामीण भागातील इतर मागासवर्ग (OBC/SBC/VJNT) कुटुंबांसाठी.' : 'Special housing scheme for rural OBC / SBC / VJNT.'}</p>
             </div>
-            <div className="mt-2 text-[10px] text-[#baeed9] font-medium">{lang === 'MR' ? 'इतर मागास प्रवर्ग (OBC/VJNT)' : 'OBC / SBC / VJNT'}</div>
+            <div className="mt-2 text-[10px] text-[#bbf7d0] font-medium">{lang === 'MR' ? 'इतर मागास प्रवर्ग (OBC/VJNT)' : 'OBC / SBC / VJNT'}</div>
           </div>
         </div>
       </section>
@@ -403,7 +403,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               setCurrentPage(1);
             }}
             placeholder={lang === 'MR' ? "योजना शोधा (उदा. घरकुल, रमाई, मोदी आवास, पीएम किसान, लाडकी बहीण, सौर कृषी पंप)..." : "Search schemes by name, category (e.g. Gharkul, Ramai, Modi Awas, PM-Kisan, Ladki Bahin, Solar Pump)..."}
-            className="w-full pl-10 pr-10 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+            className="w-full pl-10 pr-10 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             aria-label="Search schemes"
           />
           {search && (
@@ -437,7 +437,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                 }}
                 className={`px-3 py-1.5 rounded-xl text-[12px] font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
                   selectedCat === cat.id
-                    ? 'bg-[#003629] text-white shadow-xs'
+                    ? 'bg-[#166534] text-white shadow-xs'
                     : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9] border border-[#e8e2d9]'
                 }`}
               >
@@ -465,7 +465,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                 setActiveCheckboxes({ ...activeCheckboxes, active: e.target.checked });
                 setCurrentPage(1);
               }}
-              className="w-4 h-4 accent-[#003629]"
+              className="w-4 h-4 accent-[#166534]"
             />
             <span>{lang === 'MR' ? 'सध्या अर्ज सुरू' : 'Applications Active Now'}</span>
           </label>
@@ -478,7 +478,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                 setActiveCheckboxes({ ...activeCheckboxes, dbt: e.target.checked });
                 setCurrentPage(1);
               }}
-              className="w-4 h-4 accent-[#003629]"
+              className="w-4 h-4 accent-[#166534]"
             />
             <span>{lang === 'MR' ? 'थेट बँक खात्यात (DBT)' : 'Direct Benefit Transfer (DBT) Cash'}</span>
           </label>
@@ -491,7 +491,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                 setActiveCheckboxes({ ...activeCheckboxes, free: e.target.checked });
                 setCurrentPage(1);
               }}
-              className="w-4 h-4 accent-[#003629]"
+              className="w-4 h-4 accent-[#166534]"
             />
             <span>{lang === 'MR' ? '१००% मोफत / पूर्ण अनुदान' : '100% Free / Full Subsidy'}</span>
           </label>
@@ -504,7 +504,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                 setActiveCheckboxes({ ...activeCheckboxes, land: e.target.checked });
                 setCurrentPage(1);
               }}
-              className="w-4 h-4 accent-[#003629]"
+              className="w-4 h-4 accent-[#166534]"
             />
             <span>{lang === 'MR' ? 'जमीन / घर नमुना (७/१२ किंवा ८-अ)' : 'Land / Property Record (7/12 or 8A)'}</span>
           </label>
@@ -516,7 +516,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
         {/* Left Column: Schemes Directory (2 cols wide) */}
         <main className="lg:col-span-2 flex flex-col gap-5">
           <div className="flex items-center justify-between">
-            <h2 className="font-heading font-extrabold text-[17px] text-[#003629]">
+            <h2 className="font-heading font-extrabold text-[17px] text-[#166534]">
               {selectedCat === 'housing'
                 ? (lang === 'MR' ? 'घरकुल व ग्रामीण गृहनिर्माण योजना दालन' : 'Gharkul & Rural Housing Schemes')
                 : (lang === 'MR' ? 'शासकीय योजना व थेट सबसिडी सहाय्य' : 'Government Schemes & Subsidies')}{' '}
@@ -530,15 +530,15 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
 
           {allSchemes.length === 0 ? (
             <div className="bg-white rounded-2xl p-12 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-              <div className="w-8 h-8 border-3 border-[#003629] border-t-transparent rounded-full animate-spin mb-1" />
-              <p className="text-[13px] font-bold text-[#003629]">
+              <div className="w-8 h-8 border-3 border-[#166534] border-t-transparent rounded-full animate-spin mb-1" />
+              <p className="text-[13px] font-bold text-[#166534]">
                 {lang === 'MR' ? 'माहिती लोड होत आहे, कृपया प्रतीक्षा करा...' : 'Connecting to database & loading government welfare schemes...'}
               </p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-              <span className="material-symbols-outlined text-[48px] text-[#a63b00]">policy</span>
-              <h3 className="font-heading font-bold text-[18px] text-[#003629]">
+              <span className="material-symbols-outlined text-[48px] text-[#c2410c]">policy</span>
+              <h3 className="font-heading font-bold text-[18px] text-[#166534]">
                 {lang === 'MR' ? 'एकही योजना आढळली नाही' : 'No matching schemes found'}
               </h3>
               <p className="text-[13px] text-[#707974] max-w-md">
@@ -553,7 +553,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                   setActiveCheckboxes({ active: false, dbt: false, free: false, land: false });
                   setCurrentPage(1);
                 }}
-                className="px-4 py-2 bg-[#003629] text-white text-[12px] font-bold rounded-xl hover:bg-[#1b4d3e] transition-colors"
+                className="px-4 py-2 bg-[#166534] text-white text-[12px] font-bold rounded-xl hover:bg-[#052e16] transition-colors"
               >
                 {lang === 'MR' ? 'सर्व फिल्टर्स रीसेट करा' : 'Reset All Filters'}
               </button>
@@ -583,7 +583,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                     <div>
                       <h3
                         itemProp="name"
-                        className="font-heading font-extrabold text-[18px] text-[#1d1b16] leading-snug hover:text-[#003629] transition-colors"
+                        className="font-heading font-extrabold text-[18px] text-[#1d1b16] leading-snug hover:text-[#166534] transition-colors"
                       >
                         {onSelectScheme ? (
                           <a
@@ -602,14 +602,14 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                       </h3>
                       <p
                         itemProp="provider"
-                        className="text-[12px] font-semibold text-[#a63b00] mt-0.5"
+                        className="text-[12px] font-semibold text-[#c2410c] mt-0.5"
                       >
                         {item.department}
                       </p>
                     </div>
 
-                    <div className="bg-[#fff8f0] p-2.5 rounded-xl border border-[#ffdbce] text-right shrink-0">
-                      <div className="font-heading font-extrabold text-[15px] text-[#a63b00]">
+                    <div className="bg-[#fef9ee] p-2.5 rounded-xl border border-[#fed7aa] text-right shrink-0">
+                      <div className="font-heading font-extrabold text-[15px] text-[#c2410c]">
                         {item.subsidyBadge}
                       </div>
                       <div className="text-[10px] text-[#707974] font-semibold">{item.subsidySub}</div>
@@ -619,7 +619,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                   {/* 2-Column Benefits & Eligibility Box */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9] mb-3 text-[12px]">
                     <div>
-                      <div className="text-[10px] uppercase font-bold text-[#003629] mb-1 flex items-center gap-1">
+                      <div className="text-[10px] uppercase font-bold text-[#166534] mb-1 flex items-center gap-1">
                         <span className="material-symbols-outlined text-[14px]">account_balance_wallet</span>
                         <span>{lang === 'MR' ? 'आर्थिक सहाय्य / सबसिडी' : 'Financial Assistance / Subsidy'}</span>
                       </div>
@@ -627,7 +627,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                     </div>
 
                     <div>
-                      <div className="text-[10px] uppercase font-bold text-[#003629] mb-1 flex items-center gap-1">
+                      <div className="text-[10px] uppercase font-bold text-[#166534] mb-1 flex items-center gap-1">
                         <span className="material-symbols-outlined text-[14px]">checklist</span>
                         <span>{lang === 'MR' ? 'पात्रता निकष' : 'Eligibility Criteria'}</span>
                       </div>
@@ -652,7 +652,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                   </div>
 
                   {item.urgentAlert && (
-                    <div className="bg-[#fff8f0] text-[#a63b00] p-2.5 rounded-xl border border-[#ffdbce] text-[12px] font-bold mb-3 flex items-center gap-2">
+                    <div className="bg-[#fef9ee] text-[#c2410c] p-2.5 rounded-xl border border-[#fed7aa] text-[12px] font-bold mb-3 flex items-center gap-2">
                       <span className="material-symbols-outlined text-[18px]">campaign</span>
                       <span>{item.urgentAlert}</span>
                     </div>
@@ -682,7 +682,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                     {onSelectScheme ? (
                       <button
                         onClick={() => onSelectScheme(item.slug)}
-                        className="px-3.5 py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] font-bold transition-colors shadow-xs flex items-center gap-1"
+                        className="px-3.5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold transition-colors shadow-xs flex items-center gap-1"
                       >
                         <span>{lang === 'MR' ? 'संपूर्ण तपशील पहा' : 'Full Scheme Page'}</span>
                         <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
@@ -700,7 +700,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                       <button
                         onClick={() => onBookmarkScheme(item)}
                         title={lang === 'MR' ? 'योजना सेव्ह करा' : 'Bookmark Scheme'}
-                        className="p-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#707974] hover:text-[#003629] transition-colors"
+                        className="p-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#707974] hover:text-[#166534] transition-colors"
                       >
                         <span className="material-symbols-outlined text-[18px]">bookmark_border</span>
                       </button>
@@ -709,7 +709,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
 
                   <a
                     href="tel:9822104500"
-                    className="text-[12px] font-bold text-[#a63b00] hover:underline flex items-center gap-1"
+                    className="text-[12px] font-bold text-[#c2410c] hover:underline flex items-center gap-1"
                   >
                     <span className="material-symbols-outlined text-[15px]">storefront</span>
                     <span>{lang === 'MR' ? 'आसगाव CSC केंद्रावर अर्ज करा' : 'Book at Asgaon CSC Desk'}</span>
@@ -753,7 +753,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                       }}
                       className={`w-7 h-7 rounded-lg font-bold flex items-center justify-center transition-colors ${
                         validCurrentPage === pageNum
-                          ? 'bg-[#003629] text-white shadow-xs'
+                          ? 'bg-[#166534] text-white shadow-xs'
                           : 'bg-[#f3ede4] text-[#1d1b16] hover:bg-[#e8e2d9]'
                       }`}
                     >
@@ -779,9 +779,9 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
           {/* 7. SEO FAQ Section (Schema.org Compliant Accordions) */}
           <section className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs mt-4">
             <div className="flex items-center gap-2 mb-4 pb-2 border-b border-[#f3ede4]">
-              <span className="material-symbols-outlined text-[24px] text-[#003629]">help_outline</span>
+              <span className="material-symbols-outlined text-[24px] text-[#166534]">help_outline</span>
               <div>
-                <h2 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h2 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'वारंवार विचारले जाणारे प्रश्न (FAQ)' : 'Frequently Asked Questions (FAQ)'}
                 </h2>
                 <p className="text-[12px] text-[#707974]">
@@ -794,7 +794,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
 
             <div className="space-y-3 text-[13px]">
               <details className="group bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
-                <summary className="font-bold text-[#003629] cursor-pointer flex items-center justify-between list-none">
+                <summary className="font-bold text-[#166534] cursor-pointer flex items-center justify-between list-none">
                   <span>{lang === 'MR' ? '१. आसगावमध्ये घरकुल योजनेसाठी कोणती कागदपत्रे लागतात?' : '1. Which documents are required for Gharkul Yojana in Asgaon?'}</span>
                   <span className="material-symbols-outlined text-[20px] transition-transform group-open:rotate-180">expand_more</span>
                 </summary>
@@ -826,7 +826,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               </details>
 
               <details className="group bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
-                <summary className="font-bold text-[#003629] cursor-pointer flex items-center justify-between list-none">
+                <summary className="font-bold text-[#166534] cursor-pointer flex items-center justify-between list-none">
                   <span>{lang === 'MR' ? '२. घरकुल योजनेत अनुदानाची रक्कम कशी वितरित केली जाते?' : '2. How is the financial grant disbursed in Gharkul Yojana?'}</span>
                   <span className="material-symbols-outlined text-[20px] transition-transform group-open:rotate-180">expand_more</span>
                 </summary>
@@ -856,7 +856,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               </details>
 
               <details className="group bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
-                <summary className="font-bold text-[#003629] cursor-pointer flex items-center justify-between list-none">
+                <summary className="font-bold text-[#166534] cursor-pointer flex items-center justify-between list-none">
                   <span>{lang === 'MR' ? '३. मुख्यमंत्री माझी लाडकी बहीण योजनेचा लाभ कोणाला मिळतो?' : '3. Who is eligible for Majhi Ladki Bahin Yojana?'}</span>
                   <span className="material-symbols-outlined text-[20px] transition-transform group-open:rotate-180">expand_more</span>
                 </summary>
@@ -874,7 +874,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               </details>
 
               <details className="group bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
-                <summary className="font-bold text-[#003629] cursor-pointer flex items-center justify-between list-none">
+                <summary className="font-bold text-[#166534] cursor-pointer flex items-center justify-between list-none">
                   <span>{lang === 'MR' ? '४. अर्जासाठी कोणतेही शुल्क किंवा मध्यस्थांची फी लागते का?' : '4. Are there any application fees or agent commissions?'}</span>
                   <span className="material-symbols-outlined text-[20px] transition-transform group-open:rotate-180">expand_more</span>
                 </summary>
@@ -902,7 +902,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               {lang === 'MR' ? 'नागरिक सेवा केंद्र' : 'GOVERNMENT SERVICES DESK'}
             </span>
 
-            <h3 className="font-heading font-extrabold text-[16px] text-[#003629] mt-2 mb-1">
+            <h3 className="font-heading font-extrabold text-[16px] text-[#166534] mt-2 mb-1">
               {lang === 'MR' ? 'आसगाव सीएससी डिजिटल सेवा केंद्र' : 'Asgaon CSC Digital Seva Kendra'}
             </h3>
             <p className="text-[12px] text-[#404945] leading-relaxed mb-3">
@@ -920,16 +920,16 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
             <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] mb-4 flex items-center justify-between text-[12px]">
               <div>
                 <div className="text-[10px] text-[#707974] uppercase font-bold">{lang === 'MR' ? 'रांगेतील स्थिती' : 'Current Desk Queue'}</div>
-                <div className="font-heading font-extrabold text-[15px] text-[#003629]">{lang === 'MR' ? '४ नागरिक पुढे आहेत' : '4 People Ahead'}</div>
+                <div className="font-heading font-extrabold text-[15px] text-[#166534]">{lang === 'MR' ? '४ नागरिक पुढे आहेत' : '4 People Ahead'}</div>
               </div>
-              <span className="text-[11px] font-bold text-[#a63b00] bg-white px-2 py-1 rounded-md border border-[#e8e2d9]">
+              <span className="text-[11px] font-bold text-[#c2410c] bg-white px-2 py-1 rounded-md border border-[#e8e2d9]">
                 {lang === 'MR' ? 'अंदाजे वेळ: ~८ मि.' : 'Estimated Wait: ~8 min'}
               </span>
             </div>
 
             <a
               href="tel:9822104500"
-              className="w-full py-2.5 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] font-bold flex items-center justify-center gap-1 mb-2 shadow-xs transition-colors"
+              className="w-full py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold flex items-center justify-center gap-1 mb-2 shadow-xs transition-colors"
             >
               <span className="material-symbols-outlined text-[15px]">call</span>
               <span>{lang === 'MR' ? 'ऑपरेटरशी संपर्क साधा: +९१ ९८२२१ ०४५००' : 'Call Operator: +91 98221 04500'}</span>
@@ -945,11 +945,11 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
 
           {/* Widget 2: Housing Guidance Desk */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#a63b00] bg-[#fff8f0] px-2 py-0.5 rounded border border-[#ffdbce]">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#c2410c] bg-[#fef9ee] px-2 py-0.5 rounded border border-[#fed7aa]">
               {lang === 'MR' ? 'घरकुल कक्ष' : 'GHARKUL DESK'}
             </span>
 
-            <h3 className="font-heading font-extrabold text-[15px] text-[#003629] mt-2 mb-1">
+            <h3 className="font-heading font-extrabold text-[15px] text-[#166534] mt-2 mb-1">
               {lang === 'MR' ? 'घरकुल व आवास मार्गदर्शन' : 'Housing & Gharkul Guidance Desk'}
             </h3>
             <p className="text-[12px] text-[#404945] leading-relaxed mb-3">
@@ -960,11 +960,11 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
 
             <div className="space-y-1.5 text-[12px] text-[#404945]">
               <div className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[16px] text-[#003629]">schedule</span>
+                <span className="material-symbols-outlined text-[16px] text-[#166534]">schedule</span>
                 <span>{lang === 'MR' ? 'कार्यालय वेळ:' : 'Office Time:'} <strong>{lang === 'MR' ? 'सकाळी १०:०० - संध्याकाळी ५:००' : '10:00 AM - 5:00 PM'}</strong></span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[16px] text-[#003629]">location_on</span>
+                <span className="material-symbols-outlined text-[16px] text-[#166534]">location_on</span>
                 <span>{lang === 'MR' ? 'आसगाव गाव परिसर' : 'Asgaon Village Area'}</span>
               </div>
             </div>
@@ -998,15 +998,15 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
 
           {/* Widget 4: Standard Village Affidavit Formats */}
           <div className="bg-[#f9f3ea] rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <h3 className="font-heading font-bold text-[14px] text-[#003629] mb-2 flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#a63b00]">description</span>
+            <h3 className="font-heading font-bold text-[14px] text-[#166534] mb-2 flex items-center gap-1">
+              <span className="material-symbols-outlined text-[16px] text-[#c2410c]">description</span>
               <span>{lang === 'MR' ? 'महत्वाचे अर्ज नमुने व प्रतिज्ञापत्रे' : 'Official Affidavit Formats'}</span>
             </h3>
             <ul className="space-y-2 text-[12px]">
               <li>
                 <button
                   onClick={() => alert(lang === 'MR' ? 'घरकुल ८-अ स्वयंघोषणापत्र नमुना डाउनलोड होत आहे (PDF)' : 'Downloading Gharkul 8A Property Self-Affidavit Format (PDF)')}
-                  className="text-[#003629] hover:underline flex items-center gap-1 text-left"
+                  className="text-[#166534] hover:underline flex items-center gap-1 text-left"
                 >
                   <span className="material-symbols-outlined text-[14px]">download</span>
                   <span>{lang === 'MR' ? '१. घरकुल ८-अ मालमत्ता स्वयंघोषणापत्र (PDF)' : '1. Gharkul 8A Property Self-Affidavit (PDF)'}</span>
@@ -1015,7 +1015,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               <li>
                 <button
                   onClick={() => alert(lang === 'MR' ? '७/१२ पीक पाहणी घोषणापत्र नमुना डाउनलोड होत आहे (PDF)' : 'Downloading 7/12 Sowing Declaration Format (PDF)')}
-                  className="text-[#003629] hover:underline flex items-center gap-1 text-left"
+                  className="text-[#166534] hover:underline flex items-center gap-1 text-left"
                 >
                   <span className="material-symbols-outlined text-[14px]">download</span>
                   <span>{lang === 'MR' ? '२. ७/१२ पीक पाहणी स्वयंघोषणापत्र (PDF)' : '2. 7/12 Land Sowing Declaration (PDF)'}</span>
@@ -1024,7 +1024,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               <li>
                 <button
                   onClick={() => alert(lang === 'MR' ? 'लाडकी बहीण हमीपत्र नमुना डाउनलोड होत आहे (PDF)' : 'Downloading Ladki Bahin Hamipatra Format (PDF)')}
-                  className="text-[#003629] hover:underline flex items-center gap-1 text-left"
+                  className="text-[#166534] hover:underline flex items-center gap-1 text-left"
                 >
                   <span className="material-symbols-outlined text-[14px]">download</span>
                   <span>{lang === 'MR' ? '३. लाडकी बहीण योजना हमीपत्र (PDF)' : '3. Ladki Bahin Hamipatra Declaration (PDF)'}</span>
@@ -1051,7 +1051,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                 <h3 className="font-heading font-extrabold text-[19px] text-[#1d1b16] mt-1">
                   {selectedModalScheme.title}
                 </h3>
-                <p className="text-[12px] font-bold text-[#a63b00]">{selectedModalScheme.department}</p>
+                <p className="text-[12px] font-bold text-[#c2410c]">{selectedModalScheme.department}</p>
               </div>
               <button
                 onClick={() => setSelectedModalScheme(null)}
@@ -1063,21 +1063,21 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
             </div>
 
             <div className="bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9] text-[13px]">
-              <strong className="text-[#003629] block text-[11px] uppercase mb-0.5">
+              <strong className="text-[#166534] block text-[11px] uppercase mb-0.5">
                 {lang === 'MR' ? 'आर्थिक सहाय्य व लाभ:' : 'Assistance & Benefit:'}
               </strong>
               <p className="text-[#1d1b16]">{selectedModalScheme.financialAssistance}</p>
             </div>
 
             <div className="text-[13px]">
-              <strong className="text-[#003629] block text-[11px] uppercase mb-0.5">
+              <strong className="text-[#166534] block text-[11px] uppercase mb-0.5">
                 {lang === 'MR' ? 'पात्रता निकष:' : 'Eligibility:'}
               </strong>
               <p className="text-[#404945]">{selectedModalScheme.eligibility}</p>
             </div>
 
             <div className="bg-white p-3 rounded-xl border border-[#e8e2d9]">
-              <strong className="text-[#003629] block text-[11px] uppercase mb-1.5">
+              <strong className="text-[#166534] block text-[11px] uppercase mb-1.5">
                 {lang === 'MR' ? 'आवश्यक कागदपत्रे:' : 'Required Documents:'}
               </strong>
               <div className="space-y-1.5 text-[12px]">

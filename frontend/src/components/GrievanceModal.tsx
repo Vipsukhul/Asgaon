@@ -89,10 +89,10 @@ export const GrievanceModal: React.FC<GrievanceModalProps> = ({
       <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-[#e8e2d9] overflow-hidden p-6">
         {submittedToken ? (
           <div className="text-center py-6">
-            <div className="w-16 h-16 rounded-full bg-[#baeed9] text-[#003629] flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-full bg-[#bbf7d0] text-[#166534] flex items-center justify-center mx-auto mb-4">
               <span className="material-symbols-outlined text-[36px]">check_circle</span>
             </div>
-            <h3 className="font-heading font-extrabold text-[22px] text-[#003629] mb-2">
+            <h3 className="font-heading font-extrabold text-[22px] text-[#166534] mb-2">
               Grievance Registered Successfully!
             </h3>
             <p className="text-[13px] text-[#404945] mb-4">
@@ -100,7 +100,7 @@ export const GrievanceModal: React.FC<GrievanceModalProps> = ({
             </p>
             <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9] mb-6">
               <div className="text-[11px] font-bold text-[#707974] uppercase">Your SMS Tracking Token</div>
-              <div className="font-heading font-extrabold text-[24px] text-[#a63b00] tracking-widest mt-1">
+              <div className="font-heading font-extrabold text-[24px] text-[#c2410c] tracking-widest mt-1">
                 {submittedToken}
               </div>
               <div className="text-[11px] text-[#404945] mt-1">
@@ -109,7 +109,7 @@ export const GrievanceModal: React.FC<GrievanceModalProps> = ({
             </div>
             <button
               onClick={handleReset}
-              className="w-full py-3 rounded-xl bg-[#003629] text-white text-[14px] font-bold hover:bg-[#1b4d3e] transition-colors"
+              className="w-full py-3 rounded-xl bg-[#166534] text-white text-[14px] font-bold hover:bg-[#052e16] transition-colors"
             >
               Done &amp; Return to Portal
             </button>
@@ -118,7 +118,7 @@ export const GrievanceModal: React.FC<GrievanceModalProps> = ({
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-[#f3ede4] mb-4">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#a63b00] text-[24px]">campaign</span>
+                <span className="material-symbols-outlined text-[#c2410c] text-[24px]">campaign</span>
                 <h3 className="font-heading font-bold text-[18px] text-[#1d1b16]">
                   Report a Village Issue (समस्या नोंदणी)
                 </h3>
@@ -139,7 +139,7 @@ export const GrievanceModal: React.FC<GrievanceModalProps> = ({
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                  className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
                 >
                   <option>Drinking Water / Pipeline Leakage</option>
                   <option>Street Light / Electrical Breakdown</option>
@@ -159,7 +159,7 @@ export const GrievanceModal: React.FC<GrievanceModalProps> = ({
                   value={ward}
                   onChange={(e) => setWard(e.target.value)}
                   placeholder="e.g. Ward No. 2, Behind Hanuman Temple"
-                  className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                  className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
                 />
               </div>
 
@@ -173,7 +173,7 @@ export const GrievanceModal: React.FC<GrievanceModalProps> = ({
                   value={desc}
                   onChange={(e) => setDesc(e.target.value)}
                   placeholder="Describe what is broken or needed..."
-                  className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                  className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
                 />
               </div>
 
@@ -192,7 +192,7 @@ export const GrievanceModal: React.FC<GrievanceModalProps> = ({
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="10-digit mobile number"
-                    className="flex-1 bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                    className="flex-1 bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
                   />
                 </div>
               </div>
@@ -208,7 +208,7 @@ export const GrievanceModal: React.FC<GrievanceModalProps> = ({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-5 py-2 rounded-xl bg-[#a63b00] text-white text-[13px] font-bold hover:bg-[#852f00] transition-colors shadow-xs disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl bg-[#c2410c] text-white text-[13px] font-bold hover:bg-[#852f00] transition-colors shadow-xs disabled:opacity-50"
                 >
                   {loading ? 'Submitting to Panchayat...' : 'Submit Grievance'}
                 </button>

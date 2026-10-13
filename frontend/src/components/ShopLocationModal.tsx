@@ -35,10 +35,10 @@ const ASGAON_PANCHAYAT: [number, number] = [20.8084579, 79.7242461];
 const CATEGORY_COLORS: Record<string, { bg: string; icon: string; label: string }> = {
   seeds: { bg: '#006a4e', icon: 'agriculture', label: 'कृषी व बी-बियाणे' },
   clinic: { bg: '#ba1a1a', icon: 'local_hospital', label: 'दवाखाना / आरोग्य' },
-  machinery: { bg: '#a63b00', icon: 'precision_manufacturing', label: 'ट्रॅक्टर व अवजारे' },
+  machinery: { bg: '#c2410c', icon: 'precision_manufacturing', label: 'ट्रॅक्टर व अवजारे' },
   dairy: { bg: '#002873', icon: 'egg', label: 'दुग्ध व्यवसाय' },
   hardware: { bg: '#404945', icon: 'construction', label: 'हार्डवेअर व बांधकाम' },
-  csc: { bg: '#004d3b', icon: 'desk', label: 'शासकीय ई-सेवा केंद्र' },
+  csc: { bg: '#14532d', icon: 'desk', label: 'शासकीय ई-सेवा केंद्र' },
   kirana: { bg: '#d97706', icon: 'storefront', label: 'किराणा व जनरल स्टोअर' }
 };
 
@@ -150,9 +150,9 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
     const shopMarker = L.marker([lat, lng], { icon: shopIcon }).addTo(map);
     shopMarker.bindPopup(`
       <div style="font-family: sans-serif; font-size: 12px; line-height: 1.4; padding: 2px;">
-        <strong style="font-size: 13px; color: #003629;">${business.name}</strong><br/>
+        <strong style="font-size: 13px; color: #166534;">${business.name}</strong><br/>
         <span style="color: #666;">${business.address || 'Asgaon Village'}</span><br/>
-        <span style="color: #a63b00; font-weight: bold;">${business.distance || business.landmark || 'Village Area'}</span>
+        <span style="color: #c2410c; font-weight: bold;">${business.distance || business.landmark || 'Village Area'}</span>
       </div>
     `).openPopup();
 
@@ -165,8 +165,8 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background: #003629;
-            color: #baeed9;
+            background: #166534;
+            color: #bbf7d0;
             border: 2px solid #ffffff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             display: flex;
@@ -180,7 +180,7 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
             height: 0;
             border-left: 4px solid transparent;
             border-right: 4px solid transparent;
-            border-top: 5px solid #003629;
+            border-top: 5px solid #166534;
             margin-top: -1px;
           "></div>
         </div>
@@ -246,7 +246,7 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
             
             <div>
               <div className="flex items-center gap-2">
-                <h3 id="shop-location-title" className="font-heading font-extrabold text-[17px] sm:text-[19px] text-[#003629] leading-tight">
+                <h3 id="shop-location-title" className="font-heading font-extrabold text-[17px] sm:text-[19px] text-[#166534] leading-tight">
                   {business.name}
                 </h3>
                
@@ -272,8 +272,8 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
          
 
           {/* Gram Panchayat reference indicator */}
-          <div className="absolute top-3 right-3 z-20 bg-[#003629]/95 backdrop-blur-xs text-white px-2.5 py-1 rounded-lg shadow-md flex items-center gap-1.5 text-[10px] font-bold">
-            <span className="material-symbols-outlined text-[13px] text-[#baeed9]">account_balance</span>
+          <div className="absolute top-3 right-3 z-20 bg-[#166534]/95 backdrop-blur-xs text-white px-2.5 py-1 rounded-lg shadow-md flex items-center gap-1.5 text-[10px] font-bold">
+            <span className="material-symbols-outlined text-[13px] text-[#bbf7d0]">account_balance</span>
             <span>ग्रामपंचायतपासून: {business.distance || business.landmark || '0.3 km'}</span>
           </div>
         </div>
@@ -283,18 +283,18 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
           {/* Address & Timings */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 bg-[#f9f3ea] p-3 sm:p-3.5 rounded-xl border border-[#e8e2d9] text-[12px]">
             <div className="flex items-start gap-2">
-              <span className="material-symbols-outlined text-[18px] text-[#a63b00] shrink-0 mt-0.5">storefront</span>
+              <span className="material-symbols-outlined text-[18px] text-[#c2410c] shrink-0 mt-0.5">storefront</span>
               <div>
                 <span className="text-[#707974] font-medium block">पत्ता व परिसर</span>
                 <span className="text-[#1d1b16] font-bold">{business.address || 'Asgaon Market Road, Asgaon'}</span>
                 {business.landmark && (
-                  <span className="block text-[11px] text-[#003629] font-medium mt-0.5">खूण: {business.landmark}</span>
+                  <span className="block text-[11px] text-[#166534] font-medium mt-0.5">खूण: {business.landmark}</span>
                 )}
               </div>
             </div>
 
             <div className="flex items-start gap-2">
-              <span className="material-symbols-outlined text-[18px] text-[#003629] shrink-0 mt-0.5">schedule</span>
+              <span className="material-symbols-outlined text-[18px] text-[#166534] shrink-0 mt-0.5">schedule</span>
               <div>
                 <span className="text-[#707974] font-medium block">वेळ:</span>
                 <span className="text-[#1d1b16] font-bold">{hours}</span>
@@ -314,9 +314,9 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
                 href={googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2.5 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] sm:text-[13px] font-bold flex items-center gap-1.5 shadow-xs transition-all hover:shadow-md"
+                className="px-4 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[12px] sm:text-[13px] font-bold flex items-center gap-1.5 shadow-xs transition-all hover:shadow-md"
               >
-                <span className="material-symbols-outlined text-[18px] text-[#baeed9]">navigation</span>
+                <span className="material-symbols-outlined text-[18px] text-[#bbf7d0]">navigation</span>
                 <span>Google Maps</span>
               </a>
 
@@ -328,7 +328,7 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
               {phone && (
                 <a
                   href={`tel:${phone}`}
-                  className="p-2.5 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#003629] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9] transition-colors"
+                  className="p-2.5 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#166534] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9] transition-colors"
                   title="थेट कॉल करा"
                 >
                   <span className="material-symbols-outlined text-[18px]">call</span>
@@ -345,7 +345,7 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
                   title="WhatsApp वर मेसेज करा"
                 >
                   <span className="material-symbols-outlined text-[18px]">chat</span>
-                  <span className="hidden sm:inline text-[#003629]">WhatsApp</span>
+                  <span className="hidden sm:inline text-[#166534]">WhatsApp</span>
                 </a>
               )}
             </div>

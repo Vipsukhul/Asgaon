@@ -119,7 +119,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           { label: lang === 'MR' ? 'अधिकृत घोषणा व सूचना फलक' : 'Civic Notices & Gazettes', active: true }
         ]}
         rightBadge={
-          <div className="text-[11px] font-semibold text-[#006a4e] bg-[#baeed9]/40 px-2.5 py-0.5 rounded-full border border-[#baeed9]">
+          <div className="text-[11px] font-semibold text-[#006a4e] bg-[#bbf7d0]/40 px-2.5 py-0.5 rounded-full border border-[#bbf7d0]">
             {lang === 'MR'
               ? 'नागरिक पारदर्शकता व सूचना मंच • ठराव नोंदवही क्र. ०२'
               : 'CIVIC TRANSPARENCY & GAZETTE PORTAL • RESOLUTION REGISTER NO: 02'}
@@ -128,19 +128,19 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
       />
 
       {/* 2. HERO BANNER */}
-      <div className="bg-gradient-to-br from-[#003629]/5 via-white to-[#003629]/10 rounded-2xl p-6 sm:p-8 border border-[#c4d6cf] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="bg-gradient-to-br from-[#166534]/5 via-white to-[#166534]/10 rounded-2xl p-6 sm:p-8 border border-[#c4d6cf] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex-1">
           <span className="inline-block bg-[#006a4e]/10 text-[#006a4e] text-[10px] font-black tracking-widest px-3 py-1 rounded-full uppercase border border-[#006a4e]/20 mb-2">
             {lang === 'MR'
               ? 'असगाव नागरिक मंच • २४x७ डिजिटल जाहीर सूचना फलक'
               : 'ASGAON CIVIC PORTAL • 24x7 Digital Citizen Notice Board'}
           </span>
-          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#003629] leading-tight mb-1">
+          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#166534] leading-tight mb-1">
             {lang === 'MR'
               ? 'गाव जाहीर सूचना फलक व राजपत्र'
               : 'Digital Notice Board & Civic Gazettes'}
           </h1>
-          <h2 className="text-[14px] sm:text-[15px] font-bold text-[#a63b00] mb-2">
+          <h2 className="text-[14px] sm:text-[15px] font-bold text-[#c2410c] mb-2">
             {lang === 'MR'
               ? 'अधिकृत घोषणा, आपत्कालीन सूचना व जाहीर परिपत्रके'
               : 'Official Announcements & Public Circulars'}
@@ -155,14 +155,14 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
         <div className="flex flex-col sm:flex-row md:flex-col gap-2 shrink-0">
           <button
             onClick={() => alert(lang === 'MR' ? 'मासिक राजपत्र सारांश PDF (२.४ MB) डाउनलोड होत आहे.' : 'Downloading official Asgaon October Gazette summary PDF (2.4 MB).')}
-            className="px-4 py-2.5 bg-[#003629] hover:bg-[#00281e] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all"
+            className="px-4 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all"
           >
             <span className="material-symbols-outlined text-[16px]">download</span>
             <span>{lang === 'MR' ? 'मासिक राजपत्र डाउनलोड करा' : 'Download Monthly Gazette (राजपत्र)'}</span>
           </button>
           <button
             onClick={() => setShowRtiModal(true)}
-            className="px-4 py-2.5 bg-[#a63b00] hover:bg-[#852f00] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all"
+            className="px-4 py-2.5 bg-[#c2410c] hover:bg-[#852f00] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all"
           >
             <span className="material-symbols-outlined text-[16px]">report_problem</span>
             <span>{lang === 'MR' ? 'नागरी तक्रार / विचारणा नोंदवा' : 'Register Civic Grievance'}</span>
@@ -171,7 +171,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             href="https://wa.me/919422001100"
             target="_blank"
             rel="noreferrer"
-            className="px-4 py-2 bg-white hover:bg-[#f3ede4] text-[#006a4e] border border-[#baeed9] text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all text-center"
+            className="px-4 py-2 bg-white hover:bg-[#f3ede4] text-[#006a4e] border border-[#bbf7d0] text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all text-center"
           >
             <span className="material-symbols-outlined text-[16px]">chat</span>
             <span>{lang === 'MR' ? 'व्हॉट्सअ‍ॅप सूचना' : 'WhatsApp Alerts'}</span>
@@ -182,11 +182,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
       {/* 3. 4 METRIC STATS */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#baeed9]/60 text-[#002117] flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#bbf7d0]/60 text-[#002117] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[20px]">notifications_active</span>
           </div>
           <div>
-            <div className="font-heading font-black text-[22px] text-[#003629]">{announcements.length || 18}</div>
+            <div className="font-heading font-black text-[22px] text-[#166534]">{announcements.length || 18}</div>
             <div className="text-[11px] text-[#707974] leading-tight">
               {lang === 'MR' ? 'सक्रिय जाहीर सूचना' : 'Active Open Notices'}
             </div>
@@ -212,11 +212,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#fff8f0] text-[#a63b00] border border-[#ffe0cc] flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#fef9ee] text-[#c2410c] border border-[#fde68a] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[20px]">event_seat</span>
           </div>
           <div>
-            <div className="font-heading font-bold text-[14px] text-[#a63b00] leading-tight">
+            <div className="font-heading font-bold text-[14px] text-[#c2410c] leading-tight">
               {lang === 'MR' ? '२६ जाने २०२६' : '26 Jan 2026'}
             </div>
             <div className="text-[11px] text-[#707974] leading-tight">
@@ -233,7 +233,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <span className="material-symbols-outlined text-[20px]">timer</span>
           </div>
           <div>
-            <div className="font-heading font-black text-[22px] text-[#003629]">
+            <div className="font-heading font-black text-[22px] text-[#166534]">
               48 <span className="text-[14px] font-normal">{lang === 'MR' ? 'तास' : 'hrs'}</span>
             </div>
             <div className="text-[11px] text-[#707974] leading-tight">
@@ -281,7 +281,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             onClick={() => { setActiveFilter('all'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-bold shrink-0 transition-all ${
               activeFilter === 'all'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
@@ -291,7 +291,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             onClick={() => { setActiveFilter('resolutions'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all ${
               activeFilter === 'resolutions'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
@@ -312,7 +312,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             onClick={() => { setActiveFilter('tenders'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all ${
               activeFilter === 'tenders'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
@@ -322,7 +322,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             onClick={() => { setActiveFilter('health'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all ${
               activeFilter === 'health'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
@@ -369,8 +369,8 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 
                 {filteredNotices.length === 0 && announcements.length > 0 ? (
                   <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-                    <span className="material-symbols-outlined text-[48px] text-[#a63b00]">notifications_off</span>
-                    <h3 className="font-heading font-bold text-[18px] text-[#003629]">
+                    <span className="material-symbols-outlined text-[48px] text-[#c2410c]">notifications_off</span>
+                    <h3 className="font-heading font-bold text-[18px] text-[#166534]">
                       {lang === 'MR' ? 'कोणतीही जुळणारी सूचना आढळली नाही' : 'No matching notices found'}
                     </h3>
                     <p className="text-[13px] text-[#707974] max-w-md">
@@ -380,7 +380,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                     </p>
                     <button
                       onClick={() => { setActiveFilter('all'); setSearchQuery(''); setCurrentPage(1); }}
-                      className="px-4 py-2 bg-[#003629] text-white text-[12px] font-bold rounded-xl hover:bg-[#1b4d3e] transition-colors"
+                      className="px-4 py-2 bg-[#166534] text-white text-[12px] font-bold rounded-xl hover:bg-[#052e16] transition-colors"
                     >
                       {lang === 'MR' ? 'सर्व फिल्टर रीसेट करा' : 'Reset All Filters'}
                     </button>
@@ -396,17 +396,17 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                           </span>
                           <span className="text-[11px] font-bold text-[#006a4e]">ASG-GP-{item.id ? String(item.id).substring(0, 5) : '2026'}</span>
                         </div>
-                        <span className="text-[10px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-2.5 py-0.5 rounded border border-[#baeed9]">
+                        <span className="text-[10px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-2.5 py-0.5 rounded border border-[#bbf7d0]">
                           {lang === 'MR' ? 'प्रसिद्धी: ' : 'Issued by: '}
                           {item.issuedBy || item.authorName || (lang === 'MR' ? 'असगाव नागरी प्रशासन' : 'Asgaon Civic Administration')}
                         </span>
                       </div>
                       <div>
-                        <h3 className="font-heading font-extrabold text-[18px] sm:text-[19px] text-[#003629] leading-snug">
+                        <h3 className="font-heading font-extrabold text-[18px] sm:text-[19px] text-[#166534] leading-snug">
                           {lang === 'MR' ? (item.marathiTitle || item.title) : item.title}
                         </h3>
                         {item.marathiTitle && lang !== 'MR' && (
-                          <h4 className="text-[13px] font-bold text-[#a63b00] mt-0.5">
+                          <h4 className="text-[13px] font-bold text-[#c2410c] mt-0.5">
                             {item.marathiTitle}
                           </h4>
                         )}
@@ -449,7 +449,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                               onClick={() => setCurrentPage(pageNum)}
                               className={`w-7 h-7 rounded-lg font-bold flex items-center justify-center transition-colors ${
                                 validCurrentPage === pageNum
-                                  ? 'bg-[#003629] text-white shadow-xs'
+                                  ? 'bg-[#166534] text-white shadow-xs'
                                   : 'bg-[#f3ede4] text-[#1d1b16] hover:bg-[#e8e2d9]'
                               }`}
                             >
@@ -489,13 +489,13 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   <span className="text-[11px] font-bold text-[#ba1a1a]">PDR 104/FIN</span>
                   <span className="text-[11px] text-[#707974]">• Published Today, 07:30 AM</span>
                 </div>
-                <span className="text-[10px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-2.5 py-0.5 rounded border border-[#baeed9] self-start sm:self-auto">
+                <span className="text-[10px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-2.5 py-0.5 rounded border border-[#bbf7d0] self-start sm:self-auto">
                   Issued by: Gram Sevak &amp; Sarpanch
                 </span>
               </div>
 
               <div>
-                <h3 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#003629] leading-snug">
+                <h3 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#166534] leading-snug">
                   Drinking Water Pipeline Interruption &amp; Canal Roster for South Wards 3, 4 &amp; 6
                 </h3>
                 <h4 className="text-[13px] font-bold text-[#ba1a1a] mt-0.5">
@@ -507,32 +507,32 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               </div>
 
               {/* 3 Tanker station boxes */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 bg-[#fff8f0] p-3 rounded-xl border border-[#ffe0cc]">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 bg-[#fef9ee] p-3 rounded-xl border border-[#fde68a]">
                 <div className="flex flex-col text-[11px]">
-                  <strong className="text-[#a63b00] font-bold">TANKER POINT 1:</strong>
-                  <span className="text-[#003629] font-semibold">Vitthal Mandir Chowk</span>
+                  <strong className="text-[#c2410c] font-bold">TANKER POINT 1:</strong>
+                  <span className="text-[#166534] font-semibold">Vitthal Mandir Chowk</span>
                   <span className="text-[#707974]">Ward 3 • 07:00 AM to 11:30 AM</span>
                 </div>
                 <div className="flex flex-col text-[11px]">
-                  <strong className="text-[#a63b00] font-bold">TANKER POINT 2:</strong>
-                  <span className="text-[#003629] font-semibold">ZP High School Gate</span>
+                  <strong className="text-[#c2410c] font-bold">TANKER POINT 2:</strong>
+                  <span className="text-[#166534] font-semibold">ZP High School Gate</span>
                   <span className="text-[#707974]">Ward 4 • 11:45 AM to 01:30 PM</span>
                 </div>
                 <div className="flex flex-col text-[11px]">
-                  <strong className="text-[#a63b00] font-bold">TANKER POINT 3:</strong>
-                  <span className="text-[#003629] font-semibold">Shinde Vasti Community Well</span>
+                  <strong className="text-[#c2410c] font-bold">TANKER POINT 3:</strong>
+                  <span className="text-[#166534] font-semibold">Shinde Vasti Community Well</span>
                   <span className="text-[#707974]">Ward 6 • 01:30 PM to 04:30 PM</span>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-[#f3ede4] text-[11px]">
                 <div className="text-[#707974]">
-                  Water Supply Toll-Free Helpline: <strong className="text-[#003629]">+91 98220 81100</strong> | Normal pressure test: Sunday 05:00 AM
+                  Water Supply Toll-Free Helpline: <strong className="text-[#166534]">+91 98220 81100</strong> | Normal pressure test: Sunday 05:00 AM
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setShowTankerModal(true)}
-                    className="py-1.5 px-3 bg-[#003629] hover:bg-[#00281e] text-white font-bold rounded-lg transition-colors flex items-center gap-1"
+                    className="py-1.5 px-3 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-lg transition-colors flex items-center gap-1"
                   >
                     <span className="material-symbols-outlined text-[14px]">local_shipping</span>
                     <span>Live Tanker Tracker</span>
@@ -541,7 +541,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                     href="https://wa.me/?text=Asgaon%20Water%20Cut%20Alert:%20Saturday%2006AM-04PM%20for%20Wards%203,4,6."
                     target="_blank"
                     rel="noreferrer"
-                    className="py-1.5 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#baeed9]/20 font-bold rounded-lg transition-colors flex items-center gap-1"
+                    className="py-1.5 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#bbf7d0]/20 font-bold rounded-lg transition-colors flex items-center gap-1"
                   >
                     <span className="material-symbols-outlined text-[14px]">share</span>
                     <span>Forward on WA</span>
@@ -556,7 +556,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="bg-[#003629] text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider">
+                  <span className="bg-[#166534] text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider">
                     CONSTITUTIONAL MANDATE
                   </span>
                   <span className="text-[11px] font-bold text-[#006a4e]">RES-2026/01</span>
@@ -565,10 +565,10 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               </div>
 
               <div>
-                <h3 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#003629] leading-snug">
+                <h3 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#166534] leading-snug">
                   Special Republic Day Gram Sabha Assembly &amp; Statutory Resolution Agenda
                 </h3>
-                <h4 className="text-[13px] font-bold text-[#a63b00] mt-0.5">
+                <h4 className="text-[13px] font-bold text-[#c2410c] mt-0.5">
                   प्रजासत्ताक दिन विशेष ग्रामसभा जाहीर आमंत्रण व विषयपत्रिका
                 </h4>
               </div>
@@ -576,12 +576,12 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               {/* Sabha date highlight box */}
               <div className="bg-[#f3ede4]/60 p-3.5 rounded-xl border border-[#e8e2d9] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-white text-[#003629] border border-[#e8e2d9] flex flex-col items-center justify-center shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-white text-[#166534] border border-[#e8e2d9] flex flex-col items-center justify-center shrink-0">
                     <span className="material-symbols-outlined text-[20px]">calendar_month</span>
                     <span className="text-[9px] font-black uppercase">26 JAN</span>
                   </div>
                   <div>
-                    <strong className="text-[13px] text-[#003629] block">
+                    <strong className="text-[13px] text-[#166534] block">
                       Sunday, 26th January 2026 • 10:30 AM
                     </strong>
                     <span className="text-[11px] text-[#707974]">
@@ -591,10 +591,10 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 </div>
 
                 <div className="text-right sm:border-l sm:border-[#e8e2d9] sm:pl-4">
-                  <span className="text-[9px] font-black uppercase text-[#a63b00] tracking-wider block">
+                  <span className="text-[9px] font-black uppercase text-[#c2410c] tracking-wider block">
                     MANDATORY QUORUM
                   </span>
-                  <strong className="text-[12px] text-[#003629]">Min 100 Villagers</strong>
+                  <strong className="text-[12px] text-[#166534]">Min 100 Villagers</strong>
                   <span className="text-[10px] text-[#006a4e] block font-semibold">Including 33% Women Citizens</span>
                 </div>
               </div>
@@ -606,38 +606,38 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 </span>
                 
                 <div className="p-2.5 rounded-lg bg-white border border-[#e8e2d9] flex items-start gap-2">
-                  <span className="w-5 h-5 rounded-full bg-[#003629] text-white text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="w-5 h-5 rounded-full bg-[#166534] text-white text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                     01
                   </span>
                   <p className="text-[#404945] leading-relaxed">
-                    <strong className="text-[#003629]">15th Finance Commission Untied Grants Fund:</strong> Ratification of development fund allocation (₹14.8 Lakh) for internal paver-block lanes and solar high-mast illumination.
+                    <strong className="text-[#166534]">15th Finance Commission Untied Grants Fund:</strong> Ratification of development fund allocation (₹14.8 Lakh) for internal paver-block lanes and solar high-mast illumination.
                   </p>
                 </div>
 
                 <div className="p-2.5 rounded-lg bg-white border border-[#e8e2d9] flex items-start gap-2">
-                  <span className="w-5 h-5 rounded-full bg-[#003629] text-white text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="w-5 h-5 rounded-full bg-[#166534] text-white text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                     02
                   </span>
                   <p className="text-[#404945] leading-relaxed">
-                    <strong className="text-[#003629]">Jal Jeevan Mission Audit:</strong> Sanction of 402 household water connections, meter calibration, and approval of maintenance tariff.
+                    <strong className="text-[#166534]">Jal Jeevan Mission Audit:</strong> Sanction of 402 household water connections, meter calibration, and approval of maintenance tariff.
                   </p>
                 </div>
 
                 <div className="p-2.5 rounded-lg bg-white border border-[#e8e2d9] flex items-start gap-2">
-                  <span className="w-5 h-5 rounded-full bg-[#003629] text-white text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="w-5 h-5 rounded-full bg-[#166534] text-white text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                     03
                   </span>
                   <p className="text-[#404945] leading-relaxed">
-                    <strong className="text-[#003629]">PMAY-G (Pradhan Mantri Awaas):</strong> Finalization and public reading of sanction roster for 41 rural homeless families.
+                    <strong className="text-[#166534]">PMAY-G (Pradhan Mantri Awaas):</strong> Finalization and public reading of sanction roster for 41 rural homeless families.
                   </p>
                 </div>
 
                 <div className="p-2.5 rounded-lg bg-white border border-[#e8e2d9] flex items-start gap-2">
-                  <span className="w-5 h-5 rounded-full bg-[#003629] text-white text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="w-5 h-5 rounded-full bg-[#166534] text-white text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                     04
                   </span>
                   <p className="text-[#404945] leading-relaxed">
-                    <strong className="text-[#003629]">Weekly Haat Bazaar Auction:</strong> Public bidding for Friday temporary shopkeeper concessions rights for fiscal cycle 2025-26.
+                    <strong className="text-[#166534]">Weekly Haat Bazaar Auction:</strong> Public bidding for Friday temporary shopkeeper concessions rights for fiscal cycle 2025-26.
                   </p>
                 </div>
               </div>
@@ -649,14 +649,14 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => alert('Downloading official Gram Sabha Agenda PDF (890 KB).')}
-                    className="py-1.5 px-3 bg-[#003629] hover:bg-[#00281e] text-white font-bold rounded-lg transition-colors flex items-center gap-1"
+                    className="py-1.5 px-3 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-lg transition-colors flex items-center gap-1"
                   >
                     <span className="material-symbols-outlined text-[14px]">download</span>
                     <span>Agenda &amp; Draft Resolution PDF (890 KB)</span>
                   </button>
                   <button
                     onClick={() => setShowAgendaPointModal(true)}
-                    className="py-1.5 px-3 border border-[#a63b00] text-[#a63b00] hover:bg-[#fff8f0] font-bold rounded-lg transition-colors"
+                    className="py-1.5 px-3 border border-[#c2410c] text-[#c2410c] hover:bg-[#fef9ee] font-bold rounded-lg transition-colors"
                   >
                     Submit Citizen's Point Ahead of Time
                   </button>
@@ -670,7 +670,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="bg-[#baeed9] text-[#002117] text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider">
+                  <span className="bg-[#bbf7d0] text-[#002117] text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider">
                     PRIMARY HEALTH CARE DRIVE
                   </span>
                   <span className="text-[11px] font-bold text-[#006a4e]">PHC-2024/09</span>
@@ -680,10 +680,10 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
 
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
-                  <h3 className="font-heading font-extrabold text-[18px] text-[#003629] leading-snug">
+                  <h3 className="font-heading font-extrabold text-[18px] text-[#166534] leading-snug">
                     Free Vector Control Fogging Drive &amp; Mission Indradhanush Immunization Camp
                   </h3>
-                  <h4 className="text-[13px] font-bold text-[#a63b00] mt-0.5">
+                  <h4 className="text-[13px] font-bold text-[#c2410c] mt-0.5">
                     डेंग्यू व मलेरिया प्रतिबंधक धूरफवारणी व बाल लसीकरण मोहीम
                   </h4>
                   <p className="text-[12px] text-[#404945] leading-relaxed mt-2">
@@ -692,19 +692,19 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 bg-[#f3ede4]/40 p-2.5 rounded-xl border border-[#e8e2d9] mt-3 text-[11px]">
                     <div>
-                      <strong className="text-[#003629] block">DATES &amp; TIME:</strong>
+                      <strong className="text-[#166534] block">DATES &amp; TIME:</strong>
                       <span className="text-[#707974]">Thursday, 14 Nov 2024</span>
                       <span className="text-[#006a4e] block font-semibold">08:00 AM to 02:00 PM</span>
                     </div>
                     <div>
-                      <strong className="text-[#003629] block">CAMP VENUE:</strong>
+                      <strong className="text-[#166534] block">CAMP VENUE:</strong>
                       <span className="text-[#707974]">ZP School &amp; Anganwadi 1 &amp; 2</span>
                       <span className="text-[#707974] block">(Behind Vitthal Mandir)</span>
                     </div>
                     <div>
-                      <strong className="text-[#003629] block">BENEFICIARY GROUP:</strong>
+                      <strong className="text-[#166534] block">BENEFICIARY GROUP:</strong>
                       <span className="text-[#707974]">0–5 Yrs Children</span>
-                      <span className="text-[#a63b00] block font-semibold">&amp; Pregnant Mothers</span>
+                      <span className="text-[#c2410c] block font-semibold">&amp; Pregnant Mothers</span>
                     </div>
                   </div>
                 </div>
@@ -735,7 +735,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="bg-[#baeed9] text-[#002117] text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider">
+                  <span className="bg-[#bbf7d0] text-[#002117] text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider">
                     MSEDCL ROSTER NOTICE
                   </span>
                   <span className="text-[11px] font-bold text-[#006a4e]">ROST-301/RAB</span>
@@ -744,7 +744,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               </div>
 
               <div>
-                <h3 className="font-heading font-extrabold text-[18px] text-[#003629] leading-snug">
+                <h3 className="font-heading font-extrabold text-[18px] text-[#166534] leading-snug">
                   MSEDCL Agricultural Pump 3-Phase Power Supply Roster (पाणीपंप वीज वेळापत्रक)
                 </h3>
                 <p className="text-[12px] text-[#707974] mt-1">
@@ -754,7 +754,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-[11px] border border-[#e8e2d9] rounded-lg overflow-hidden">
-                  <thead className="bg-[#f3ede4] text-[#003629] font-bold">
+                  <thead className="bg-[#f3ede4] text-[#166534] font-bold">
                     <tr>
                       <th className="p-2 border-b border-[#e8e2d9]">FEEDER GROUP</th>
                       <th className="p-2 border-b border-[#e8e2d9]">COVERED AGRICULTURAL LAND</th>
@@ -764,22 +764,22 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-b border-[#f3ede4] hover:bg-[#fff8f0]">
-                      <td className="p-2 font-bold text-[#003629]">Group A (Night Shift)</td>
+                    <tr className="border-b border-[#f3ede4] hover:bg-[#fef9ee]">
+                      <td className="p-2 font-bold text-[#166534]">Group A (Night Shift)</td>
                       <td className="p-2 text-[#404945]">Tembhurne &amp; Canal Feeder: 34 Wards</td>
                       <td className="p-2 font-bold text-[#006a4e]">10:30 PM — 06:30 AM</td>
                       <td className="p-2 text-[#707974]">11 kV / 100 kVA</td>
                       <td className="p-2">
-                        <span className="bg-[#baeed9] text-[#002117] text-[9px] font-bold px-2 py-0.5 rounded">Active</span>
+                        <span className="bg-[#bbf7d0] text-[#002117] text-[9px] font-bold px-2 py-0.5 rounded">Active</span>
                       </td>
                     </tr>
-                    <tr className="hover:bg-[#fff8f0]">
-                      <td className="p-2 font-bold text-[#003629]">Group B (Day Shift)</td>
+                    <tr className="hover:bg-[#fef9ee]">
+                      <td className="p-2 font-bold text-[#166534]">Group B (Day Shift)</td>
                       <td className="p-2 text-[#404945]">River Bank &amp; Savitri Well: Sub 101 to 210</td>
-                      <td className="p-2 font-bold text-[#a63b00]">09:00 AM — 05:00 PM</td>
+                      <td className="p-2 font-bold text-[#c2410c]">09:00 AM — 05:00 PM</td>
                       <td className="p-2 text-[#707974]">11 kV / 100 kVA</td>
                       <td className="p-2">
-                        <span className="bg-[#baeed9] text-[#002117] text-[9px] font-bold px-2 py-0.5 rounded">Active</span>
+                        <span className="bg-[#bbf7d0] text-[#002117] text-[9px] font-bold px-2 py-0.5 rounded">Active</span>
                       </td>
                     </tr>
                   </tbody>
@@ -788,7 +788,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
 
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 text-[11px] text-[#707974]">
                 <span className="flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px] text-[#a63b00]">electrical_services</span>
+                  <span className="material-symbols-outlined text-[14px] text-[#c2410c]">electrical_services</span>
                   <span>Emergency Electrical Breakdown Desk (MSEDCL Pauni): <strong>+91 94221 04222</strong></span>
                 </span>
                 <button
@@ -806,7 +806,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="bg-[#003629] text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider">
+                  <span className="bg-[#166534] text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider">
                     DEVELOPMENT TENDER
                   </span>
                   <span className="text-[11px] font-bold text-[#006a4e]">Panch-Works/14/26</span>
@@ -817,10 +817,10 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               </div>
 
               <div>
-                <h3 className="font-heading font-extrabold text-[18px] text-[#003629] leading-snug">
+                <h3 className="font-heading font-extrabold text-[18px] text-[#166534] leading-snug">
                   Construction of 400m Paver Block Road &amp; Covered Stormwater Drain near Vitthal Mandir
                 </h3>
-                <h4 className="text-[13px] font-bold text-[#a63b00] mt-0.5">
+                <h4 className="text-[13px] font-bold text-[#c2410c] mt-0.5">
                   प्रभाग 3 विठ्ठल मंदिर परिसर पेव्हर ब्लॉक रस्ता व बंदिस्त नाली बांधकाम जाहीर ई-निविदा
                 </h4>
               </div>
@@ -828,11 +828,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 bg-[#f3ede4]/50 p-3 rounded-xl border border-[#e8e2d9] text-[11px]">
                 <div>
                   <span className="text-[10px] text-[#707974] block">ESTIMATED COST</span>
-                  <strong className="text-[15px] font-black text-[#003629]">₹6,45,000</strong>
+                  <strong className="text-[15px] font-black text-[#166534]">₹6,45,000</strong>
                 </div>
                 <div>
                   <span className="text-[10px] text-[#707974] block">EMD SECURITY</span>
-                  <strong className="text-[15px] font-black text-[#a63b00]">₹6,500</strong>
+                  <strong className="text-[15px] font-black text-[#c2410c]">₹6,500</strong>
                 </div>
                 <div>
                   <span className="text-[10px] text-[#707974] block">WORK DURATION</span>
@@ -849,13 +849,13 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => alert('Accessing Pauni Tehsil e-Tender portal documents.')}
-                    className="py-1.5 px-3 bg-[#003629] hover:bg-[#00281e] text-white font-bold rounded-lg transition-colors"
+                    className="py-1.5 px-3 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-lg transition-colors"
                   >
                     View All Tender Documents
                   </button>
                   <button
                     onClick={() => alert('Downloading BOQ & Notice (450 KB).')}
-                    className="py-1.5 px-3 border border-[#003629] text-[#003629] hover:bg-[#baeed9]/20 font-bold rounded-lg transition-colors flex items-center gap-1"
+                    className="py-1.5 px-3 border border-[#166534] text-[#166534] hover:bg-[#bbf7d0]/20 font-bold rounded-lg transition-colors flex items-center gap-1"
                   >
                     <span className="material-symbols-outlined text-[14px]">download</span>
                     <span>Download BOQ &amp; Notice</span>
@@ -868,15 +868,15 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           )}
 
           {/* NOTICE 6: RTI & TRANSPARENCY QUERY BANNER */}
-          <div className="bg-[#fff8f0] rounded-2xl p-4 sm:p-5 border border-[#ffe0cc] shadow-xs flex flex-col sm:flex-row items-center gap-4">
-            <div className="w-16 h-16 rounded-xl bg-white border border-[#ffe0cc] overflow-hidden shrink-0 flex items-center justify-center">
-              <span className="material-symbols-outlined text-[36px] text-[#a63b00]">policy</span>
+          <div className="bg-[#fef9ee] rounded-2xl p-4 sm:p-5 border border-[#fde68a] shadow-xs flex flex-col sm:flex-row items-center gap-4">
+            <div className="w-16 h-16 rounded-xl bg-white border border-[#fde68a] overflow-hidden shrink-0 flex items-center justify-center">
+              <span className="material-symbols-outlined text-[36px] text-[#c2410c]">policy</span>
             </div>
             <div className="flex-1 text-[12px]">
-              <span className="text-[10px] font-bold text-[#a63b00] uppercase tracking-wider block">
+              <span className="text-[10px] font-bold text-[#c2410c] uppercase tracking-wider block">
                 {lang === 'MR' ? 'नागरिक माहिती अधिकार' : 'CITIZEN RIGHT TO INFORMATION'}
               </span>
-              <h4 className="font-heading font-bold text-[15px] text-[#003629] leading-snug">
+              <h4 className="font-heading font-bold text-[15px] text-[#166534] leading-snug">
                 {lang === 'MR'
                   ? 'परिपत्रक किंवा ठराव सापडला नाही? माहिती अर्ज किंवा तक्रार नोंदवा'
                   : "Can't find a circular? Submit a Citizen Request or RTI Query"}
@@ -890,7 +890,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 <button onClick={() => setShowRtiModal(true)} className="text-[#006a4e] font-bold hover:underline">
                   {lang === 'MR' ? '१२०+ सार्वजनिक नोंदी पहा →' : 'View 120+ Public Records →'}
                 </button>
-                <button onClick={() => setShowRtiModal(true)} className="text-[#a63b00] font-bold hover:underline">
+                <button onClick={() => setShowRtiModal(true)} className="text-[#c2410c] font-bold hover:underline">
                   {lang === 'MR' ? 'माहिती अधिकार मार्गदर्शक ↗' : 'RTI Cell Guidelines ↗'}
                 </button>
               </div>
@@ -905,11 +905,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <div className="flex items-center justify-between border-b border-[#f3ede4] pb-3">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-[#006a4e] text-[20px]">account_balance</span>
-                <h3 className="font-heading font-bold text-[14px] text-[#003629]">
+                <h3 className="font-heading font-bold text-[14px] text-[#166534]">
                   {lang === 'MR' ? 'गाव पदाधिकारी व प्रतिनिधी' : 'Panchayat Dignitaries'}
                 </h3>
               </div>
-              <span className="text-[10px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-2 py-0.5 rounded">
+              <span className="text-[10px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-2 py-0.5 rounded">
                 {lang === 'MR' ? 'कर्तव्य वेळापत्रक' : 'Duty Roster'}
               </span>
             </div>
@@ -917,12 +917,12 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <div className="flex flex-col gap-3 text-[11px]">
               {/* Sarpanch */}
               <div className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-[#f3ede4]/40 transition-colors">
-                <div className="w-8 h-8 rounded-full bg-[#003629] text-[#baeed9] font-bold text-[11px] flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-full bg-[#166534] text-[#bbf7d0] font-bold text-[11px] flex items-center justify-center shrink-0">
                   SJ
                 </div>
                 <div>
-                  <strong className="text-[#003629] block">Sau. Sunita Tai Jadhav</strong>
-                  <span className="text-[10px] text-[#a63b00] font-semibold block">
+                  <strong className="text-[#166534] block">Sau. Sunita Tai Jadhav</strong>
+                  <span className="text-[10px] text-[#c2410c] font-semibold block">
                     {lang === 'MR' ? 'सरपंच (९४२२० ०११००)' : 'Sarpanch (94220 01100)'}
                   </span>
                   <span className="text-[#707974] text-[10px]">
@@ -933,11 +933,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
 
               {/* Up-Sarpanch */}
               <div className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-[#f3ede4]/40 transition-colors">
-                <div className="w-8 h-8 rounded-full bg-[#a63b00] text-white font-bold text-[11px] flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-full bg-[#c2410c] text-white font-bold text-[11px] flex items-center justify-center shrink-0">
                   BG
                 </div>
                 <div>
-                  <strong className="text-[#003629] block">Shri. Balasaheb D. Gaikwad</strong>
+                  <strong className="text-[#166534] block">Shri. Balasaheb D. Gaikwad</strong>
                   <span className="text-[10px] text-[#55605a] block">
                     {lang === 'MR' ? 'उपसरपंच (९८२२१ ००१९९)' : 'Up-Sarpanch (98221 00199)'}
                   </span>
@@ -953,7 +953,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   SP
                 </div>
                 <div>
-                  <strong className="text-[#003629] block">Shri. Sachin M. Patil</strong>
+                  <strong className="text-[#166534] block">Shri. Sachin M. Patil</strong>
                   <span className="text-[10px] text-[#006a4e] font-semibold block">
                     {lang === 'MR' ? 'ग्रामसेवक / सचिव (९४२२० ११९९९)' : 'Gram Sevak / Secretary (94220 11999)'}
                   </span>
@@ -969,7 +969,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   DB
                 </div>
                 <div>
-                  <strong className="text-[#003629] block">Shri. D. K. Borse</strong>
+                  <strong className="text-[#166534] block">Shri. D. K. Borse</strong>
                   <span className="text-[10px] text-[#55605a] block">
                     {lang === 'MR' ? 'तलाठी / महसूल अधिकारी' : 'Talathi / Revenue Officer'}
                   </span>
@@ -990,7 +990,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <div className="flex items-center gap-2 border-b border-[#f3ede4] pb-3">
               <span className="material-symbols-outlined text-[#006a4e] text-[20px]">verified</span>
               <div>
-                <h3 className="font-heading font-bold text-[14px] text-[#003629]">
+                <h3 className="font-heading font-bold text-[14px] text-[#166534]">
                   {lang === 'MR' ? 'परिपत्रक पडताळणी व माहिती' : 'Circular Verification & RTI'}
                 </h3>
                 <span className="text-[10px] text-[#707974]">
@@ -1015,31 +1015,31 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               />
               <button
                 type="submit"
-                className="py-2 bg-[#003629] hover:bg-[#00281e] text-white text-[11px] font-bold rounded-lg transition-colors"
+                className="py-2 bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold rounded-lg transition-colors"
               >
                 {lang === 'MR' ? 'डिजिटल मुद्रा पडताळा' : 'Verify Digital Seal Authenticity'}
               </button>
             </form>
 
             {verifyStatus && (
-              <div className="bg-[#baeed9]/40 border border-[#006a4e] p-2.5 rounded-lg text-[10px] text-[#002117] leading-tight mt-1">
+              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] p-2.5 rounded-lg text-[10px] text-[#002117] leading-tight mt-1">
                 {verifyStatus}
               </div>
             )}
 
             <div className="text-[10px] text-[#707974] pt-1">
               {lang === 'MR' ? 'माहिती अधिकार हेल्पडेस्क: ' : 'Direct RTI Helpdesk: '}
-              <strong className="text-[#003629]">07185-224410</strong>
+              <strong className="text-[#166534]">07185-224410</strong>
             </div>
           </div>
 
           {/* WIDGET 3: WHATSAPP BROADCAST */}
-          <div className="bg-[#003629] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3">
+          <div className="bg-[#166534] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-[#baeed9]">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-[#bbf7d0]">
                 {lang === 'MR' ? 'अधिकृत नागरी ब्रॉडकास्ट' : 'OFFICIAL GP BROADCAST'}
               </span>
-              <span className="bg-[#baeed9]/20 text-[#baeed9] text-[9px] font-bold px-2 py-0.5 rounded">
+              <span className="bg-[#bbf7d0]/20 text-[#bbf7d0] text-[9px] font-bold px-2 py-0.5 rounded">
                 {lang === 'MR' ? 'थेट' : 'Live'}
               </span>
             </div>
@@ -1058,11 +1058,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
 
             {/* QR Mockup */}
             <div className="bg-white p-3 rounded-xl flex items-center gap-3 text-[#1a1c1b]">
-              <div className="w-12 h-12 bg-[#003629] rounded-lg flex items-center justify-center text-white shrink-0">
+              <div className="w-12 h-12 bg-[#166534] rounded-lg flex items-center justify-center text-white shrink-0">
                 <span className="material-symbols-outlined text-[28px]">qr_code_2</span>
               </div>
               <div className="text-[10px]">
-                <strong className="block text-[#003629]">
+                <strong className="block text-[#166534]">
                   {lang === 'MR' ? 'व्हॉट्सअ‍ॅप कॅमेऱ्याने स्कॅन करा' : 'Scan with WhatsApp Camera'}
                 </strong>
                 <span className="text-[#707974]">
@@ -1075,7 +1075,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               href="https://wa.me/919422001100?text=Please%20add%20me%20to%20Asgaon%20Gram%20Panchayat%20Official%20Alerts"
               target="_blank"
               rel="noreferrer"
-              className="w-full py-2.5 bg-[#baeed9] hover:bg-[#a0dec5] text-[#002117] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors mt-1"
+              className="w-full py-2.5 bg-[#bbf7d0] hover:bg-[#a0dec5] text-[#002117] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors mt-1"
             >
               <span>{lang === 'MR' ? 'व्हॉट्सअ‍ॅप सूचनांमध्ये सामील व्हा' : 'Subscribe to Official GP WhatsApp'}</span>
               <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
@@ -1087,11 +1087,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <div className="flex items-center justify-between border-b border-[#f3ede4] pb-3">
               <div className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[#006a4e] text-[18px]">task_alt</span>
-                <h3 className="font-heading font-bold text-[14px] text-[#003629]">
+                <h3 className="font-heading font-bold text-[14px] text-[#166534]">
                   {lang === 'MR' ? 'नुकत्याच सोडवलेल्या तक्रारी' : 'Recent Grievance Action'}
                 </h3>
               </div>
-              <span className="text-[10px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-2 py-0.5 rounded">
+              <span className="text-[10px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-2 py-0.5 rounded">
                 {lang === 'MR' ? 'गेल्या ४८ तासांत निवारण' : 'Resolved in last 48h'}
               </span>
             </div>
@@ -1099,10 +1099,10 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <div className="flex flex-col gap-2.5 text-[11px]">
               <div className="p-2.5 rounded-lg bg-[#f3ede4]/40 border border-[#e8e2d9]">
                 <div className="flex justify-between items-center mb-1">
-                  <strong className="text-[#003629]">
+                  <strong className="text-[#166534]">
                     Ticket #104 - {lang === 'MR' ? 'पथदिवे दुरुस्ती' : 'Streetlight Repair'}
                   </strong>
-                  <span className="text-[9px] font-bold text-[#006a4e] bg-[#baeed9] px-1.5 py-0.2 rounded">
+                  <span className="text-[9px] font-bold text-[#006a4e] bg-[#bbf7d0] px-1.5 py-0.2 rounded">
                     {lang === 'MR' ? 'निवारण' : 'RESOLVED'}
                   </span>
                 </div>
@@ -1115,10 +1115,10 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
 
               <div className="p-2.5 rounded-lg bg-[#f3ede4]/40 border border-[#e8e2d9]">
                 <div className="flex justify-between items-center mb-1">
-                  <strong className="text-[#003629]">
+                  <strong className="text-[#166534]">
                     Ticket #102 - {lang === 'MR' ? 'बोअरवेल क्लोरीनेशन' : 'Borewell Chlorination'}
                   </strong>
-                  <span className="text-[9px] font-bold text-[#006a4e] bg-[#baeed9] px-1.5 py-0.2 rounded">
+                  <span className="text-[9px] font-bold text-[#006a4e] bg-[#bbf7d0] px-1.5 py-0.2 rounded">
                     {lang === 'MR' ? 'निवारण' : 'RESOLVED'}
                   </span>
                 </div>
@@ -1129,12 +1129,12 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 </p>
               </div>
 
-              <div className="p-2.5 rounded-lg bg-[#fff8f0] border border-[#ffe0cc]">
+              <div className="p-2.5 rounded-lg bg-[#fef9ee] border border-[#fde68a]">
                 <div className="flex justify-between items-center mb-1">
-                  <strong className="text-[#a63b00]">
+                  <strong className="text-[#c2410c]">
                     Ticket #098 - {lang === 'MR' ? 'पेव्हर ब्लॉक स्वच्छता' : 'Paver Block Cleaning'}
                   </strong>
-                  <span className="text-[9px] font-bold text-[#a63b00] bg-[#fff8f0] px-1.5 py-0.2 rounded border border-[#ffe0cc]">
+                  <span className="text-[9px] font-bold text-[#c2410c] bg-[#fef9ee] px-1.5 py-0.2 rounded border border-[#fde68a]">
                     {lang === 'MR' ? 'प्रगतीपथावर' : 'IN PROGRESS'}
                   </span>
                 </div>
@@ -1155,19 +1155,19 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           </div>
 
           {/* WIDGET 5: EMERGENCY HOTLINES */}
-          <div className="bg-[#fff8f0] rounded-2xl p-4 border border-[#ffe0cc] shadow-xs flex flex-col gap-2">
+          <div className="bg-[#fef9ee] rounded-2xl p-4 border border-[#fde68a] shadow-xs flex flex-col gap-2">
             <span className="text-[9px] font-bold text-[#ba1a1a] uppercase tracking-wider flex items-center gap-1">
               <span className="material-symbols-outlined text-[13px]">emergency</span>
               <span>{lang === 'MR' ? 'आपत्कालीन तत्पर हेल्पलाईन' : 'EMERGENCY QUICK HOTLINES'}</span>
             </span>
 
             <div className="grid grid-cols-2 gap-2 text-center">
-              <div className="bg-white p-2 rounded-lg border border-[#ffe0cc]">
+              <div className="bg-white p-2 rounded-lg border border-[#fde68a]">
                 <span className="text-[16px] font-black text-[#ba1a1a] block">108</span>
                 <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'रुग्णवाहिका' : 'Ambulance'}</span>
               </div>
-              <div className="bg-white p-2 rounded-lg border border-[#ffe0cc]">
-                <span className="text-[16px] font-black text-[#003629] block">112</span>
+              <div className="bg-white p-2 rounded-lg border border-[#fde68a]">
+                <span className="text-[16px] font-black text-[#166534] block">112</span>
                 <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'पोलीस / आपत्कालीन' : 'Police / SOS'}</span>
               </div>
             </div>
@@ -1193,9 +1193,9 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#a63b00] text-[24px]">gavel</span>
+              <span className="material-symbols-outlined text-[#c2410c] text-[24px]">gavel</span>
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'नागरिक माहिती अधिकार व तक्रार निवारण' : 'Citizen RTI / Grievance Desk'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">
@@ -1205,9 +1205,9 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             </div>
 
             {modalSuccess ? (
-              <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
+              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">
+                <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'अर्ज प्रणालीत नोंदवला गेला!' : 'Request Registered in Database!'}
                 </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
@@ -1219,7 +1219,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             ) : (
               <form onSubmit={handleRtiSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'नागरिकाचे पूर्ण नाव' : 'Citizen Full Name'}
                   </label>
                   <input
@@ -1232,7 +1232,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'मोबाईल नंबर' : 'Mobile Number'}
                   </label>
                   <input
@@ -1245,7 +1245,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'अर्जाचा विषय / ठराव आयडी' : 'Request Subject / Resolution ID'}
                   </label>
                   <input
@@ -1258,7 +1258,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'सविस्तर तपशील' : 'Details & Query'}
                   </label>
                   <textarea
@@ -1273,7 +1273,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 <button
                   type="submit"
                   disabled={isSubmittingRti}
-                  className="w-full py-2.5 bg-[#003629] hover:bg-[#00281e] text-white font-bold rounded-xl transition-all shadow-xs mt-1 disabled:opacity-50"
+                  className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs mt-1 disabled:opacity-50"
                 >
                   {isSubmittingRti
                     ? (lang === 'MR' ? 'अर्ज दाखल होत आहे...' : 'Submitting to Panchayat Desk...')
@@ -1299,7 +1299,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <div className="flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined text-[#006a4e] text-[24px]">local_shipping</span>
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'पाणी टँकर थेट स्थिती' : 'Emergency Water Tanker Tracker'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">
@@ -1309,9 +1309,9 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             </div>
 
             <div className="flex flex-col gap-3 text-[12px]">
-              <div className="p-3 bg-[#baeed9]/40 border border-[#006a4e] rounded-xl flex items-center justify-between">
+              <div className="p-3 bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl flex items-center justify-between">
                 <div>
-                  <strong className="text-[#003629] block">Tanker #MH-36-T-4091</strong>
+                  <strong className="text-[#166534] block">Tanker #MH-36-T-4091</strong>
                   <span className="text-[11px] text-[#404945]">
                     {lang === 'MR' ? 'सध्याचे स्थान: विठ्ठल मंदिर चौक' : 'Current Location: Vitthal Mandir Chowk'}
                   </span>
@@ -1323,17 +1323,17 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
 
               <div className="p-3 bg-[#f3ede4]/50 border border-[#e8e2d9] rounded-xl flex items-center justify-between">
                 <div>
-                  <strong className="text-[#003629] block">Tanker #MH-36-T-2180</strong>
+                  <strong className="text-[#166534] block">Tanker #MH-36-T-2180</strong>
                   <span className="text-[11px] text-[#404945]">
                     {lang === 'MR' ? 'स्थिती: जि.प. हायस्कूलकडे जात आहे (१५ मि)' : 'Status: En route to ZP High School (ETA 15 mins)'}
                   </span>
                 </div>
-                <span className="bg-[#a63b00] text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                <span className="bg-[#c2410c] text-white text-[10px] font-bold px-2 py-0.5 rounded">
                   {lang === 'MR' ? 'मार्गावर' : 'IN TRANSIT'}
                 </span>
               </div>
 
-              <div className="bg-[#fff8f0] p-3 rounded-xl border border-[#ffe0cc] text-[11px] text-[#a63b00]">
+              <div className="bg-[#fef9ee] p-3 rounded-xl border border-[#fde68a] text-[11px] text-[#c2410c]">
                 {lang === 'MR' ? (
                   <>आपल्या प्रभागात तातडीचा टँकर हवा असल्यास थेट <strong>+91 98220 81100</strong> वर संपर्क करा.</>
                 ) : (
@@ -1343,7 +1343,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
 
               <button
                 onClick={() => setShowTankerModal(false)}
-                className="w-full py-2.5 bg-[#003629] text-white font-bold rounded-xl transition-all shadow-xs"
+                className="w-full py-2.5 bg-[#166534] text-white font-bold rounded-xl transition-all shadow-xs"
               >
                 {lang === 'MR' ? 'बंद करा' : 'Close Tracker'}
               </button>
@@ -1364,9 +1364,9 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#a63b00] text-[24px]">ballot</span>
+              <span className="material-symbols-outlined text-[#c2410c] text-[24px]">ballot</span>
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'ग्रामसभेसाठी चर्चेचा मुद्दा नोंदवा' : 'Submit Gram Sabha Discussion Point'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">
@@ -1376,9 +1376,9 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             </div>
 
             {modalSuccess ? (
-              <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
+              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">
+                <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'मुद्दा सभेसाठी नोंदवला गेला!' : 'Point Enrolled for Sabha!'}
                 </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
@@ -1390,7 +1390,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             ) : (
               <form onSubmit={handleModalSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'नागरिकाचे नाव व प्रभाग' : 'Citizen Name & Ward'}
                   </label>
                   <input
@@ -1401,7 +1401,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'प्रस्तावित विषय' : 'Proposal Topic'}
                   </label>
                   <input
@@ -1412,7 +1412,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'सविस्तर स्पष्टीकरण' : 'Detailed Explanation'}
                   </label>
                   <textarea
@@ -1424,7 +1424,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-[#a63b00] hover:bg-[#852f00] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
+                  className="w-full py-2.5 bg-[#c2410c] hover:bg-[#852f00] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
                 >
                   {lang === 'MR' ? 'चर्चेचा मुद्दा नोंदवा' : 'Enroll Discussion Point'}
                 </button>

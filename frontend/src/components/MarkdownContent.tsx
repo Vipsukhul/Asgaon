@@ -39,7 +39,7 @@ export function renderInlineMarkdown(text: string): React.ReactNode[] {
       tokens.push(
         <code
           key={keyIdx++}
-          className="bg-[#f0ece4] text-[#003629] px-1.5 py-0.5 rounded text-[12px] font-mono border border-[#e2dcce]"
+          className="bg-[#f0ece4] text-[#166534] px-1.5 py-0.5 rounded text-[12px] font-mono border border-[#e2dcce]"
         >
           {codeText}
         </code>
@@ -53,7 +53,7 @@ export function renderInlineMarkdown(text: string): React.ReactNode[] {
           href={linkUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#006a4e] hover:text-[#003629] font-bold underline transition-colors"
+          className="text-[#006a4e] hover:text-[#166534] font-bold underline transition-colors"
         >
           {linkText}
         </a>
@@ -301,7 +301,7 @@ export const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => 
               return (
                 <h2
                   key={idx}
-                  className="font-heading font-extrabold text-[20px] sm:text-[24px] text-[#003629] pt-6 pb-2 border-b border-[#e8e2d9] flex items-center gap-2.5 tracking-tight"
+                  className="font-heading font-extrabold text-[20px] sm:text-[24px] text-[#166534] pt-6 pb-2 border-b border-[#e8e2d9] flex items-center gap-2.5 tracking-tight"
                 >
                   <span className="w-2 h-7 bg-[#006a4e] rounded-full inline-block shrink-0"></span>
                   <span>{renderInlineMarkdown(block.text)}</span>
@@ -312,9 +312,9 @@ export const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => 
               return (
                 <h3
                   key={idx}
-                  className="font-heading font-extrabold text-[17px] sm:text-[19px] text-[#003629] pt-4 pb-1 flex items-center gap-2"
+                  className="font-heading font-extrabold text-[17px] sm:text-[19px] text-[#166534] pt-4 pb-1 flex items-center gap-2"
                 >
-                  <span className="w-1.5 h-5 bg-[#a63b00] rounded-full inline-block shrink-0"></span>
+                  <span className="w-1.5 h-5 bg-[#c2410c] rounded-full inline-block shrink-0"></span>
                   <span>{renderInlineMarkdown(block.text)}</span>
                 </h3>
               );
@@ -322,7 +322,7 @@ export const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => 
             return (
               <h4
                 key={idx}
-                className="font-heading font-bold text-[15px] sm:text-[16px] text-[#003629] pt-2"
+                className="font-heading font-bold text-[15px] sm:text-[16px] text-[#166534] pt-2"
               >
                 {renderInlineMarkdown(block.text)}
               </h4>
@@ -336,9 +336,9 @@ export const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => 
             return (
               <div
                 key={idx}
-                className="bg-gradient-to-r from-[#fff8f0] to-[#fdf4e9] border-l-4 border-[#a63b00] p-4 sm:p-5 rounded-r-2xl text-[13px] sm:text-[14px] text-[#7a2b00] my-4 leading-relaxed font-semibold shadow-xs flex items-start gap-3"
+                className="bg-gradient-to-r from-[#fef9ee] to-[#fdf4e9] border-l-4 border-[#c2410c] p-4 sm:p-5 rounded-r-2xl text-[13px] sm:text-[14px] text-[#7a2b00] my-4 leading-relaxed font-semibold shadow-xs flex items-start gap-3"
               >
-                <span className="material-symbols-outlined text-[#a63b00] text-[22px] shrink-0 mt-0.5">
+                <span className="material-symbols-outlined text-[#c2410c] text-[22px] shrink-0 mt-0.5">
                   info
                 </span>
                 <div className="flex-1">{renderInlineMarkdown(block.text)}</div>
@@ -351,9 +351,9 @@ export const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => 
                 {block.items.map((item, itemIdx) => (
                   <div
                     key={itemIdx}
-                    className="p-3.5 sm:p-4 rounded-xl bg-[#fdfbf7] border border-[#e8e2d9] hover:border-[#1b4d3e] transition-all flex items-start gap-3.5 shadow-2xs"
+                    className="p-3.5 sm:p-4 rounded-xl bg-[#fdfbf7] border border-[#e8e2d9] hover:border-[#052e16] transition-all flex items-start gap-3.5 shadow-2xs"
                   >
-                    <div className="w-7 h-7 rounded-lg bg-[#003629] text-[#baeed9] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 shadow-2xs">
+                    <div className="w-7 h-7 rounded-lg bg-[#166534] text-[#bbf7d0] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 shadow-2xs">
                       {item.num}
                     </div>
                     <div className="flex-1 space-y-1.5 text-xs sm:text-[13.5px]">

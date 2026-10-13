@@ -35,8 +35,8 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
     if (businesses.length === 0) {
       return (
         <div className="w-full py-28 text-center flex flex-col items-center justify-center gap-3">
-          <div className="w-9 h-9 border-3 border-[#003629] border-t-transparent rounded-full animate-spin" />
-          <p className="text-[13px] font-bold text-[#003629]">
+          <div className="w-9 h-9 border-3 border-[#166534] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[13px] font-bold text-[#166534]">
             {lang === 'MR' ? 'माहिती लोड होत आहे...' : 'Loading shop details...'}
           </p>
         </div>
@@ -44,12 +44,12 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
     }
     return (
       <div className="w-full py-16 text-center">
-        <h2 className="text-xl font-bold text-[#003629]">
+        <h2 className="text-xl font-bold text-[#166534]">
           {lang === 'MR' ? 'दुकान आढळले नाही' : 'Business not found'}
         </h2>
         <button
           onClick={onNavigateBack}
-          className="mt-4 px-4 py-2 bg-[#003629] text-white rounded-xl font-bold text-sm"
+          className="mt-4 px-4 py-2 bg-[#166534] text-white rounded-xl font-bold text-sm"
         >
           {lang === 'MR' ? 'निर्देशिकेकडे परत जा' : 'Back to Directory'}
         </button>
@@ -165,7 +165,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
 
       {/* 3. Hero Header Banner */}
       <header className="bg-white rounded-2xl overflow-hidden border border-[#e8e2d9] shadow-xs">
-        <div className="relative h-48 sm:h-64 w-full bg-[#1b4d3e]">
+        <div className="relative h-48 sm:h-64 w-full bg-[#052e16]">
           <img
             src={business.imageUrl}
             alt={business.name}
@@ -174,7 +174,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
           <div className="absolute top-4 left-4 flex flex-wrap items-center gap-2">
-            <span className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#baeed9] text-[#002117]">
+            <span className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#bbf7d0] text-[#002117]">
               {category}
             </span>
             {business.isVerified && (
@@ -191,7 +191,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
                 {business.name}
               </h1>
               <div className="flex items-center gap-2 text-[13px] text-white/90 mt-1">
-                <span className="material-symbols-outlined text-[16px] text-[#baeed9]">location_on</span>
+                <span className="material-symbols-outlined text-[16px] text-[#bbf7d0]">location_on</span>
                 <span>{business.address} ({business.landmark})</span>
               </div>
             </div>
@@ -208,7 +208,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
           <div className="flex flex-wrap items-center gap-3">
             <a
               href={`tel:${business.phone}`}
-              className="px-4 py-2.5 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[13px] font-bold flex items-center gap-1.5 shadow-xs transition-colors"
+              className="px-4 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center gap-1.5 shadow-xs transition-colors"
             >
               <span className="material-symbols-outlined text-[18px]">call</span>
               <span>{lang === 'MR' ? 'थेट फोन करा' : `Call: +91 ${business.phone}`}</span>
@@ -246,7 +246,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
         <div className="lg:col-span-2 flex flex-col gap-6">
           {/* About / Description */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
-            <h2 className="font-heading font-extrabold text-[18px] text-[#003629] mb-3 flex items-center gap-2">
+            <h2 className="font-heading font-extrabold text-[18px] text-[#166534] mb-3 flex items-center gap-2">
               <span className="material-symbols-outlined text-[#376757]">storefront</span>
               <span>{lang === 'MR' ? `${business.name} विषयी माहिती` : `About ${business.name}`}</span>
             </h2>
@@ -256,15 +256,15 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5 pt-5 border-t border-[#f3ede4] text-[12px]">
               <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9]">
-                <strong className="text-[#003629] block mb-0.5">{lang === 'MR' ? 'चौकापासून अंतर:' : 'Distance from Chowk:'}</strong>
+                <strong className="text-[#166534] block mb-0.5">{lang === 'MR' ? 'चौकापासून अंतर:' : 'Distance from Chowk:'}</strong>
                 <span className="text-[#1d1b16]">{business.distanceKm || '0.4 km'}</span>
               </div>
               <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9]">
-                <strong className="text-[#003629] block mb-0.5">{lang === 'MR' ? 'पडताळणी:' : 'Verification:'}</strong>
+                <strong className="text-[#166534] block mb-0.5">{lang === 'MR' ? 'पडताळणी:' : 'Verification:'}</strong>
                 <span className="text-[#1d1b16]">{lang === 'MR' ? 'सत्यापित स्थानिक व्यापारी' : 'Verified Merchant'}</span>
               </div>
               <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9]">
-                <strong className="text-[#003629] block mb-0.5">{lang === 'MR' ? 'डिलिव्हरी सेवा:' : 'Delivery Support:'}</strong>
+                <strong className="text-[#166534] block mb-0.5">{lang === 'MR' ? 'डिलिव्हरी सेवा:' : 'Delivery Support:'}</strong>
                 <span className="text-[#1d1b16]">{lang === 'MR' ? 'स्थानिक शेत / घरपोच सेवा' : 'Local Farm / Village Delivery'}</span>
               </div>
             </div>
@@ -272,8 +272,8 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
 
           {/* Interactive Shop Location Map */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
-            <h2 className="font-heading font-extrabold text-[18px] text-[#003629] mb-2 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#a63b00]">pin_drop</span>
+            <h2 className="font-heading font-extrabold text-[18px] text-[#166534] mb-2 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[#c2410c]">pin_drop</span>
               <span>{lang === 'MR' ? 'स्थान व दिशा (नकाशा)' : 'Location & Directions'}</span>
             </h2>
             <p className="text-[12px] text-[#707974] mb-4">
@@ -302,7 +302,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
           {/* Related Businesses */}
           {relatedBusinesses.length > 0 && (
             <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
-              <h2 className="font-heading font-extrabold text-[17px] text-[#003629] mb-3">
+              <h2 className="font-heading font-extrabold text-[17px] text-[#166534] mb-3">
                 {lang === 'MR' ? `याच वर्गातील इतर दुकाने (${category})` : `More in ${category}`}
               </h2>
 
@@ -325,7 +325,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
                       </h3>
                       <p className="text-[11px] text-[#707974] mt-1 line-clamp-1">{rel.address}</p>
                     </div>
-                    <div className="mt-3 text-[11px] font-bold text-[#a63b00] flex items-center gap-1">
+                    <div className="mt-3 text-[11px] font-bold text-[#c2410c] flex items-center gap-1">
                       <span>{lang === 'MR' ? 'दुकान पहा' : 'View Store'}</span>
                       <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
                     </div>
@@ -340,13 +340,13 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
         <aside className="flex flex-col gap-5">
           {/* Quick Contact Card */}
           <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
-            <h3 className="font-heading font-extrabold text-[16px] text-[#003629]">
+            <h3 className="font-heading font-extrabold text-[16px] text-[#166534]">
               {lang === 'MR' ? 'संपर्क माहिती' : 'Contact Details'}
             </h3>
 
             <div className="space-y-3 text-[13px]">
               <div className="flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-[18px] text-[#003629] shrink-0 mt-0.5">call</span>
+                <span className="material-symbols-outlined text-[18px] text-[#166534] shrink-0 mt-0.5">call</span>
                 <div>
                   <div className="text-[11px] text-[#707974] font-medium">{lang === 'MR' ? 'मुख्य फोन' : 'Primary Phone'}</div>
                   <a href={`tel:${business.phone}`} className="font-bold text-[#1d1b16] hover:underline">
@@ -371,7 +371,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
               </div>
 
               <div className="flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-[18px] text-[#a63b00] shrink-0 mt-0.5">schedule</span>
+                <span className="material-symbols-outlined text-[18px] text-[#c2410c] shrink-0 mt-0.5">schedule</span>
                 <div>
                   <div className="text-[11px] text-[#707974] font-medium">{lang === 'MR' ? 'दुकान वेळ' : 'Working Hours'}</div>
                   <div className="font-bold text-[#1d1b16]">{business.openingHours}</div>
@@ -389,7 +389,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
 
             <a
               href={`tel:${business.phone}`}
-              className="mt-2 w-full py-2.5 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
+              className="mt-2 w-full py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
             >
               <span className="material-symbols-outlined text-[16px]">call</span>
               <span>{lang === 'MR' ? 'व्यापाऱ्याशी संपर्क साधा' : 'Call Merchant Now'}</span>
@@ -398,7 +398,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
 
           {/* Local Merchant Registry Card */}
           <div className="bg-[#f9f3ea] rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <div className="flex items-center gap-2 text-[#003629] font-bold text-[13px] mb-1">
+            <div className="flex items-center gap-2 text-[#166534] font-bold text-[13px] mb-1">
               <span className="material-symbols-outlined text-[18px]">verified_user</span>
               <span>{lang === 'MR' ? 'स्थानिक व्यवसाय नोंदणी' : 'Civic Business Registry'}</span>
             </div>

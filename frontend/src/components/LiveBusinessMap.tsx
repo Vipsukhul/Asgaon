@@ -31,12 +31,12 @@ interface LiveBusinessMapProps {
 const ASGAON_CENTER: [number, number] = [20.8084579, 79.7242461];
 
 export const CATEGORY_COLORS: Record<string, { bg: string; border: string; icon: string }> = {
-  seeds: { bg: '#006a4e', border: '#baeed9', icon: 'agriculture' },
+  seeds: { bg: '#006a4e', border: '#bbf7d0', icon: 'agriculture' },
   clinic: { bg: '#ba1a1a', border: '#ffdad6', icon: 'local_hospital' },
-  machinery: { bg: '#a63b00', border: '#ffdbce', icon: 'precision_manufacturing' },
+  machinery: { bg: '#c2410c', border: '#fed7aa', icon: 'precision_manufacturing' },
   dairy: { bg: '#002873', border: '#dbe1ff', icon: 'egg' },
   hardware: { bg: '#404945', border: '#e8e2d9', icon: 'construction' },
-  csc: { bg: '#004d3b', border: '#8abda9', icon: 'desk' },
+  csc: { bg: '#14532d', border: '#8abda9', icon: 'desk' },
   kirana: { bg: '#d97706', border: '#fef3c7', icon: 'storefront' }
 };
 
@@ -193,9 +193,9 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
   return (
     <div className="relative w-full rounded-2xl overflow-hidden border border-[#e8e2d9] shadow-md bg-white flex flex-col">
       {/* 1. Map Top Control Header */}
-      <div className="p-3 sm:p-4 bg-gradient-to-r from-[#003629] to-[#004d3b] text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 z-10">
+      <div className="p-3 sm:p-4 bg-gradient-to-r from-[#166534] to-[#14532d] text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 z-10">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-[#baeed9]">
+          <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-[#bbf7d0]">
             <span className="material-symbols-outlined text-[22px]">map</span>
           </div>
           <div>
@@ -204,7 +204,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
                 आसगाव थेट व्यवसाय नकाशा (Live Village Map)
               </h3>
             </div>
-            <p className="text-[11px] text-[#baeed9]">
+            <p className="text-[11px] text-[#bbf7d0]">
               गावातील दुकाने, कृषी केंद्र, दवाखाने व सेवा थेट नकाशावर पहा व दिशा मिळवा (Turn-by-turn navigation)
             </p>
           </div>
@@ -238,8 +238,8 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
                       }}
                       className="w-full px-3 py-2 text-left hover:bg-[#f9f3ea] flex items-center justify-between text-[11px] border-b border-[#f3ede4] last:border-0"
                     >
-                      <span className="font-bold text-[#003629] truncate">{b.name}</span>
-                      <span className="text-[#a63b00] shrink-0 text-[10px]">{b.distance || ''}</span>
+                      <span className="font-bold text-[#166534] truncate">{b.name}</span>
+                      <span className="text-[#c2410c] shrink-0 text-[10px]">{b.distance || ''}</span>
                     </button>
                   ))
                 )}
@@ -285,22 +285,22 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
                     className="w-14 h-14 rounded-xl object-cover border border-[#e8e2d9] shrink-0"
                   />
                 ) : (
-                  <div className="w-14 h-14 rounded-xl bg-[#003629] text-[#baeed9] flex items-center justify-center shrink-0">
+                  <div className="w-14 h-14 rounded-xl bg-[#166534] text-[#bbf7d0] flex items-center justify-center shrink-0">
                     <span className="material-symbols-outlined text-[26px]">storefront</span>
                   </div>
                 )}
                 <div>
-                  <h4 className="font-heading font-extrabold text-[15px] text-[#003629] leading-tight">
+                  <h4 className="font-heading font-extrabold text-[15px] text-[#166534] leading-tight">
                     {activeItem.name}
                   </h4>
                   <p className="text-[11px] text-[#707974] mt-0.5">
                     {activeItem.address || 'आसगाव, पवनी'}
                   </p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="inline-flex items-center text-[11px] font-bold text-[#a63b00]">
+                    <span className="inline-flex items-center text-[11px] font-bold text-[#c2410c]">
                       ★ {activeItem.rating || '4.8'}
                     </span>
-                    <span className="text-[10px] text-[#006a4e] font-semibold bg-[#baeed9]/50 px-1.5 py-0.2 rounded">
+                    <span className="text-[10px] text-[#006a4e] font-semibold bg-[#bbf7d0]/50 px-1.5 py-0.2 rounded">
                       {activeItem.distance || '0.4 km'}
                     </span>
                   </div>
@@ -321,7 +321,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
               {activeItem.phone && (
                 <a
                   href={`tel:${activeItem.phone}`}
-                  className="py-2 px-2 rounded-xl bg-[#003629] text-white hover:bg-[#1b4d3e] text-[11px] font-bold flex items-center justify-center gap-1 transition-colors shadow-xs"
+                  className="py-2 px-2 rounded-xl bg-[#166534] text-white hover:bg-[#052e16] text-[11px] font-bold flex items-center justify-center gap-1 transition-colors shadow-xs"
                 >
                   <span className="material-symbols-outlined text-[15px]">call</span>
                   <span>कॉल करा</span>
@@ -344,10 +344,10 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
                 href={`https://www.google.com/maps/dir/?api=1&destination=${activeItem.latitude},${activeItem.longitude}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-2 px-2 rounded-xl bg-[#f9f3ea] hover:bg-[#e8e2d9] text-[#003629] text-[11px] font-bold flex items-center justify-center gap-1 transition-colors border border-[#e8e2d9]"
+                className="py-2 px-2 rounded-xl bg-[#f9f3ea] hover:bg-[#e8e2d9] text-[#166534] text-[11px] font-bold flex items-center justify-center gap-1 transition-colors border border-[#e8e2d9]"
                 title="Google Maps दिशानिर्देश उघडा"
               >
-                <span className="material-symbols-outlined text-[15px] text-[#a63b00]">navigation</span>
+                <span className="material-symbols-outlined text-[15px] text-[#c2410c]">navigation</span>
                 <span>रस्ता पहा</span>
               </a>
             </div>
@@ -356,7 +356,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
               <button
                 type="button"
                 onClick={() => onSelectBusiness(activeItem)}
-                className="w-full mt-2 py-1.5 text-center text-[11px] text-[#003629] font-bold hover:underline"
+                className="w-full mt-2 py-1.5 text-center text-[11px] text-[#166534] font-bold hover:underline"
               >
                 सविस्तर माहिती पहा (View Full Details) &rarr;
               </button>
@@ -376,7 +376,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
             <span className="w-2.5 h-2.5 rounded-full bg-[#ba1a1a]"></span> दवाखाने व मेडिकल
           </span>
           <span className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#a63b00]"></span> ट्रॅक्टर व यंत्रसामग्री
+            <span className="w-2.5 h-2.5 rounded-full bg-[#c2410c]"></span> ट्रॅक्टर व यंत्रसामग्री
           </span>
           <span className="flex items-center gap-1">
             <span className="w-2.5 h-2.5 rounded-full bg-[#002873]"></span> दुग्ध व्यवसाय

@@ -210,7 +210,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
         {/* Modal Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#f3ede4] mb-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-[#003629] text-[#baeed9] flex items-center justify-center shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-[#166534] text-[#bbf7d0] flex items-center justify-center shadow-xs">
               <span className="material-symbols-outlined text-[24px]">verified_user</span>
             </div>
             <div>
@@ -231,7 +231,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
 
         {/* Informative Note */}
         <div className="mb-4 bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] text-[12px] text-[#404945]">
-          <p className="font-semibold text-[#003629] mb-0.5">
+          <p className="font-semibold text-[#166534] mb-0.5">
             {lang === 'MR' ? 'गुगल खात्याद्वारे सुरक्षित प्रवेश ' : 'Sign-In with Google'}
           </p>
           <p>
@@ -243,7 +243,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
 
         {/* Role Selector before OAuth Login */}
         <div className="mb-5">
-          <label className="block text-[12px] font-bold uppercase tracking-wider text-[#a63b00] mb-2 flex items-center gap-1">
+          <label className="block text-[12px] font-bold uppercase tracking-wider text-[#c2410c] mb-2 flex items-center gap-1">
             <span className="material-symbols-outlined text-[15px]">badge</span>
             <span>{lang === 'MR' ? 'आपली प्राथमिक भूमिका निवडा:' : 'Select Your Primary Civic Profile:'}</span>
           </label>
@@ -255,13 +255,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
                 onClick={() => setSelectedRole(r.id)}
                 className={`p-2.5 rounded-xl border text-left transition-all flex items-center gap-2.5 ${
                   selectedRole === r.id
-                    ? 'bg-[#003629] text-white border-[#003629] shadow-xs'
+                    ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
                     : 'bg-[#fcfaf7] text-[#1d1b16] border-[#e8e2d9] hover:bg-[#f3ede4]'
                 }`}
               >
                 <div
                   className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
-                    selectedRole === r.id ? 'bg-[#1b4d3e] text-[#baeed9]' : 'bg-[#e8e2d9] text-[#003629]'
+                    selectedRole === r.id ? 'bg-[#052e16] text-[#bbf7d0]' : 'bg-[#e8e2d9] text-[#166534]'
                   }`}
                 >
                   <span className="material-symbols-outlined text-[18px]">{r.icon}</span>
@@ -283,7 +283,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
         )}
 
         {infoMessage && (
-          <div className="mb-4 p-3 rounded-xl bg-[#baeed9] text-[#002117] text-[12px] font-bold flex items-center gap-2">
+          <div className="mb-4 p-3 rounded-xl bg-[#bbf7d0] text-[#002117] text-[12px] font-bold flex items-center gap-2">
             <span className="material-symbols-outlined text-[18px] shrink-0 text-[#006a4e]">check_circle</span>
             <span>{infoMessage}</span>
           </div>
@@ -326,7 +326,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
             <button
               type="button"
               onClick={() => setShowManualGoogleEmail(true)}
-              className="text-[11px] text-[#707974] hover:text-[#003629] underline transition-colors"
+              className="text-[11px] text-[#707974] hover:text-[#166534] underline transition-colors"
             >
               Sign in with custom Google / Gmail account
             </button>
@@ -355,7 +355,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
                 value={googleEmailInput}
                 onChange={(e) => setGoogleEmailInput(e.target.value)}
                 placeholder="e.g. ram.patil@gmail.com"
-                className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
               />
             </div>
 
@@ -368,7 +368,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
                 value={googleNameInput}
                 onChange={(e) => setGoogleNameInput(e.target.value)}
                 placeholder="e.g. Ram Patil"
-                className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#003629]"
+                className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
               />
             </div>
 
@@ -383,7 +383,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 rounded-xl bg-[#003629] text-white text-[13px] font-bold hover:bg-[#1b4d3e] transition-colors shadow-xs disabled:opacity-50 flex items-center gap-1.5"
+                className="px-6 py-2 rounded-xl bg-[#166534] text-white text-[13px] font-bold hover:bg-[#052e16] transition-colors shadow-xs disabled:opacity-50 flex items-center gap-1.5"
               >
                 {loading ? 'Authenticating...' : 'Sign In via Google OAuth'}
               </button>

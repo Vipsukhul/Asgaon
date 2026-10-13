@@ -154,9 +154,9 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
       {/* 1. Header with Trust Badge */}
       <div className="bg-[#f9f3ea] px-4 py-3 border-b border-[#e8e2d9] flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-[#a63b00] text-[20px]">hotel_class</span>
+          <span className="material-symbols-outlined text-[#c2410c] text-[20px]">hotel_class</span>
           <div>
-            <h4 className="font-heading font-extrabold text-[14px] text-[#003629]">
+            <h4 className="font-heading font-extrabold text-[14px] text-[#166534]">
               ग्राहक रेटिंग व नागरिक अभिप्राय (Rating &amp; Reviews)
             </h4>
             <span className="text-[11px] text-[#707974]">
@@ -168,9 +168,9 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
         <button
           type="button"
           onClick={() => setIsFormOpen(!isFormOpen)}
-          className="px-3 py-1.5 rounded-xl bg-[#003629] text-white hover:bg-[#1b4d3e] text-[11px] font-bold flex items-center gap-1 transition-all shadow-xs"
+          className="px-3 py-1.5 rounded-xl bg-[#166534] text-white hover:bg-[#052e16] text-[11px] font-bold flex items-center gap-1 transition-all shadow-xs"
         >
-          <span className="material-symbols-outlined text-[14px] text-[#baeed9]">edit</span>
+          <span className="material-symbols-outlined text-[14px] text-[#bbf7d0]">edit</span>
           <span>{isFormOpen ? 'फॉर्म बंद करा' : 'आपला अभिप्राय द्या'}</span>
         </button>
       </div>
@@ -178,8 +178,8 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
       {/* 2. Rating Score & Breakdown Grid */}
       <div className="p-4 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center border-b border-[#f3ede4]">
         {/* Left: Overall Big Score */}
-        <div className="sm:col-span-5 flex flex-col items-center justify-center p-3 bg-[#fff8f0] rounded-xl border border-[#ffdbce] text-center">
-          <div className="font-heading font-black text-[38px] text-[#a63b00] leading-none mb-1">
+        <div className="sm:col-span-5 flex flex-col items-center justify-center p-3 bg-[#fef9ee] rounded-xl border border-[#fed7aa] text-center">
+          <div className="font-heading font-black text-[38px] text-[#c2410c] leading-none mb-1">
             {currentRating.toFixed(1)}
           </div>
           <div className="flex items-center gap-0.5 text-[#d97706] mb-1">
@@ -192,7 +192,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
           <div className="text-[12px] font-bold text-[#1d1b16]">
             {reviewCount} गावकऱ्यांचे अभिप्राय
           </div>
-          <div className="inline-flex items-center gap-1 text-[10px] font-extrabold text-[#006a4e] bg-[#baeed9] px-2 py-0.5 rounded-full mt-1.5">
+          <div className="inline-flex items-center gap-1 text-[10px] font-extrabold text-[#006a4e] bg-[#bbf7d0] px-2 py-0.5 rounded-full mt-1.5">
             <span className="material-symbols-outlined text-[12px]">verified</span>
             <span>पडताळणीकृत स्थानिक व्यापारी</span>
           </div>
@@ -211,7 +211,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
               <span className="w-8 font-bold text-[#707974]">{row.label}</span>
               <div className="flex-1 h-2 bg-[#f3ede4] rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-[#d97706] to-[#a63b00] rounded-full transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-[#d97706] to-[#c2410c] rounded-full transition-all duration-500"
                   style={{ width: `${row.pct}%` }}
                 />
               </div>
@@ -225,7 +225,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
       {isFormOpen && (
         <form onSubmit={handleSubmitReview} className="p-4 bg-[#f9f3ea] border-b border-[#e8e2d9] animate-fadeIn flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <h5 className="font-heading font-bold text-[13px] text-[#003629] flex items-center gap-1">
+            <h5 className="font-heading font-bold text-[13px] text-[#166534] flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px] text-[#d97706]">rate_review</span>
               <span>या दुकानासाठी आपला प्रामाणिक अभिप्राय नोंदवा</span>
             </h5>
@@ -249,7 +249,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
                 </button>
               ))}
             </div>
-            <span className="text-[11px] font-bold text-[#a63b00] ml-2">
+            <span className="text-[11px] font-bold text-[#c2410c] ml-2">
               {inputRating === 5 ? 'उत्कृष्ट (5/5)' : inputRating === 4 ? 'खूप चांगले (4/5)' : inputRating === 3 ? 'बरे (3/5)' : 'सुधारणा हवी (2/5)'}
             </span>
           </div>
@@ -265,7 +265,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
                 value={inputName}
                 onChange={(e) => setInputName(e.target.value)}
                 placeholder="उदा. ज्ञानेश्वर पाटील"
-                className="w-full bg-white text-[#1d1b16] p-2 rounded-xl text-[12px] border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#003629]"
+                className="w-full bg-white text-[#1d1b16] p-2 rounded-xl text-[12px] border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#166534]"
               />
             </div>
             <div>
@@ -275,7 +275,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
               <select
                 value={inputWard}
                 onChange={(e) => setInputWard(e.target.value)}
-                className="w-full bg-white text-[#1d1b16] p-2 rounded-xl text-[12px] border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#003629]"
+                className="w-full bg-white text-[#1d1b16] p-2 rounded-xl text-[12px] border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#166534]"
               >
                 <option>वॉर्ड १ (आंबेडकर वॉर्ड)</option>
                 <option>वॉर्ड २ (गावठाण व बाजार चौक)</option>
@@ -296,12 +296,12 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
               value={inputComment}
               onChange={(e) => setInputComment(e.target.value)}
               placeholder="मालाची गुणवत्ता, किंमत, बोलण्याची पद्धत व सेवेबद्दल आपला अनुभव सांगा..."
-              className="w-full bg-white text-[#1d1b16] p-2 rounded-xl text-[12px] border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#003629]"
+              className="w-full bg-white text-[#1d1b16] p-2 rounded-xl text-[12px] border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#166534]"
             />
           </div>
 
           {successMsg && (
-            <div className="p-2 bg-[#baeed9] text-[#002117] rounded-lg text-[11px] font-bold flex items-center gap-1.5">
+            <div className="p-2 bg-[#bbf7d0] text-[#002117] rounded-lg text-[11px] font-bold flex items-center gap-1.5">
               <span className="material-symbols-outlined text-[16px]">check_circle</span>
               <span>{successMsg}</span>
             </div>
@@ -317,7 +317,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
             </button>
             <button
               type="submit"
-              className="px-4 py-1.5 rounded-lg bg-[#a63b00] hover:bg-[#852f00] text-white text-[11px] font-bold transition-colors shadow-xs"
+              className="px-4 py-1.5 rounded-lg bg-[#c2410c] hover:bg-[#852f00] text-white text-[11px] font-bold transition-colors shadow-xs"
             >
               अभिप्राय सबमिट करा
             </button>
@@ -336,7 +336,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
           <div key={rev.id} className="p-3 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-[#003629] text-[#baeed9] font-black text-[10px] flex items-center justify-center">
+                <div className="w-6 h-6 rounded-full bg-[#166534] text-[#bbf7d0] font-black text-[10px] flex items-center justify-center">
                   {rev.userName.charAt(0)}
                 </div>
                 <div>
@@ -364,7 +364,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
         <div className="pt-2 text-center">
           <a
             href="/reviews"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#003629] hover:underline cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#166534] hover:underline cursor-pointer"
           >
             <span>सर्व गावातील नागरी अभिप्राय पृष्ठ पहा (All Community Reviews)</span>
             <span className="material-symbols-outlined text-[15px]">arrow_forward</span>

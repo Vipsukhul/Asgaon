@@ -32,8 +32,8 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
     if (schemes.length === 0) {
       return (
         <div className="w-full py-28 text-center flex flex-col items-center justify-center gap-3">
-          <div className="w-9 h-9 border-3 border-[#003629] border-t-transparent rounded-full animate-spin" />
-          <p className="text-[13px] font-bold text-[#003629]">
+          <div className="w-9 h-9 border-3 border-[#166534] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[13px] font-bold text-[#166534]">
             {lang === 'MR' ? 'माहिती लोड होत आहे, कृपया प्रतीक्षा करा...' : 'Loading scheme details from database...'}
           </p>
         </div>
@@ -41,12 +41,12 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
     }
     return (
       <div className="w-full py-16 text-center">
-        <h2 className="text-xl font-bold text-[#003629]">
+        <h2 className="text-xl font-bold text-[#166534]">
           {lang === 'MR' ? 'योजना आढळली नाही' : 'Scheme not found'}
         </h2>
         <button
           onClick={onNavigateBack}
-          className="mt-4 px-4 py-2 bg-[#003629] text-white rounded-xl font-bold text-sm"
+          className="mt-4 px-4 py-2 bg-[#166534] text-white rounded-xl font-bold text-sm"
         >
           {lang === 'MR' ? 'सर्व योजनांकडे परत जा' : 'Back to Schemes Directory'}
         </button>
@@ -271,11 +271,11 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           </div>
         </div>
 
-        <h1 className="font-heading font-extrabold text-[24px] sm:text-[32px] text-[#003629] leading-tight mb-2">
+        <h1 className="font-heading font-extrabold text-[24px] sm:text-[32px] text-[#166534] leading-tight mb-2">
           {scheme.title}
         </h1>
 
-        <div className="flex items-center gap-2 text-[14px] font-bold text-[#a63b00] mb-4">
+        <div className="flex items-center gap-2 text-[14px] font-bold text-[#c2410c] mb-4">
           <span className="material-symbols-outlined text-[18px]">account_balance</span>
           <span>{scheme.sponsoringAgency}</span>
         </div>
@@ -288,10 +288,10 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 pt-6 border-t border-[#f3ede4]">
           <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#a63b00]">payments</span>
+              <span className="material-symbols-outlined text-[16px] text-[#c2410c]">payments</span>
               <span>{lang === 'MR' ? 'थेट लाभ / अनुदान' : 'Direct Benefit / Subsidy'}</span>
             </div>
-            <div className="font-heading font-extrabold text-[17px] text-[#003629] mt-1">
+            <div className="font-heading font-extrabold text-[17px] text-[#166534] mt-1">
               {scheme.benefits.split('.')[0] || (lang === 'MR' ? '१००% थेट डीबीटी' : '100% Direct DBT')}
             </div>
           </div>
@@ -318,10 +318,10 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
 
           <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#a63b00]">timer</span>
+              <span className="material-symbols-outlined text-[16px] text-[#c2410c]">timer</span>
               <span>{lang === 'MR' ? 'वितरण पद्धत' : 'Disbursement Mode'}</span>
             </div>
-            <div className="font-heading font-extrabold text-[16px] text-[#a63b00] mt-1">
+            <div className="font-heading font-extrabold text-[16px] text-[#c2410c] mt-1">
               {lang === 'MR' ? 'थेट बँक खात्यात (DBT)' : 'Aadhaar DBT to Bank'}
             </div>
           </div>
@@ -334,7 +334,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
         <div className="lg:col-span-2 flex flex-col gap-6">
           {/* Eligibility Section */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
-            <h2 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2 mb-3">
+            <h2 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2 mb-3">
               <span className="material-symbols-outlined text-[#376757]">checklist_rtl</span>
               <span>{lang === 'MR' ? 'सविस्तर पात्रता निकष' : 'Who is Eligible? (Eligibility Criteria)'}</span>
             </h2>
@@ -344,7 +344,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[12px]">
               <div className="bg-[#f3ede4] p-3 rounded-xl border border-[#e8e2d9]">
-                <strong className="text-[#003629] block mb-1">
+                <strong className="text-[#166534] block mb-1">
                   {lang === 'MR' ? 'पात्र लाभार्थी:' : 'Eligible Categories:'}
                 </strong>
                 <p className="text-[#404945]">
@@ -368,7 +368,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
 
           {/* Mandatory Documents Checklist */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
-            <h2 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2 mb-3">
+            <h2 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2 mb-3">
               <span className="material-symbols-outlined text-[#002873]">task_alt</span>
               <span>{lang === 'MR' ? 'आवश्यक कागदपत्रांची यादी' : 'Mandatory Documents Checklist'}</span>
             </h2>
@@ -402,19 +402,19 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
 
           {/* How to Apply: Step-by-Step Roadmap */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
-            <h2 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#a63b00]">route</span>
+            <h2 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2 mb-4">
+              <span className="material-symbols-outlined text-[#c2410c]">route</span>
               <span>{lang === 'MR' ? 'अर्ज करण्याची सोपी पद्धत' : 'Step-by-Step Application Guide'}</span>
             </h2>
 
             <div className="space-y-4">
               {applicationSteps.map((st) => (
                 <div key={st.step} className="flex items-start gap-3.5">
-                  <div className="w-8 h-8 rounded-full bg-[#003629] text-white flex items-center justify-center font-bold text-[13px] shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-[#166534] text-white flex items-center justify-center font-bold text-[13px] shrink-0">
                     {st.step}
                   </div>
                   <div className="flex-1 bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
-                    <h3 className="font-bold text-[14px] text-[#003629] mb-1">{st.title}</h3>
+                    <h3 className="font-bold text-[14px] text-[#166534] mb-1">{st.title}</h3>
                     <p className="text-[12px] text-[#404945] leading-relaxed">{st.desc}</p>
                   </div>
                 </div>
@@ -424,7 +424,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
 
           {/* Scheme Specific FAQs */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
-            <h2 className="font-heading font-extrabold text-[18px] text-[#003629] flex items-center gap-2 mb-4">
+            <h2 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined text-[#002873]">help_outline</span>
               <span>{lang === 'MR' ? 'वारंवार विचारले जाणारे प्रश्न (FAQ)' : 'Frequently Asked Questions (FAQ)'}</span>
             </h2>
@@ -432,7 +432,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
             <div className="space-y-3 text-[13px]">
               {schemeFaqs.map((faq, idx) => (
                 <details key={idx} className="group bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
-                  <summary className="font-bold text-[#003629] cursor-pointer flex items-center justify-between list-none">
+                  <summary className="font-bold text-[#166534] cursor-pointer flex items-center justify-between list-none">
                     <span>{faq.q}</span>
                     <span className="material-symbols-outlined text-[20px] transition-transform group-open:rotate-180">
                       expand_more
@@ -449,7 +449,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           {/* Related Schemes Carousel/Grid */}
           {relatedSchemes.length > 0 && (
             <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
-              <h2 className="font-heading font-extrabold text-[17px] text-[#003629] mb-3">
+              <h2 className="font-heading font-extrabold text-[17px] text-[#166534] mb-3">
                 {lang === 'MR' ? `इतर संबंधित ${scheme.category} योजना` : `Related ${scheme.category} Schemes`}
               </h2>
 
@@ -471,7 +471,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
                         {rel.title}
                       </h3>
                     </div>
-                    <div className="mt-3 text-[11px] font-bold text-[#a63b00] flex items-center gap-1">
+                    <div className="mt-3 text-[11px] font-bold text-[#c2410c] flex items-center gap-1">
                       <span>{lang === 'MR' ? 'तपशील पहा' : 'View Details'}</span>
                       <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
                     </div>
@@ -486,7 +486,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
         <aside className="flex flex-col gap-5">
           {/* Action Box */}
           <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
-            <h3 className="font-heading font-extrabold text-[16px] text-[#003629]">
+            <h3 className="font-heading font-extrabold text-[16px] text-[#166534]">
               {lang === 'MR' ? 'या योजनेसाठी अर्ज करा' : 'Apply for this Scheme'}
             </h3>
             <p className="text-[12px] text-[#707974] leading-relaxed">
@@ -520,7 +520,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
               {lang === 'MR' ? 'नागरिक मदत कक्ष' : 'PHYSICAL ASSISTANCE DESK'}
             </span>
 
-            <h3 className="font-heading font-extrabold text-[16px] text-[#003629] mt-2 mb-1">
+            <h3 className="font-heading font-extrabold text-[16px] text-[#166534] mt-2 mb-1">
               {lang === 'MR' ? 'आसगाव सीएससी डिजिटल सेवा केंद्र' : 'Asgaon CSC Digital Seva Kendra'}
             </h3>
             <p className="text-[12px] text-[#404945] leading-relaxed mb-3">
@@ -537,7 +537,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
 
             <a
               href="tel:9822104500"
-              className="w-full py-2.5 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[12px] font-bold flex items-center justify-center gap-1 mb-2 transition-colors"
+              className="w-full py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold flex items-center justify-center gap-1 mb-2 transition-colors"
             >
               <span className="material-symbols-outlined text-[15px]">call</span>
               <span>{lang === 'MR' ? 'ऑपरेटरशी संपर्क: ९८२२१०४५००' : 'Call Operator: +91 98221 04500'}</span>

@@ -191,7 +191,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
           { label: lang === 'MR' ? 'गावातील कार्यक्रम व दिनदर्शिका' : 'Village Events & Calendar', active: true }
         ]}
         rightBadge={
-          <div className="text-[11px] font-semibold text-[#006a4e] bg-[#baeed9]/40 px-2.5 py-0.5 rounded-full border border-[#baeed9]">
+          <div className="text-[11px] font-semibold text-[#006a4e] bg-[#bbf7d0]/40 px-2.5 py-0.5 rounded-full border border-[#bbf7d0]">
             {lang === 'MR'
               ? 'सांस्कृतिक व सामाजिक दिनदर्शिका २०२५–२०२६ • असगाव नागरिक मंच'
               : 'COMMUNITY CULTURAL & DEVELOPMENT CALENDAR 2025–2026 • Asgaon Civic Forum'}
@@ -200,15 +200,15 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
       />
 
       {/* 2. HERO BANNER */}
-      <div className="bg-gradient-to-br from-[#003629]/5 via-white to-[#003629]/10 rounded-2xl p-6 sm:p-8 border border-[#c4d6cf] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="bg-gradient-to-br from-[#166534]/5 via-white to-[#166534]/10 rounded-2xl p-6 sm:p-8 border border-[#c4d6cf] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex-1">
-          <span className="inline-block bg-[#a63b00]/10 text-[#a63b00] text-[10px] font-black tracking-widest px-3 py-1 rounded-full uppercase border border-[#a63b00]/20 mb-2">
+          <span className="inline-block bg-[#c2410c]/10 text-[#c2410c] text-[10px] font-black tracking-widest px-3 py-1 rounded-full uppercase border border-[#c2410c]/20 mb-2">
             {lang === 'MR' ? 'समुदाय • असगाव सांस्कृतिक व नागरी मंच' : 'COMMUNITY • Asgaon Cultural & Civic Forum'}
           </span>
-          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#003629] leading-tight mb-1">
+          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#166534] leading-tight mb-1">
             {lang === 'MR' ? 'गावातील कार्यक्रम, जत्रा व मेळावे' : 'Village Events, Festivals & Community Gatherings'}
           </h1>
-          <h2 className="text-[14px] sm:text-[15px] font-bold text-[#a63b00] mb-2">
+          <h2 className="text-[14px] sm:text-[15px] font-bold text-[#c2410c] mb-2">
             {lang === 'MR' ? 'गावातील सभा, जत्रा, कृषी मेळावे व समाज दिनदर्शिका' : 'Community Calendar, Melawas & Celebrations'}
           </h2>
           <p className="text-[13px] sm:text-[14px] text-[#404945] max-w-2xl leading-relaxed">
@@ -221,7 +221,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
         <div className="flex flex-col items-start sm:items-end gap-2 shrink-0">
           <button
             onClick={() => setShowEventSubmitModal(true)}
-            className="px-5 py-3 rounded-xl bg-[#003629] hover:bg-[#00281e] text-white text-[13px] font-bold flex items-center gap-2 shadow-md hover:shadow-lg transition-all"
+            className="px-5 py-3 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center gap-2 shadow-md hover:shadow-lg transition-all"
           >
             <span className="material-symbols-outlined text-[18px]">add_circle</span>
             <span>{lang === 'MR' ? '+ नवीन कार्यक्रम / सूचना नोंदवा' : '+ Submit a Community Notice / Event'}</span>
@@ -242,11 +242,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
       {/* 3. 4 KEY METRIC COUNTERS */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#baeed9]/60 text-[#002117] flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#bbf7d0]/60 text-[#002117] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[20px]">event_upcoming</span>
           </div>
           <div>
-            <div className="font-heading font-black text-[22px] text-[#003629]">12</div>
+            <div className="font-heading font-black text-[22px] text-[#166534]">12</div>
             <div className="text-[11px] text-[#707974] leading-tight">
               {lang === 'MR' ? 'आगामी कार्यक्रम' : 'Upcoming Events'}
             </div>
@@ -257,11 +257,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#fff8f0] text-[#a63b00] border border-[#ffe0cc] flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#fef9ee] text-[#c2410c] border border-[#fde68a] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[20px]">storefront</span>
           </div>
           <div>
-            <div className="font-heading font-bold text-[13px] text-[#a63b00] leading-tight">
+            <div className="font-heading font-bold text-[13px] text-[#c2410c] leading-tight">
               {lang === 'MR' ? 'दर शुक्रवारी स. ८:००' : 'EVERY FRIDAY 8 AM'}
             </div>
             <div className="text-[11px] text-[#707974] leading-tight">
@@ -274,11 +274,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#f3ede4] text-[#003629] flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#f3ede4] text-[#166534] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[20px]">temple_hindu</span>
           </div>
           <div>
-            <div className="font-heading font-bold text-[13px] text-[#003629] leading-tight">
+            <div className="font-heading font-bold text-[13px] text-[#166534] leading-tight">
               {lang === 'MR' ? '१४ डिसे २०२४' : '14 Dec 2024'}
             </div>
             <div className="text-[11px] text-[#707974] leading-tight">
@@ -291,11 +291,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#baeed9]/40 text-[#006a4e] flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#bbf7d0]/40 text-[#006a4e] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[20px]">groups</span>
           </div>
           <div>
-            <div className="font-heading font-black text-[22px] text-[#003629]">3,500+</div>
+            <div className="font-heading font-black text-[22px] text-[#166534]">3,500+</div>
             <div className="text-[11px] text-[#707974] leading-tight">
               {lang === 'MR' ? 'अपेक्षित उपस्थिती' : 'Expected Footfall'}
             </div>
@@ -327,7 +327,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             <button
               onClick={() => { setActiveMonthFilter('nov'); setCurrentPage(1); }}
               className={`px-3 py-1.5 rounded-lg transition-all ${
-                activeMonthFilter === 'nov' ? 'bg-[#003629] text-white font-bold' : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9]'
+                activeMonthFilter === 'nov' ? 'bg-[#166534] text-white font-bold' : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9]'
               }`}
             >
               {lang === 'MR' ? 'या महिन्यात (नोव्हें)' : 'This Month (Nov)'}
@@ -335,7 +335,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             <button
               onClick={() => { setActiveMonthFilter('dec'); setCurrentPage(1); }}
               className={`px-3 py-1.5 rounded-lg transition-all ${
-                activeMonthFilter === 'dec' ? 'bg-[#003629] text-white font-bold' : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9]'
+                activeMonthFilter === 'dec' ? 'bg-[#166534] text-white font-bold' : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9]'
               }`}
             >
               {lang === 'MR' ? 'पुढील महिन्यात (डिसें)' : 'Next Month (Dec)'}
@@ -343,7 +343,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             <button
               onClick={() => { setActiveMonthFilter('winter'); setCurrentPage(1); }}
               className={`px-3 py-1.5 rounded-lg transition-all ${
-                activeMonthFilter === 'winter' ? 'bg-[#003629] text-white font-bold' : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9]'
+                activeMonthFilter === 'winter' ? 'bg-[#166534] text-white font-bold' : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9]'
               }`}
             >
               {lang === 'MR' ? 'हिवाळी हंगाम' : 'Winter Season'}
@@ -351,7 +351,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             <button
               onClick={() => { setActiveMonthFilter('all'); setCurrentPage(1); }}
               className={`px-3 py-1.5 rounded-lg transition-all ${
-                activeMonthFilter === 'all' ? 'bg-[#003629] text-white font-bold' : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9]'
+                activeMonthFilter === 'all' ? 'bg-[#166534] text-white font-bold' : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9]'
               }`}
             >
               {lang === 'MR' ? 'संपूर्ण वर्ष' : 'Full Year'}
@@ -365,7 +365,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             onClick={() => { setActiveCategory('all'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-bold shrink-0 transition-all ${
               activeCategory === 'all'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
@@ -375,18 +375,18 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             onClick={() => { setActiveCategory('religious'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
               activeCategory === 'religious'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            <span className="material-symbols-outlined text-[16px] text-[#a63b00]">temple_hindu</span>
+            <span className="material-symbols-outlined text-[16px] text-[#c2410c]">temple_hindu</span>
             <span>{lang === 'MR' ? 'धार्मिक उत्सव व जत्रा' : 'Religious Festivals & Jatras'} ({backendEvents.filter(e => (e.category || '').toLowerCase().includes('relig') || (e.category || '').toLowerCase().includes('cult')).length})</span>
           </button>
           <button
             onClick={() => { setActiveCategory('health'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
               activeCategory === 'health'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
@@ -397,7 +397,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             onClick={() => { setActiveCategory('agriculture'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
               activeCategory === 'agriculture'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
@@ -408,7 +408,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             onClick={() => { setActiveCategory('sports'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
               activeCategory === 'sports'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
@@ -459,8 +459,8 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               <>
                 {filteredEvents.length === 0 ? (
                   <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-                    <span className="material-symbols-outlined text-[48px] text-[#a63b00]">event_busy</span>
-                    <h3 className="font-heading font-bold text-[18px] text-[#003629]">
+                    <span className="material-symbols-outlined text-[48px] text-[#c2410c]">event_busy</span>
+                    <h3 className="font-heading font-bold text-[18px] text-[#166534]">
                       {lang === 'MR' ? 'कोणताही कार्यक्रम आढळला नाही' : 'No matching events found'}
                     </h3>
                     <p className="text-[13px] text-[#707974] max-w-md">
@@ -470,7 +470,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                     </p>
                     <button
                       onClick={() => { setActiveCategory('all'); setActiveMonthFilter('all'); setSearchQuery(''); setCurrentPage(1); }}
-                      className="px-4 py-2 bg-[#003629] text-white text-[12px] font-bold rounded-xl hover:bg-[#1b4d3e] transition-colors"
+                      className="px-4 py-2 bg-[#166534] text-white text-[12px] font-bold rounded-xl hover:bg-[#052e16] transition-colors"
                     >
                       {lang === 'MR' ? 'सर्व फिल्टर रीसेट करा' : 'Reset All Filters'}
                     </button>
@@ -486,14 +486,14 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                       <div className="flex-1 flex flex-col justify-between">
                         <div>
                           <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                            <span className="bg-[#baeed9] text-[#002117] text-[10px] font-black uppercase px-2.5 py-0.5 rounded">
+                            <span className="bg-[#bbf7d0] text-[#002117] text-[10px] font-black uppercase px-2.5 py-0.5 rounded">
                               {evt.badge || (lang === 'MR' ? 'पडताळणीकृत कार्यक्रम' : 'VERIFIED EVENT')}
                             </span>
-                            <span className="text-[11px] font-semibold text-[#a63b00] bg-[#fff8f0] px-2 py-0.5 rounded border border-[#ffe0cc]">
+                            <span className="text-[11px] font-semibold text-[#c2410c] bg-[#fef9ee] px-2 py-0.5 rounded border border-[#fde68a]">
                               {evt.eventDate} • {evt.eventTime}
                             </span>
                           </div>
-                          <h4 className="font-heading font-extrabold text-[18px] text-[#003629] mb-1.5 leading-snug">
+                          <h4 className="font-heading font-extrabold text-[18px] text-[#166534] mb-1.5 leading-snug">
                             {evt.title}
                           </h4>
                           <p className="text-[12px] text-[#404945] line-clamp-3 mb-3 leading-relaxed">
@@ -501,7 +501,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                           </p>
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] border-t border-[#f3ede4] pt-2.5 gap-2">
-                          <span className="text-[#a63b00] font-bold flex items-center gap-1">
+                          <span className="text-[#c2410c] font-bold flex items-center gap-1">
                             <span className="material-symbols-outlined text-[15px]">location_on</span>
                             <span>{evt.location}</span>
                           </span>
@@ -512,7 +512,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                                 setTokenType(evt.title);
                                 setShowTokenModal(true);
                               }}
-                              className="py-1 px-3 bg-[#003629] hover:bg-[#00281e] text-white text-[11px] font-bold rounded-lg transition-colors"
+                              className="py-1 px-3 bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold rounded-lg transition-colors"
                             >
                               {lang === 'MR' ? 'नाव नोंदणी / टोकन' : 'RSVP / Register'}
                             </button>
@@ -548,7 +548,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                             onClick={() => setCurrentPage(pageNum)}
                             className={`w-7 h-7 rounded-lg font-bold flex items-center justify-center transition-colors ${
                               validCurrentPage === pageNum
-                                ? 'bg-[#003629] text-white shadow-xs'
+                                ? 'bg-[#166534] text-white shadow-xs'
                                 : 'bg-[#f3ede4] text-[#1d1b16] hover:bg-[#e8e2d9]'
                             }`}
                           >
@@ -577,7 +577,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
           {/* WIDGET 1: MONTHLY CALENDAR */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs flex flex-col gap-3.5">
             <div className="flex items-center justify-between border-b border-[#f3ede4] pb-3">
-              <h3 className="font-heading font-extrabold text-[15px] text-[#003629]">
+              <h3 className="font-heading font-extrabold text-[15px] text-[#166534]">
                 {lang === 'MR' ? 'नोव्हेंबर २०२४' : 'November 2024'}
               </h3>
               <div className="flex items-center gap-1">
@@ -618,14 +618,14 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               <span className="p-1.5 text-[#404945]">9</span>
 
               {/* 10th - Krishi Melava */}
-              <span className="p-1.5 bg-[#baeed9] text-[#002117] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'कृषी मेळावा' : 'Krishi Melawa'}>10</span>
+              <span className="p-1.5 bg-[#bbf7d0] text-[#002117] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'कृषी मेळावा' : 'Krishi Melawa'}>10</span>
               <span className="p-1.5 text-[#404945]">11</span>
               <span className="p-1.5 text-[#404945]">12</span>
               <span className="p-1.5 text-[#404945]">13</span>
               {/* 14th - Fogging & Vaccine */}
               <span className="p-1.5 bg-[#ffdad6] text-[#ba1a1a] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'मिशन इंद्रधनुष्य' : 'Mission Indradhanush'}>14</span>
               {/* 15th - Friday Haat */}
-              <span className="p-1.5 bg-[#baeed9] text-[#002117] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'शुक्रवार आठवडे बाजार' : 'Shukrawar Haat'}>15</span>
+              <span className="p-1.5 bg-[#bbf7d0] text-[#002117] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'शुक्रवार आठवडे बाजार' : 'Shukrawar Haat'}>15</span>
               <span className="p-1.5 text-[#404945]">16</span>
 
               {/* 17th - Eye Camp */}
@@ -635,7 +635,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               <span className="p-1.5 text-[#404945]">20</span>
               <span className="p-1.5 text-[#404945]">21</span>
               {/* 22nd - Friday Haat */}
-              <span className="p-1.5 bg-[#baeed9] text-[#002117] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'शुक्रवार आठवडे बाजार' : 'Shukrawar Haat'}>22</span>
+              <span className="p-1.5 bg-[#bbf7d0] text-[#002117] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'शुक्रवार आठवडे बाजार' : 'Shukrawar Haat'}>22</span>
               <span className="p-1.5 text-[#404945]">23</span>
 
               <span className="p-1.5 text-[#404945]">24</span>
@@ -644,14 +644,14 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               <span className="p-1.5 text-[#404945]">27</span>
               <span className="p-1.5 text-[#404945]">28</span>
               {/* 29th - Friday Haat */}
-              <span className="p-1.5 bg-[#baeed9] text-[#002117] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'शुक्रवार आठवडे बाजार' : 'Shukrawar Haat'}>29</span>
+              <span className="p-1.5 bg-[#bbf7d0] text-[#002117] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'शुक्रवार आठवडे बाजार' : 'Shukrawar Haat'}>29</span>
               <span className="p-1.5 text-[#404945]">30</span>
             </div>
 
             {/* Calendar Legend */}
             <div className="flex items-center justify-between text-[10px] text-[#707974] pt-2 border-t border-[#f3ede4]">
               <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-[#003629]" />
+                <span className="w-2 h-2 rounded-full bg-[#166534]" />
                 <span>{lang === 'MR' ? 'प्रशासकीय' : 'Statutory'}</span>
               </span>
               <span className="flex items-center gap-1">
@@ -666,11 +666,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
           </div>
 
           {/* WIDGET 2: HOST A FUNCTION / HALL BOOKING */}
-          <div className="bg-[#003629] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3.5">
+          <div className="bg-[#166534] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3.5">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#baeed9] text-[20px]">meeting_room</span>
+              <span className="material-symbols-outlined text-[#bbf7d0] text-[20px]">meeting_room</span>
               <div>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-[#baeed9] block">
+                <span className="text-[9px] font-bold uppercase tracking-wider text-[#bbf7d0] block">
                   {lang === 'MR' ? 'सार्वजनिक सभागृह आरक्षण' : 'CIVIC VENUE RESERVATION'}
                 </span>
                 <h3 className="font-heading font-extrabold text-[15px] leading-snug">
@@ -688,31 +688,31 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             <div className="bg-white/10 p-3 rounded-xl flex flex-col gap-1.5 text-[11px]">
               <div className="flex justify-between">
                 <span>{lang === 'MR' ? 'समाज मंदिर सभागृह (४०० क्षमता):' : 'Community Hall (400 Capacity):'}</span>
-                <strong className="text-[#baeed9]">₹1,500 / {lang === 'MR' ? 'दिवस' : 'Day'}</strong>
+                <strong className="text-[#bbf7d0]">₹1,500 / {lang === 'MR' ? 'दिवस' : 'Day'}</strong>
               </div>
               <div className="flex justify-between">
                 <span>{lang === 'MR' ? 'ध्वनिवर्धक यंत्रणा (माईक/स्पीकर):' : 'Sound System / PA & Mic:'}</span>
-                <strong className="text-[#baeed9]">{lang === 'MR' ? 'समाविष्ट' : 'Included'}</strong>
+                <strong className="text-[#bbf7d0]">{lang === 'MR' ? 'समाविष्ट' : 'Included'}</strong>
               </div>
               <div className="flex justify-between">
                 <span>{lang === 'MR' ? 'पिण्याचे पाणी टँकर (२,००० ली):' : 'Drinking Water Tanker (2,000 L):'}</span>
-                <strong className="text-[#baeed9]">₹250 ({lang === 'MR' ? 'शासकीय दर' : 'Govt Rate'})</strong>
+                <strong className="text-[#bbf7d0]">₹250 ({lang === 'MR' ? 'शासकीय दर' : 'Govt Rate'})</strong>
               </div>
             </div>
 
             <button
               onClick={() => setShowHallModal(true)}
-              className="w-full py-2.5 bg-[#a63b00] hover:bg-[#852f00] text-white text-[12px] font-bold rounded-xl transition-all shadow-xs"
+              className="w-full py-2.5 bg-[#c2410c] hover:bg-[#852f00] text-white text-[12px] font-bold rounded-xl transition-all shadow-xs"
             >
               {lang === 'MR' ? 'सभागृह नोंदणीसाठी अर्ज करा' : 'Apply for Hall Booking'}
             </button>
           </div>
 
           {/* WIDGET 4: SWACHHATA ADVISORY */}
-          <div className="bg-[#fff8f0] rounded-2xl p-4 border border-[#ffe0cc] shadow-xs flex flex-col gap-2.5">
+          <div className="bg-[#fef9ee] rounded-2xl p-4 border border-[#fde68a] shadow-xs flex flex-col gap-2.5">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#a63b00] text-[18px]">eco</span>
-              <h4 className="font-heading font-bold text-[13px] text-[#a63b00]">
+              <span className="material-symbols-outlined text-[#c2410c] text-[18px]">eco</span>
+              <h4 className="font-heading font-bold text-[13px] text-[#c2410c]">
                 {lang === 'MR' ? 'स्वच्छता व शिस्त नियम' : 'Swachhata By-laws'}
               </h4>
             </div>
@@ -735,7 +735,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                 </span>
               </li>
               <li className="flex items-start gap-1.5">
-                <span className="material-symbols-outlined text-[14px] text-[#a63b00] mt-0.5 shrink-0">volume_off</span>
+                <span className="material-symbols-outlined text-[14px] text-[#c2410c] mt-0.5 shrink-0">volume_off</span>
                 <span>
                   {lang === 'MR'
                     ? 'पोलीस नियमांनुसार रात्री १०:०० नंतर लाऊडस्पीकर वाजवण्यास सक्त मनाई.'
@@ -761,7 +761,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             <div className="flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined text-[#006a4e] text-[24px]">event_note</span>
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'गाव कार्यक्रम नोंदवा' : 'Submit Community Event'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">
@@ -771,9 +771,9 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             </div>
 
             {modalSuccess ? (
-              <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
+              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">
+                <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'कार्यक्रमाचा प्रस्ताव सादर झाला!' : 'Event Proposal Submitted!'}
                 </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
@@ -785,7 +785,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             ) : (
               <form onSubmit={handleEventFormSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'कार्यक्रमाचे / उपक्रमाचे नाव' : 'Event / Programme Title'}
                   </label>
                   <input
@@ -799,7 +799,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">
+                    <label className="font-bold text-[#166534] block mb-1">
                       {lang === 'MR' ? 'तारीख' : 'Date'}
                     </label>
                     <input
@@ -811,7 +811,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                     />
                   </div>
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">
+                    <label className="font-bold text-[#166534] block mb-1">
                       {lang === 'MR' ? 'वर्गवारी' : 'Category'}
                     </label>
                     <select
@@ -827,7 +827,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                   </div>
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'गावातील ठिकाण / पत्ता' : 'Venue / Location in Asgaon'}
                   </label>
                   <input
@@ -840,7 +840,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'आयोजक व संपर्क मोबाईल नंबर' : 'Organizer & Contact Mobile'}
                   </label>
                   <input
@@ -855,7 +855,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                 <button
                   type="submit"
                   disabled={isSubmittingEvent}
-                  className="w-full py-2.5 bg-[#003629] hover:bg-[#00281e] text-white font-bold rounded-xl transition-all shadow-xs mt-1 disabled:opacity-50"
+                  className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs mt-1 disabled:opacity-50"
                 >
                   {isSubmittingEvent
                     ? (lang === 'MR' ? 'नोंदणी होत आहे...' : 'Submitting to Portal...')
@@ -879,9 +879,9 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#a63b00] text-[24px]">meeting_room</span>
+              <span className="material-symbols-outlined text-[#c2410c] text-[24px]">meeting_room</span>
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'समाज मंदिर सभागृह आरक्षण' : 'Book Civic Samaj Mandir'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">
@@ -891,9 +891,9 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             </div>
 
             {modalSuccess ? (
-              <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
+              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">
+                <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'सभागृह जागा तात्पुरती राखीव!' : 'Hall Booking Slot Held!'}
                 </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
@@ -905,7 +905,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             ) : (
               <form onSubmit={handleModalSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'अर्जदाराचे पूर्ण नाव' : 'Applicant Name'}
                   </label>
                   <input
@@ -917,7 +917,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">
+                    <label className="font-bold text-[#166534] block mb-1">
                       {lang === 'MR' ? 'आरक्षण दिनांक' : 'Booking Date'}
                     </label>
                     <input
@@ -927,7 +927,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                     />
                   </div>
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">
+                    <label className="font-bold text-[#166534] block mb-1">
                       {lang === 'MR' ? 'कार्यक्रमाचे स्वरूप' : 'Function Purpose'}
                     </label>
                     <select className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none bg-white">
@@ -938,14 +938,14 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                     </select>
                   </div>
                 </div>
-                <div className="bg-[#fff8f0] p-2.5 rounded-lg border border-[#ffe0cc] text-[11px] text-[#a63b00]">
+                <div className="bg-[#fef9ee] p-2.5 rounded-lg border border-[#fde68a] text-[11px] text-[#c2410c]">
                   {lang === 'MR'
                     ? 'दर: ₹१,५००/दिवस वीज व माईकसह. स्वच्छता अनामत रक्कम ₹५०० परत केली जाईल.'
                     : 'Rate: ₹1,500/day includes hall electricity & PA mic. Cleanliness deposit ₹500 refundable.'}
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-[#a63b00] hover:bg-[#852f00] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
+                  className="w-full py-2.5 bg-[#c2410c] hover:bg-[#852f00] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
                 >
                   {lang === 'MR' ? 'तात्पुरते आरक्षण निश्चित करा' : 'Generate Provisional Booking'}
                 </button>
@@ -969,7 +969,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             <div className="flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined text-[#006a4e] text-[24px]">confirmation_number</span>
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'मोफत कार्यक्रम टोकन मिळवा' : 'Claim Free Event Token'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">{tokenType}</span>
@@ -977,9 +977,9 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             </div>
 
             {modalSuccess ? (
-              <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
+              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">
+                <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? `टोकन #${generatedToken || 'ASG-894'} निश्चित झाले!` : `Token #${generatedToken || 'ASG-894'} Confirmed!`}
                 </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
@@ -991,7 +991,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             ) : (
               <form onSubmit={handleTokenSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'लाभार्थ्याचे / व्यक्तीचे नाव' : 'Beneficiary Name'}
                   </label>
                   <input
@@ -1004,7 +1004,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'मोबाईल नंबर (एसएमएससाठी)' : 'Mobile Number (for SMS token)'}
                   </label>
                   <input
@@ -1016,14 +1016,14 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                   />
                 </div>
-                <div className="bg-[#baeed9]/30 p-2.5 rounded-lg border border-[#006a4e]/20 text-[11px] text-[#003629]">
+                <div className="bg-[#bbf7d0]/30 p-2.5 rounded-lg border border-[#006a4e]/20 text-[11px] text-[#166534]">
                   {lang === 'MR'
                     ? '१००% मोफत प्रवेश. औषध / बियाणे किट वाटपात प्राधान्य.'
                     : '100% Free entry. Guaranteed medicine/seed kit priority allocation.'}
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-[#003629] hover:bg-[#00281e] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
+                  className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
                 >
                   {lang === 'MR' ? 'त्वरित टोकन तयार करा' : 'Generate Fast-Track Token'}
                 </button>

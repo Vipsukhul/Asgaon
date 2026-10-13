@@ -174,7 +174,7 @@ export const AdminBannerManager: React.FC = () => {
               Cloudinary Media CDN Active
             </span>
           </div>
-          <h2 className="font-heading font-extrabold text-xl text-[#003629]">
+          <h2 className="font-heading font-extrabold text-xl text-[#166534]">
             हिरो स्लायडर व बॅनर व्यवस्थापन (Hero Carousel Manager)
           </h2>
           <p className="text-xs text-stone-600">
@@ -194,7 +194,7 @@ export const AdminBannerManager: React.FC = () => {
           <button
             type="button"
             onClick={handleOpenAddModal}
-            className="px-4 py-2.5 bg-[#003629] hover:bg-[#1b4d3e] text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            className="px-4 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <span className="material-symbols-outlined text-[18px]">add_photo_alternate</span>
             <span>नवीन स्लायडर जोडा</span>
@@ -203,7 +203,7 @@ export const AdminBannerManager: React.FC = () => {
       </div>
 
       {/* Cloudinary Integration Status Card */}
-      <div className="bg-gradient-to-r from-emerald-950 to-[#003629] rounded-2xl p-4 text-white text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+      <div className="bg-gradient-to-r from-emerald-950 to-[#166534] rounded-2xl p-4 text-white text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
             <span className="material-symbols-outlined text-amber-300 text-xl">cloud_upload</span>
@@ -255,7 +255,7 @@ export const AdminBannerManager: React.FC = () => {
               {/* Preview Thumbnail */}
               <div className="w-24 h-16 sm:w-32 sm:h-20 rounded-xl overflow-hidden shrink-0 bg-stone-100 border border-stone-200 relative">
                 {slide.type === 'welcome' ? (
-                  <div className="w-full h-full bg-[#f9f3ea] flex flex-col items-center justify-center p-2 text-center text-[#003629]">
+                  <div className="w-full h-full bg-[#f9f3ea] flex flex-col items-center justify-center p-2 text-center text-[#166534]">
                     <span className="material-symbols-outlined text-lg">travel_explore</span>
                     <span className="text-[9px] font-bold mt-0.5">मुख्य शोध हब</span>
                   </div>
@@ -327,7 +327,7 @@ export const AdminBannerManager: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleOpenEditModal(slide)}
-                    className="p-2 text-stone-600 hover:text-[#003629] hover:bg-stone-100 rounded-xl transition-all cursor-pointer"
+                    className="p-2 text-stone-600 hover:text-[#166534] hover:bg-stone-100 rounded-xl transition-all cursor-pointer"
                     title="संपादन करा"
                   >
                     <span className="material-symbols-outlined text-[18px]">edit</span>
@@ -336,7 +336,7 @@ export const AdminBannerManager: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleDeleteSlide(slide.id)}
-                    className="p-2 text-rose-600 hover:bg-rose-50 rounded-xl transition-all cursor-pointer"
+                    className="p-2 text-red-600 hover:bg-red-50 rounded-xl transition-all cursor-pointer"
                     title="हटवा"
                   >
                     <span className="material-symbols-outlined text-[18px]">delete</span>
@@ -355,7 +355,7 @@ export const AdminBannerManager: React.FC = () => {
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl border border-[#e8e2d9] animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] flex flex-col">
             {/* Modal Header */}
-            <div className="bg-[#003629] text-white p-5 flex items-center justify-between">
+            <div className="bg-[#166534] text-white p-5 flex items-center justify-between">
               <div>
                 <h3 className="font-heading font-bold text-lg text-white">
                   {editingSlide ? 'स्लायडर संपादन करा' : 'नवीन फोटो स्लायडर जोडा'}
@@ -383,7 +383,7 @@ export const AdminBannerManager: React.FC = () => {
                 </label>
 
                 <div className="flex items-center gap-3">
-                  <label className="flex-1 border-2 border-dashed border-[#003629]/30 hover:border-[#003629] p-3 rounded-2xl flex items-center justify-center gap-2 cursor-pointer bg-[#f9fbf9] transition-all">
+                  <label className="flex-1 border-2 border-dashed border-[#166534]/30 hover:border-[#166534] p-3 rounded-2xl flex items-center justify-center gap-2 cursor-pointer bg-[#f9fbf9] transition-all">
                     <input
                       type="file"
                       accept="image/*"
@@ -398,7 +398,7 @@ export const AdminBannerManager: React.FC = () => {
                 </div>
 
                 {uploadError && (
-                  <p className="text-rose-600 text-[11px] font-semibold">{uploadError}</p>
+                  <p className="text-red-600 text-[11px] font-semibold">{uploadError}</p>
                 )}
 
                 {/* Direct URL input fallback */}
@@ -409,7 +409,7 @@ export const AdminBannerManager: React.FC = () => {
                     value={formData.imageUrl}
                     onChange={(e) => setFormData(prev => ({ ...prev, imageUrl: e.target.value }))}
                     placeholder="https://res.cloudinary.com/..."
-                    className="w-full px-3 py-2 border border-stone-300 rounded-xl text-xs focus:outline-[#003629]"
+                    className="w-full px-3 py-2 border border-stone-300 rounded-xl text-xs focus:outline-[#166534]"
                   />
                 </div>
 
@@ -451,7 +451,7 @@ export const AdminBannerManager: React.FC = () => {
                   type="checkbox"
                   checked={formData.showTextOverlay}
                   onChange={(e) => setFormData(prev => ({ ...prev, showTextOverlay: e.target.checked }))}
-                  className="w-5 h-5 accent-[#003629] cursor-pointer"
+                  className="w-5 h-5 accent-[#166534] cursor-pointer"
                 />
               </div>
 
@@ -545,7 +545,7 @@ export const AdminBannerManager: React.FC = () => {
                 <button
                   type="submit"
                   disabled={uploading}
-                  className="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#003629] text-white hover:bg-[#1b4d3e] transition-all cursor-pointer shadow-sm disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#166534] text-white hover:bg-[#052e16] transition-all cursor-pointer shadow-sm disabled:opacity-50"
                 >
                   {editingSlide ? 'बदल जतन करा' : 'स्लायडर जोडा'}
                 </button>

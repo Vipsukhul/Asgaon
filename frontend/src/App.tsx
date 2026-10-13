@@ -605,7 +605,8 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fff8f0] text-[#1d1b16] flex flex-col font-sans">
+    <div className="min-h-screen bg-[#fdfbf7] text-[#1d1b16] flex flex-col font-sans">
+
       {/* 1. Header with dynamic navigation */}
       <Header
         activeNav={activeNav}
@@ -964,14 +965,14 @@ export function App() {
         <button
           type="button"
           onClick={() => setVillageMapModalOpen(true)}
-          className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-[#003629] via-[#004d3b] to-[#003629] hover:from-[#00281e] hover:to-[#003629] text-white px-4 sm:px-5 py-3 rounded-full shadow-2xl hover:shadow-[#003629]/50 flex items-center gap-2.5 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-[#baeed9]/50 group cursor-pointer"
+          className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-[#166534] via-[#14532d] to-[#166534] hover:from-[#052e16] hover:to-[#166534] text-white px-4 sm:px-5 py-3 rounded-full shadow-2xl hover:shadow-[#166534]/50 flex items-center gap-2.5 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-[#bbf7d0]/50 group cursor-pointer"
           title="गाव नकाशा पहा (Open Complete Village GIS Map)"
           aria-label="Open village GIS map"
         >
           {/* Pulsing Beacon Indicator */}
          
 
-          <span className="material-symbols-outlined text-[22px] text-[#baeed9] group-hover:rotate-12 transition-transform">
+          <span className="material-symbols-outlined text-[22px] text-[#bbf7d0] group-hover:rotate-12 transition-transform">
             explore
           </span>
           <span className="font-heading font-extrabold text-[13px] sm:text-[14px] tracking-wide whitespace-nowrap drop-shadow-xs">

@@ -128,16 +128,16 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-fade-in">
       <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-[#e8e2d9] overflow-hidden my-6 max-h-[92vh] flex flex-col">
         {/* Header */}
-        <div className="bg-[#003629] text-white px-6 py-4 flex items-center justify-between border-b border-[#00261d]">
+        <div className="bg-[#166534] text-white px-6 py-4 flex items-center justify-between border-b border-[#052e16]">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-[#baeed9] text-[#003629] flex items-center justify-center font-bold">
+            <div className="w-9 h-9 rounded-xl bg-[#bbf7d0] text-[#166534] flex items-center justify-center font-bold">
               <span className="material-symbols-outlined text-[20px]">edit_note</span>
             </div>
             <div>
               <h3 className="font-heading font-extrabold text-[16px] text-white">
                 {isMr ? 'नवीन माहिती लेख प्रसिद्ध करा (Publish Village Blog)' : 'Publish Community Knowledge Article'}
               </h3>
-              <p className="text-[11px] text-[#baeed9]">
+              <p className="text-[11px] text-[#bbf7d0]">
                 {isMr
                   ? 'गावातील शेतकरी व नागरिकांच्या माहितीसाठी स्वतःचा अनुभव, पीक सल्ला किंवा मार्गदर्शन लिहा.'
                   : 'Share farming tips, scheme guidance, or village updates with fellow residents.'}
@@ -160,7 +160,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
               <div className="flex items-center gap-2.5">
                 <span className="material-symbols-outlined text-[#006a4e] text-[20px]">verified_user</span>
                 <div>
-                  <div className="text-xs font-bold text-[#003629]">
+                  <div className="text-xs font-bold text-[#166534]">
                     {isMr ? `प्रसिद्ध करणारे: ${currentUser.fullName}` : `Publishing as: ${currentUser.fullName}`}
                   </div>
                   <div className="text-[11px] text-[#006a4e]">
@@ -170,12 +170,12 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
                   </div>
                 </div>
               </div>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#baeed9] text-[#002117]">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117]">
                 {isMr ? 'सत्यापित लेखक' : 'Verified Author'}
               </span>
             </div>
           ) : (
-            <div className="p-3 bg-[#fff8f0] rounded-xl border border-[#ffeed4] flex items-center gap-2 text-xs text-[#a63b00]">
+            <div className="p-3 bg-[#fef9ee] rounded-xl border border-[#ffeed4] flex items-center gap-2 text-xs text-[#c2410c]">
               <span className="material-symbols-outlined text-[18px]">info</span>
               <span>
                 {isMr
@@ -187,7 +187,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
 
           {/* Marathi Title */}
           <div>
-            <label className="block font-bold text-[#003629] mb-1">
+            <label className="block font-bold text-[#166534] mb-1">
               {isMr ? 'लेखाचे मराठी शीर्षक (Marathi Title) *' : 'Marathi Title (लेखाचे शीर्षक) *'}
             </label>
             <input
@@ -196,7 +196,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
               value={titleMarathi}
               onChange={(e) => setTitleMarathi(e.target.value)}
               placeholder={isMr ? 'उदा. कापूस वेचणी व भाव: आसगाव शेतकऱ्यांचा प्रत्यक्ष अनुभव' : 'उदा. कापूस वेचणी व भाव: आसगाव शेतकऱ्यांचा प्रत्यक्ष अनुभव'}
-              className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#003629] focus:ring-1 focus:ring-[#003629] outline-none font-bold text-[14px]"
+              className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#166534] focus:ring-1 focus:ring-[#166534] outline-none font-bold text-[14px]"
             />
           </div>
 
@@ -211,7 +211,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
                 value={titleEng}
                 onChange={(e) => setTitleEng(e.target.value)}
                 placeholder="e.g. Asgaon Cotton Harvest and Market Update"
-                className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#003629] outline-none text-xs"
+                className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none text-xs"
               />
             </div>
             <div>
@@ -221,7 +221,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as any)}
-                className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#003629] outline-none font-bold text-xs"
+                className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none font-bold text-xs"
               >
                 <option value="General">{isMr ? 'सामान्य / इतर (General)' : 'General / Other'}</option>
                 <option value="Agriculture">{isMr ? 'कृषी व शेती (Agriculture)' : 'Agriculture & Farming'}</option>
@@ -236,12 +236,12 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
           {/* Simple Clean ID-Based URL Badge */}
           <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] flex items-center justify-between gap-2">
             <div className="space-y-0.5">
-              <div className="text-[11px] font-bold text-[#003629] flex items-center gap-1">
+              <div className="text-[11px] font-bold text-[#166534] flex items-center gap-1">
                 <span className="material-symbols-outlined text-[15px] text-[#006a4e]">link</span>
                 <span>{isMr ? 'लेखाची कायमस्वरूपी वेब लिंक (Direct Post Link):' : 'Direct Permalink (Short ID):'}</span>
               </div>
-              <div className="text-xs font-mono font-bold text-[#003629]">
-                https://asgaon.digital/blogs/<span className="text-[#a63b00]">{postId}</span>
+              <div className="text-xs font-mono font-bold text-[#166534]">
+                https://asgaon.digital/blogs/<span className="text-[#c2410c]">{postId}</span>
               </div>
             </div>
             <span className="text-[10px] font-semibold text-[#006a4e] bg-[#e6f7f0] px-2.5 py-1 rounded-full border border-[#b8ebd5]">
@@ -262,7 +262,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
                   value={authorName}
                   onChange={(e) => setAuthorName(e.target.value)}
                   placeholder={isMr ? 'उदा. रमेश देशमुख' : 'e.g. Ramesh Deshmukh'}
-                  className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#003629] outline-none text-xs"
+                  className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none text-xs"
                 />
               </div>
               <div>
@@ -274,7 +274,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
                   value={authorRole}
                   onChange={(e) => setAuthorRole(e.target.value)}
                   placeholder={isMr ? 'उदा. शेतकरी, प्रभाग क्र. २' : 'e.g. Farmer, Ward No. 2'}
-                  className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#003629] outline-none text-xs"
+                  className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none text-xs"
                 />
               </div>
             </div>
@@ -294,7 +294,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
                     setCustomCover('');
                   }}
                   className={`cursor-pointer rounded-xl overflow-hidden border-2 transition-all p-1 text-center ${coverImage === preset.url && !customCover
-                      ? 'border-[#003629] ring-2 ring-[#003629]/20'
+                      ? 'border-[#166534] ring-2 ring-[#166534]/20'
                       : 'border-[#e8e2d9] hover:border-stone-400'
                     }`}
                 >
@@ -311,7 +311,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
               value={customCover}
               onChange={(e) => setCustomCover(e.target.value)}
               placeholder={isMr ? 'किंवा स्वतःचा फोटो URL टाका (उदा. https://...)' : 'Or enter custom photo URL (e.g. https://...)'}
-              className="w-full p-2 rounded-xl border border-[#e8e2d9] focus:border-[#003629] outline-none text-xs"
+              className="w-full p-2 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none text-xs"
             />
           </div>
 
@@ -326,7 +326,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
               value={excerptMarathi}
               onChange={(e) => setExcerptMarathi(e.target.value)}
               placeholder={isMr ? 'लेखाचा २ ओळींत थोडक्यात सारांश द्या...' : 'Provide a 2-line summary...'}
-              className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#003629] outline-none text-xs leading-relaxed"
+              className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none text-xs leading-relaxed"
             />
           </div>
 
@@ -350,7 +350,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
                   ? 'तुमचा सविस्तर लेख येथे लिहा. आसगावमधील ग्रामस्थ व शेतकऱ्यांना उपयुक्त ठरेल असा प्रत्यक्ष अनुभव, माहिती किंवा उपाय सविस्तरपणे मांडा...'
                   : 'Write your full article here. Share practical tips, experiences, or knowledge for fellow villagers...'
               }
-              className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#003629] outline-none text-xs leading-relaxed font-sans"
+              className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none text-xs leading-relaxed font-sans"
             />
           </div>
 
@@ -364,7 +364,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
               value={tags}
               onChange={(e) => setTags(e.target.value)}
               placeholder={isMr ? 'उदा. कापूस, आसगाव, भाव, शेती' : 'e.g. Cotton, Asgaon, Mandi, Agriculture'}
-              className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#003629] outline-none text-xs"
+              className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none text-xs"
             />
           </div>
 
@@ -379,7 +379,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-[#003629] hover:bg-[#00261d] text-[#baeed9] text-xs font-bold transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+              className="px-6 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-[#bbf7d0] text-xs font-bold transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[18px]">publish</span>
               <span>{isMr ? 'लेख प्रसिद्ध करा (Publish Post)' : 'Publish Article'}</span>

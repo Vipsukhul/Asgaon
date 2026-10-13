@@ -27,7 +27,7 @@ export const AsgaonLogo: React.FC<AsgaonLogoProps> = ({
       onClick={onClick}
       className={`flex items-center gap-2.5 ${onClick ? 'cursor-pointer select-none group' : ''} ${className}`}
     >
-      <div className={`relative ${current.img} rounded-full overflow-hidden shrink-0 shadow-xs border border-[#baeed9]/40 bg-white ring-2 ring-[#003629]/10 group-hover:ring-[#003629]/30 transition-all`}>
+      <div className={`relative ${current.img} rounded-full overflow-hidden shrink-0 shadow-sm border border-emerald-200 bg-white ring-2 ring-emerald-700/15 group-hover:ring-emerald-700/40 transition-all`}>
         <img
           src="/asgaon-logo.png"
           alt="Asgaon Gram Panchayat Official Logo"
@@ -39,14 +39,14 @@ export const AsgaonLogo: React.FC<AsgaonLogoProps> = ({
       {showText && (
         <div className="flex flex-col leading-tight">
           <div className="flex items-center gap-1.5">
-            <span className={`font-heading font-extrabold tracking-tight text-[#003629] leading-none ${current.title}`}>
+            <span className={`font-heading font-extrabold tracking-tight text-emerald-800 leading-none ${current.title}`}>
               Asgaon
             </span>
-            <span className="text-[10px] font-bold text-[#006a4e] bg-[#baeed9]/60 px-1.5 py-0.2 rounded-full border border-[#baeed9]">
+            <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100/90 px-1.5 py-0.5 rounded-full border border-emerald-300">
               आसगाव
             </span>
           </div>
-          <span className={`uppercase font-bold tracking-wider text-[#a63b00] mt-0.5 ${current.sub}`}>
+          <span className={`uppercase font-bold tracking-wider text-[#c2410c] mt-0.5 ${current.sub}`}>
             Gram Panchayat • Pauni
           </span>
         </div>

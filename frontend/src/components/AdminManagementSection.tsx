@@ -570,7 +570,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
       <div className="bg-white p-5 sm:p-6 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#003629] text-[#baeed9] text-[10px] font-black uppercase tracking-wider">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#bbf7d0] text-[10px] font-black uppercase tracking-wider">
               Super Admin
             </span>
             <span className="text-xs text-[#707974] font-medium">
@@ -587,7 +587,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
 
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="px-4 py-2.5 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer shrink-0"
+          className="px-4 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer shrink-0"
         >
           <span className="material-symbols-outlined text-[18px]">person_add</span>
           <span>नवा अॅडमिन जोडा</span>
@@ -596,7 +596,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
 
       {/* Feedback Toast */}
       {feedbackMsg && (
-        <div className="bg-[#baeed9] border border-[#006a4e] text-[#002117] p-3 rounded-xl text-xs font-bold flex items-center justify-between shadow-xs transition-all animate-fade-in">
+        <div className="bg-[#bbf7d0] border border-[#006a4e] text-[#002117] p-3 rounded-xl text-xs font-bold flex items-center justify-between shadow-xs transition-all animate-fade-in">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-[18px] text-[#006a4e]">check_circle</span>
             <span>{feedbackMsg}</span>
@@ -610,27 +610,27 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
       {/* KPI Stats Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#003629]/10 text-[#003629] flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#166534]/10 text-[#166534] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[20px]">groups</span>
           </div>
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#707974] block">एकूण अॅडमिन</span>
-            <span className="font-heading font-black text-xl text-[#003629]">{totalAdminsCount}</span>
+            <span className="font-heading font-black text-xl text-[#166534]">{totalAdminsCount}</span>
           </div>
         </div>
 
         <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#ef9f27]/15 text-[#a63b00] flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#ef9f27]/15 text-[#c2410c] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[20px]">shield_person</span>
           </div>
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#707974] block">सुपर अॅडमिन</span>
-            <span className="font-heading font-black text-xl text-[#a63b00]">{superAdminsCount}</span>
+            <span className="font-heading font-black text-xl text-[#c2410c]">{superAdminsCount}</span>
           </div>
         </div>
 
         <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#baeed9]/40 text-[#006a4e] flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#bbf7d0]/40 text-[#006a4e] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[20px]">check_circle</span>
           </div>
           <div>
@@ -662,7 +662,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="नाव, मोबाईल क्र., किंवा विभाग शोधा..."
-            className="w-full pl-9 pr-3 py-2 bg-[#fcfbf9] rounded-xl text-xs text-[#1d1b16] border border-[#e8e2d9] focus:border-[#003629] outline-none"
+            className="w-full pl-9 pr-3 py-2 bg-[#fcfbf9] rounded-xl text-xs text-[#1d1b16] border border-[#e8e2d9] focus:border-[#166534] outline-none"
           />
         </div>
 
@@ -678,7 +678,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
               onClick={() => setRoleFilter(f.id as any)}
               className={`px-3 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
                 roleFilter === f.id
-                  ? 'bg-[#003629] text-white shadow-xs'
+                  ? 'bg-[#166534] text-white shadow-xs'
                   : 'bg-[#f5ede3] text-[#55605a] hover:bg-[#e8ded3]'
               }`}
             >
@@ -702,7 +702,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                   ? 'opacity-65 border-[#e8e2d9] bg-[#faf8f5]'
                   : isSuper
                     ? 'border-[#ef9f27]/40 ring-1 ring-[#ef9f27]/20'
-                    : 'border-[#e8e2d9] hover:border-[#003629]/40'
+                    : 'border-[#e8e2d9] hover:border-[#166534]/40'
               }`}
             >
               <div>
@@ -713,7 +713,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                       className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 font-black text-sm ${
                         isSuper
                           ? 'bg-gradient-to-br from-[#ef9f27] to-[#ba7200] text-white shadow-sm'
-                          : 'bg-[#003629] text-[#baeed9]'
+                          : 'bg-[#166534] text-[#bbf7d0]'
                       }`}
                     >
                       {isSuper ? (
@@ -736,7 +736,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                       </div>
                       <p className="text-[11px] text-[#707974] flex items-center gap-1.5 mt-0.5 truncate">
                         <span className="material-symbols-outlined text-[13px] text-[#006a4e]">call</span>
-                        <strong className="text-[#003629] font-mono">{admin.phone}</strong>
+                        <strong className="text-[#166534] font-mono">{admin.phone}</strong>
                         {admin.email && <span>• {admin.email}</span>}
                       </p>
                     </div>
@@ -746,7 +746,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                   <span
                     className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase shrink-0 ${
                       admin.isActive
-                        ? 'bg-[#baeed9] text-[#002117]'
+                        ? 'bg-[#bbf7d0] text-[#002117]'
                         : 'bg-[#ffdad6] text-[#ba1a1a]'
                     }`}
                   >
@@ -770,7 +770,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                 {/* Modules Granted Indicator */}
                 <div className="mt-3">
                   <div className="flex items-center justify-between text-[11px] font-bold mb-1.5">
-                    <span className="text-[#003629] flex items-center gap-1">
+                    <span className="text-[#166534] flex items-center gap-1">
                       <span className="material-symbols-outlined text-[14px] text-[#006a4e]">vpn_key</span>
                       <span>पानांचे अधिकार:</span>
                     </span>
@@ -791,7 +791,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                         return (
                           <span
                             key={modId}
-                            className="px-2 py-0.5 rounded-md bg-[#f3ede4] text-[#003629] text-[10px] font-medium flex items-center gap-1"
+                            className="px-2 py-0.5 rounded-md bg-[#f3ede4] text-[#166534] text-[10px] font-medium flex items-center gap-1"
                           >
                             <span className="material-symbols-outlined text-[11px] text-[#006a4e]">{m?.icon || 'tag'}</span>
                             <span>{m?.labelMarathi || modId}</span>
@@ -810,7 +810,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                   <button
                     type="button"
                     onClick={() => handleOpenPermissionModal(admin)}
-                    className="px-3 py-1.5 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer shadow-xs active:scale-98"
+                    className="px-3 py-1.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer shadow-xs active:scale-98"
                   >
                     <span className="material-symbols-outlined text-[14px]">tune</span>
                     <span>अधिकार बदला</span>
@@ -821,7 +821,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                     type="button"
                     onClick={() => handleToggleRole(admin)}
                     title="भूमिका बदला"
-                    className="px-2.5 py-1.5 rounded-xl bg-[#f5ede3] hover:bg-[#e8ded3] text-[#003629] text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer"
+                    className="px-2.5 py-1.5 rounded-xl bg-[#f5ede3] hover:bg-[#e8ded3] text-[#166534] text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer"
                   >
                     <span className="material-symbols-outlined text-[14px]">
                       {isSuper ? 'arrow_downward' : 'arrow_upward'}
@@ -838,8 +838,8 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                     title={admin.isActive ? 'खाते निष्क्रिय करा' : 'खाते सक्रिय करा'}
                     className={`p-1.5 rounded-xl transition-all cursor-pointer ${
                       admin.isActive
-                        ? 'text-[#55605a] hover:bg-[#f3ede4] hover:text-[#a63b00]'
-                        : 'text-[#006a4e] bg-[#baeed9]/40 hover:bg-[#baeed9]'
+                        ? 'text-[#55605a] hover:bg-[#f3ede4] hover:text-[#c2410c]'
+                        : 'text-[#006a4e] bg-[#bbf7d0]/40 hover:bg-[#bbf7d0]'
                     }`}
                   >
                     <span className="material-symbols-outlined text-[17px]">
@@ -870,14 +870,14 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
             {/* Modal Header */}
             <div className="flex items-start justify-between gap-3 border-b border-[#f0eee8] pb-4">
               <div>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#003629] text-[#baeed9] text-[10px] font-black uppercase">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#bbf7d0] text-[10px] font-black uppercase">
                   पृष्ठ अधिकार
                 </span>
-                <h3 className="font-heading font-black text-lg sm:text-xl text-[#003629] mt-1">
+                <h3 className="font-heading font-black text-lg sm:text-xl text-[#166534] mt-1">
                   {selectedAdmin.fullName} — पाने ठरवा
                 </h3>
                 <p className="text-xs text-[#55605a] mt-0.5">
-                  मोबाईल: <strong className="text-[#003629] font-mono">{selectedAdmin.phone}</strong> • विभाग: {selectedAdmin.wardOrDept}
+                  मोबाईल: <strong className="text-[#166534] font-mono">{selectedAdmin.phone}</strong> • विभाग: {selectedAdmin.wardOrDept}
                 </p>
               </div>
 
@@ -899,7 +899,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                 <button
                   type="button"
                   onClick={() => handleApplyPreset('all')}
-                  className="px-2.5 py-1 rounded-xl bg-[#003629] text-white text-[11px] font-bold hover:bg-[#1b4d3e] transition-all cursor-pointer"
+                  className="px-2.5 py-1 rounded-xl bg-[#166534] text-white text-[11px] font-bold hover:bg-[#052e16] transition-all cursor-pointer"
                 >
                   सर्व पाने
                 </button>
@@ -936,9 +936,9 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
 
             {/* Modules Checkbox Grid */}
             <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between text-xs font-bold text-[#003629]">
+              <div className="flex items-center justify-between text-xs font-bold text-[#166534]">
                 <span>उपलब्ध मॉड्यूल्स ({ADMIN_MODULES_LIST.length}):</span>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#baeed9] text-[#002117] font-black text-[11px]">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117] font-black text-[11px]">
                   {selectedAdmin.allowedModules.length} निवडले
                 </span>
               </div>
@@ -955,7 +955,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                       }}
                       className={`p-3 rounded-xl border transition-all flex items-start gap-3 cursor-pointer select-none ${
                         isChecked
-                          ? 'border-[#003629] bg-[#f0fdf4] shadow-xs'
+                          ? 'border-[#166534] bg-[#f0fdf4] shadow-xs'
                           : 'border-[#e8e2d9] bg-white hover:bg-[#fcfbf9]'
                       }`}
                     >
@@ -964,7 +964,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => {}} // handled by parent label
-                          className="w-4 h-4 rounded-md accent-[#003629] cursor-pointer"
+                          className="w-4 h-4 rounded-md accent-[#166534] cursor-pointer"
                         />
                       </div>
 
@@ -1004,7 +1004,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                 <button
                   type="button"
                   onClick={handleSavePermissions}
-                  className="px-5 py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-98 cursor-pointer"
+                  className="px-5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-98 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[16px]">save</span>
                   <span>अधिकार जतन करा</span>
@@ -1022,10 +1022,10 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
             {/* Header */}
             <div className="flex items-start justify-between gap-3 border-b border-[#f0eee8] pb-3">
               <div>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#baeed9] text-[#002117] text-[10px] font-black uppercase">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117] text-[10px] font-black uppercase">
                   नवीन अॅडमिन
                 </span>
-                <h3 className="font-heading font-black text-lg text-[#003629] mt-1">
+                <h3 className="font-heading font-black text-lg text-[#166534] mt-1">
                   नवा अॅडमिन जोडा
                 </h3>
               </div>
@@ -1042,48 +1042,48 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
             <form onSubmit={handleCreateAdminSubmit} className="flex flex-col gap-3">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-bold text-[#003629]">पूर्ण नाव *</label>
+                  <label className="text-[11px] font-bold text-[#166534]">पूर्ण नाव *</label>
                   <input
                     type="text"
                     required
                     value={newAdminForm.fullName}
                     onChange={(e) => setNewAdminForm({ ...newAdminForm, fullName: e.target.value })}
                     placeholder="उदा. राहुल देशमुख"
-                    className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#003629] outline-none"
+                    className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none"
                   />
                 </div>
 
                 <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-bold text-[#003629]">मोबाईल नंबर *</label>
+                  <label className="text-[11px] font-bold text-[#166534]">मोबाईल नंबर *</label>
                   <input
                     type="tel"
                     required
                     value={newAdminForm.phone}
                     onChange={(e) => setNewAdminForm({ ...newAdminForm, phone: e.target.value })}
                     placeholder="उदा. 9823456789"
-                    className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#003629] outline-none"
+                    className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-bold text-[#003629]">ईमेल (ऐच्छिक)</label>
+                  <label className="text-[11px] font-bold text-[#166534]">ईमेल (ऐच्छिक)</label>
                   <input
                     type="email"
                     value={newAdminForm.email}
                     onChange={(e) => setNewAdminForm({ ...newAdminForm, email: e.target.value })}
                     placeholder="उदा. rahul@asgaon.in"
-                    className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#003629] outline-none"
+                    className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none"
                   />
                 </div>
 
                 <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-bold text-[#003629]">भूमिका</label>
+                  <label className="text-[11px] font-bold text-[#166534]">भूमिका</label>
                   <select
                     value={newAdminForm.role}
                     onChange={(e) => setNewAdminForm({ ...newAdminForm, role: e.target.value as any })}
-                    className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs font-bold text-[#003629] border border-[#e8e2d9] focus:border-[#003629] outline-none"
+                    className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs font-bold text-[#166534] border border-[#e8e2d9] focus:border-[#166534] outline-none"
                   >
                     <option value="ADMIN">नियमित अॅडमिन (ADMIN)</option>
                     <option value="SUPER_ADMIN">सुपर अॅडमिन (SUPER ADMIN)</option>
@@ -1092,24 +1092,24 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-[11px] font-bold text-[#003629]">विभाग / जबाबदारी</label>
+                <label className="text-[11px] font-bold text-[#166534]">विभाग / जबाबदारी</label>
                 <input
                   type="text"
                   value={newAdminForm.wardOrDept}
                   onChange={(e) => setNewAdminForm({ ...newAdminForm, wardOrDept: e.target.value })}
                   placeholder="उदा. पाणी पुरवठा / आरोग्य समिती"
-                  className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#003629] outline-none"
+                  className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none"
                 />
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-[11px] font-bold text-[#003629]">शेरा (ऐच्छिक)</label>
+                <label className="text-[11px] font-bold text-[#166534]">शेरा (ऐच्छिक)</label>
                 <textarea
                   rows={2}
                   value={newAdminForm.notes}
                   onChange={(e) => setNewAdminForm({ ...newAdminForm, notes: e.target.value })}
                   placeholder="काही नोंद असल्यास..."
-                  className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#003629] outline-none resize-none"
+                  className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none resize-none"
                 />
               </div>
 
@@ -1131,7 +1131,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-[#003629] hover:bg-[#1b4d3e] text-white font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-98 cursor-pointer"
+                  className="px-5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-98 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[16px]">check</span>
                   <span>अॅडमिन जोडा</span>

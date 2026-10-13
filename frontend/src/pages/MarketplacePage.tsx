@@ -215,7 +215,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
   return (
     <div className="w-full flex flex-col gap-6">
       {/* 1. TOP WEEKLY HAAT BANNER */}
-      <div className="bg-[#a63b00] text-white px-4 py-2.5 rounded-xl shadow-xs flex flex-col md:flex-row items-center justify-between gap-3 text-[12px] font-medium">
+      <div className="bg-[#c2410c] text-white px-4 py-2.5 rounded-xl shadow-xs flex flex-col md:flex-row items-center justify-between gap-3 text-[12px] font-medium">
         <div className="flex items-center gap-2">
           <span className="material-symbols-outlined text-[18px] text-[#ffdad6]">campaign</span>
           <span>
@@ -238,19 +238,19 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
           { label: lang === 'MR' ? 'स्थानिक बाजारपेठ' : 'Local Marketplace', active: true }
         ]}
         rightBadge={
-          <div className="text-[11px] font-semibold text-[#006a4e] bg-[#baeed9]/40 px-2.5 py-0.5 rounded-full border border-[#baeed9]">
+          <div className="text-[11px] font-semibold text-[#006a4e] bg-[#bbf7d0]/40 px-2.5 py-0.5 rounded-full border border-[#bbf7d0]">
             {lang === 'MR' ? '९८.३% थेट शेतकरी व विक्रेते • शून्य दलाली' : '98.3% Direct Sellers • 100% Zero-Middlemen'}
           </div>
         }
       />
 
       {/* 3. HERO BANNER */}
-      <div className="bg-gradient-to-br from-[#003629]/5 via-white to-[#003629]/10 rounded-2xl p-6 sm:p-8 border border-[#c4d6cf] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="bg-gradient-to-br from-[#166534]/5 via-white to-[#166534]/10 rounded-2xl p-6 sm:p-8 border border-[#c4d6cf] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex-1">
           <span className="inline-block bg-[#006a4e]/10 text-[#006a4e] text-[10px] font-black tracking-widest px-3 py-1 rounded-full uppercase border border-[#006a4e]/20 mb-2">
             {lang === 'MR' ? 'स्थानिक खरेदी-विक्री — आसगाव बाजारपेठ' : 'LOCAL COMMERCE — ASGAON BAZAAR PLATFORM'}
           </span>
-          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#003629] leading-tight mb-2">
+          <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#166534] leading-tight mb-2">
             {lang === 'MR' ? 'गाव बाजारपेठ — शेतमाल, पशुधन व अवजारे' : 'Gaon Marketplace — Local Farm Produce & Village Bazar'}
           </h1>
           <p className="text-[13px] sm:text-[14px] text-[#404945] max-w-2xl leading-relaxed">
@@ -263,7 +263,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
         <div className="flex flex-col items-start sm:items-end gap-1.5 shrink-0">
           <button
             onClick={() => setShowPostModal(true)}
-            className="px-5 py-3 rounded-xl bg-[#003629] hover:bg-[#00281e] text-white text-[13px] font-bold flex items-center gap-2 shadow-md hover:shadow-lg transition-all"
+            className="px-5 py-3 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center gap-2 shadow-md hover:shadow-lg transition-all"
           >
             <span className="material-symbols-outlined text-[18px]">add_circle</span>
             <span>{lang === 'MR' ? '+ मोफत शेतमाल/वस्तू नोंदवा' : '+ Post a Free Village Listing'}</span>
@@ -292,7 +292,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             <button
               onClick={() => { setVerifiedOnly(!verifiedOnly); setCurrentPage(1); }}
               className={`px-3 py-2 rounded-lg text-[12px] font-medium border flex items-center gap-1.5 transition-all ${
-                verifiedOnly ? 'bg-[#baeed9] text-[#002117] border-[#006a4e]' : 'bg-white text-[#404945] border-[#e8e2d9]'
+                verifiedOnly ? 'bg-[#bbf7d0] text-[#002117] border-[#006a4e]' : 'bg-white text-[#404945] border-[#e8e2d9]'
               }`}
             >
               <span className="material-symbols-outlined text-[16px]">verified</span>
@@ -314,7 +314,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             onClick={() => { setActiveFilter('all'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-bold shrink-0 transition-all ${
               activeFilter === 'all'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
@@ -324,18 +324,18 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             onClick={() => { setActiveFilter('harvest'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
               activeFilter === 'harvest'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            <span className="material-symbols-outlined text-[16px] text-[#a63b00]">eco</span>
+            <span className="material-symbols-outlined text-[16px] text-[#c2410c]">eco</span>
             <span>{lang === 'MR' ? `थेट शेतमाल (${harvestCount})` : `Direct Farm Harvest (${harvestCount})`}</span>
           </button>
           <button
             onClick={() => { setActiveFilter('livestock'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
               activeFilter === 'livestock'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
@@ -346,7 +346,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             onClick={() => { setActiveFilter('machinery'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
               activeFilter === 'machinery'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
@@ -357,7 +357,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             onClick={() => { setActiveFilter('household'); setCurrentPage(1); }}
             className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
               activeFilter === 'household'
-                ? 'bg-[#003629] text-white shadow-xs'
+                ? 'bg-[#166534] text-white shadow-xs'
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
@@ -372,7 +372,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
         {/* LEFT COLUMN: LISTINGS (8 cols) */}
         <div className="lg:col-span-8 flex flex-col gap-8">
           <div className="flex items-center justify-between">
-            <h2 className="font-heading font-extrabold text-[17px] text-[#003629]">
+            <h2 className="font-heading font-extrabold text-[17px] text-[#166534]">
               {lang === 'MR' ? 'बाजारपेठ सूची' : 'Marketplace Catalog'}{' '}
               <span className="text-[13px] font-normal text-[#707974]">
                 ({lang === 'MR' ? `एकूण ${totalVisible} नोंदी` : `Showing ${totalVisible} listings`})
@@ -382,8 +382,8 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
           {totalVisible === 0 && (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-              <span className="material-symbols-outlined text-[48px] text-[#a63b00]">storefront</span>
-              <h3 className="font-heading font-bold text-[18px] text-[#003629]">
+              <span className="material-symbols-outlined text-[48px] text-[#c2410c]">storefront</span>
+              <h3 className="font-heading font-bold text-[18px] text-[#166534]">
                 {lang === 'MR' ? 'कोणतीही नोंद सापडली नाही' : 'No matching marketplace listings'}
               </h3>
               <p className="text-[13px] text-[#707974] max-w-md">
@@ -391,7 +391,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               </p>
               <button
                 onClick={() => { setActiveFilter('all'); setSearchQuery(''); setVerifiedOnly(false); setCurrentPage(1); }}
-                className="px-4 py-2 bg-[#003629] text-white text-[12px] font-bold rounded-xl hover:bg-[#1b4d3e] transition-colors"
+                className="px-4 py-2 bg-[#166534] text-white text-[12px] font-bold rounded-xl hover:bg-[#052e16] transition-colors"
               >
                 {lang === 'MR' ? 'सर्व फिल्टर रीसेट करा' : 'Reset All Filters'}
               </button>
@@ -406,7 +406,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                   <span className="text-[10px] font-bold text-[#006a4e] tracking-wider uppercase">
                     {lang === 'MR' ? 'थेट शेतमाल • शून्य मध्यस्थ' : 'DIRECT HARVEST • NO MIDDLEMAN SPREAD'}
                   </span>
-                  <h2 className="font-heading font-extrabold text-[20px] text-[#003629]">
+                  <h2 className="font-heading font-extrabold text-[20px] text-[#166534]">
                     {lang === 'MR' ? 'थेट शेतकऱ्यांकडून ताजा शेतमाल' : 'Fresh Farm Harvest Direct from Growers'}
                   </h2>
                   <p className="text-[12px] text-[#707974]">
@@ -432,26 +432,26 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                       <div className="relative h-44 w-full bg-[#f3ede4] overflow-hidden">
                         <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                         <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5">
-                          <span className="bg-[#003629]/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-md backdrop-blur-xs">
+                          <span className="bg-[#166534]/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-md backdrop-blur-xs">
                             {item.badge1}
                           </span>
-                          <span className="bg-white/90 text-[#003629] text-[10px] font-bold px-2 py-0.5 rounded-md backdrop-blur-xs">
+                          <span className="bg-white/90 text-[#166534] text-[10px] font-bold px-2 py-0.5 rounded-md backdrop-blur-xs">
                             {item.badge2}
                           </span>
                         </div>
-                        <span className="absolute bottom-2.5 right-2.5 bg-[#a63b00] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-md">
+                        <span className="absolute bottom-2.5 right-2.5 bg-[#c2410c] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-md">
                           {item.statusTag}
                         </span>
                       </div>
 
                       <div className="p-4">
                         <div className="flex items-start justify-between gap-2 mb-1.5">
-                          <h3 className="font-heading font-bold text-[15px] text-[#003629] leading-snug">
+                          <h3 className="font-heading font-bold text-[15px] text-[#166534] leading-snug">
                             {item.title}
                           </h3>
                         </div>
                         <div className="flex items-baseline gap-1 mb-2">
-                          <span className="text-[20px] font-black text-[#a63b00]">{item.price}</span>
+                          <span className="text-[20px] font-black text-[#c2410c]">{item.price}</span>
                           <span className="text-[11px] text-[#707974]">{item.unit}</span>
                         </div>
                         <p className="text-[12px] text-[#404945] leading-relaxed mb-3">
@@ -461,7 +461,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         <div className="flex items-center gap-2 p-2 bg-[#f3ede4]/40 rounded-lg text-[11px]">
                           <span className="material-symbols-outlined text-[16px] text-[#006a4e]">account_circle</span>
                           <div className="truncate">
-                            <strong className="text-[#003629] block truncate">{item.seller}</strong>
+                            <strong className="text-[#166534] block truncate">{item.seller}</strong>
                             <span className="text-[#707974] text-[10px] block truncate">{item.sellerRole}</span>
                           </div>
                         </div>
@@ -471,7 +471,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                     <div className="p-4 pt-0 grid grid-cols-2 gap-2 mt-2">
                       <a
                         href={`tel:${item.phone}`}
-                        className="py-2 px-3 bg-[#003629] hover:bg-[#00281e] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+                        className="py-2 px-3 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">call</span>
                         <span>{lang === 'MR' ? 'कॉल करा' : 'Call Seller'}</span>
@@ -480,7 +480,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         href={`https://wa.me/91${item.phone}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="py-2 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#baeed9]/20 text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+                        className="py-2 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#bbf7d0]/20 text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">chat</span>
                         <span>{lang === 'MR' ? 'व्हॉट्सअ‍ॅप' : 'WhatsApp'}</span>
@@ -497,17 +497,17 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-4">
                 <div>
-                  <span className="text-[10px] font-bold text-[#a63b00] tracking-wider uppercase">
+                  <span className="text-[10px] font-bold text-[#c2410c] tracking-wider uppercase">
                     {lang === 'MR' ? 'तपासणी केलेले पशुधन • थेट शेतकरी व्यवहार' : 'VET-INSPECTED • Safe for Farmer Transfer'}
                   </span>
-                  <h2 className="font-heading font-extrabold text-[20px] text-[#003629]">
+                  <h2 className="font-heading font-extrabold text-[20px] text-[#166534]">
                     {lang === 'MR' ? 'स्थानिक पशुधन व जनावरे बाजार' : 'Village Livestock & Cattle Bazar'}
                   </h2>
                   <p className="text-[12px] text-[#707974]">
                     {lang === 'MR' ? 'गाय, म्हैस, बैल आणि शेळी खरेदी-विक्री' : 'Cows, bulls, buffaloes, and backyard livestock'}
                   </p>
                 </div>
-                <span className="text-[11px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-3 py-1 rounded-full border border-[#baeed9] self-start sm:self-auto">
+                <span className="text-[11px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-3 py-1 rounded-full border border-[#bbf7d0] self-start sm:self-auto">
                   {allLivestock.length} {lang === 'MR' ? 'पशुधन नोंदी' : 'Live Cattle Records'}
                 </span>
               </div>
@@ -521,23 +521,23 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                     <div>
                       <div className="relative h-40 w-full bg-[#f3ede4] overflow-hidden">
                         <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-                        <span className="absolute top-2 left-2 bg-[#003629]/90 text-white text-[9px] font-bold px-2 py-0.5 rounded backdrop-blur-xs">
+                        <span className="absolute top-2 left-2 bg-[#166534]/90 text-white text-[9px] font-bold px-2 py-0.5 rounded backdrop-blur-xs">
                           {item.healthTag}
                         </span>
-                        <span className="absolute bottom-2 left-2 bg-white/90 text-[#003629] text-[9px] font-bold px-2 py-0.5 rounded backdrop-blur-xs">
+                        <span className="absolute bottom-2 left-2 bg-white/90 text-[#166534] text-[9px] font-bold px-2 py-0.5 rounded backdrop-blur-xs">
                           {item.subBadge}
                         </span>
                       </div>
 
                       <div className="p-3.5">
-                        <span className="inline-block text-[9px] font-bold uppercase text-[#a63b00] tracking-wide mb-1">
+                        <span className="inline-block text-[9px] font-bold uppercase text-[#c2410c] tracking-wide mb-1">
                           {item.badge}
                         </span>
-                        <h3 className="font-heading font-bold text-[14px] text-[#003629] leading-snug mb-1">
+                        <h3 className="font-heading font-bold text-[14px] text-[#166534] leading-snug mb-1">
                           {item.title}
                         </h3>
                         <div className="flex items-baseline gap-1 mb-2">
-                          <span className="text-[18px] font-black text-[#a63b00]">{item.price}</span>
+                          <span className="text-[18px] font-black text-[#c2410c]">{item.price}</span>
                           {item.priceUnit && (
                             <span className="text-[10px] text-[#707974]">{item.priceUnit}</span>
                           )}
@@ -554,7 +554,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                     <div className="p-3.5 pt-0">
                       <a
                         href={`tel:${item.phone}`}
-                        className="w-full py-2 bg-[#003629] hover:bg-[#00281e] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+                        className="w-full py-2 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">call</span>
                         <span>{lang === 'MR' ? 'मालकाशी संपर्क' : 'Contact Owner'}</span>
@@ -573,7 +573,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 <span className="text-[10px] font-bold text-[#006a4e] tracking-wider uppercase">
                   {lang === 'MR' ? 'कृषी यंत्रे • थेट शेतकरी व्यवहार' : 'HEAVY MACHINERY • No Dealer Commissions'}
                 </span>
-                <h2 className="font-heading font-extrabold text-[20px] text-[#003629]">
+                <h2 className="font-heading font-extrabold text-[20px] text-[#166534]">
                   {lang === 'MR' ? 'वापरलेले ट्रॅक्टर व शेती अवजारे' : 'Pre-Owned Tractors & Implements'}
                 </h2>
                 <p className="text-[12px] text-[#707974]">
@@ -590,16 +590,16 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                     <div>
                       <div className="relative h-40 w-full bg-[#f3ede4] overflow-hidden">
                         <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-                        <span className="absolute top-2 left-2 bg-[#003629]/90 text-white text-[9px] font-bold px-2 py-0.5 rounded backdrop-blur-xs">
+                        <span className="absolute top-2 left-2 bg-[#166534]/90 text-white text-[9px] font-bold px-2 py-0.5 rounded backdrop-blur-xs">
                           {item.badge}
                         </span>
                       </div>
 
                       <div className="p-3.5">
-                        <h3 className="font-heading font-bold text-[14px] text-[#003629] leading-snug mb-1">
+                        <h3 className="font-heading font-bold text-[14px] text-[#166534] leading-snug mb-1">
                           {item.title}
                         </h3>
-                        <div className="text-[18px] font-black text-[#a63b00] mb-2">{item.price}</div>
+                        <div className="text-[18px] font-black text-[#c2410c] mb-2">{item.price}</div>
                         <ul className="text-[11px] text-[#404945] flex flex-col gap-1 mb-3">
                           {item.specs.map((spec, idx) => (
                             <li key={idx} className="flex items-start gap-1">
@@ -617,7 +617,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                     <div className="p-3.5 pt-0">
                       <a
                         href={`tel:${item.phone}`}
-                        className="w-full py-2 bg-[#003629] hover:bg-[#00281e] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+                        className="w-full py-2 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">call</span>
                         <span>{lang === 'MR' ? 'मालकाशी बोला' : 'Connect Seller'}</span>
@@ -633,10 +633,10 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
           {(activeFilter === 'all' || activeFilter === 'household') && allHousehold.length > 0 && (
             <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
               <div className="border-b border-[#f3ede4] pb-4">
-                <span className="text-[10px] font-bold text-[#a63b00] tracking-wider uppercase">
+                <span className="text-[10px] font-bold text-[#c2410c] tracking-wider uppercase">
                   {lang === 'MR' ? 'स्थानिक खरेदी-विक्री' : 'VILLAGE RESALE • Verified Local Owners'}
                 </span>
-                <h2 className="font-heading font-extrabold text-[20px] text-[#003629]">
+                <h2 className="font-heading font-extrabold text-[20px] text-[#166534]">
                   {lang === 'MR' ? 'घरगुती वस्तू व लघुउद्योग साधने' : 'Household & Small Enterprise Goods'}
                 </h2>
                 <p className="text-[12px] text-[#707974]">
@@ -660,10 +660,10 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
                       <div className="p-4">
                         <div className="flex items-start justify-between gap-2 mb-1">
-                          <h3 className="font-heading font-bold text-[15px] text-[#003629]">
+                          <h3 className="font-heading font-bold text-[15px] text-[#166534]">
                             {item.title}
                           </h3>
-                          <span className="text-[18px] font-black text-[#a63b00] shrink-0">{item.price}</span>
+                          <span className="text-[18px] font-black text-[#c2410c] shrink-0">{item.price}</span>
                         </div>
                         <p className="text-[12px] text-[#404945] leading-relaxed mb-3">
                           {item.desc}
@@ -677,7 +677,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                     <div className="p-4 pt-0 grid grid-cols-2 gap-2">
                       <a
                         href={`tel:${item.phone}`}
-                        className="py-2 px-3 bg-[#003629] hover:bg-[#00281e] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+                        className="py-2 px-3 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">call</span>
                         <span>{lang === 'MR' ? 'कॉल करा' : 'Call Owner'}</span>
@@ -686,7 +686,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         href={`https://wa.me/91${item.phone}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="py-2 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#baeed9]/20 text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+                        className="py-2 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#bbf7d0]/20 text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">chat</span>
                         <span>{lang === 'MR' ? 'चॅट' : 'Chat'}</span>
@@ -723,7 +723,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                       onClick={() => setCurrentPage(pageNum)}
                       className={`w-7 h-7 rounded-lg font-bold flex items-center justify-center transition-colors ${
                         validCurrentPage === pageNum
-                          ? 'bg-[#003629] text-white shadow-xs'
+                          ? 'bg-[#166534] text-white shadow-xs'
                           : 'bg-[#f3ede4] text-[#1d1b16] hover:bg-[#e8e2d9]'
                       }`}
                     >
@@ -751,7 +751,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             <div className="flex items-center gap-2.5 border-b border-[#f3ede4] pb-3">
               <span className="material-symbols-outlined text-[#006a4e] text-[22px]">verified_user</span>
               <div>
-                <h3 className="font-heading font-bold text-[14px] text-[#003629]">
+                <h3 className="font-heading font-bold text-[14px] text-[#166534]">
                   {lang === 'MR' ? 'बाजारातील सुरक्षित खरेदी-विक्री नियम' : 'Marketplace Safe Guidelines'}
                 </h3>
                 <span className="text-[10px] text-[#707974]">
@@ -761,10 +761,10 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             </div>
 
             <div className="flex flex-col gap-3">
-              <div className="bg-[#fff8f0] p-3 rounded-xl border border-[#ffe0cc] flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-[#a63b00] text-[18px] shrink-0 mt-0.5">wb_sunny</span>
+              <div className="bg-[#fef9ee] p-3 rounded-xl border border-[#fde68a] flex items-start gap-2.5">
+                <span className="material-symbols-outlined text-[#c2410c] text-[18px] shrink-0 mt-0.5">wb_sunny</span>
                 <div>
-                  <h4 className="font-bold text-[12px] text-[#a63b00]">
+                  <h4 className="font-bold text-[12px] text-[#c2410c]">
                     {lang === 'MR' ? 'दिवसा उजेडात प्रत्यक्ष तपासणी' : 'Daylight Inspection'}
                   </h4>
                   <p className="text-[11px] text-[#404945] leading-relaxed">
@@ -775,7 +775,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 </div>
               </div>
 
-              <div className="bg-[#fff8f0] p-3 rounded-xl border border-[#ffe0cc] flex items-start gap-2.5">
+              <div className="bg-[#fef9ee] p-3 rounded-xl border border-[#fde68a] flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-[#ba1a1a] text-[18px] shrink-0 mt-0.5">do_not_disturb_on</span>
                 <div>
                   <h4 className="font-bold text-[12px] text-[#ba1a1a]">
@@ -789,7 +789,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 </div>
               </div>
 
-              <div className="bg-[#fff8f0] p-3 rounded-xl border border-[#ffe0cc] flex items-start gap-2.5">
+              <div className="bg-[#fef9ee] p-3 rounded-xl border border-[#fde68a] flex items-start gap-2.5">
                 <span className="material-symbols-outlined text-[#006a4e] text-[18px] shrink-0 mt-0.5">scale</span>
                 <div>
                   <h4 className="font-bold text-[12px] text-[#006a4e]">
@@ -809,7 +809,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 <span className="material-symbols-outlined text-[14px]">call</span>
                 <span>{lang === 'MR' ? 'कृषी हेल्पलाईन:' : 'Toll Free Krishi Desk:'}</span>
               </span>
-              <strong className="text-[#003629]">07185-221101</strong>
+              <strong className="text-[#166534]">07185-221101</strong>
             </div>
           </div>
 
@@ -817,14 +817,14 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs flex flex-col gap-4">
             <div className="flex items-center justify-between border-b border-[#f3ede4] pb-3">
               <div>
-                <span className="text-[9px] font-black uppercase text-[#a63b00] tracking-wider">
+                <span className="text-[9px] font-black uppercase text-[#c2410c] tracking-wider">
                   {lang === 'MR' ? 'आठवडे बाजार' : 'WEEKLY HAAT'}
                 </span>
-                <h3 className="font-heading font-extrabold text-[15px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'असगाव शुक्रवार बाजार' : 'Asgaon Friday Bazaar'}
                 </h3>
               </div>
-              <span className="text-[10px] font-bold text-[#006a4e] bg-[#baeed9]/40 px-2 py-0.5 rounded border border-[#baeed9]">
+              <span className="text-[10px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-2 py-0.5 rounded border border-[#bbf7d0]">
                 {lang === 'MR' ? 'दर शुक्रवारी' : 'Every Friday'}
               </span>
             </div>
@@ -838,7 +838,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             {/* Map visual card */}
             <div className="relative rounded-xl overflow-hidden border border-[#c4d6cf] h-32 bg-[#e2eee9] flex flex-col items-center justify-center p-3 text-center">
               <span className="material-symbols-outlined text-[32px] text-[#006a4e] mb-1">map</span>
-              <span className="font-bold text-[11px] text-[#003629]">
+              <span className="font-bold text-[11px] text-[#166534]">
                 {lang === 'MR' ? 'जुना बस स्टँड मैदान • ४२ ओटे/गाळे उपलब्ध' : 'Old Bus Stand Ground • 42 Stalls Allocated'}
               </span>
               <span className="text-[10px] text-[#55605a]">
@@ -853,13 +853,13 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               </div>
               <div className="flex items-center justify-between">
                 <span>{lang === 'MR' ? 'बाहेरील व्यावसायिक विक्रेते:' : 'Outside Commercial Vendors:'}</span>
-                <strong className="text-[#a63b00]">{lang === 'MR' ? '₹५० शुल्क / दिवस' : '₹50 Stall Fee / Day'}</strong>
+                <strong className="text-[#c2410c]">{lang === 'MR' ? '₹५० शुल्क / दिवस' : '₹50 Stall Fee / Day'}</strong>
               </div>
             </div>
 
             <button
               onClick={() => setShowStallModal(true)}
-              className="w-full py-2.5 bg-[#a63b00] hover:bg-[#852f00] text-white text-[12px] font-bold rounded-xl transition-all shadow-xs"
+              className="w-full py-2.5 bg-[#c2410c] hover:bg-[#852f00] text-white text-[12px] font-bold rounded-xl transition-all shadow-xs"
             >
               {lang === 'MR' ? 'शेतकऱ्यांसाठी मोफत गाळा बुक करा' : 'Book Free Farmer Stall Space'}
             </button>
@@ -873,7 +873,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 <span className="text-[9px] font-bold text-[#006a4e] uppercase tracking-wider block">
                   {lang === 'MR' ? 'एपीएमसी प्रमाणित' : 'APMC CERTIFIED'}
                 </span>
-                <h3 className="font-heading font-bold text-[14px] text-[#003629]">
+                <h3 className="font-heading font-bold text-[14px] text-[#166534]">
                   {lang === 'MR' ? 'संगणकीकृत धर्म काटा (इलेक्ट्रॉनिक वजन)' : 'Computerized Weighbridge (धर्म काटा)'}
                 </h3>
               </div>
@@ -890,7 +890,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 <span className="text-[10px] text-[#707974] block">
                   {lang === 'MR' ? 'ट्रॅक्टर / ट्रॉली' : 'Tractor / Trolley'}
                 </span>
-                <strong className="text-[#003629]">
+                <strong className="text-[#166534]">
                   {lang === 'MR' ? '६० क्विंटलपर्यंत: ₹५०' : 'Up to 60 Quintals: ₹50'}
                 </strong>
               </div>
@@ -898,7 +898,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 <span className="text-[10px] text-[#707974] block">
                   {lang === 'MR' ? '१०-चाकी ट्रक' : '10-Wheeler Truck'}
                 </span>
-                <strong className="text-[#003629]">
+                <strong className="text-[#166534]">
                   {lang === 'MR' ? '₹१०० (हमीभाव पावतीसह)' : '₹100 (incl. MSP Receipt)'}
                 </strong>
               </div>
@@ -906,14 +906,14 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
             <div className="text-[10px] text-[#707974]">
               {lang === 'MR' ? 'वेळ: ' : 'Hours: '}
-              <strong className="text-[#003629]">
+              <strong className="text-[#166534]">
                 {lang === 'MR' ? 'दररोज सकाळी ०७:०० ते रात्री ०८:००' : 'Open 07:00 AM – 08:00 PM Daily'}
               </strong>
             </div>
 
             <a
               href="tel:9370488102"
-              className="w-full py-2 border border-[#006a4e] text-[#006a4e] hover:bg-[#baeed9]/20 text-[11px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+              className="w-full py-2 border border-[#006a4e] text-[#006a4e] hover:bg-[#bbf7d0]/20 text-[11px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
             >
               <span className="material-symbols-outlined text-[14px]">call</span>
               <span>
@@ -923,12 +923,12 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
           </div>
 
           {/* WIDGET 4: OFFICIAL MSP CHECKER */}
-          <div className="bg-[#003629] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3">
+          <div className="bg-[#166534] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-[#baeed9]">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-[#bbf7d0]">
                 {lang === 'MR' ? 'शासकीय हमीभाव' : 'OFFICIAL PROCUREMENT'}
               </span>
-              <span className="bg-[#baeed9]/20 text-[#baeed9] text-[9px] font-bold px-2 py-0.5 rounded">
+              <span className="bg-[#bbf7d0]/20 text-[#bbf7d0] text-[9px] font-bold px-2 py-0.5 rounded">
                 {lang === 'MR' ? 'खरेदी केंद्र आज सुरू' : 'Centre Open Today'}
               </span>
             </div>
@@ -945,7 +945,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
             <a
               href="#mandi-bulletin"
-              className="w-full py-2.5 bg-[#baeed9] hover:bg-[#a0dec5] text-[#002117] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors mt-1"
+              className="w-full py-2.5 bg-[#bbf7d0] hover:bg-[#a0dec5] text-[#002117] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors mt-1"
             >
               <span>{lang === 'MR' ? 'बाजारभाव पत्रिका पहा' : 'Open Mandi Price Bulletin'}</span>
               <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
@@ -968,7 +968,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             <div className="flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined text-[#006a4e] text-[24px]">post_add</span>
               <div>
-                <h3 className="font-heading font-extrabold text-[18px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[18px] text-[#166534]">
                   {lang === 'MR' ? 'मोफत गाव जाहिरात नोंदवा' : 'Post a Free Village Listing'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">
@@ -980,9 +980,9 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             </div>
 
             {bookingSuccess ? (
-              <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
+              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">
+                <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'जाहिरात यशस्वीरित्या प्रकाशित झाली!' : 'Listing Published Successfully!'}
                 </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
@@ -994,7 +994,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             ) : (
               <form onSubmit={handlePostSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'वस्तूचे नाव / शेतमाल प्रकार' : 'Item Title / Commodity Name'}
                   </label>
                   <input
@@ -1013,7 +1013,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">
+                    <label className="font-bold text-[#166534] block mb-1">
                       {lang === 'MR' ? 'श्रेणी (Category)' : 'Category'}
                     </label>
                     <select
@@ -1028,7 +1028,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                     </select>
                   </div>
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">
+                    <label className="font-bold text-[#166534] block mb-1">
                       {lang === 'MR' ? 'अपेक्षित किंमत (₹)' : 'Expected Price (₹)'}
                     </label>
                     <input
@@ -1044,7 +1044,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">
+                    <label className="font-bold text-[#166534] block mb-1">
                       {lang === 'MR' ? 'मोबाईल / व्हॉट्सअ‍ॅप नंबर' : 'Mobile / WhatsApp Number'}
                     </label>
                     <input
@@ -1057,7 +1057,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                     />
                   </div>
                   <div>
-                    <label className="font-bold text-[#003629] block mb-1">
+                    <label className="font-bold text-[#166534] block mb-1">
                       {lang === 'MR' ? 'गावातील पत्ता / परिसर' : 'Village Location / Ward'}
                     </label>
                     <input
@@ -1072,7 +1072,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 </div>
 
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'सविस्तर माहिती व स्थिती' : 'Details & Condition'}
                   </label>
                   <textarea
@@ -1091,11 +1091,11 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
                 {/* Cloudinary Produce/Item Photo Upload */}
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'मालाचे छायाचित्र (फोटो)' : 'Commodity / Item Photo'}
                   </label>
                   <div className="flex items-center gap-3">
-                    <label className="cursor-pointer inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-[#003629] text-white text-[11px] font-bold hover:bg-[#1b4d3e] transition-colors shadow-xs">
+                    <label className="cursor-pointer inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-[#166534] text-white text-[11px] font-bold hover:bg-[#052e16] transition-colors shadow-xs">
                       <span className="material-symbols-outlined text-[17px]">add_a_photo</span>
                       <span>
                         {uploadingImage
@@ -1141,7 +1141,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                   )}
                 </div>
 
-                <div className="bg-[#fff8f0] p-2.5 rounded-lg border border-[#ffe0cc] text-[11px] text-[#a63b00] flex items-center gap-2">
+                <div className="bg-[#fef9ee] p-2.5 rounded-lg border border-[#fde68a] text-[11px] text-[#c2410c] flex items-center gap-2">
                   <span className="material-symbols-outlined text-[16px]">verified</span>
                   <span>
                     {lang === 'MR'
@@ -1153,7 +1153,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 <button
                   type="submit"
                   disabled={uploadingImage}
-                  className="w-full py-2.5 bg-[#003629] hover:bg-[#00281e] text-white font-bold rounded-xl transition-all shadow-xs mt-1 disabled:opacity-50"
+                  className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs mt-1 disabled:opacity-50"
                 >
                   {uploadingImage
                     ? (lang === 'MR' ? 'फोटो अपलोड होत आहे...' : 'Uploading Image...')
@@ -1177,9 +1177,9 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#a63b00] text-[24px]">storefront</span>
+              <span className="material-symbols-outlined text-[#c2410c] text-[24px]">storefront</span>
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#003629]">
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'शुक्रवार आठवडे बाजारासाठी मोफत गाळा नोंदवा' : 'Book Free Stall for Friday Haat'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">
@@ -1189,9 +1189,9 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             </div>
 
             {bookingSuccess ? (
-              <div className="bg-[#baeed9]/40 border border-[#006a4e] rounded-xl p-4 text-center">
+              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
                 <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
-                <h4 className="font-bold text-[15px] text-[#003629]">
+                <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'गाळा जागा निश्चित झाली!' : 'Stall Slot Confirmed!'}
                 </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
@@ -1203,7 +1203,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             ) : (
               <form onSubmit={handlePostSubmit} className="flex flex-col gap-3 text-[12px]">
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'शेतकरी / विक्रेत्याचे नाव' : 'Farmer / Vendor Name'}
                   </label>
                   <input
@@ -1214,7 +1214,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'संपर्क मोबाईल क्रमांक' : 'Contact Number'}
                   </label>
                   <input
@@ -1225,7 +1225,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#003629] block mb-1">
+                  <label className="font-bold text-[#166534] block mb-1">
                     {lang === 'MR' ? 'विक्रीसाठी आणायचा माल' : 'Produce to Sell'}
                   </label>
                   <input
@@ -1239,14 +1239,14 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                   />
                 </div>
-                <div className="bg-[#baeed9]/30 p-2.5 rounded-lg border border-[#006a4e]/20 text-[11px] text-[#003629]">
+                <div className="bg-[#bbf7d0]/30 p-2.5 rounded-lg border border-[#006a4e]/20 text-[11px] text-[#166534]">
                   {lang === 'MR'
                     ? 'सूचना: असगावच्या स्थानिक रहिवासी शेतकऱ्यांना मोफत गाळा मिळतो. कृपया सोबत ७/१२ किंवा आधार कार्ड ठेवा.'
                     : 'Notice: Asgaon resident farmers receive free stalls. Please bring your 7/12 extract or Aadhaar card.'}
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-[#a63b00] hover:bg-[#852f00] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
+                  className="w-full py-2.5 bg-[#c2410c] hover:bg-[#852f00] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
                 >
                   {lang === 'MR' ? 'गाळा आरक्षण निश्चित करा' : 'Confirm Stall Reservation'}
                 </button>
