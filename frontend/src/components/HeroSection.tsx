@@ -123,14 +123,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
                   placeholder={lang === 'MR' ? 'खते, ट्रॅक्टर भाडे, लाडकी बहीण, एसटी बस, दवाखाना शोधा...' : 'Search fertilizer, tractor rental, Ladki Bahin, ST bus, clinic...'}
                   className="w-full bg-transparent text-stone-900 text-[15px] sm:text-[16px] font-medium placeholder:text-stone-400 focus:outline-none"
                 />
-                <button
-                  type="button"
-                  onClick={() => alert(lang === 'MR' ? 'व्हॉइस सर्च सुरू आहे! बोला...' : 'Microphone activated. Please speak your query in Marathi, Hindi, or English.')}
-                  className="p-2 rounded-xl bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors cursor-pointer border border-amber-200"
-                  title={t('header_voice_search_title')}
-                >
-                  <span className="material-symbols-outlined text-[22px]">mic</span>
-                </button>
+                
               </div>
               <button
                 type="submit"

@@ -252,9 +252,7 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
             <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800">
               {lang === 'MR' ? 'आसगाव शैक्षणिक नकाशा (GIS)' : 'Asgaon Education GIS Map'}
             </span>
-            <span className="text-[11px] font-bold text-stone-500 bg-white px-2 py-0.5 rounded-md border border-stone-200">
-              २०°४७'०६"N ७९°३८'०६"E
-            </span>
+            
           </div>
           <h3 className="font-heading font-extrabold text-lg sm:text-xl text-[#166534]">
             {lang === 'MR' ? 'शाळा, कनिष्ठ महाविद्यालय व अभ्यासिका नकाशा' : 'Schools, Colleges & Village Library Map'}
