@@ -212,7 +212,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
       {/* 1. Rotational Canal Water Alert Banner */}
       {showRosterAlert && (
-        <div className="w-full bg-[#ffdad6] text-[#93000a] py-2.5 px-4 rounded-xl shadow-xs border border-[#ffb4ab] flex items-center justify-between gap-3">
+        <div className="w-full bg-[#fef3c7] text-[#93000a] py-2.5 px-4 rounded-xl shadow-xs border border-[#fde68a] flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
             <span className="material-symbols-outlined text-[20px] text-[#ba1a1a] shrink-0">water_drop</span>
             <div className="truncate">
@@ -302,7 +302,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           {currentUser.isLoggedIn ? (
             <button
               onClick={onLogout}
-              className="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-[#ffdad6]/60 hover:bg-[#ffdad6] text-[#ba1a1a] text-[13px] font-bold flex items-center justify-center gap-1.5 border border-[#ffb4ab] transition-colors cursor-pointer"
+              className="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-[#fef3c7]/60 hover:bg-[#fef3c7] text-[#ba1a1a] text-[13px] font-bold flex items-center justify-center gap-1.5 border border-[#fde68a] transition-colors cursor-pointer"
             >
               <span className="material-symbols-outlined text-[16px]">logout</span>
               <span>{isMr ? 'बाहेर पडा (Sign Out)' : 'Sign Out'}</span>
@@ -608,7 +608,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   </span>
                   <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${trackResult.status === 'RESOLVED' ? 'bg-[#bbf7d0] text-[#002117]' :
                       trackResult.status === 'IN_PROGRESS' ? 'bg-[#dbe1ff] text-[#002873]' :
-                        'bg-[#ffdad6] text-[#ba1a1a]'
+                        'bg-[#fef3c7] text-[#ba1a1a]'
                     }`}>
                     {trackResult.status}
                   </span>
@@ -622,7 +622,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             )}
 
             {trackError && (
-              <div className="mt-3 p-3 rounded-xl bg-[#ffdad6] text-[#ba1a1a] text-[12px] font-bold">
+              <div className="mt-3 p-3 rounded-xl bg-[#fef3c7] text-[#ba1a1a] text-[12px] font-bold">
                 {trackError}
               </div>
             )}
@@ -686,7 +686,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     <div className="flex items-center gap-2 shrink-0">
                       <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${item.status === 'RESOLVED' ? 'bg-[#bbf7d0] text-[#002117]' :
                           item.status === 'IN_PROGRESS' ? 'bg-[#dbe1ff] text-[#002873]' :
-                            'bg-[#ffdad6] text-[#ba1a1a]'
+                            'bg-[#fef3c7] text-[#ba1a1a]'
                         }`}>
                         {item.status}
                       </span>
@@ -798,7 +798,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               disabled={pushToggling}
               className={`px-4 py-2 rounded-xl text-[12px] font-bold transition-all shrink-0 shadow-xs flex items-center gap-1.5 cursor-pointer ${
                 pushEnabled
-                  ? 'bg-white hover:bg-[#ffdad6] text-[#ba1a1a] border border-[#ffdad6]'
+                  ? 'bg-white hover:bg-[#fef3c7] text-[#ba1a1a] border border-[#fef3c7]'
                   : 'bg-[#166534] hover:bg-[#052e16] text-white'
               }`}
             >

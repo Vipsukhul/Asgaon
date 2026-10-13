@@ -255,7 +255,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
             <span className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#dbe1ff] text-[#002873]">
               {scheme.category} {isGharkul ? (lang === 'MR' ? '• घरकुल योजना' : '• GHARKUL SCHEME') : (lang === 'MR' ? '• शासकीय योजना' : '• GOVT SCHEME')}
             </span>
-            <span className="text-[12px] font-bold text-[#ba1a1a] bg-[#ffdad6] px-2.5 py-0.5 rounded-md">
+            <span className="text-[12px] font-bold text-[#ba1a1a] bg-[#fef3c7] px-2.5 py-0.5 rounded-md">
               {scheme.deadlineText}
             </span>
           </div>

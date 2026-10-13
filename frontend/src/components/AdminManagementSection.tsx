@@ -747,7 +747,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                     className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase shrink-0 ${
                       admin.isActive
                         ? 'bg-[#bbf7d0] text-[#002117]'
-                        : 'bg-[#ffdad6] text-[#ba1a1a]'
+                        : 'bg-[#fef3c7] text-[#ba1a1a]'
                     }`}
                   >
                     {admin.isActive ? 'सक्रिय' : 'निष्क्रिय'}
@@ -852,7 +852,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                     type="button"
                     onClick={() => handleDeleteAdmin(admin)}
                     title="खाते काढून टाका"
-                    className="p-1.5 rounded-xl text-[#ba1a1a] hover:bg-[#ffdad6]/40 transition-all cursor-pointer"
+                    className="p-1.5 rounded-xl text-[#ba1a1a] hover:bg-[#fef3c7]/40 transition-all cursor-pointer"
                   >
                     <span className="material-symbols-outlined text-[17px]">delete</span>
                   </button>

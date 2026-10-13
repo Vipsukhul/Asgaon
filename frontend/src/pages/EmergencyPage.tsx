@@ -17,7 +17,7 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
       badge: lang === 'MR' ? '२४/७ टोल-फ्री' : '24/7 Toll-Free',
       category: lang === 'MR' ? 'पोलीस व नागरी मदत' : 'Police & Civic Emergency',
       icon: 'local_police',
-      bg: 'bg-[#ffdad6] text-[#93000a]'
+      bg: 'bg-[#fef3c7] text-[#93000a]'
     },
     {
       id: 2,
@@ -26,7 +26,7 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
       badge: lang === 'MR' ? 'तातडीची मदत' : '24/7 Immediate',
       category: lang === 'MR' ? 'वैद्यकीय आणीबाणी' : 'Medical Emergency',
       icon: 'ambulance',
-      bg: 'bg-[#ffdad6] text-[#ba1a1a]'
+      bg: 'bg-[#fef3c7] text-[#ba1a1a]'
     },
     {
       id: 3,
@@ -77,14 +77,14 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
           { label: lang === 'MR' ? 'आपत्कालीन थेट संपर्क क्रमांक' : 'Emergency Speed-Dial Directory', active: true }
         ]}
         rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#ffdad6] text-[#93000a] px-3 py-1 rounded-full text-[11px] font-bold">
+          <div className="flex items-center gap-1.5 bg-[#fef3c7] text-[#93000a] px-3 py-1 rounded-full text-[11px] font-bold">
             <span className="material-symbols-outlined text-[15px] text-[#ba1a1a]">e911_emergency</span>
             <span>{lang === 'MR' ? '२४x७ नागरिकांसाठी थेट मदत' : '24x7 Immediate Citizen Hotline'}</span>
           </div>
         }
       />
 
-      <div className="bg-[#ffdad6] text-[#93000a] rounded-2xl p-6 border border-[#ffb4ab] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-[#fef3c7] text-[#93000a] rounded-2xl p-6 border border-[#fde68a] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="material-symbols-outlined text-[28px] text-[#ba1a1a]">e911_emergency</span>

@@ -623,13 +623,13 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               <span className="p-1.5 text-[#404945]">12</span>
               <span className="p-1.5 text-[#404945]">13</span>
               {/* 14th - Fogging & Vaccine */}
-              <span className="p-1.5 bg-[#ffdad6] text-[#ba1a1a] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'मिशन इंद्रधनुष्य' : 'Mission Indradhanush'}>14</span>
+              <span className="p-1.5 bg-[#fef3c7] text-[#ba1a1a] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'मिशन इंद्रधनुष्य' : 'Mission Indradhanush'}>14</span>
               {/* 15th - Friday Haat */}
               <span className="p-1.5 bg-[#bbf7d0] text-[#002117] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'शुक्रवार आठवडे बाजार' : 'Shukrawar Haat'}>15</span>
               <span className="p-1.5 text-[#404945]">16</span>
 
               {/* 17th - Eye Camp */}
-              <span className="p-1.5 bg-[#ffdad6] text-[#ba1a1a] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'मोफत नेत्र तपासणी शिबिर' : 'Free Eye Camp'}>17</span>
+              <span className="p-1.5 bg-[#fef3c7] text-[#ba1a1a] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'मोफत नेत्र तपासणी शिबिर' : 'Free Eye Camp'}>17</span>
               <span className="p-1.5 text-[#404945]">18</span>
               <span className="p-1.5 text-[#404945]">19</span>
               <span className="p-1.5 text-[#404945]">20</span>

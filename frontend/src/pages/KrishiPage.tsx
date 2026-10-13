@@ -61,7 +61,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
       id: 3,
       name: 'Red Onion (कांदा - Nashik)',
       badge: '-₹80',
-      badgeColor: 'bg-[#ffdad6] text-[#93000a]',
+      badgeColor: 'bg-[#fef3c7] text-[#93000a]',
       price: '₹2,850',
       unit: '/ Quintal (Mandi)',
       msp: 'Arrivals: 180 Quintals',
@@ -88,7 +88,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
         id: p.id || idx + 1,
         name: p.commodityName || 'Produce',
         badge: (p.priceChange !== undefined && p.priceChange !== 0) ? `${p.priceChange > 0 ? '+' : ''}₹${p.priceChange}` : 'Official Rate',
-        badgeColor: (p.trend === 'up' || (p.priceChange && p.priceChange > 0)) ? 'bg-[#bbf7d0] text-[#002117]' : (p.trend === 'down' || (p.priceChange && p.priceChange < 0)) ? 'bg-[#ffdad6] text-[#93000a]' : 'bg-[#f3ede4] text-[#404945]',
+        badgeColor: (p.trend === 'up' || (p.priceChange && p.priceChange > 0)) ? 'bg-[#bbf7d0] text-[#002117]' : (p.trend === 'down' || (p.priceChange && p.priceChange < 0)) ? 'bg-[#fef3c7] text-[#93000a]' : 'bg-[#f3ede4] text-[#404945]',
         price: `₹${Number(p.modalPrice || p.price || 4500).toLocaleString('en-IN')}`,
         unit: `/ ${p.unit || 'Quintal'} (Mandi)`,
         msp: `${p.marketName || 'Pauni APMC'} • Variety: ${p.variety || 'Standard'}`,
@@ -436,7 +436,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
               <div className="bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
                 <div className="flex items-center justify-between text-[11px] font-bold mb-1">
                   <span className="text-[#707974]">NITROGEN (N)</span>
-                  <span className="text-[#93000a] bg-[#ffdad6] px-1.5 py-0.2 rounded">DEFICIENT (Low)</span>
+                  <span className="text-[#93000a] bg-[#fef3c7] px-1.5 py-0.2 rounded">DEFICIENT (Low)</span>
                 </div>
                 <div className="font-heading font-extrabold text-[22px] text-[#1d1b16]">
                   168 <span className="text-[11px] font-normal text-[#707974]">kg/ha (Ideal: 280-560)</span>
@@ -462,7 +462,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
               <div className="bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
                 <div className="flex items-center justify-between text-[11px] font-bold mb-1">
                   <span className="text-[#707974]">ORGANIC CARBON</span>
-                  <span className="text-[#93000a] bg-[#ffdad6] px-1.5 py-0.2 rounded">CRITICAL (Low)</span>
+                  <span className="text-[#93000a] bg-[#fef3c7] px-1.5 py-0.2 rounded">CRITICAL (Low)</span>
                 </div>
                 <div className="font-heading font-extrabold text-[22px] text-[#ba1a1a]">
                   0.42% <span className="text-[11px] font-normal text-[#707974]">(Standard: &gt; 0.75%)</span>
@@ -500,7 +500,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
           </div>
 
           {/* Critical Field Warning & Pest Diagnostics */}
-          <div className="bg-[#ffdad6] text-[#93000a] p-4 rounded-2xl border border-[#ffb4ab] shadow-xs">
+          <div className="bg-[#fef3c7] text-[#93000a] p-4 rounded-2xl border border-[#fde68a] shadow-xs">
             <div className="flex items-start gap-2 mb-2">
               <span className="material-symbols-outlined text-[22px] text-[#ba1a1a] shrink-0 mt-0.5">warning</span>
               <div>
@@ -514,15 +514,15 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-              <div className="bg-white text-[#1d1b16] p-3 rounded-xl border border-[#ffb4ab] text-[12px]">
-                <span className="text-[10px] font-bold text-[#ba1a1a] bg-[#ffdad6] px-1.5 py-0.2 rounded">Harbhara Crop</span>
+              <div className="bg-white text-[#1d1b16] p-3 rounded-xl border border-[#fde68a] text-[12px]">
+                <span className="text-[10px] font-bold text-[#ba1a1a] bg-[#fef3c7] px-1.5 py-0.2 rounded">Harbhara Crop</span>
                 <h5 className="font-bold text-[14px] mt-1 mb-1">Helicoverpa Pod Borer (घाटे अळी)</h5>
                 <p className="text-[11px] text-[#707974] mb-2">Larvae feeding on developing pods with circular holes.</p>
                 <div className="text-[11px] font-semibold text-[#166534]">Remedy: Emamectin Benzoate 5% SG @ 4g/10L water</div>
               </div>
 
-              <div className="bg-white text-[#1d1b16] p-3 rounded-xl border border-[#ffb4ab] text-[12px]">
-                <span className="text-[10px] font-bold text-[#ba1a1a] bg-[#ffdad6] px-1.5 py-0.2 rounded">Mustard &amp; Wheat</span>
+              <div className="bg-white text-[#1d1b16] p-3 rounded-xl border border-[#fde68a] text-[12px]">
+                <span className="text-[10px] font-bold text-[#ba1a1a] bg-[#fef3c7] px-1.5 py-0.2 rounded">Mustard &amp; Wheat</span>
                 <h5 className="font-bold text-[14px] mt-1 mb-1">Sucking Pest Complex &amp; Leaf Curl (मावा, तुडतुडे)</h5>
                 <p className="text-[11px] text-[#707974] mb-2">Upward curling of leaf margins, yellowing between veins.</p>
                 <div className="text-[11px] font-semibold text-[#166534]">Remedy: Imidacloprid 17.8% SL @ 0.3ml/L water</div>

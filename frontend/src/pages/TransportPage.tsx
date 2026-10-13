@@ -588,7 +588,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
                               ₹{bus.fareGeneral}
                             </div>
                           </div>
-                          <div className="bg-[#fff0eb] border border-[#ffccba] rounded-xl p-2">
+                          <div className="bg-[#fef9ee] border border-[#fde68a] rounded-xl p-2">
                             <div className="text-[10px] text-[#c2410c] font-bold">महिला सवलत (५०%)</div>
                             <div className="text-xs sm:text-sm font-bold text-[#c2410c] mt-0.5">
                               ₹{bus.fareMahila}

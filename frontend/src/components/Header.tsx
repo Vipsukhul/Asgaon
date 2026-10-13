@@ -104,11 +104,6 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'emergency', label: lang === 'MR' ? 'आपत्कालीन सेवा' : 'Emergency', icon: 'emergency' }
   ];
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSearch(searchVal);
-  };
-
   return (
     <header className="fixed top-0 w-full z-50 bg-[#fdfbf7]/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.05)] border-b border-[#efe7dc]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-col gap-2">
@@ -119,31 +114,7 @@ export const Header: React.FC<HeaderProps> = ({
             <AsgaonLogo onClick={() => setActiveNav('home')} size="md" />
           </div>
 
-          {/* Center Search Bar */}
-          <form onSubmit={handleSearchSubmit} className="flex-1 max-w-xl mx-2 hidden sm:flex">
-            <div className="relative flex items-center w-full h-10 rounded-xl bg-white border border-[#e7dece] focus-within:border-emerald-600 focus-within:ring-2 focus-within:ring-emerald-600/10 px-3 shadow-inner transition-all">
-              <span className="material-symbols-outlined text-[20px] text-stone-400 mr-2">search</span>
-              <input
-                type="text"
-                value={searchVal}
-                onChange={(e) => setSearchVal(e.target.value)}
-                placeholder={t('header_search_placeholder')}
-                className="w-full bg-transparent text-stone-900 text-[13px] font-medium focus:outline-none placeholder:text-stone-400"
-              />
-              <div className="flex items-center gap-2 pl-2 border-l border-[#e7dece]">
-                <button
-                  type="button"
-                  title={t('header_voice_search_title')}
-                  onClick={() => alert(lang === 'MR' ? 'व्हॉइस सर्च तयार आहे! बोला...' : 'Voice search ready! Speak now...')}
-                  className="text-emerald-800 hover:text-emerald-950 p-0.5 cursor-pointer"
-                >
-                  <span className="material-symbols-outlined text-[19px]">mic</span>
-                </button>
-                <span className="text-[11px] font-bold text-stone-500">{t('header_all')}</span>
-                <span className="material-symbols-outlined text-[16px] text-stone-400">expand_more</span>
-              </div>
-            </div>
-          </form>
+          
 
           {/* Actions & Role / Login */}
           <div className="flex items-center gap-2 shrink-0">
@@ -227,7 +198,7 @@ export const Header: React.FC<HeaderProps> = ({
                                 {a.title}
                               </span>
                               {a.priority === 'URGENT' && (
-                                <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-rose-100 text-rose-800 shrink-0">
+                                <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-amber-100 text-amber-900 border border-amber-300 shrink-0">
                                   तातडीची
                                 </span>
                               )}

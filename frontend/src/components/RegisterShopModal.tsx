@@ -334,7 +334,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
               <div className={`p-2 rounded-lg text-[11px] font-medium flex items-center gap-1.5 ${
                 gpsStatus.startsWith('✓') 
                   ? 'bg-[#bbf7d0] text-[#002117]' 
-                  : 'bg-[#ffdad6] text-[#ba1a1a]'
+                  : 'bg-[#fef3c7] text-[#ba1a1a]'
               }`}>
                 <span className="material-symbols-outlined text-[15px]">
                   {gpsStatus.startsWith('✓') ? 'check_circle' : 'info'}

@@ -36,7 +36,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
   const [viewMode, setViewMode] = useState<'list' | 'map' | 'both'>('list');
   const [focusedBusinessId, setFocusedBusinessId] = useState<string | number | null>(null);
   const [locationModalBiz, setLocationModalBiz] = useState<any | null>(null);
-  const [inlineMapBizId, setInlineMapBizId] = useState<string | number | null>(null);
+  const [inlineMapBizId] = useState<string | number | null>(null);
 
   const toggleBookmark = (id: number, name: string) => {
     if (bookmarkedIds.includes(id)) {
@@ -544,48 +544,17 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                         <span className="material-symbols-outlined text-[14px] text-[#25D366]">chat</span>
                         <span>{lang === 'MR' ? 'व्हॉट्सॲप' : 'WhatsApp'}</span>
                       </a>
-                      {/* Dedicated Shop Location Map button */}
-
+                      
                       {/* Dedicated Shop Location on Map Button */}
                       <button
                         type="button"
                         onClick={() => setLocationModalBiz(item)}
-                        className="px-2.5 py-1.5 rounded-lg bg-[#fff8f0] hover:bg-[#a63b00] hover:text-white text-[#a63b00] text-[12px] font-bold flex items-center gap-1 border border-[#ffdbce] hover:border-[#a63b00] transition-all shadow-xs"
+                        className="px-2.5 py-1.5 rounded-lg bg-[#fef9ee] hover:bg-[#a63b00] hover:text-white text-[#a63b00] text-[12px] font-bold flex items-center gap-1 border border-[#fed7aa] hover:border-[#a63b00] transition-all shadow-xs"
                         title={lang === 'MR' ? 'दुकानाचे अचूक स्थान नकाशावर पहा' : 'View shop location on map modal'}
                       >
                         <span className="material-symbols-outlined text-[15px]">location_on</span>
                         <span>{lang === 'MR' ? 'स्थान' : 'Location'}</span>
                       </button>
-
-                      {/* Inline Mini-Map Toggle */}
-                      <button
-                        type="button"
-                        onClick={() => setInlineMapBizId(inlineMapBizId === item.id ? null : item.id)}
-                        className={`px-2 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1 border transition-colors ${
-                          inlineMapBizId === item.id
-                            ? 'bg-[#003629] text-white border-[#003629]'
-                            : 'bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#404945] border-[#e8e2d9]'
-                        }`}
-                        title={inlineMapBizId === item.id ? (lang === 'MR' ? 'मिनी नकाशा लपवा' : 'Hide Mini Map') : (lang === 'MR' ? 'कार्डमध्येच नकाशा उघडा' : 'Open Mini Map')}
-                      >
-                        <span className="material-symbols-outlined text-[14px]">
-                          {inlineMapBizId === item.id ? 'unfold_less' : 'pin_drop'}
-                        </span>
-                        <span className="hidden sm:inline">
-                          {inlineMapBizId === item.id ? (lang === 'MR' ? 'लपवा' : 'Hide') : (lang === 'MR' ? 'मिनी नकाशा' : 'Mini Map')}
-                        </span>
-                      </button>
-
-                      {/* Direct Google Maps Directions */}
-                      <a
-                        href={`https://www.google.com/maps/dir/?api=1&destination=${item.latitude},${item.longitude}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-1.5 rounded-lg bg-[#f3ede4] text-[#707974] hover:text-[#166534] hover:bg-[#e8e2d9] transition-colors border border-[#e8e2d9]"
-                        title={lang === 'MR' ? 'Google Maps थेट दिशानिर्देश' : 'Google Maps Directions'}
-                      >
-                        <span className="material-symbols-outlined text-[15px]">navigation</span>
-                      </a>
                     </div>
 
                     <button
@@ -739,7 +708,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
 
           {/* Widget 3: Urgent Village Help - Need an On-Demand Mechanic or Repair? */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#ba1a1a] bg-[#ffdad6] px-2 py-0.5 rounded">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#ba1a1a] bg-[#fef3c7] px-2 py-0.5 rounded">
               {lang === 'MR' ? 'तातडीची मदत' : 'URGENT VILLAGE HELP'}
             </span>
 
@@ -792,7 +761,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
 
               <a
                 href="tel:108"
-                className="p-2.5 rounded-xl bg-[#ffdad6] text-[#93000a] border border-[#ffb4ab] hover:bg-[#ffb4ab] transition-colors flex flex-col justify-between"
+                className="p-2.5 rounded-xl bg-[#fef3c7] text-[#93000a] border border-[#fde68a] hover:bg-[#fde68a] transition-colors flex flex-col justify-between"
               >
                 <div className="flex items-center gap-1 font-bold">
                   <span className="material-symbols-outlined text-[16px]">ambulance</span>

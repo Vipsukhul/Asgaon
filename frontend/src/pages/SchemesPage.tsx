@@ -982,7 +982,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                 : 'All government scheme applications are 100% free. Demanding bribe or commission is a punishable offense.'}
             </p>
 
-            <div className="bg-[#ffdad6] text-[#93000a] p-3 rounded-xl border border-[#ffb4ab] text-[12px] mb-3">
+            <div className="bg-[#fef3c7] text-[#93000a] p-3 rounded-xl border border-[#fde68a] text-[12px] mb-3">
               <div className="font-bold">{lang === 'MR' ? 'लाचलुचपत प्रतिबंधक विभाग (ACB)' : 'Citizen Anti-Corruption Bureau (ACB)'}</div>
               <div className="font-extrabold text-[15px] mt-0.5">{lang === 'MR' ? 'टोल-फ्री १०६४' : 'Toll-Free 1064'}</div>
               <div className="text-[10px]">{lang === 'MR' ? 'गोपनीय तक्रार नोंदणी' : 'Anonymous and confidential reporting'}</div>

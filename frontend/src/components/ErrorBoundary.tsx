@@ -28,7 +28,7 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="min-h-screen bg-[#fef9ee] flex flex-col items-center justify-center p-6 text-center font-sans">
           <div className="max-w-md bg-white p-8 rounded-2xl shadow-lg border border-[#e8e2d9]">
-            <div className="w-16 h-16 rounded-full bg-[#ffdad6] text-[#ba1a1a] flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-full bg-[#fef3c7] text-[#ba1a1a] flex items-center justify-center mx-auto mb-4">
               <span className="material-symbols-outlined text-[32px]">warning</span>
             </div>
             <h2 className="font-heading font-extrabold text-[20px] text-[#166534] mb-2">

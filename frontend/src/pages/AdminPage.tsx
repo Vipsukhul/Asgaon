@@ -1407,7 +1407,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
             {/* Error Notification */}
             {loginError && (
-              <div className="p-3.5 rounded-xl bg-[#ffdad6]/80 border border-[#ffb4ab] text-[#ba1a1a] flex items-start gap-2.5 text-[12px] font-medium animate-fadeIn">
+              <div className="p-3.5 rounded-xl bg-[#fef3c7]/80 border border-[#fde68a] text-[#ba1a1a] flex items-start gap-2.5 text-[12px] font-medium animate-fadeIn">
                 <span className="material-symbols-outlined text-[18px] shrink-0 mt-0.5">error</span>
                 <div className="flex-1">
                   <strong>प्रवेश अयशस्वी: </strong>
@@ -1570,7 +1570,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           {onLogout && (
             <button
               onClick={onLogout}
-              className="flex-1 md:flex-initial px-3.5 py-2.5 sm:py-2 rounded-xl bg-[#ffdad6]/20 hover:bg-[#ffdad6]/30 text-[#ffb4ab] font-bold text-[12px] transition-all flex items-center justify-center gap-1.5 border border-[#ffb4ab]/30 cursor-pointer"
+              className="flex-1 md:flex-initial px-3.5 py-2.5 sm:py-2 rounded-xl bg-[#fef3c7]/20 hover:bg-[#fef3c7]/30 text-[#fde68a] font-bold text-[12px] transition-all flex items-center justify-center gap-1.5 border border-[#fde68a]/30 cursor-pointer"
             >
               <span className="material-symbols-outlined text-[16px]">logout</span>
               <span>बाहेर पडा</span>
@@ -2133,7 +2133,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                               onClick={() => handleToggleBusinessVerify(biz)}
                               className={`px-3 py-1.5 rounded-xl text-[11px] font-bold flex items-center gap-1 transition-all shadow-xs cursor-pointer active:scale-98 ${
                                 isVerified
-                                  ? 'bg-[#fff1f0] hover:bg-[#ffdad6] text-[#ba1a1a] border border-[#ffdad6]'
+                                  ? 'bg-[#fef9ee] hover:bg-[#fef3c7] text-[#ba1a1a] border border-[#fef3c7]'
                                   : 'bg-[#166534] hover:bg-[#052e16] text-white'
                               }`}
                             >
@@ -2162,7 +2162,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                             type="button"
                             onClick={() => handleDeleteBusiness(biz)}
                             title="दुकान हटवा"
-                            className="p-1.5 rounded-xl text-[#ba1a1a] hover:bg-[#ffdad6]/40 transition-all cursor-pointer"
+                            className="p-1.5 rounded-xl text-[#ba1a1a] hover:bg-[#fef3c7]/40 transition-all cursor-pointer"
                           >
                             <span className="material-symbols-outlined text-[17px]">delete</span>
                           </button>
@@ -2386,7 +2386,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                       <button
                         onClick={() => handleDeleteReview(rev.id)}
-                        className="p-1.5 rounded-lg bg-[#ffdad6]/40 hover:bg-[#ffdad6] text-[#ba1a1a] transition-all cursor-pointer"
+                        className="p-1.5 rounded-lg bg-[#fef3c7]/40 hover:bg-[#fef3c7] text-[#ba1a1a] transition-all cursor-pointer"
                         title="अभिप्राय हटवा"
                       >
                         <span className="material-symbols-outlined text-[18px]">delete</span>
@@ -2519,7 +2519,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           <button
                             type="button"
                             onClick={() => handleDeleteEvent(evt.id)}
-                            className="px-2.5 py-1 rounded-lg bg-[#ffdad6]/40 hover:bg-[#ffdad6] text-[#ba1a1a] font-bold text-[11px] transition-colors flex items-center gap-1"
+                            className="px-2.5 py-1 rounded-lg bg-[#fef3c7]/40 hover:bg-[#fef3c7] text-[#ba1a1a] font-bold text-[11px] transition-colors flex items-center gap-1"
                           >
                             <span className="material-symbols-outlined text-[14px]">delete</span>
                             <span>हटवा</span>
@@ -4915,7 +4915,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${a.priority === 'URGENT' ? 'bg-[#ffdad6] text-[#ba1a1a]' : 'bg-[#f3ede4] text-[#404945]'
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${a.priority === 'URGENT' ? 'bg-[#fef3c7] text-[#ba1a1a]' : 'bg-[#f3ede4] text-[#404945]'
                         }`}>
                         {a.priority === 'URGENT' ? '🚨 तातडीचे' : a.category || 'सूचना'}
                       </span>
@@ -4936,7 +4936,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       <button
                         type="button"
                         onClick={() => handleDeleteNotice(a.id)}
-                        className="p-1.5 rounded-lg text-[#ba1a1a] hover:bg-[#ffdad6]/40"
+                        className="p-1.5 rounded-lg text-[#ba1a1a] hover:bg-[#fef3c7]/40"
                         title="हटवा"
                       >
                         <span className="material-symbols-outlined text-[18px]">delete</span>
@@ -4980,7 +4980,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         ? 'bg-[#bbf7d0] text-[#002117]'
                         : w.status === 'LOW_PRESSURE'
                           ? 'bg-[#fed7aa] text-[#c2410c]'
-                          : 'bg-[#ffdad6] text-[#ba1a1a]'
+                          : 'bg-[#fef3c7] text-[#ba1a1a]'
                       }`}>
                       {w.status === 'NORMAL' ? 'सुरळीत पुरवठा' : w.status === 'LOW_PRESSURE' ? 'कमी दाब' : 'दुरुस्ती चालू'}
                     </span>
@@ -5240,7 +5240,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     <button
                       type="button"
                       onClick={() => handleDeleteScheme(s.id)}
-                      className="p-1.5 rounded-lg text-[#ba1a1a] hover:bg-[#ffdad6]/40"
+                      className="p-1.5 rounded-lg text-[#ba1a1a] hover:bg-[#fef3c7]/40"
                       title="हटवा"
                     >
                       <span className="material-symbols-outlined text-[18px]">delete</span>
@@ -5399,7 +5399,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                               saveContacts(contacts.filter((x) => x.id !== c.id));
                             }
                           }}
-                          className="p-1 rounded text-[#ba1a1a] hover:bg-[#ffdad6]/40"
+                          className="p-1 rounded text-[#ba1a1a] hover:bg-[#fef3c7]/40"
                         >
                           <span className="material-symbols-outlined text-[16px]">delete</span>
                         </button>
@@ -5569,7 +5569,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           saveProjects(projects.filter((x) => x.id !== p.id));
                         }
                       }}
-                      className="p-1 rounded text-[#ba1a1a] hover:bg-[#ffdad6]/40"
+                      className="p-1 rounded text-[#ba1a1a] hover:bg-[#fef3c7]/40"
                     >
                       <span className="material-symbols-outlined text-[16px]">delete</span>
                     </button>
@@ -5625,7 +5625,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       <span className="text-[11px] font-black uppercase text-[#c2410c]">{c.trackingNumber || 'KS-REG'}</span>
                       <h3 className="font-bold text-[14px] text-[#1d1b16]">{c.title}</h3>
                     </div>
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${c.status === 'RESOLVED' ? 'bg-[#bbf7d0] text-[#002117]' : 'bg-[#ffdad6] text-[#ba1a1a]'
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${c.status === 'RESOLVED' ? 'bg-[#bbf7d0] text-[#002117]' : 'bg-[#fef3c7] text-[#ba1a1a]'
                       }`}>
                       {c.status}
                     </span>
@@ -5717,7 +5717,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {activeTab === 'broadcast' && (
         <div className="max-w-2xl bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs mx-auto w-full">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-xl bg-[#ffdad6] text-[#ba1a1a] flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-[#fef3c7] text-[#ba1a1a] flex items-center justify-center shrink-0">
               <span className="material-symbols-outlined text-[28px]">cell_tower</span>
             </div>
             <div>
@@ -5857,8 +5857,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             }}
           />
         ) : (
-          <div className="bg-white p-8 rounded-3xl border border-[#ffdad6] text-center flex flex-col items-center gap-3 shadow-xs">
-            <div className="w-14 h-14 rounded-2xl bg-[#ffdad6]/40 text-[#ba1a1a] flex items-center justify-center">
+          <div className="bg-white p-8 rounded-3xl border border-[#fef3c7] text-center flex flex-col items-center gap-3 shadow-xs">
+            <div className="w-14 h-14 rounded-2xl bg-[#fef3c7]/40 text-[#ba1a1a] flex items-center justify-center">
               <span className="material-symbols-outlined text-[32px]">lock</span>
             </div>
             <h3 className="font-heading font-black text-lg text-[#ba1a1a]">मर्यादित प्रवेश (Access Restricted)</h3>

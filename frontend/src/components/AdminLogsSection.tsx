@@ -201,7 +201,7 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
   const getSeverityBadge = (sev: AuditLogItem['severity']) => {
     switch (sev) {
       case 'CRITICAL':
-        return <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-[#ffdad6] text-[#ba1a1a] border border-[#ffb4ab]">CRITICAL (तातडीची)</span>;
+        return <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-[#fef3c7] text-[#ba1a1a] border border-[#fde68a]">CRITICAL (तातडीची)</span>;
       case 'WARN':
         return <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#ffeed2] text-[#8c5000] border border-[#ffdcb2]">WARNING</span>;
       case 'INFO':
@@ -261,7 +261,7 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
           <button
             type="button"
             onClick={handleClearLogs}
-            className="px-3 py-2 rounded-xl text-[12px] font-semibold text-[#707974] hover:text-[#ba1a1a] hover:bg-[#ffdad6]/30 transition-colors"
+            className="px-3 py-2 rounded-xl text-[12px] font-semibold text-[#707974] hover:text-[#ba1a1a] hover:bg-[#fef3c7]/30 transition-colors"
           >
             {lang === 'MR' ? 'नोंदी साफ करा' : 'Clear'}
           </button>

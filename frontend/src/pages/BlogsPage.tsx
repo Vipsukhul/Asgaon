@@ -443,7 +443,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                   <div className="flex items-center justify-between text-[11px] text-[#707974] mb-2">
                     <span>{post.publishDate}</span>
                     <div className="flex items-center gap-3">
-                      <span className="flex items-center gap-1 text-rose-700 font-bold">
+                      <span className="flex items-center gap-1 text-red-700 font-bold">
                         <span>❤️</span>
                         <span>{post.likesCount || 12}</span>
                       </span>

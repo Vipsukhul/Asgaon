@@ -36,21 +36,21 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="flex flex-wrap items-center justify-center gap-2 font-mono">
             <a
               href="tel:112"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2a0808] hover:bg-[#3d0d0d] text-[#ffb4ab] border border-[#5c1d1d] font-bold text-[11px] transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2a0808] hover:bg-[#3d0d0d] text-[#fde68a] border border-[#5c1d1d] font-bold text-[11px] transition-colors"
               title="पोलीस व राष्ट्रीय आपत्कालीन"
             >
               <span>🚨 ११२ (पोलीस / Police)</span>
             </a>
             <a
               href="tel:108"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2a0808] hover:bg-[#3d0d0d] text-[#ffb4ab] border border-[#5c1d1d] font-bold text-[11px] transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2a0808] hover:bg-[#3d0d0d] text-[#fde68a] border border-[#5c1d1d] font-bold text-[11px] transition-colors"
               title="रुग्णवाहिका सेवा"
             >
               <span>🚑 १०८ (रुग्णवाहिका / Ambulance)</span>
             </a>
             <a
               href="tel:101"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2a0808] hover:bg-[#3d0d0d] text-[#ffb4ab] border border-[#5c1d1d] font-bold text-[11px] transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2a0808] hover:bg-[#3d0d0d] text-[#fde68a] border border-[#5c1d1d] font-bold text-[11px] transition-colors"
               title="अग्निशामक दल"
             >
               <span>🔥 १०१ (अग्निशामक / Fire)</span>
@@ -71,7 +71,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </a>
             <a
               href="tel:1091"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#240026] hover:bg-[#3d0040] text-[#f8bbd0] border border-[#59005e] font-bold text-[11px] transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#163628] hover:bg-[#1e4835] text-[#bbf7d0] border border-[#2b5943] font-bold text-[11px] transition-colors"
               title="महिला सुरक्षा हेल्पलाईन"
             >
               <span>👩 १०९१ (महिला सुरक्षा)</span>
@@ -308,7 +308,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <a
                   href="/emergency"
                   onClick={(e) => handleNav('emergency', e)}
-                  className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#ffb4ab] font-bold"
+                  className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#fde68a] font-bold"
                 >
                   <span className="material-symbols-outlined text-[14px]">call</span>
                   <span>{lang === 'MR' ? 'सर्व आपत्कालीन संपर्क (Directory)' : 'All Emergency Helplines'}</span>

@@ -95,7 +95,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
       <div className="bg-white rounded-2xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
         <div className="max-w-2xl">
           <div className="flex flex-wrap items-center gap-2 mb-2">
-            <span className="text-[10px] font-extrabold text-[#ba1a1a] bg-[#ffdad6] px-2 py-0.5 rounded uppercase tracking-wider">
+            <span className="text-[10px] font-extrabold text-[#ba1a1a] bg-[#fef3c7] px-2 py-0.5 rounded uppercase tracking-wider">
               {lang === 'MR' ? 'सत्यापित रोजगार | शून्य दलाली' : 'VERIFIED EMPLOYMENT | ZERO BROKERAGE'}
             </span>
             <span className="text-[11px] text-[#707974]">

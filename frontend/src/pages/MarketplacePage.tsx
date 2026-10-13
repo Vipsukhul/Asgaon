@@ -217,7 +217,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
       {/* 1. TOP WEEKLY HAAT BANNER */}
       <div className="bg-[#c2410c] text-white px-4 py-2.5 rounded-xl shadow-xs flex flex-col md:flex-row items-center justify-between gap-3 text-[12px] font-medium">
         <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-[18px] text-[#ffdad6]">campaign</span>
+          <span className="material-symbols-outlined text-[18px] text-[#fef3c7]">campaign</span>
           <span>
             <strong className="font-bold">{lang === 'MR' ? 'साप्ताहिक आठवडी बाजार सूचना:' : 'Weekly Haat Reminder:'}</strong> {lang === 'MR' ? 'आसगाव शुक्रवार आठवडी बाजार जुना बस स्टँड मैदानावर सकाळी ०८:०० वाजता सुरू होतो • स्थानिक शेतकऱ्यांसाठी मोफत जागा' : 'Asgaon Weekly Bazaar opens this Friday at 08:00 AM at Old Bus Stand Ground • Zero stall fee for local registered farmers'}
           </span>

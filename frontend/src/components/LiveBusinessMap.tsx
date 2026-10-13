@@ -32,7 +32,7 @@ const ASGAON_CENTER: [number, number] = [20.8084579, 79.7242461];
 
 export const CATEGORY_COLORS: Record<string, { bg: string; border: string; icon: string }> = {
   seeds: { bg: '#006a4e', border: '#bbf7d0', icon: 'agriculture' },
-  clinic: { bg: '#ba1a1a', border: '#ffdad6', icon: 'local_hospital' },
+  clinic: { bg: '#ba1a1a', border: '#fef3c7', icon: 'local_hospital' },
   machinery: { bg: '#c2410c', border: '#fed7aa', icon: 'precision_manufacturing' },
   dairy: { bg: '#002873', border: '#dbe1ff', icon: 'egg' },
   hardware: { bg: '#404945', border: '#e8e2d9', icon: 'construction' },

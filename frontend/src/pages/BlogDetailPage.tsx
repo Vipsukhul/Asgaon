@@ -492,12 +492,12 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
             <button
               onClick={handleToggleLike}
               className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-2xs border ${isLiked
-                  ? 'bg-rose-50 border-rose-300 text-rose-700 hover:bg-rose-100 scale-102'
-                  : 'bg-white border-[#e8e2d9] text-[#404945] hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200'
+                  ? 'bg-red-50 border-red-300 text-red-700 hover:bg-red-100 scale-102'
+                  : 'bg-white border-[#e8e2d9] text-[#404945] hover:bg-red-50 hover:text-red-600 hover:border-red-200'
                 }`}
               title={isLiked ? (isMr ? 'पसंती मागे घ्या' : 'Unlike') : (isMr ? 'मला हा लेख आवडला' : 'Like article')}
             >
-              <span className={`material-symbols-outlined text-[18px] transition-transform ${isLiked ? 'text-rose-600 scale-110' : ''}`}>
+              <span className={`material-symbols-outlined text-[18px] transition-transform ${isLiked ? 'text-red-600 scale-110' : ''}`}>
                 {isLiked ? 'favorite' : 'favorite_border'}
               </span>
               <span>{likesCount} {isMr ? 'पसंती' : 'Likes'}</span>
@@ -742,7 +742,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
 
                   <button
                     onClick={() => handleLikeComment(comment.id)}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#fcfaf7] hover:bg-rose-50 text-[11px] font-bold text-[#707974] hover:text-rose-600 border border-[#e8e2d9] transition-colors"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#fcfaf7] hover:bg-emerald-50 text-[11px] font-bold text-[#707974] hover:text-emerald-700 border border-[#e8e2d9] transition-colors"
                     title={isMr ? 'पसंत करा' : 'Like'}
                   >
                     <span className="material-symbols-outlined text-[14px]">thumb_up</span>
