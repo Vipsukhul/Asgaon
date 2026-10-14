@@ -137,3 +137,18 @@ export interface HeroSlide {
   isActive: boolean;
   order: number;
 }
+
+export interface GalleryItem {
+  id: string;
+  imageUrl: string;
+  titleMarathi: string;
+  titleEnglish: string;
+  category: 'nature' | 'heritage' | 'development' | 'festival' | 'agriculture' | 'community';
+  descriptionMarathi?: string;
+  descriptionEnglish?: string;
+  location?: string;
+  date?: string;
+  credit?: string;
+  isFeatured: boolean;
+  order: number;
+}

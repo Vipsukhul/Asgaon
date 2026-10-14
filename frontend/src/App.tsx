@@ -9,6 +9,7 @@ import { FeaturedEnterprises } from './components/FeaturedEnterprises';
 import { JobsBoardSection } from './components/JobsBoardSection';
 import { GovtSchemesSection } from './components/GovtSchemesSection';
 import { PanchayatNoticeStrip } from './components/PanchayatNoticeStrip';
+import { VillageGallerySlider } from './components/VillageGallerySlider';
 import { Footer } from './components/Footer';
 import { VillageGraffitiBackdrop } from './components/WarliWallGraffiti';
 
@@ -29,6 +30,7 @@ import { WriteBlogPage } from './pages/WriteBlogPage';
 import { MarketplacePage } from './pages/MarketplacePage';
 import { AnnouncementsPage } from './pages/AnnouncementsPage';
 import { EventsPage } from './pages/EventsPage';
+import { GalleryPage } from './pages/GalleryPage';
 import { EmergencyPage } from './pages/EmergencyPage';
 import { ReviewsPage } from './pages/ReviewsPage';
 import { AdminPage } from './pages/AdminPage';
@@ -769,6 +771,12 @@ export function App() {
           />
         )}
 
+        {activeNav === 'gallery' && (
+          <GalleryPage
+            onNavigateHome={() => navigateTo('home')}
+          />
+        )}
+
         {activeNav === 'emergency' && (
           <EmergencyPage
             onNavigateHome={() => navigateTo('home')}
@@ -819,6 +827,14 @@ export function App() {
               onOpenRegisterShop={() => setRegisterShopOpen(true)}
               onOpenPostJob={() => setPostJobOpen(true)}
               mandiPrices={mandiPrices}
+            />
+
+            {/* Aesthetic Village Photo Gallery Slider */}
+            <VillageGallerySlider
+              onViewAll={() => {
+                setActiveNav('gallery');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             />
 
             {/* Live Mandi Bhaav Ticker */}

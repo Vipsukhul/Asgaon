@@ -15,7 +15,7 @@ interface BreadcrumbProps {
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, rightBadge }) => {
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-[12px] text-[#707974] gap-2 py-1">
-      <nav aria-label="Breadcrumb" className="flex items-center flex-wrap gap-1.5">
+      <nav aria-label="Breadcrumb" className="flex items-center flex-wrap gap-1.5 min-w-0 max-w-full">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
@@ -24,17 +24,20 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, rightBadge }) => 
                 <ChevronRight className="w-3.5 h-3.5 text-[#a0aaa5] select-none shrink-0" />
               )}
               {isLast || item.active || !item.onClick ? (
-                <span className="font-semibold text-[#1d1b16] flex items-center gap-1">
+                <span 
+                  className="font-semibold text-[#1d1b16] flex items-center gap-1 min-w-0 max-w-[140px] xs:max-w-[190px] sm:max-w-xs md:max-w-md lg:max-w-none truncate"
+                  title={item.label}
+                >
                   {index === 0 && (
                     <Home className="w-3.5 h-3.5 text-[#14532d] shrink-0" />
                   )}
-                  <span>{item.label}</span>
+                  <span className="truncate">{item.label}</span>
                 </span>
               ) : (
                 <button
                   type="button"
                   onClick={item.onClick}
-                  className="hover:text-[#166534] hover:underline font-medium text-[#55605a] transition-colors flex items-center gap-1 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#166534] rounded px-1 -mx-1"
+                  className="hover:text-[#166534] hover:underline font-medium text-[#55605a] transition-colors flex items-center gap-1 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#166534] rounded px-1 -mx-1 shrink-0"
                 >
                   {index === 0 && (
                     <Home className="w-3.5 h-3.5 shrink-0" />

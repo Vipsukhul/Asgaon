@@ -15,6 +15,7 @@ export const translations = {
   nav_announcements: { MR: 'ग्राम सूचना', EN: 'Announcements' },
   nav_events: { MR: 'गावातील कार्यक्रम', EN: 'Events' },
   nav_blogs: { MR: 'माहिती लेख', EN: 'Blogs' },
+  nav_gallery: { MR: 'छायाचित्र दालन', EN: 'Photo Gallery' },
   nav_emergency: { MR: 'संपर्क', EN: 'Contacts' },
   nav_grievances: { MR: 'नागरिक सेवा', EN: 'Citizen Services' },
   nav_profile: { MR: 'माझी प्रोफाइल', EN: 'My Profile' },

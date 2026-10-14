@@ -65,7 +65,6 @@ import {
   Pencil,
   FileEdit,
   Activity,
-  AlertCircle,
   Wrench,
   AlertOctagon,
   CalendarX,
@@ -164,6 +163,10 @@ import {
   BarChart3,
   GalleryHorizontal,
   BookUser,
+  Image,
+  Images,
+  Newspaper,
+  Contact,
   type LucideProps
 } from 'lucide-react';
 
@@ -171,6 +174,13 @@ const ICON_MAP: Record<string, React.ComponentType<LucideProps>> = {
   account_balance: Landmark,
   account_balance_wallet: Wallet,
   account_circle: UserCircle2,
+  article: Newspaper,
+  articles: Newspaper,
+  image: Image,
+  images: Images,
+  gallery: Images,
+  photo_library: Images,
+  contact: Contact,
   add: Plus,
   add_a_photo: Camera,
   add_business: Store,
@@ -237,7 +247,8 @@ const ICON_MAP: Record<string, React.ComponentType<LucideProps>> = {
   edit_note: FileEdit,
   electric_meter: Activity,
   electrical_services: Zap,
-  emergency: AlertCircle,
+  emergency: PhoneCall,
+  contact_phone: PhoneCall,
   engineering: Wrench,
   error: AlertOctagon,
   event: Calendar,
@@ -358,7 +369,10 @@ const ICON_MAP: Record<string, React.ComponentType<LucideProps>> = {
   wifi: Wifi,
   work: Briefcase,
   work_off: Briefcase,
-  workspace_premium: Crown
+  workspace_premium: Crown,
+  user: User,
+  user_circle: UserCircle2,
+  profile: UserCircle2
 };
 
 export interface LucideIconProps extends LucideProps {

@@ -435,20 +435,22 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
       />
 
       {/* 1. Breadcrumbs & Return Navigation */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <Breadcrumb
-          items={[
-            { label: t('nav_home'), onClick: onNavigateHome },
-            { label: t('nav_blogs'), onClick: onNavigateBack },
-            { label: currentTitle, active: true }
-          ]}
-        />
+      <div className="flex items-center justify-between gap-2.5">
+        <div className="min-w-0 flex-1">
+          <Breadcrumb
+            items={[
+              { label: t('nav_home'), onClick: onNavigateHome },
+              { label: t('nav_blogs'), onClick: onNavigateBack },
+              { label: currentTitle, active: true }
+            ]}
+          />
+        </div>
 
-        <div className="flex items-center gap-2 self-end sm:self-auto">
+        <div className="flex items-center gap-2 shrink-0">
           {onWriteBlog && (
             <button
               onClick={onWriteBlog}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#166534] text-[#a7f3d0] hover:bg-[#052e16] font-bold text-xs shadow-2xs transition-all"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#166534] text-[#a7f3d0] hover:bg-[#052e16] font-bold text-xs shadow-2xs transition-all"
             >
               <LucideIcon name="edit_note" className="text-[16px]" />
               <span>{isMr ? 'लेख लिहा' : 'Write Article'}</span>
@@ -457,7 +459,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
 
           <button
             onClick={onNavigateBack}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white border border-[#e8e2d9] text-[#166534] font-bold text-xs hover:bg-[#f9f3ea] shadow-2xs transition-all shrink-0"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#e8e2d9] text-[#166534] font-bold text-xs hover:bg-[#f9f3ea] shadow-2xs transition-all shrink-0 cursor-pointer"
           >
             <LucideIcon name="arrow_back" className="text-[16px]" />
             <span>{isMr ? 'मागे जा' : 'Back'}</span>

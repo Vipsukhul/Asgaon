@@ -207,16 +207,28 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
         structuredData={collectionSchema}
       />
 
-      {/* 1. Breadcrumbs */}
-      <Breadcrumb
-        items={[
-          { label: t('nav_home'), onClick: onNavigateHome },
-          { label: t('nav_blogs'), active: true }
-        ]}
-      />
+      {/* 1. Breadcrumbs & Mobile Title Header */}
+      <div className="flex flex-col gap-1.5">
+        <Breadcrumb
+          items={[
+            { label: t('nav_home'), onClick: onNavigateHome },
+            { label: t('nav_blogs'), active: true }
+          ]}
+        />
 
-      {/* 2. Community Blog Hero & Write Action Banner */}
-      <section className="bg-gradient-to-r from-[#166534] via-[#084535] to-[#0f533f] text-white rounded-3xl p-6 sm:p-8 shadow-sm border border-[#052e16] relative overflow-hidden">
+        {/* Mobile Clean Title Header (Compact and closely grouped with breadcrumbs) */}
+        <div className="md:hidden flex flex-col gap-0.5 pt-0.5">
+          <h1 className="font-heading font-black text-xl text-stone-900 tracking-tight leading-tight">
+            {lang === 'MR' ? 'आसगाव माहिती लेख' : 'Asgaon Village Blogs'}
+          </h1>
+          <p className="text-xs text-stone-500 font-medium">
+            {posts.length} {lang === 'MR' ? 'एकूण लेख • सर्व नागरिकांसाठी व्यासपीठ' : 'Total Articles • Open Platform'}
+          </p>
+        </div>
+      </div>
+
+      {/* 2. Desktop Community Blog Hero & Write Action Banner (Hidden on Mobile) */}
+      <section className="hidden md:block bg-gradient-to-r from-[#166534] via-[#084535] to-[#0f533f] text-white rounded-3xl p-6 sm:p-8 shadow-sm border border-[#052e16] relative overflow-hidden">
         {/* Decorative background circle */}
         <div className="absolute -right-12 -bottom-12 w-48 h-48 rounded-full bg-white/5 pointer-events-none blur-2xl"></div>
 
@@ -626,6 +638,25 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
         onPublish={handlePublishNewPost}
         currentUser={currentUser}
       />
+
+      {/* Circular Theme-Colored Sticky Floating Action Button with Floating Text Above (Mobile Only) */}
+      <div className="md:hidden fixed bottom-6 right-5 z-40 flex flex-col items-center gap-1.5 pointer-events-none">
+        {/* Text floating above the button without background */}
+        <span className="text-[11px] font-extrabold text-emerald-950 tracking-tight whitespace-nowrap select-none drop-shadow-[0_1px_3px_rgba(255,255,255,0.95)]">
+          {lang === 'MR' ? 'नवीन लेख लिहा ✍️' : 'Write Article ✍️'}
+        </span>
+
+        {/* Circular Button matching Theme Color */}
+        <button
+          type="button"
+          onClick={handleOpenWriteModal}
+          className="w-13 h-13 rounded-full bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white shadow-xl shadow-emerald-950/25 border-2 border-white flex items-center justify-center transition-all cursor-pointer select-none group pointer-events-auto"
+          aria-label={lang === 'MR' ? 'नवीन लेख लिहा' : 'Write New Article'}
+          title={lang === 'MR' ? 'नवीन लेख लिहा' : 'Write New Article'}
+        >
+          <LucideIcon name="edit" className="text-[22px] text-white group-hover:scale-110 transition-transform" />
+        </button>
+      </div>
     </div>
   );
 };

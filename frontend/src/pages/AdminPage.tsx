@@ -7,6 +7,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { sendTestPushNotification } from '../services/pushNotifications';
 import { AdminLogsSection } from '../components/AdminLogsSection';
 import { AdminBannerManager } from '../components/AdminBannerManager';
+import { AdminGalleryManager } from '../components/AdminGalleryManager';
 import {
   AdminManagementSection,
   getAllowedModulesForUser,
@@ -56,7 +57,7 @@ interface AdminPageProps {
 export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmin, onExit, onLogout }) => {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'businesses' | 'reviews' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users' | 'logs' | 'banners' | 'admin_management'
+    'overview' | 'businesses' | 'reviews' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users' | 'logs' | 'banners' | 'gallery' | 'admin_management'
   >('overview');
 
   // Customer Reviews Moderation State
@@ -1577,6 +1578,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               { id: 'businesses', label: `🏪 दुकाने व पडताळणी (${adminBusinesses.length})` },
               { id: 'reviews', label: `⭐ नागरिक अभिप्राय (${adminReviews.length})` },
               { id: 'banners', label: '🖼️ हिरो स्लायडर व बॅनर' },
+              { id: 'gallery', label: '📸 छायाचित्र दालन (Gallery)' },
               { id: 'events', label: `🎪 कार्यक्रम व जत्रा (${events.length})` },
               { id: 'shiksha', label: `🏫 शिक्षण व शाळा (${shikshaSchools.length})` },
               { id: 'transport', label: `🚌 वाहतूक व बसेस (${transportBuses.length})` },
@@ -1617,6 +1619,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           { id: 'businesses', icon: 'storefront', label: `दुकाने व पडताळणी (${adminBusinesses.length})` },
           { id: 'reviews', icon: 'rate_review', label: `नागरिक अभिप्राय (${adminReviews.length})` },
           { id: 'banners', icon: 'view_carousel', label: 'हिरो स्लायडर व बॅनर' },
+          { id: 'gallery', icon: 'photo_library', label: 'छायाचित्र दालन' },
           { id: 'events', icon: 'event', label: `कार्यक्रम व जत्रा (${events.length})` },
           { id: 'shiksha', icon: 'school', label: `शिक्षण व शाळा (${shikshaSchools.length})` },
           { id: 'transport', icon: 'directions_bus', label: `वाहतूक व बसेस (${transportBuses.length})` },
@@ -5744,6 +5747,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {/* TAB 15: HERO BANNERS & SLIDER CAROUSEL */}
       {activeTab === 'banners' && (
         <AdminBannerManager />
+      )}
+
+      {/* TAB 15B: VILLAGE PHOTO GALLERY & SLIDERS */}
+      {activeTab === 'gallery' && (
+        <AdminGalleryManager />
       )}
 
       {/* TAB 16: SUPER ADMIN ACCESS CONTROL & ADMIN MANAGEMENT */}

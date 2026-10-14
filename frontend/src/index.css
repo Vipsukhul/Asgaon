@@ -50,6 +50,8 @@ html, body {
   background-color: var(--site-bg);
   color: #1c1917;
   font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 /* =========================================================================
@@ -135,6 +137,28 @@ html, body {
   animation-play-state: paused;
 }
 
+/* Dedicated hardware-accelerated gallery marquee */
+@keyframes galleryMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-gallery-marquee {
+  display: flex;
+  width: max-content;
+  animation: galleryMarquee 38s linear infinite;
+  will-change: transform;
+}
+
+.animate-gallery-marquee:hover,
+.animate-gallery-marquee.is-paused {
+  animation-play-state: paused !important;
+}
+
 /* Fix Leaflet map z-index leaking above fixed navigation headers and modals */
 .leaflet-container {
   z-index: 0 !important;
@@ -151,7 +175,89 @@ html, body {
   }
 }
 
+@keyframes slideDrawerLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 .animate-slide-drawer {
   animation: slideDrawerIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+.animate-slide-drawer-left {
+  animation: slideDrawerLeft 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* =========================================================================
+   MODERN MICRO-INTERACTIONS, GLASSMORPHISM & AMBIENT GLOWS
+   ========================================================================= */
+
+/* Frosted Glass Container */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+/* Ambient Hover Glows (Themed by color) */
+.hover-glow-emerald:hover {
+  box-shadow: 0 14px 30px -6px rgba(16, 185, 129, 0.22), 0 0 16px 2px rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+}
+
+.hover-glow-sky:hover {
+  box-shadow: 0 14px 30px -6px rgba(14, 165, 233, 0.22), 0 0 16px 2px rgba(14, 165, 233, 0.12) !important;
+  border-color: rgba(14, 165, 233, 0.5) !important;
+}
+
+.hover-glow-indigo:hover {
+  box-shadow: 0 14px 30px -6px rgba(99, 102, 241, 0.22), 0 0 16px 2px rgba(99, 102, 241, 0.12) !important;
+  border-color: rgba(99, 102, 241, 0.5) !important;
+}
+
+.hover-glow-rose:hover {
+  box-shadow: 0 14px 30px -6px rgba(244, 63, 94, 0.22), 0 0 16px 2px rgba(244, 63, 94, 0.12) !important;
+  border-color: rgba(244, 63, 94, 0.5) !important;
+}
+
+.hover-glow-purple:hover {
+  box-shadow: 0 14px 30px -6px rgba(168, 85, 247, 0.22), 0 0 16px 2px rgba(168, 85, 247, 0.12) !important;
+  border-color: rgba(168, 85, 247, 0.5) !important;
+}
+
+.hover-glow-amber:hover {
+  box-shadow: 0 14px 30px -6px rgba(245, 158, 11, 0.22), 0 0 16px 2px rgba(245, 158, 11, 0.12) !important;
+  border-color: rgba(245, 158, 11, 0.5) !important;
+}
+
+/* Micro-Interaction 3D Card Lift */
+.card-micro-lift {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+
+.card-micro-lift:hover {
+  transform: translateY(-4px) scale(1.012);
+}
+
+/* Shimmer Skeleton Placeholder */
+@keyframes shimmerWave {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, rgba(235, 227, 213, 0.5) 25%, rgba(255, 255, 255, 0.85) 50%, rgba(235, 227, 213, 0.5) 75%);
+  background-size: 200% 100%;
+  animation: shimmerWave 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 

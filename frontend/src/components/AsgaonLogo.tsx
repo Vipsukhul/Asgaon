@@ -37,8 +37,8 @@ export const AsgaonLogo: React.FC<AsgaonLogoProps> = ({
       </div>
 
       {showText && (
-        <div className="flex flex-col leading-tight">
-          <div className="flex items-center gap-1.5">
+        <div className="flex flex-col leading-tight min-w-0">
+          <div className="flex items-center gap-1.5 whitespace-nowrap">
             <span className={`font-heading font-extrabold tracking-tight text-emerald-800 leading-none ${current.title}`}>
               Asgaon
             </span>
@@ -46,7 +46,7 @@ export const AsgaonLogo: React.FC<AsgaonLogoProps> = ({
               आसगाव
             </span>
           </div>
-          <span className={`uppercase font-bold tracking-wider text-[#c2410c] mt-0.5 ${current.sub}`}>
+          <span className={`uppercase font-bold tracking-wider text-[#c2410c] mt-0.5 whitespace-nowrap truncate ${current.sub}`}>
             Gram Panchayat • Pauni
           </span>
         </div>

@@ -17,8 +17,8 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
 }
 
 export async function registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
-  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-    console.log('Web Push is not supported in this browser.');
+  if (!('serviceWorker' in navigator)) {
+    console.log('Service Workers are not supported in this browser.');
     return null;
   }
 

@@ -1,5 +1,5 @@
 import { LucideIcon } from './LucideIcon';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { getStoredHeroSlides } from '../data/heroSlidesData';
 import { WarliTreeOfLife, WarliFarmerWithBullocks, WarliTarpaDance, WarliVillageHutAndSun } from './WarliWallGraffiti';
@@ -13,238 +13,330 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }) => {
   const { lang, t } = useLanguage();
+  const isMr = lang === 'MR';
+
   const [searchTerm, setSearchTerm] = useState('');
   const [slides, setSlides] = useState<HeroSlide[]>(() => {
     const list = getStoredHeroSlides();
-    return list.filter(s => s.isActive);
+    return list.filter((s) => s.isActive);
   });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+
+  // Swipe gesture tracking refs
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Sync slides if admin updates them in the portal
+  // Sync slides if updated in admin portal
   useEffect(() => {
     const handleUpdate = () => {
-      const updated = getStoredHeroSlides().filter(s => s.isActive);
+      const updated = getStoredHeroSlides().filter((s) => s.isActive);
       if (updated.length > 0) {
         setSlides(updated);
-        setCurrentIndex(prev => (prev >= updated.length ? 0 : prev));
+        setCurrentIndex((prev) => (prev >= updated.length ? 0 : prev));
       }
     };
     window.addEventListener('dg:hero-slides-updated', handleUpdate);
     return () => window.removeEventListener('dg:hero-slides-updated', handleUpdate);
   }, []);
 
-  // Auto-play slider (every 6 seconds, pauses on hover or user toggle)
+  const totalSlides = slides.length;
+
+  const goToNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % totalSlides);
+  }, [totalSlides]);
+
+  const goToPrev = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
+  }, [totalSlides]);
+
+  // Auto-play timer
   useEffect(() => {
-    if (slides.length <= 1 || isPaused) return;
+    if (totalSlides <= 1 || isPaused) return;
 
     autoPlayRef.current = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % slides.length);
-    }, 6500);
+      goToNext();
+    }, 6000);
 
     return () => {
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
     };
-  }, [slides.length, isPaused, currentIndex]);
+  }, [totalSlides, isPaused, goToNext]);
 
-  const goToNext = () => {
-    setCurrentIndex(prev => (prev + 1) % slides.length);
+  // Touch Swipe Handlers for mobile (Smooth swipe left/right, no vertical scroll blocking)
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   };
 
-  const goToPrev = () => {
-    setCurrentIndex(prev => (prev - 1 + slides.length) % slides.length);
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+
+    const deltaX = endX - touchStartX.current;
+    const deltaY = endY - touchStartY.current;
+
+    // Detect horizontal swipe if horizontal movement exceeds vertical and is > 40px
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+      if (deltaX < 0) {
+        // Swiped Left -> Next
+        goToNext();
+      } else {
+        // Swiped Right -> Previous
+        goToPrev();
+      }
+    }
+
+    touchStartX.current = null;
+    touchStartY.current = null;
   };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(searchTerm);
+    if (searchTerm.trim()) {
+      onSearch(searchTerm.trim());
+    }
   };
 
-  const currentSlide = slides[currentIndex] || slides[0];
+  if (totalSlides === 0) return null;
 
   return (
     <section
-      className="relative w-full rounded-3xl overflow-hidden shadow-sm mb-8 border border-[#e8e2d9] group select-none min-h-[460px] sm:min-h-[500px] flex flex-col justify-between"
+      className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-md mb-8 border border-[#e8e2d9] group select-none min-h-[420px] sm:min-h-[480px] md:min-h-[500px] flex flex-col justify-between transition-all duration-300"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
-      {/* ========================================================
-          SLIDE 1: WELCOME & UNIVERSAL SEARCH HUB
-          ======================================================== */}
-      {currentSlide.type === 'welcome' ? (
-        <div className="relative w-full h-full bg-gradient-to-br from-[#faf7f0] via-[#f5f1e6] to-[#ece5d4] p-6 sm:p-10 flex-1 flex flex-col justify-center items-center text-center overflow-hidden transition-all duration-700 border-b border-[#e2dcd0]">
-          {/* Ambient lighting */}
-          <div className="absolute -right-16 -bottom-16 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="absolute -left-12 -top-12 w-80 h-80 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+      {/* Container for all stacked slides with smooth cross-fade */}
+      <div className="relative w-full flex-1 min-h-[420px] sm:min-h-[480px] md:min-h-[500px] overflow-hidden">
+        {slides.map((slide, idx) => {
+          const isActive = idx === currentIndex;
 
-          {/* Authentic Gramin Warli Folk Graffiti Watermarks on Left & Right */}
-          <div className="absolute left-2 sm:left-6 top-8 bottom-8 flex flex-col justify-between pointer-events-none opacity-[0.14] text-emerald-950 select-none hidden md:flex">
-            <WarliTreeOfLife className="w-36 lg:w-44 h-auto" />
-            <WarliFarmerWithBullocks className="w-48 lg:w-56 h-auto" />
-          </div>
-          <div className="absolute right-2 sm:right-6 top-8 bottom-8 flex flex-col justify-between pointer-events-none opacity-[0.14] text-amber-950 select-none hidden md:flex items-end">
-            <WarliVillageHutAndSun className="w-36 lg:w-42 h-auto" />
-            <WarliTarpaDance className="w-44 lg:w-52 h-auto" />
-          </div>
+          return (
+            <div
+              key={slide.id || idx}
+              aria-hidden={!isActive}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
+                isActive
+                  ? 'opacity-100 z-10 pointer-events-auto'
+                  : 'opacity-0 z-0 pointer-events-none'
+              }`}
+            >
+              {slide.type === 'welcome' ? (
+                /* ========================================================
+                   SLIDE 1: WELCOME & UNIVERSAL SEARCH HUB
+                   ======================================================== */
+                <div className="relative w-full h-full bg-gradient-to-br from-[#faf7f0] via-[#f5f1e6] to-[#ece5d4] p-5 sm:p-8 md:p-10 flex flex-col justify-center items-center text-center overflow-hidden">
+                  {/* Subtle ambient lighting */}
+                  <div className="absolute -right-16 -bottom-16 w-80 h-80 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none" />
+                  <div className="absolute -left-12 -top-12 w-80 h-80 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
 
-          <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
-            {/* Top Village Badges */}
-            <div className="flex flex-wrap items-center justify-center gap-2 mb-3.5">
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white text-emerald-800 text-[12px] font-bold shadow-xs border border-emerald-200">
-                <LucideIcon name="location_on" className="text-[16px] text-emerald-700" />
-                <span>{t('village_full_location')}</span>
-              </span>
+                  {/* Warli Folk Graffiti Watermarks on Desktop */}
+                  <div className="absolute left-2 sm:left-6 top-8 bottom-8 flex flex-col justify-between pointer-events-none opacity-[0.14] text-emerald-950 select-none hidden md:flex">
+                    <WarliTreeOfLife className="w-36 lg:w-44 h-auto" />
+                    <WarliFarmerWithBullocks className="w-48 lg:w-56 h-auto" />
+                  </div>
+                  <div className="absolute right-2 sm:right-6 top-8 bottom-8 flex flex-col justify-between pointer-events-none opacity-[0.14] text-amber-950 select-none hidden md:flex items-end">
+                    <WarliVillageHutAndSun className="w-36 lg:w-42 h-auto" />
+                    <WarliTarpaDance className="w-44 lg:w-52 h-auto" />
+                  </div>
 
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-[12px] font-bold shadow-xs border border-emerald-300">
-                <LucideIcon name="spa" className="text-[16px] text-emerald-700" />
-                <span>{lang === 'MR' ? 'शेती, नागरिक व गावहित मंच' : 'Farmer & Village Civic Forum'}</span>
-              </span>
+                  <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
+                    {/* Top Badges */}
+                    <div className="flex flex-wrap items-center justify-center gap-2 mb-3">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-emerald-800 text-[11px] sm:text-xs font-bold shadow-xs border border-emerald-200">
+                        <LucideIcon name="location_on" className="text-[14px] text-emerald-700" />
+                        <span>{t('village_full_location')}</span>
+                      </span>
+
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100/90 text-emerald-950 text-[11px] sm:text-xs font-bold shadow-xs border border-emerald-300">
+                        <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+                        <span>{isMr ? 'शेती, नागरिक व गावहित मंच' : 'Farmer & Village Forum'}</span>
+                      </span>
+                    </div>
+
+                    {/* Main Headline */}
+                    <h1 className="font-heading font-black text-[28px] sm:text-[40px] md:text-[46px] text-emerald-950 tracking-tight mb-2 leading-tight">
+                      {isMr ? 'आपलं डिजिटल आसगाव' : 'Digital Asgaon Village Portal'}
+                    </h1>
+
+                    <p className="font-heading font-bold text-[15px] sm:text-[19px] text-emerald-800 mb-2 leading-snug max-w-2xl">
+                      {isMr
+                        ? 'गावातील सर्व सेवा, कृषी योजना, बाजारभाव व एसटी वेळापत्रक थेट मोबाईलवर!'
+                        : 'Village civic services, agriculture schemes, mandi rates & bus timings in one place!'}
+                    </p>
+
+                    <p className="text-[12px] sm:text-[13px] text-stone-600 mb-5 max-w-lg">
+                      {isMr
+                        ? 'ग्रामपंचायत • पवनी APMC बाजारभाव • प्राथमिक आरोग्य केंद्र • एसटी बस थांबा'
+                        : 'Gram Panchayat • Pauni APMC • Health Center • ST Bus Stand'}
+                    </p>
+
+                    {/* Modern Glassmorphic Search Bar */}
+                    <form
+                      onSubmit={handleSearch}
+                      className="w-full max-w-2xl bg-white/95 backdrop-blur-md rounded-2xl shadow-md p-1.5 sm:p-2 flex flex-col sm:flex-row items-center gap-2 border-2 border-emerald-700/25 focus-within:border-emerald-700 transition-all"
+                    >
+                      <div className="flex items-center w-full px-2.5 py-1.5">
+                        <LucideIcon name="search" className="text-emerald-800 text-[22px] sm:text-[24px] mr-2 shrink-0" />
+                        <input
+                          type="text"
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          placeholder={
+                            isMr
+                              ? 'खते, ट्रॅक्टर भाडे, लाडकी बहीण, एसटी बस, दवाखाना शोधा...'
+                              : 'Search fertilizer, tractor, Ladki Bahin, ST bus, clinic...'
+                          }
+                          className="w-full bg-transparent text-stone-900 text-sm sm:text-base font-medium placeholder:text-stone-400 focus:outline-none"
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs sm:text-sm font-bold whitespace-nowrap transition-all flex items-center justify-center gap-1.5 shadow-sm cursor-pointer shrink-0"
+                      >
+                        <LucideIcon name="travel_explore" className="text-[18px]" />
+                        <span>{isMr ? 'शोधा' : 'Search'}</span>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              ) : (
+                /* ========================================================
+                   CUSTOM IMAGE BANNER SLIDE (CINEMATIC FULL-BLEED)
+                   ======================================================== */
+                <div className="relative w-full h-full flex flex-col justify-end overflow-hidden bg-stone-950">
+                  {/* Background Photo with smooth Ken Burns zoom */}
+                  <img
+                    src={slide.imageUrl}
+                    alt={slide.titleEnglish || 'Asgaon Village Banner'}
+                    className={`absolute inset-0 w-full h-full object-cover object-center transition-transform duration-7000 ease-out ${
+                      isActive ? 'scale-106' : 'scale-100'
+                    }`}
+                  />
+
+                  {/* Cinematic Gradient Overlays */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
+
+                  {/* Text Overlay (if enabled) */}
+                  {slide.showTextOverlay && (
+                    <div className="relative z-10 p-5 sm:p-8 md:p-12 max-w-3xl pb-14 sm:pb-16">
+                      {/* Optional Badge */}
+                      {(slide.badgeMarathi || slide.badgeEnglish) && (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-amber-300 text-[10px] sm:text-xs font-black uppercase tracking-wider mb-2.5 shadow-md">
+                          <LucideIcon name="stars" className="text-[14px]" />
+                          <span>
+                            {isMr
+                              ? slide.badgeMarathi
+                              : slide.badgeEnglish || slide.badgeMarathi}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Main Headline */}
+                      <h2 className="font-heading font-black text-xl sm:text-3xl md:text-4xl text-white tracking-tight drop-shadow-md mb-1.5 leading-tight">
+                        {isMr
+                          ? slide.titleMarathi
+                          : slide.titleEnglish || slide.titleMarathi}
+                      </h2>
+
+                      {/* Subtitle / Description */}
+                      {(slide.subtitleMarathi || slide.subtitleEnglish) && (
+                        <p className="text-stone-200 text-xs sm:text-sm md:text-base font-medium max-w-2xl mb-4 leading-relaxed drop-shadow-xs line-clamp-2 sm:line-clamp-none">
+                          {isMr
+                            ? slide.subtitleMarathi
+                            : slide.subtitleEnglish || slide.subtitleMarathi}
+                        </p>
+                      )}
+
+                      {/* Action CTA Button */}
+                      {(slide.ctaTextMarathi || slide.ctaTextEnglish) && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (slide.ctaLink && onNavigate) {
+                              onNavigate(slide.ctaLink);
+                            }
+                          }}
+                          className="px-5 py-2 sm:px-6 sm:py-2.5 rounded-xl bg-white hover:bg-emerald-400 hover:text-emerald-950 text-stone-950 font-bold text-xs sm:text-sm transition-all inline-flex items-center gap-2 shadow-lg cursor-pointer active:scale-95"
+                        >
+                          <span>
+                            {isMr
+                              ? slide.ctaTextMarathi
+                              : slide.ctaTextEnglish || slide.ctaTextMarathi}
+                          </span>
+                          <LucideIcon name="arrow_forward" className="text-[16px]" />
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
-
-            {/* Main Headline */}
-            <h1 className="font-heading font-extrabold text-[32px] sm:text-[46px] text-emerald-900 tracking-tight mb-2 leading-tight">
-              {lang === 'MR' ? 'आपलं डिजिटल आसगाव' : 'Digital Asgaon Village Portal'}
-            </h1>
-            <p className="font-heading font-bold text-[17px] sm:text-[21px] text-emerald-800 mb-2 leading-snug max-w-2xl">
-              {lang === 'MR' ? 'गावातील सर्व सेवा, कृषी योजना, बाजारभाव व एसटी वेळापत्रक थेट मोबाईलवर!' : 'Village civic services, agriculture schemes, mandi rates & bus timings in one place!'}
-            </p>
-            <p className="text-[13px] sm:text-[14px] text-stone-600 mb-5 max-w-xl">
-              {lang === 'MR' ? 'ग्रामपंचायत • पवनी APMC बाजारभाव • प्राथमिक आरोग्य केंद्र • एसटी बस थांबा' : 'Gram Panchayat • Pauni APMC • Primary Health Centre • ST Bus Stand'}
-            </p>
-
-            {/* High-Contrast Universal Village Search Bar */}
-            <form onSubmit={handleSearch} className="w-full max-w-3xl bg-white rounded-2xl shadow-md p-2 flex flex-col md:flex-row items-center gap-2 border-2 border-emerald-700/20 focus-within:border-emerald-700 transition-all">
-              <div className="flex items-center w-full px-3 py-2">
-                <LucideIcon name="search" className="text-emerald-800 text-[26px] mr-2.5 shrink-0" />
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder={lang === 'MR' ? 'खते, ट्रॅक्टर भाडे, लाडकी बहीण, एसटी बस, दवाखाना शोधा...' : 'Search fertilizer, tractor rental, Ladki Bahin, ST bus, clinic...'}
-                  className="w-full bg-transparent text-stone-900 text-[15px] sm:text-[16px] font-medium placeholder:text-stone-400 focus:outline-none"
-                />
-                
-              </div>
-              <button
-                type="submit"
-                className="w-full md:w-auto px-8 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white text-[15px] font-extrabold whitespace-nowrap transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
-              >
-                <LucideIcon name="travel_explore" className="text-[20px]" />
-                <span>{lang === 'MR' ? 'शोधा' : 'Search'}</span>
-              </button>
-            </form>
-
-            
-          </div>
-        </div>
-      ) : (
-        /* ========================================================
-           CUSTOM BANNER SLIDE (IMAGE WITH OR WITHOUT TEXT OVERLAY)
-           ======================================================== */
-        <div className="relative w-full flex-1 flex flex-col justify-end min-h-[460px] sm:min-h-[500px] overflow-hidden bg-stone-900 transition-all duration-700">
-          {/* Background Photography */}
-          <img
-            src={currentSlide.imageUrl}
-            alt={currentSlide.titleEnglish || 'Asgaon Village Banner'}
-            className="absolute inset-0 w-full h-full object-cover object-center transform transition-transform duration-1000 scale-100 group-hover:scale-102"
-          />
-
-          {/* Conditional Gradient Overlay: Only applied if text overlay is enabled or subtle bottom vignette */}
-          {currentSlide.showTextOverlay ? (
-            <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent flex flex-col justify-end p-6 sm:p-12 z-10">
-              <div className="max-w-3xl">
-                {/* Optional Badge */}
-                {(currentSlide.badgeMarathi || currentSlide.badgeEnglish) && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400 text-stone-950 text-xs font-black uppercase tracking-wider mb-3 shadow-md">
-                    <LucideIcon name="stars" className="text-[15px]" />
-                    <span>{lang === 'MR' ? currentSlide.badgeMarathi : (currentSlide.badgeEnglish || currentSlide.badgeMarathi)}</span>
-                  </span>
-                )}
-
-                {/* Main Headline */}
-                <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-white tracking-tight drop-shadow-md mb-2 leading-tight">
-                  {lang === 'MR' ? currentSlide.titleMarathi : (currentSlide.titleEnglish || currentSlide.titleMarathi)}
-                </h2>
-
-                {/* Subtitle / Description */}
-                {(currentSlide.subtitleMarathi || currentSlide.subtitleEnglish) && (
-                  <p className="text-stone-200 text-sm sm:text-base font-medium max-w-2xl mb-5 leading-relaxed drop-shadow-xs">
-                    {lang === 'MR' ? currentSlide.subtitleMarathi : (currentSlide.subtitleEnglish || currentSlide.subtitleMarathi)}
-                  </p>
-                )}
-
-                {/* Action CTA Button */}
-                {(currentSlide.ctaTextMarathi || currentSlide.ctaTextEnglish) && (
-                  <button
-                    onClick={() => {
-                      if (currentSlide.ctaLink && onNavigate) {
-                        onNavigate(currentSlide.ctaLink);
-                      }
-                    }}
-                    className="px-6 py-2.5 rounded-xl bg-white text-stone-950 font-bold text-sm hover:bg-[#a7f3d0] hover:text-[#002117] transition-all inline-flex items-center gap-2 shadow-lg cursor-pointer"
-                  >
-                    <span>{lang === 'MR' ? currentSlide.ctaTextMarathi : (currentSlide.ctaTextEnglish || currentSlide.ctaTextMarathi)}</span>
-                    <LucideIcon name="arrow_forward" className="text-[18px]" />
-                  </button>
-                )}
-              </div>
-            </div>
-          ) : (
-            /* BLANK OPTIONABLE MODE: Pure photography without overlay text */
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
-          )}
-        </div>
-      )}
+          );
+        })}
+      </div>
 
       {/* ========================================================
-          SLIDER CONTROLS: PREV / NEXT ARROWS & PAGINATION DOTS
+          SLIDER CONTROLS:
+          - DESKTOP: Subtle floating arrows (hidden on mobile, visible on hover)
+          - MOBILE: Controlled 100% via smooth touch SWIPE (No awkward buttons!)
+          - BOTTOM: Clean, minimal floating pill progress indicators
           ======================================================== */}
-      {slides.length > 1 && (
+      {totalSlides > 1 && (
         <>
-          {/* Previous Slide Arrow */}
+          {/* Previous Arrow (Desktop ONLY, hidden on mobile) */}
           <button
             type="button"
             onClick={goToPrev}
             aria-label="Previous slide"
-            className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/70 hover:bg-white text-stone-900 flex items-center justify-center shadow-md backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all cursor-pointer hover:scale-105"
+            className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-stone-900 items-center justify-center shadow-lg backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer hover:scale-108 active:scale-95 border border-white/40"
           >
-            <LucideIcon name="chevron_left" className="text-xl" />
+            <LucideIcon name="chevron_left" className="text-[22px]" />
           </button>
 
-          {/* Next Slide Arrow */}
+          {/* Next Arrow (Desktop ONLY, hidden on mobile) */}
           <button
             type="button"
             onClick={goToNext}
             aria-label="Next slide"
-            className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/70 hover:bg-white text-stone-900 flex items-center justify-center shadow-md backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all cursor-pointer hover:scale-105"
+            className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-stone-900 items-center justify-center shadow-lg backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer hover:scale-108 active:scale-95 border border-white/40"
           >
-            <LucideIcon name="chevron_right" className="text-xl" />
+            <LucideIcon name="chevron_right" className="text-[22px]" />
           </button>
 
-          {/* Bottom Indicators & Pause Indicator */}
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
-            {slides.map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => setCurrentIndex(idx)}
-                aria-label={`Go to slide ${idx + 1}`}
-                className={`transition-all duration-300 rounded-full cursor-pointer ${
-                  currentIndex === idx
-                    ? 'w-6 h-2 bg-amber-400'
-                    : 'w-2 h-2 bg-white/60 hover:bg-white'
-                }`}
-              />
-            ))}
+          {/* Bottom Floating Minimalist Capsule Indicators */}
+          <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 shadow-lg">
+            {slides.map((_, idx) => {
+              const isSelected = currentIndex === idx;
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setCurrentIndex(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  className={`transition-all duration-300 rounded-full cursor-pointer ${
+                    isSelected
+                      ? 'w-7 h-2 bg-emerald-400 shadow-sm shadow-emerald-400/50'
+                      : 'w-2 h-2 bg-white/50 hover:bg-white/80'
+                  }`}
+                />
+              );
+            })}
 
+            {/* Play/Pause Minimal Toggle */}
             <button
               type="button"
-              onClick={() => setIsPaused(p => !p)}
-              className="text-white/80 hover:text-white ml-1 text-xs cursor-pointer flex items-center"
-              title={isPaused ? 'Resume auto-slider' : 'Pause auto-slider'}
+              onClick={() => setIsPaused((p) => !p)}
+              className="text-white/75 hover:text-white ml-0.5 text-xs cursor-pointer flex items-center justify-center"
+              title={isPaused ? (isMr ? 'प्ले करा' : 'Resume') : (isMr ? 'पॉज करा' : 'Pause')}
             >
-              <LucideIcon name={isPaused ? 'play_arrow' : 'pause'} className=" text-[14px]" />
+              <LucideIcon name={isPaused ? 'play_arrow' : 'pause'} className="text-[13px]" />
             </button>
           </div>
         </>

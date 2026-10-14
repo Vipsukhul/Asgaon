@@ -1,0 +1,63 @@
+{
+  "name": "आसगाव ग्राम माहिती व जनजागृती मंच",
+  "short_name": "आसगाव मंच",
+  "description": "आसगाव गावकऱ्यांसाठी स्वतंत्र माहिती, शासकीय योजना, कृषी बाजारभाव व नागरी सेवा मंच (पवनी, जि. भंडारा)",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ecfdf5",
+  "theme_color": "#166534",
+  "orientation": "portrait-primary",
+  "categories": ["government", "news", "productivity", "utilities"],
+  "lang": "mr",
+  "icons": [
+    {
+      "src": "/asgaon-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/asgaon-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/asgaon-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "कृषी व बाजारभाव",
+      "short_name": "बाजारभाव",
+      "description": "पवनी APMC थेट बाजारभाव",
+      "url": "/#krishi",
+      "icons": [{ "src": "/asgaon-logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "एसटी बस वेळापत्रक",
+      "short_name": "एसटी बस",
+      "description": "आसगाव बस थांबा वेळापत्रक",
+      "url": "/#transport",
+      "icons": [{ "src": "/asgaon-logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "शासकीय योजना",
+      "short_name": "योजना",
+      "description": "लाडकी बहीण, घरकुल व शेतकरी योजना",
+      "url": "/#schemes",
+      "icons": [{ "src": "/asgaon-logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "छायाचित्र दालन",
+      "short_name": "गॅलरी",
+      "description": "आसगाव ग्राम छायाचित्र दालन",
+      "url": "/gallery",
+      "icons": [{ "src": "/asgaon-logo.png", "sizes": "192x192" }]
+    }
+  ]
+}

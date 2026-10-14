@@ -7,6 +7,7 @@ export type AdminModuleId =
   | 'businesses'
   | 'reviews'
   | 'banners'
+  | 'gallery'
   | 'events'
   | 'shiksha'
   | 'transport'
@@ -131,6 +132,14 @@ export const ADMIN_MODULES_LIST: AdminModuleDefinition[] = [
     icon: 'view_carousel',
     category: 'CONTENT',
     description: 'मुख्य पृष्ठावरील मुख्य फोटो, घोषणा बॅनर व स्लायडर व्यवस्थापन'
+  },
+  {
+    id: 'gallery',
+    labelMarathi: 'छायाचित्र दालन (Gallery)',
+    labelEnglish: 'Photo Gallery & Sliders',
+    icon: 'photo_library',
+    category: 'CONTENT',
+    description: 'गावातील सुंदर छायाचित्रे, कॅटेगरीनुसार फोटो अल्बम आणि स्लायडर व्यवस्थापन'
   },
   {
     id: 'events',
