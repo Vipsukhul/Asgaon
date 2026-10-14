@@ -1,5 +1,6 @@
 import { LucideIcon } from '../components/LucideIcon';
 import React, { useState } from 'react';
+import { SlidersHorizontal, X, RotateCcw, Check } from 'lucide-react';
 import type { Business } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { LiveBusinessMap } from '../components/LiveBusinessMap';
@@ -23,7 +24,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
   onNavigateHome,
   onSelectBusinessSlug
 }) => {
-  const { lang, setLang, t } = useLanguage();
+  const { lang, t } = useLanguage();
   const [selectedCat, setSelectedCat] = useState('All');
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('nearest');
@@ -32,6 +33,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
   const [homeDelivery, setHomeDelivery] = useState(false);
   const [panchayatAccredited, setPanchayatAccredited] = useState(false);
   const [fssaiOnly, setFssaiOnly] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [bookmarkedIds, setBookmarkedIds] = useState<number[]>([]);
   const [viewMode, setViewMode] = useState<'list' | 'map' | 'both'>('list');
@@ -187,131 +189,332 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
         </div>
       </div>
 
-      {/* 3. Search, Filter & Sort Bar */}
-      <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-          <div className="relative w-full md:flex-1">
-            <LucideIcon name="search" className="absolute left-3 top-2.5 text-[#707974] text-[20px]" />
+      {/* 3. Search & Unified Filter Bar */}
+      <div className="bg-white rounded-2xl p-3 sm:p-4 border border-[#e8e2d9] shadow-xs flex flex-col gap-2.5">
+        <div className="flex items-center gap-2">
+          {/* Search Bar */}
+          <div className="relative flex-1">
+            <LucideIcon name="search" className="absolute left-3 top-2.5 text-[#707974] text-[18px]" />
             <input
               type="text"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={lang === 'MR' ? "दुकानाचे नाव, मालक, प्रकार, खूण शोधा (उदा. कृषी केंद्र, किराणा, ट्रॅक्टर दुरुस्ती, डॉक्टर)..." : "Search by shop name, owner, category, landmark (e.g. Krishi, Kirana, Tractor, Clinic)..."}
-              className="w-full pl-10 pr-10 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
+              onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
+              placeholder={lang === 'MR' ? "दुकानाचे नाव, प्रकार, मालक किंवा खूण शोधा..." : "Search shop by name, owner, category, landmark..."}
+              className="w-full pl-9 sm:pl-10 pr-9 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-xs sm:text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
-            <button
-              type="button"
-              onClick={() => alert(lang === 'MR' ? 'व्हॉइस सर्च तयार आहे! बोला...' : 'Voice search ready!')}
-              className="absolute right-3 top-2.5 text-[#166534] hover:text-[#052e16]"
-              title={lang === 'MR' ? 'व्हॉइस सर्च' : 'Voice Search'}
-            >
-              <LucideIcon name="mic" className="text-[19px]" />
-            </button>
+            {search && (
+              <button
+                type="button"
+                onClick={() => { setSearch(''); setCurrentPage(1); }}
+                className="absolute right-2.5 top-2.5 p-0.5 text-[#707974] hover:text-[#1d1b16] cursor-pointer"
+                aria-label="Clear Search"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
 
-          <div className="flex items-center gap-2 w-full md:w-auto shrink-0">
-            {/* Quick Language Toggle */}
+          {/* Desktop Only: View Mode Toggle Controls (between search and filter) */}
+          <div className="hidden md:flex items-center gap-1 bg-[#f9f3ea] p-1 rounded-xl border border-[#e8e2d9] shrink-0">
             <button
               type="button"
-              onClick={() => setLang(lang === 'MR' ? 'EN' : 'MR')}
-              className="px-2.5 py-1.5 rounded-xl text-[12px] font-bold bg-[#f9f3ea] hover:bg-[#e8e2d9] text-[#166534] border border-[#e8e2d9] flex items-center gap-1 transition-all"
-              title={lang === 'MR' ? 'Switch to English' : 'मराठीत बदला'}
-            >
-              <LucideIcon name="translate" className="text-[15px]" />
-              <span>{lang === 'MR' ? 'EN' : 'मराठी'}</span>
-            </button>
-
-            <span className="text-[12px] font-bold text-[#707974] flex items-center gap-1">
-              <LucideIcon name="sort" className="text-[16px]" />
-              <span>{lang === 'MR' ? 'क्रमवारी:' : 'Sort By:'}</span>
-            </span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="bg-[#f9f3ea] text-[#1d1b16] p-2 rounded-xl text-[12px] font-bold border border-[#e8e2d9] focus:outline-none"
-            >
-              <option value="nearest">{lang === 'MR' ? 'जवळचे व प्रमाणित प्रथम' : 'Nearest & Verified First'}</option>
-              <option value="rating">{lang === 'MR' ? 'रेटिंग: जास्त ते कमी' : 'Rating: High to Low'}</option>
-              <option value="name">{lang === 'MR' ? 'अकारविल्हे (A-Z)' : 'Alphabetical (A-Z)'}</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Category Pills Bar */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCat(cat.id)}
-              className={`px-3 py-1.5 rounded-xl text-[12px] font-bold transition-all whitespace-nowrap ${
-                selectedCat === cat.id
+              onClick={() => setViewMode('list')}
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[12px] font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                viewMode === 'list'
                   ? 'bg-[#166534] text-white shadow-xs'
-                  : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9] border border-[#e8e2d9]'
+                  : 'text-[#404945] hover:text-[#166534]'
               }`}
             >
-              {cat.label}
+              <LucideIcon name="view_list" className="text-[16px]" />
+              <span>{lang === 'MR' ? 'सूची' : 'List'}</span>
             </button>
-          ))}
+
+            <button
+              type="button"
+              onClick={() => {
+                setViewMode('map');
+                window.scrollTo({ top: 380, behavior: 'smooth' });
+              }}
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[12px] font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                viewMode === 'map'
+                  ? 'bg-[#166534] text-white shadow-xs'
+                  : 'text-[#404945] hover:text-[#166534]'
+              }`}
+            >
+              <LucideIcon name="map" className="text-[16px]" />
+              <span>{lang === 'MR' ? 'थेट नकाशा' : 'Live Map'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setViewMode('both');
+                window.scrollTo({ top: 380, behavior: 'smooth' });
+              }}
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[12px] font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                viewMode === 'both'
+                  ? 'bg-[#166534] text-white shadow-xs'
+                  : 'text-[#404945] hover:text-[#166534]'
+              }`}
+            >
+              <LucideIcon name="vertical_split" className="text-[16px]" />
+              <span>{lang === 'MR' ? 'दोन्ही' : 'Both'}</span>
+            </button>
+          </div>
+
+          {/* Corporate Filter Icon Button in Flex */}
+          <button
+            type="button"
+            onClick={() => setIsFilterOpen(true)}
+            className={`relative shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all shadow-xs ${
+              (selectedCat !== 'All' || openNow || whatsappOnly || homeDelivery || panchayatAccredited || fssaiOnly)
+                ? 'bg-[#166534] text-white border-[#166534] ring-2 ring-[#166534]/20'
+                : 'bg-[#f4efe8] text-[#1d1b16] border-[#e8e2d9] hover:bg-[#eae2d7]'
+            }`}
+            aria-label="Filter Outlets"
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            <span className="hidden sm:inline">{lang === 'MR' ? 'फिल्टर' : 'Filter'}</span>
+            {((selectedCat !== 'All' ? 1 : 0) + (openNow ? 1 : 0) + (whatsappOnly ? 1 : 0) + (homeDelivery ? 1 : 0) + (panchayatAccredited ? 1 : 0) + (fssaiOnly ? 1 : 0)) > 0 && (
+              <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-400 text-stone-900 text-[10px] sm:text-[11px] font-black flex items-center justify-center">
+                {(selectedCat !== 'All' ? 1 : 0) + (openNow ? 1 : 0) + (whatsappOnly ? 1 : 0) + (homeDelivery ? 1 : 0) + (panchayatAccredited ? 1 : 0) + (fssaiOnly ? 1 : 0)}
+              </span>
+            )}
+          </button>
         </div>
 
-        {/* Checkbox filters */}
-        <div className="flex flex-wrap items-center gap-4 pt-2 border-t border-[#f3ede4] text-[12px] font-medium text-[#404945]">
-          <label className="flex items-center gap-1.5 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={openNow}
-              onChange={(e) => { setOpenNow(e.target.checked); setCurrentPage(1); }}
-              className="w-4 h-4 accent-[#166534]"
-            />
-            <span>{lang === 'MR' ? 'सध्या सुरू' : 'Open Now'}</span>
-          </label>
-          <label className="flex items-center gap-1.5 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={whatsappOnly}
-              onChange={(e) => { setWhatsappOnly(e.target.checked); setCurrentPage(1); }}
-              className="w-4 h-4 accent-[#166534]"
-            />
-            <span>{lang === 'MR' ? 'व्हॉट्सॲप ऑर्डर' : 'WhatsApp Orders'}</span>
-          </label>
-          <label className="flex items-center gap-1.5 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={homeDelivery}
-              onChange={(e) => { setHomeDelivery(e.target.checked); setCurrentPage(1); }}
-              className="w-4 h-4 accent-[#166534]"
-            />
-            <span>{lang === 'MR' ? 'होम डिलिव्हरी' : 'Home Delivery'}</span>
-          </label>
-          <label className="flex items-center gap-1.5 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={panchayatAccredited}
-              onChange={(e) => { setPanchayatAccredited(e.target.checked); setCurrentPage(1); }}
-              className="w-4 h-4 accent-[#166534]"
-            />
-            <span>{lang === 'MR' ? 'प्रमाणित दुकाने' : 'Accredited Outlets'}</span>
-          </label>
-          <label className="flex items-center gap-1.5 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={fssaiOnly}
-              onChange={(e) => { setFssaiOnly(e.target.checked); setCurrentPage(1); }}
-              className="w-4 h-4 accent-[#166534]"
-            />
-            <span>{lang === 'MR' ? 'FSSAI / औषध परवाना' : 'FSSAI / Drug License'}</span>
-          </label>
-        </div>
+        {/* Active Filter Chips (Micro Row) */}
+        {((selectedCat !== 'All' ? 1 : 0) + (openNow ? 1 : 0) + (whatsappOnly ? 1 : 0) + (homeDelivery ? 1 : 0) + (panchayatAccredited ? 1 : 0) + (fssaiOnly ? 1 : 0)) > 0 && (
+          <div className="pt-2 border-t border-[#f0eee8] flex items-center gap-1.5 flex-wrap text-xs">
+            <span className="text-[11px] font-medium text-[#707974]">
+              {lang === 'MR' ? 'सक्रिय फिल्टर्स:' : 'Active:'}
+            </span>
+            {selectedCat !== 'All' && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {categories.find((c) => c.id === selectedCat)?.label}
+                <button onClick={() => setSelectedCat('All')} className="hover:opacity-70 ml-0.5" aria-label="Clear category">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {openNow && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {lang === 'MR' ? 'सध्या सुरू' : 'Open Now'}
+                <button onClick={() => setOpenNow(false)} className="hover:opacity-70 ml-0.5" aria-label="Clear open now">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {whatsappOnly && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {lang === 'MR' ? 'व्हॉट्सॲप ऑर्डर' : 'WhatsApp'}
+                <button onClick={() => setWhatsappOnly(false)} className="hover:opacity-70 ml-0.5" aria-label="Clear WhatsApp filter">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {homeDelivery && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {lang === 'MR' ? 'होम डिलिव्हरी' : 'Delivery'}
+                <button onClick={() => setHomeDelivery(false)} className="hover:opacity-70 ml-0.5" aria-label="Clear delivery filter">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {panchayatAccredited && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {lang === 'MR' ? 'प्रमाणित' : 'Accredited'}
+                <button onClick={() => setPanchayatAccredited(false)} className="hover:opacity-70 ml-0.5" aria-label="Clear accredited filter">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {fssaiOnly && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {lang === 'MR' ? 'FSSAI परवाना' : 'FSSAI'}
+                <button onClick={() => setFssaiOnly(false)} className="hover:opacity-70 ml-0.5" aria-label="Clear FSSAI filter">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            <button
+              onClick={() => {
+                setSelectedCat('All');
+                setOpenNow(false);
+                setWhatsappOnly(false);
+                setHomeDelivery(false);
+                setPanchayatAccredited(false);
+                setFssaiOnly(false);
+              }}
+              className="text-[11px] font-bold text-[#c2410c] hover:underline ml-1"
+            >
+              {lang === 'MR' ? 'सर्व काढा' : 'Clear all'}
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* Corporate Filter Modal / Bottom Sheet */}
+      {isFilterOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
+          onClick={() => setIsFilterOpen(false)}
+        >
+          <div
+            className="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-[#e8e2d9] flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-5 py-4 border-b border-[#e8e2d9] flex items-center justify-between bg-[#fdfbf7]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#e8f1ec] text-[#166534] flex items-center justify-center">
+                  <SlidersHorizontal className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#1d1b16]">
+                    {lang === 'MR' ? 'दुकाने व सेवा फिल्टर्स' : 'Filter Businesses'}
+                  </h3>
+                  <p className="text-[11px] text-[#707974]">
+                    {lang === 'MR' ? 'प्रकार, सेवा व क्रमवारीनुसार शोधा' : 'Filter by category, attributes & sort order'}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#f4efe8] hover:bg-[#eae2d7] text-[#707974] hover:text-[#1d1b16] flex items-center justify-center transition-all"
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 overflow-y-auto space-y-5 text-sm">
+              {/* Category Section */}
+              <div>
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider">
+                    {lang === 'MR' ? '१. दुकानांचा प्रकार' : '1. Business Category'}
+                  </span>
+                  {selectedCat !== 'All' && (
+                    <button
+                      onClick={() => setSelectedCat('All')}
+                      className="text-[11px] text-[#c2410c] font-semibold hover:underline"
+                    >
+                      {lang === 'MR' ? 'सर्व दाखवा' : 'Reset'}
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {categories.map((cat) => {
+                    const isSelected = selectedCat === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={() => { setSelectedCat(cat.id); setCurrentPage(1); }}
+                        className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                          isSelected
+                            ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                            : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                        }`}
+                      >
+                        <span className="truncate">{cat.label}</span>
+                        {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Attributes Section */}
+              <div>
+                <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider block mb-2.5">
+                  {lang === 'MR' ? '२. वैशिष्ट्ये व सुविधा' : '2. Outlet Features'}
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {[
+                    { key: 'openNow', label: lang === 'MR' ? 'सध्या सुरू' : 'Open Now', val: openNow, set: setOpenNow },
+                    { key: 'whatsappOnly', label: lang === 'MR' ? 'व्हॉट्सॲप ऑर्डर' : 'WhatsApp Orders', val: whatsappOnly, set: setWhatsappOnly },
+                    { key: 'homeDelivery', label: lang === 'MR' ? 'होम डिलिव्हरी' : 'Home Delivery', val: homeDelivery, set: setHomeDelivery },
+                    { key: 'panchayatAccredited', label: lang === 'MR' ? 'प्रमाणित व्यावसायिक' : 'Accredited Outlets', val: panchayatAccredited, set: setPanchayatAccredited },
+                    { key: 'fssaiOnly', label: lang === 'MR' ? 'FSSAI / औषध परवाना' : 'FSSAI / Drug License', val: fssaiOnly, set: setFssaiOnly }
+                  ].map((attr) => (
+                    <button
+                      key={attr.key}
+                      onClick={() => { attr.set(!attr.val); setCurrentPage(1); }}
+                      className={`px-3 py-2 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                        attr.val
+                          ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                          : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                      }`}
+                    >
+                      <span>{attr.label}</span>
+                      {attr.val && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sort By Section */}
+              <div>
+                <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider block mb-2">
+                  {lang === 'MR' ? '३. क्रमवारी (Sort)' : '3. Sort By'}
+                </span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-xs font-bold border border-[#e8e2d9] focus:outline-none"
+                >
+                  <option value="nearest">{lang === 'MR' ? 'जवळचे व प्रमाणित प्रथम' : 'Nearest & Verified First'}</option>
+                  <option value="rating">{lang === 'MR' ? 'रेटिंग: जास्त ते कमी' : 'Rating: High to Low'}</option>
+                  <option value="name">{lang === 'MR' ? 'अकारविल्हे (A-Z)' : 'Alphabetical (A-Z)'}</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-[#e8e2d9] bg-[#f9f3ea] flex items-center justify-between gap-3">
+              <button
+                onClick={() => {
+                  setSelectedCat('All');
+                  setOpenNow(false);
+                  setWhatsappOnly(false);
+                  setHomeDelivery(false);
+                  setPanchayatAccredited(false);
+                  setFssaiOnly(false);
+                }}
+                disabled={selectedCat === 'All' && !openNow && !whatsappOnly && !homeDelivery && !panchayatAccredited && !fssaiOnly}
+                className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  (selectedCat !== 'All' || openNow || whatsappOnly || homeDelivery || panchayatAccredited || fssaiOnly)
+                    ? 'text-[#c2410c] hover:bg-orange-100/60'
+                    : 'text-stone-400 cursor-not-allowed'
+                }`}
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>{lang === 'MR' ? 'सर्व रीसेट' : 'Clear All'}</span>
+              </button>
+
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="flex-1 sm:flex-initial px-6 py-2.5 rounded-xl bg-[#166534] text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-[#14532d] transition-all flex items-center justify-center gap-2"
+              >
+                <span>
+                  {lang === 'MR'
+                    ? `निकाल दाखवा (${filtered.length})`
+                    : `Show ${filtered.length} Outlets`}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 4. Main 2-Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: List of Detailed Enterprise Cards (2 cols wide) */}
         <div className="lg:col-span-2 flex flex-col gap-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            
-
-            {/* View Mode Toggle Controls */}
+          <div className="flex md:hidden flex-wrap items-center justify-between gap-3">
+            {/* View Mode Toggle Controls - Mobile Only */}
             <div className="flex items-center gap-1 bg-[#f9f3ea] p-1 rounded-xl border border-[#e8e2d9]">
               <button
                 type="button"
@@ -407,7 +610,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
             paginatedBusinesses.map((item) => (
               <div
                 key={item.id}
-                className="bg-white rounded-2xl p-4 sm:p-5 border border-[#e8e2d9] shadow-xs hover:shadow-md transition-all flex flex-col sm:flex-row gap-4"
+                className="group bg-white card-hover-subtle rounded-2xl p-4 sm:p-5 border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row gap-4"
               >
                 {/* Image Thumbnail */}
                 <div className="sm:w-44 h-40 sm:h-auto rounded-xl overflow-hidden bg-[#f3ede4] shrink-0 relative">

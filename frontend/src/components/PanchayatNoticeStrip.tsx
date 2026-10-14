@@ -39,8 +39,8 @@ export const PanchayatNoticeStrip: React.FC = () => {
 
       {/* 3 Quick Contact Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-        <div className="bg-white rounded-xl p-4 border-2 border-emerald-700/20 shadow-xs flex items-center gap-3">
-          <div className="h-11 w-11 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800 shrink-0">
+        <div className="group bg-white rounded-xl p-4 border border-emerald-200/90 hover:border-emerald-500 shadow-xs hover:shadow-xl hover:shadow-emerald-900/10 hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 cursor-pointer">
+          <div className="h-11 w-11 rounded-xl bg-emerald-50 group-hover:bg-emerald-100 flex items-center justify-center text-emerald-700 shrink-0 transition-all">
             <LucideIcon name="calendar_month" className="text-[24px]" />
           </div>
           <div>
@@ -53,29 +53,29 @@ export const PanchayatNoticeStrip: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-4 border-2 border-red-600/20 shadow-xs flex items-center gap-3">
-          <div className="h-11 w-11 rounded-xl bg-red-100 flex items-center justify-center text-red-800 shrink-0">
+        <div className="group bg-white rounded-xl p-4 border border-rose-200/90 hover:border-rose-500 shadow-xs hover:shadow-xl hover:shadow-rose-900/10 hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 cursor-pointer">
+          <div className="h-11 w-11 rounded-xl bg-rose-50 group-hover:bg-rose-100 flex items-center justify-center text-rose-700 shrink-0 transition-all">
             <LucideIcon name="medical_services" className="text-[24px]" />
           </div>
           <div>
             <div className="text-[11px] font-extrabold text-stone-500 uppercase tracking-wider">
               {lang === 'MR' ? 'प्राथमिक आरोग्य केंद्र वैद्यकीय अधिकारी' : 'PHC On-Call Doctor'}
             </div>
-            <a href="tel:9422001102" className="text-[14px] font-extrabold text-red-800 hover:underline mt-0.5 block">
+            <a href="tel:9422001102" onClick={(e) => e.stopPropagation()} className="text-[14px] font-extrabold text-rose-700 hover:underline mt-0.5 block">
               {lang === 'MR' ? 'डॉ. अनिता शिंदे (मो: ९४२२००११०२)' : 'Dr. Anita Shinde (Ph: 9422001102)'}
             </a>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-4 border-2 border-amber-600/20 shadow-xs flex items-center gap-3">
-          <div className="h-11 w-11 rounded-xl bg-amber-100 flex items-center justify-center text-amber-800 shrink-0">
+        <div className="group bg-white rounded-xl p-4 border border-amber-200/90 hover:border-amber-500 shadow-xs hover:shadow-xl hover:shadow-amber-900/10 hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 cursor-pointer">
+          <div className="h-11 w-11 rounded-xl bg-amber-50 group-hover:bg-amber-100 flex items-center justify-center text-amber-700 shrink-0 transition-all">
             <LucideIcon name="bolt" className="text-[24px]" />
           </div>
           <div>
             <div className="text-[11px] font-extrabold text-stone-500 uppercase tracking-wider">
               {lang === 'MR' ? 'महावितरण (वीज) कनिष्ठ अभियंता' : 'MSEDCL Junior Engineer'}
             </div>
-            <a href="tel:8888172233" className="text-[14px] font-extrabold text-[#c2410c] hover:underline mt-0.5 block">
+            <a href="tel:8888172233" onClick={(e) => e.stopPropagation()} className="text-[14px] font-extrabold text-amber-800 hover:underline mt-0.5 block">
               {lang === 'MR' ? 'आर. के. देशमुख (मो: ८८८८१७२२३३)' : 'R. K. Deshmukh (Ph: 8888172233)'}
             </a>
           </div>
@@ -83,7 +83,7 @@ export const PanchayatNoticeStrip: React.FC = () => {
       </div>
 
       {/* RTI & Transparency Box */}
-      <div className="bg-white rounded-xl p-4 border border-[#efe7dc] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div className="group bg-white rounded-xl p-4 border border-stone-200/80 hover:border-emerald-500 shadow-xs hover:shadow-md transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div className="flex items-start gap-2.5">
           <LucideIcon name="policy" className="text-[22px] text-emerald-800 mt-0.5 shrink-0" />
           <div>

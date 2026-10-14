@@ -179,7 +179,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
 
         <button
           onClick={onNavigateBack}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[12px] font-bold transition-colors border border-[#e8e2d9]"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-stone-50 text-[#1d1b16] text-[12px] font-bold transition-colors border border-[#e8e2d9] shadow-xs cursor-pointer"
         >
           <LucideIcon name="arrow_back" className="text-[16px]" />
           <span>{lang === 'MR' ? 'शिक्षण पोर्टलवर परत जा' : 'Back to Shiksha Portal'}</span>
@@ -228,7 +228,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 pt-4 border-t border-[#f3ede4]">
           {type === 'school' ? (
             <>
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+              <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'इयत्ता व वर्ग' : 'Grades & Classes'}
                 </div>
@@ -236,7 +236,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   {(data as SchoolItem).grades}
                 </div>
               </div>
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+              <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'शिक्षणाचे माध्यम' : 'Medium of Instruction'}
                 </div>
@@ -244,7 +244,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   {(data as SchoolItem).medium}
                 </div>
               </div>
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+              <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'संस्था प्रमुख / मुख्याध्यापक' : 'Head of Institution'}
                 </div>
@@ -252,7 +252,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   {(data as SchoolItem).principalName}
                 </div>
               </div>
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+              <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'संपर्क दूरध्वनी' : 'Contact Telephone'}
                 </div>
@@ -263,7 +263,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
             </>
           ) : type === 'abhyasika' ? (
             <>
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+              <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'एकूण अभ्यासिका जागा' : 'Total Study Desks'}
                 </div>
@@ -271,7 +271,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   {(data as AbhyasikaConfig).totalDesks} {lang === 'MR' ? 'जागा' : 'Study Desks'}
                 </div>
               </div>
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+              <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'उपलब्ध जागा' : 'Available Desks'}
                 </div>
@@ -279,7 +279,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   {(data as AbhyasikaConfig).availableDesks} {lang === 'MR' ? 'जागा रिक्त' : 'Desks Vacant'}
                 </div>
               </div>
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+              <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'अभ्यासिका वेळ' : 'Study Timings'}
                 </div>
@@ -287,7 +287,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   {(data as AbhyasikaConfig).timings}
                 </div>
               </div>
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+              <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'हाय-स्पीड वायफाय' : 'High-Speed WiFi'}
                 </div>
@@ -298,7 +298,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
             </>
           ) : (
             <>
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+              <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'शिकवले जाणारे विषय' : 'Subjects Taught'}
                 </div>
@@ -306,7 +306,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   {(data as TutorCenterItem).subjects}
                 </div>
               </div>
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+              <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'बॅच वेळ' : 'Batches Timing'}
                 </div>
@@ -314,7 +314,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   {(data as TutorCenterItem).timing}
                 </div>
               </div>
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+              <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'शुल्क रचना' : 'Course Fee Structure'}
                 </div>
@@ -322,7 +322,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   {(data as TutorCenterItem).feesInfo}
                 </div>
               </div>
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+              <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
                   {lang === 'MR' ? 'संचालक संपर्क' : 'Director Phone'}
                 </div>
@@ -483,7 +483,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                     onSelectShiksha(other.id);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="p-3.5 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] border border-[#e8e2d9] text-left transition-colors flex flex-col justify-between"
+                  className="p-3.5 rounded-xl bg-white card-hover-subtle hover:bg-stone-50 border border-[#e8e2d9] text-left transition-colors flex flex-col justify-between shadow-xs cursor-pointer"
                 >
                   <div>
                     <span className="text-[10px] font-bold uppercase text-[#002873] bg-[#dbe1ff] px-2 py-0.5 rounded">
@@ -505,7 +505,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   onSelectShiksha('abhyasika');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="p-3.5 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] border border-[#e8e2d9] text-left transition-colors flex flex-col justify-between"
+                className="p-3.5 rounded-xl bg-white card-hover-subtle hover:bg-stone-50 border border-[#e8e2d9] text-left transition-colors flex flex-col justify-between shadow-xs cursor-pointer"
               >
                 <div>
                   <span className="text-[10px] font-bold uppercase text-[#002873] bg-[#dbe1ff] px-2 py-0.5 rounded">

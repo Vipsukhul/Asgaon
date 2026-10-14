@@ -96,8 +96,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
                 <span>{t('village_full_location')}</span>
               </span>
 
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-100 text-amber-900 text-[12px] font-bold shadow-xs border border-amber-300">
-                <LucideIcon name="spa" className="text-[16px] text-amber-700" />
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-[12px] font-bold shadow-xs border border-emerald-300">
+                <LucideIcon name="spa" className="text-[16px] text-emerald-700" />
                 <span>{lang === 'MR' ? 'शेती, नागरिक व गावहित मंच' : 'Farmer & Village Civic Forum'}</span>
               </span>
             </div>
@@ -106,7 +106,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
             <h1 className="font-heading font-extrabold text-[32px] sm:text-[46px] text-emerald-900 tracking-tight mb-2 leading-tight">
               {lang === 'MR' ? 'आपलं डिजिटल आसगाव' : 'Digital Asgaon Village Portal'}
             </h1>
-            <p className="font-heading font-bold text-[17px] sm:text-[21px] text-[#c2410c] mb-2 leading-snug max-w-2xl">
+            <p className="font-heading font-bold text-[17px] sm:text-[21px] text-emerald-800 mb-2 leading-snug max-w-2xl">
               {lang === 'MR' ? 'गावातील सर्व सेवा, कृषी योजना, बाजारभाव व एसटी वेळापत्रक थेट मोबाईलवर!' : 'Village civic services, agriculture schemes, mandi rates & bus timings in one place!'}
             </p>
             <p className="text-[13px] sm:text-[14px] text-stone-600 mb-5 max-w-xl">

@@ -31,6 +31,18 @@ export interface BlogPost {
   }>;
 }
 
+export function slugifyTitle(title: string): string {
+  if (!title) return '';
+  return title
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/[\s_]+/g, '-')
+    .replace(/[^\p{L}\p{N}-]+/gu, '')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'untitled-post';
+}
+
 export interface BlogComment {
   id: string;
   blogSlug: string;
@@ -92,6 +104,8 @@ const BUS_COMMENTS: BlogComment[] = [
 ];
 
 export const DEFAULT_BLOG_COMMENTS: Record<string, BlogComment[]> = {
+  'c7f9e2b1': [],
+  'how-to-write-and-publish-community-blogs': [],
   'a8d4e2f9': GHARKUL_COMMENTS,
   'gharkul-yojana-2026-online-form-eligibility-asgaon': GHARKUL_COMMENTS,
   'b3f7a1c8': SATBARA_COMMENTS,
@@ -103,10 +117,10 @@ export const DEFAULT_BLOG_COMMENTS: Record<string, BlogComment[]> = {
 export const INITIAL_BLOG_POSTS: BlogPost[] = [
   {
     id: 'c7f9e2b1',
-    slug: 'c7f9e2b1',
+    slug: 'how-to-write-and-publish-community-blogs',
     title: 'How to Write and Publish Community Blogs on Asgaon Portal: Complete Author Guide',
     titleMarathi: 'आसगाव पोर्टलवर माहिती लेख व ब्लॉग कसा लिहावा? संपूर्ण लेखक मार्गदर्शक व पद्धत',
-    excerpt: 'Step-by-step guide for Asgaon citizens, farmers, youth, and village leaders on how to write, format, and publish articles with zero complexity.',
+    excerpt: 'Step-by-step guide for Asgaon citizens, farmers, youth, and village leaders on how to write, format, and publish  with zero complexity.',
     excerptMarathi: 'आसगाव गावातील शेतकरी, विद्यार्थी व ग्रामस्थांसाठी पोर्टलवर स्वतःचे शेती सल्ले, अनुभव व माहिती लेख कसे लिहावेत? साधी पद्धत, नियम व लेखनाची संपूर्ण माहिती.',
     content: `
 ### आसगाव पोर्टलवर लेख का लिहावा? (Why Write on Asgaon Portal?)

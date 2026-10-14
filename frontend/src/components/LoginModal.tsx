@@ -17,7 +17,6 @@ interface LoginModalProps {
 
 export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess }) => {
   const { lang, t } = useLanguage();
-  const [selectedRole, setSelectedRole] = useState('CITIZEN');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [infoMessage, setInfoMessage] = useState('');
@@ -27,36 +26,26 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
 
   const gsiContainerRef = useRef<HTMLDivElement>(null);
 
-  const roles = [
+  const loginBenefits = [
     {
-      id: 'CITIZEN',
-      label: lang === 'MR' ? 'नागरिक' : 'Citizen (नागरिक)',
-      icon: 'person',
-      desc: lang === 'MR' ? 'तक्रारी, शासकीय योजना व सार्वजनिक सेवा' : 'General civic services, complaints & schemes'
+      icon: 'bookmark',
+      title: lang === 'MR' ? 'योजना, नोकऱ्या व नोंदी जतन करा' : 'Save Schemes, Jobs & Listings',
+      desc: lang === 'MR' ? 'महत्त्वाची माहिती तुमच्या वैयक्तिक प्रोफाइलमध्ये एका क्लिकवर सेव्ह करा' : 'Quickly save useful village information in your personal profile'
     },
     {
-      id: 'FARMER',
-      label: lang === 'MR' ? 'शेतकरी' : 'Farmer (शेतकरी)',
-      icon: 'agriculture',
-      desc: lang === 'MR' ? 'बाजारभाव, कुसुम सौर पंप व कृषी अनुदान' : 'Mandi prices, KUSUM solar, farm grants'
+      icon: 'campaign',
+      title: lang === 'MR' ? 'नागरी तक्रार नोंदणी व थेट ट्रॅकिंग' : 'Lodge Complaints & Live Tracking',
+      desc: lang === 'MR' ? 'ग्रामपंचायतीकडे समस्या मांडून थेट निवारण स्थिती पहा' : 'Submit civic grievances and track resolution directly with Gram Sevak'
     },
     {
-      id: 'STUDENT',
-      label: lang === 'MR' ? 'विद्यार्थी' : 'Student (विद्यार्थी)',
-      icon: 'school',
-      desc: lang === 'MR' ? 'महाडीबीटी शिष्यवृत्ती, नोकऱ्या व परीक्षा' : 'MahaDBT scholarships, jobs & exam alerts'
+      icon: 'notifications_active',
+      title: lang === 'MR' ? 'कालवा पाणी, वीज व गाव प्रसारण' : 'Canal Water, Power & Village Alerts',
+      desc: lang === 'MR' ? 'शेती पाणी आवर्तन, वीज पुरवठा व शासकीय अधिसूचना मिळवा' : 'Receive instant updates for irrigation rosters, electricity, and official notices'
     },
     {
-      id: 'BUSINESS_OWNER',
-      label: lang === 'MR' ? 'व्यापारी' : 'Business (व्यापारी)',
-      icon: 'storefront',
-      desc: lang === 'MR' ? 'दुकान नोंदणी, जाहिरात व व्यापार' : 'Directory listing, promotions & trading'
-    },
-    {
-      id: 'SELLER',
-      label: lang === 'MR' ? 'विक्रेता' : 'Seller (विक्रेता)',
-      icon: 'shopping_bag',
-      desc: lang === 'MR' ? 'आठवडी बाजार व शेतीमाल खरेदी-विक्री' : 'Weekly bazaar, produce & marketplace sales'
+      icon: 'favorite',
+      title: lang === 'MR' ? 'माहिती लेख, लाईक व अभिप्राय' : 'Community Articles, Likes & Reviews',
+      desc: lang === 'MR' ? 'लेखांना पसंती द्या, चर्चा करा व स्थानिक दुकानांचे परीक्षण करा' : 'Like village blog posts, participate in discussions, and review local businesses'
     }
   ];
 
@@ -100,7 +89,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
       const timer = setTimeout(setupGsi, 500);
       return () => clearTimeout(timer);
     }
-  }, [isOpen, selectedRole]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -116,12 +105,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
     try {
       const res = await api.loginWithGoogle({
         idToken: response.credential,
-        role: selectedRole
+        role: 'CITIZEN'
       });
       if (res && res.token) {
         localStorage.setItem('dg_auth_token', res.token);
         localStorage.setItem('dg_user', JSON.stringify(res));
-        const primaryRole = (res.roles && res.roles.length > 0) ? res.roles[0].replace('ROLE_', '') : selectedRole;
+        const primaryRole = (res.roles && res.roles.length > 0) ? res.roles[0].replace('ROLE_', '') : 'CITIZEN';
         onLoginSuccess(primaryRole, res.phone || '', res.fullName, res.email);
         onClose();
       } else {
@@ -138,16 +127,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
   const handleDirectGoogleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!googleEmailInput.trim() || !googleEmailInput.includes('@')) {
-      setErrorMessage('Please enter a valid Gmail address.');
+      setErrorMessage(lang === 'MR' ? 'कृपया वैध गुगल / जीमेल पत्ता प्रविष्ट करा.' : 'Please enter a valid Gmail address.');
       return;
     }
 
     setLoading(true);
     setErrorMessage('');
-    setInfoMessage('Connecting Google account...');
+    setInfoMessage(lang === 'MR' ? 'गुगल खात्याशी जोडत आहे...' : 'Connecting Google account...');
 
     try {
-      // Craft simulated base64 Google token for development authentication
       const email = googleEmailInput.trim().toLowerCase();
       const name = googleNameInput.trim() || email.split('@')[0].replace(/[._]/g, ' ');
       const header = btoa(JSON.stringify({ alg: "RS256", typ: "JWT" }));
@@ -162,20 +150,20 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
 
       const res = await api.loginWithGoogle({
         idToken: mockIdToken,
-        role: selectedRole
+        role: 'CITIZEN'
       });
 
       if (res && res.token) {
         localStorage.setItem('dg_auth_token', res.token);
         localStorage.setItem('dg_user', JSON.stringify(res));
-        const primaryRole = (res.roles && res.roles.length > 0) ? res.roles[0].replace('ROLE_', '') : selectedRole;
+        const primaryRole = (res.roles && res.roles.length > 0) ? res.roles[0].replace('ROLE_', '') : 'CITIZEN';
         onLoginSuccess(primaryRole, res.phone || '', res.fullName || name, email);
         onClose();
       } else {
-        throw new Error('Google authentication could not be completed.');
+        throw new Error(lang === 'MR' ? 'लॉगिन पूर्ण होऊ शकले नाही.' : 'Google authentication could not be completed.');
       }
     } catch (err: any) {
-      setErrorMessage(err.message || 'Google authentication failed.');
+      setErrorMessage(err.message || (lang === 'MR' ? 'गुगल लॉगिन अयशस्वी झाले.' : 'Google authentication failed.'));
     } finally {
       setLoading(false);
     }
@@ -192,61 +180,41 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
             </div>
             <div>
               <h3 className="font-heading font-extrabold text-[18px] text-[#1d1b16] leading-tight">
-                {lang === 'MR' ? 'नागरिक व व्यापारी लॉगिन' : 'Asgaon Citizen Login'}
+                {lang === 'MR' ? 'नागरिक लॉगिन' : 'Citizen Login'}
               </h3>
               <p className="text-[12px] text-[#707974]">{t('village_full_location')}</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-[#707974] hover:text-[#1d1b16] p-1.5 rounded-lg hover:bg-[#f3ede4] transition-colors"
+            className="text-[#707974] hover:text-[#1d1b16] p-1.5 rounded-lg hover:bg-[#f3ede4] transition-colors cursor-pointer"
             title={t('header_close')}
           >
             <LucideIcon name="close" className="text-[20px]" />
           </button>
         </div>
 
-        {/* Informative Note */}
-        <div className="mb-4 bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] text-[12px] text-[#404945]">
-          <p className="font-semibold text-[#166534] mb-0.5">
-            {lang === 'MR' ? 'गुगल खात्याद्वारे सुरक्षित प्रवेश ' : 'Sign-In with Google'}
-          </p>
-          <p>
-            {lang === 'MR'
-              ? 'नवीन वापरकर्त्यांची स्वयंचलित नोंदणी होते. आधीपासून खाते असल्यास थेट लॉगिन होईल. लॉगिन न करताही सर्व माहिती मोफत वाचता येते.'
-              : 'New users are automatically registered. Existing accounts are logged in instantly. Browsing without logging in remains freely open across the portal.'}
-          </p>
-        </div>
+        {/* Highlighted Benefits Grid */}
+        <div className="mb-5 space-y-2">
+          <div className="text-[11px] font-extrabold uppercase tracking-wider text-[#707974] mb-1.5 flex items-center gap-1">
+            <LucideIcon name="stars" className="text-[14px] text-amber-600" />
+            <span>{lang === 'MR' ? 'लॉगिन करण्याचे मुख्य फायदे:' : 'Benefits of Signing In:'}</span>
+          </div>
 
-        {/* Role Selector before OAuth Login */}
-        <div className="mb-5">
-          <label className="block text-[12px] font-bold uppercase tracking-wider text-[#c2410c] mb-2 flex items-center gap-1">
-            <LucideIcon name="badge" className="text-[15px]" />
-            <span>{lang === 'MR' ? 'आपली प्राथमिक भूमिका निवडा:' : 'Select Your Primary Civic Profile:'}</span>
-          </label>
-          <div className="grid grid-cols-2 gap-2">
-            {roles.map((r) => (
-              <button
-                key={r.id}
-                type="button"
-                onClick={() => setSelectedRole(r.id)}
-                className={`p-2.5 rounded-xl border text-left transition-all flex items-center gap-2.5 ${
-                  selectedRole === r.id
-                    ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
-                    : 'bg-[#fcfaf7] text-[#1d1b16] border-[#e8e2d9] hover:bg-[#f3ede4]'
-                }`}
+          <div className="grid grid-cols-1 gap-2">
+            {loginBenefits.map((b, idx) => (
+              <div
+                key={idx}
+                className="p-2.5 rounded-xl bg-[#f9f3ea] card-hover-subtle border border-[#e8e2d9] flex items-start gap-2.5"
               >
-                <div
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
-                    selectedRole === r.id ? 'bg-[#052e16] text-[#a7f3d0]' : 'bg-[#e8e2d9] text-[#166534]'
-                  }`}
-                >
-                  <LucideIcon name={r.icon} className="text-[18px]" />
+                <div className="w-7 h-7 rounded-lg bg-[#e8f1ec] text-[#166534] flex items-center justify-center shrink-0 mt-0.5 border border-[#cadbcf]">
+                  <LucideIcon name={b.icon} className="text-[16px]" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="text-[12px] font-bold truncate leading-tight">{r.label}</div>
+                  <div className="text-[12px] font-bold text-[#1d1b16] leading-snug">{b.title}</div>
+                  <div className="text-[11px] text-[#707974] leading-tight mt-0.5">{b.desc}</div>
                 </div>
-              </button>
+              </div>
             ))}
           </div>
         </div>
@@ -268,28 +236,27 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
 
         {/* Primary OAuth Action */}
         {!showManualGoogleEmail ? (
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-3 pt-1">
             {/* Google Identity Services Render Target */}
             <div ref={gsiContainerRef} id="googleSignInBtn" className="w-full flex justify-center min-h-[44px]"></div>
 
-            
             <button
               type="button"
               onClick={() => setShowManualGoogleEmail(true)}
-              className="text-[11px] text-[#707974] hover:text-[#166534] underline transition-colors"
+              className="text-[11px] text-[#707974] hover:text-[#166534] underline transition-colors cursor-pointer"
             >
-              {lang === 'MR' ? 'किंवा गुगल ईमेल पत्त्याद्वारे लॉगिन करा' : 'Sign in with Google / Gmail address'}
+              {lang === 'MR' ? 'किंवा थेट जीमेल पत्त्याद्वारे लॉगिन करा' : 'Or sign in directly with Gmail address'}
             </button>
           </div>
         ) : (
           /* Google Account Direct Connect Form */
           <form onSubmit={handleDirectGoogleSubmit} className="flex flex-col gap-3">
             <div className="bg-[#f9f3ea] p-2.5 rounded-xl border border-[#e8e2d9] text-[12px] text-[#404945] flex items-center justify-between">
-              <span>{lang === 'MR' ? 'गुगल खाते पडताळणी' : 'Google Account Verification'}</span>
+              <span>{lang === 'MR' ? 'गुगल खाते थेट जोडणी' : 'Direct Gmail Sign-In'}</span>
               <button
                 type="button"
                 onClick={() => setShowManualGoogleEmail(false)}
-                className="text-[#006a4e] font-bold hover:underline"
+                className="text-[#006a4e] font-bold hover:underline cursor-pointer"
               >
                 {lang === 'MR' ? 'गुगल बटण वापरा' : 'Use Google Button'}
               </button>
@@ -326,14 +293,14 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
               <button
                 type="button"
                 onClick={() => setShowManualGoogleEmail(false)}
-                className="px-4 py-2 rounded-xl text-[12px] font-bold text-[#707974] hover:bg-[#f3ede4]"
+                className="px-4 py-2 rounded-xl text-[12px] font-bold text-[#707974] hover:bg-[#f3ede4] cursor-pointer"
               >
                 {lang === 'MR' ? 'मागे जा' : 'Back'}
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 rounded-xl bg-[#166534] text-white text-[13px] font-bold hover:bg-[#052e16] transition-colors shadow-xs disabled:opacity-50 flex items-center gap-1.5"
+                className="px-6 py-2 rounded-xl bg-[#166534] text-white text-[13px] font-bold hover:bg-[#052e16] transition-colors shadow-xs disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
               >
                 {loading ? (lang === 'MR' ? 'पडताळणी होत आहे...' : 'Signing in...') : (lang === 'MR' ? 'लॉगिन करा' : 'Sign In')}
               </button>
@@ -344,8 +311,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
         {/* Security Footer Note */}
         <div className="mt-5 pt-3 border-t border-[#f3ede4] text-center">
           <p className="text-[11px] text-[#707974] flex items-center justify-center gap-1">
-            <LucideIcon name="lock" className="text-[13px]" />
-            <span>{lang === 'MR' ? 'सुरक्षित व एन्क्रिप्टेड प्रणाली' : 'Secure & Encrypted Connection'}</span>
+            <LucideIcon name="lock" className="text-[13px] text-[#166534]" />
+            <span>{lang === 'MR' ? '१००% मोफत व सुरक्षित नागरिक प्रणाली' : '100% Free & Secure Citizen Platform'}</span>
           </p>
         </div>
       </div>

@@ -77,47 +77,17 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
           { label: t('nav_home'), onClick: onNavigateHome },
           { label: t('nav_emergency'), active: true }
         ]}
-        rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#fef3c7] text-[#93000a] px-3 py-1 rounded-full text-[11px] font-bold">
-            <LucideIcon name="e911_emergency" className="text-[15px] text-[#ba1a1a]" />
-            <span>{lang === 'MR' ? '२४x७ नागरिकांसाठी थेट मदत' : '24x7 Immediate Citizen Hotline'}</span>
-          </div>
-        }
+        
       />
-
-      <div className="bg-[#fef3c7] text-[#93000a] rounded-2xl p-6 border border-[#fde68a] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <LucideIcon name="e911_emergency" className="text-[28px] text-[#ba1a1a]" />
-            <h1 className="font-heading font-extrabold text-[24px] text-[#ba1a1a]">
-              {lang === 'MR' ? 'आसगाव २४/७ आपत्कालीन थेट संपर्क' : 'Asgaon 24/7 Emergency Speed-Dial Directory'}
-            </h1>
-          </div>
-          <p className="text-[13px] text-[#93000a] font-medium">
-            {lang === 'MR'
-              ? 'वैद्यकीय आणीबाणी, पोलीस मदत, सर्पदंश उपचार, वीज बिघाड व ग्रामपंचायत अधिकाऱ्यांशी १-क्लिक थेट संपर्क.'
-              : 'Immediate 1-touch telephone connection for medical emergencies, police, snake-bite response, power breakdown & panchayat officers.'}
-          </p>
-        </div>
-
-        <a
-          href="tel:112"
-          className="px-5 py-3 rounded-xl bg-[#ba1a1a] text-white hover:bg-[#93000a] text-[14px] font-bold flex items-center gap-2 shadow-sm transition-colors shrink-0"
-        >
-          <LucideIcon name="call" className="text-[20px]" />
-          <span>{lang === 'MR' ? 'डायल ११२ (पोलीस मदत)' : 'Dial 112 National Police'}</span>
-        </a>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {hotlines.map((h) => (
-          <div key={h.id} className="bg-white rounded-2xl p-5 border-2 border-emerald-700/15 hover:border-emerald-700 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
+          <div key={h.id} className="bg-white card-hover-subtle rounded-2xl p-5 border border-[#e8e2d9] shadow-xs flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-3">
                 <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${h.bg}`}>
                   {h.category}
                 </span>
-                <span className="text-[11px] font-bold text-stone-600 bg-[#faf6ee] px-2 py-0.5 rounded border border-[#efe7dc]">
+                <span className="text-[11px] font-bold text-stone-700 bg-stone-100 px-2 py-0.5 rounded border border-stone-200/60">
                   {h.badge}
                 </span>
               </div>
@@ -134,7 +104,7 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
               )}
             </div>
 
-            <div className="mt-4 pt-3 border-t border-[#efe7dc] flex items-center justify-between">
+            <div className="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between">
               <span className="font-mono text-base font-extrabold text-stone-900">{h.phone}</span>
               <a
                 href={`tel:${h.phone}`}

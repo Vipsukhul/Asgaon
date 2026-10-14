@@ -21,7 +21,10 @@ import {
   HelpCircle,
   Navigation,
   Compass,
- 
+  SlidersHorizontal,
+  X,
+  RotateCcw,
+  Check
 } from 'lucide-react';
 
 interface TransportPageProps {
@@ -35,6 +38,18 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome }) 
   const [timeFilter, setTimeFilter] = useState<'all' | 'morning' | 'afternoon' | 'evening' | 'night'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTab, setSelectedTab] = useState<'buses' | 'autos' | 'depots' | 'concessions'>('buses');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  // Close filter modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isFilterOpen) {
+        setIsFilterOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFilterOpen]);
 
   // Dynamic state loaded from localStorage, falling back to mock data
   const [buses, setBuses] = useState<BusSchedule[]>(() => {
@@ -213,7 +228,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome }) 
   };
 
   return (
-    <div className="min-h-screen bg-[#fcfaf7] text-[#1d1b16] pb-20">
+    <div className="w-full flex flex-col gap-6 font-sans">
       <SEOHead
         title="Asgaon ST Bus Time Table & Transport Schedule | आसगाव एसटी बस वेळापत्रक - पवनी, भंडारा, नागपूर"
         description="आसगाव एसटी बस वेळापत्रक - आसगाव ते पवनी, भंडारा, नागपूर, साकोली बसेसची वेळ, भाडे, महिला सन्मान योजना ५०% सवलत, गावातील रिक्षा चालक संपर्क."
@@ -222,79 +237,56 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome }) 
         structuredData={structuredData}
       />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-3 pb-2">
-        <Breadcrumb
-          items={[
-            { label: t('nav_home'), onClick: onNavigateHome },
-            { label: t('nav_transport'), active: true }
-          ]}
-        />
-      </div>
+      <Breadcrumb
+        items={[
+          { label: t('nav_home'), onClick: onNavigateHome },
+          { label: t('nav_transport'), active: true }
+        ]}
+      />
 
-      {/* Hero Header - Unified Village Deep Green Theme (#166534 / #14532d) */}
-      <div className="bg-gradient-to-r from-[#166534] via-[#14532d] to-[#052e16] text-white relative overflow-hidden border-b border-[#052e16]">
-        {/* Subtle Decorative Pattern */}
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
-
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-12 relative z-10">
-          <div className="max-w-3xl">
-            <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              {lang === 'MR' ? 'आसगाव एसटी बस वेळापत्रक' : 'Asgaon ST Bus Timetable'}
-            </h1>
-          </div>
-
-          {/* Next Upcoming Bus Banner Card */}
+      {/* Hero Header Banner - Standardized to Match All Other Pages */}
+      <header className="bg-white rounded-2xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div className="max-w-2xl">
+          <h1 className="font-heading font-extrabold text-[24px] sm:text-[28px] text-[#166534] leading-tight mb-1">
+            {lang === 'MR' ? 'आसगाव एसटी बस वेळापत्रक व वाहतूक' : 'Asgaon ST Bus Timetable & Transit'}
+          </h1>
+          <p className="font-heading font-bold text-[14px] sm:text-[15px] text-[#c2410c] mb-2">
+            {lang === 'MR' ? 'पवनी, भंडारा, नागपूर, साकोली बसेसची वेळ, थांबे, महिला सन्मान ५०% सवलत व रिक्षा संपर्क' : 'Live MSRTC bus schedules, Pauni & Bhandara routes, 50% Mahila discount pass & village autos'}
+          </p>
           {nextBus && (
-            <div className="mt-6 p-4 sm:p-5 rounded-2xl bg-black/20 backdrop-blur-md border border-white/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
-              <div className="flex items-center gap-3.5">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded text-[11px] font-black bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] uppercase tracking-wide">
-                      {lang === 'MR' ? 'पुढील बस' : 'NEXT BUS'}
-                    </span>
-                    <span className="text-xs text-[#1de607] font-medium">
-                      {lang === 'MR'
-                        ? `निघण्यास अंदाजे ${getMinutesDifferenceText(nextBus.departureTime24)}`
-                        : `Departs in approx ${getMinutesDifferenceText(nextBus.departureTime24)}`}
-                    </span>
-                  </div>
-                  <div className="text-lg sm:text-xl font-bold text-white mt-1 flex items-center gap-2">
-                    <span>{lang === 'MR' ? nextBus.sourceMarathi : nextBus.source}</span>
-                    <ArrowRight className="w-4 h-4 text-[#a7f3d0]" />
-                    <span>{lang === 'MR' ? nextBus.destinationMarathi : nextBus.destination}</span>
-                    <span className="text-xs font-normal text-[#a7f3d0]/90">
-                      ({lang === 'MR' ? nextBus.busTypeMarathi : nextBus.busType})
-                    </span>
-                  </div>
-                  <div className="text-xs text-[#d6eee4]/80 mt-0.5">
-                    {lang === 'MR' ? 'वेळ:' : 'Time:'} <strong className="text-white font-mono">{nextBus.departureTime}</strong> • {lang === 'MR' ? 'थांबा:' : 'Stop:'} {lang === 'MR' ? nextBus.boardingPointMarathi : nextBus.boardingPointAtAsgaon}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2.5 w-full sm:w-auto">
-                <button
-                  onClick={() => handleShareBus(nextBus)}
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#006a4e] hover:bg-[#00523e] text-white text-xs font-bold transition-all shadow-md border border-[#cadbcf]/30"
-                >
-                  <Share2 className="w-3.5 h-3.5" />
-                  <span>{lang === 'MR' ? 'वेळ शेअर करा' : 'Share Timing'}</span>
-                </button>
-                <a
-                  href={`tel:${depots[0]?.phone || '07185-255342'}`}
-                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/20 transition-all"
-                >
-                  <Phone className="w-3.5 h-3.5" />
-                  <span>{lang === 'MR' ? 'आगार चौकशी' : 'Depot Inquiry'}</span>
-                </a>
-              </div>
+            <div className="inline-flex items-center gap-2 mt-1 px-3 py-1.5 rounded-xl bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-xs font-bold">
+              <span className="uppercase text-[10px] bg-[#166534] text-white px-1.5 py-0.5 rounded font-black">{lang === 'MR' ? 'पुढील बस' : 'Next Bus'}</span>
+              <span>{lang === 'MR' ? nextBus.destinationMarathi : nextBus.destination}</span>
+              <span className="font-mono text-stone-900 font-extrabold">{nextBus.departureTime}</span>
+              <span className="text-emerald-700 font-semibold">({getMinutesDifferenceText(nextBus.departureTime24)})</span>
             </div>
           )}
         </div>
-      </div>
 
-      {/* Main Container */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-6 relative z-20">
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 w-full lg:w-72 shrink-0">
+          <a
+            href={`tel:${depots[0]?.phone || '07185-255342'}`}
+            className="w-full py-2.5 px-4 rounded-xl bg-[#166534] hover:bg-[#14532d] text-white text-[13px] font-bold flex items-center justify-center gap-2 transition-colors shadow-xs"
+          >
+            <Phone className="w-4 h-4" />
+            <span>{lang === 'MR' ? 'पवनी आगार चौकशी' : 'Pauni Depot Helpline'}</span>
+          </a>
+          {nextBus && (
+            <button
+              type="button"
+              onClick={() => handleShareBus(nextBus)}
+              className="w-full py-2.5 px-4 rounded-xl bg-[#f9f3ea] hover:bg-[#efe7dc] text-[#166534] border border-[#e8e2d9] text-[13px] font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            >
+              <Share2 className="w-4 h-4" />
+              <span>{lang === 'MR' ? 'वेळ शेअर करा' : 'Share Timing'}</span>
+            </button>
+          )}
+        </div>
+      </header>
+
+      {/* Main Content Area */}
+      <div className="flex flex-col gap-6">
         {/* Navigation Tabs - Matched to Application Theme */}
         <div className="bg-white rounded-2xl shadow-md border border-[#e8e2d9] p-1.5 flex overflow-x-auto gap-1">
           <button
@@ -345,94 +337,264 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome }) 
         {/* TAB 1: BUSES */}
         {selectedTab === 'buses' && (
           <div className="mt-6 space-y-6">
-            {/* Search and Filters Bar */}
-            <div className="bg-white rounded-2xl shadow-xs border border-[#e8e2d9] p-4 sm:p-5">
-              <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+            {/* Search and Unified Filter Bar */}
+            <div className="bg-white rounded-2xl shadow-xs border border-[#e8e2d9] p-3 sm:p-4">
+              <div className="flex items-center gap-2">
                 {/* Search */}
                 <div className="relative flex-1">
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={lang === 'MR' ? 'गाव, शहर, आगार किंवा थांबा शोधा (उदा. पवनी, भंडारा, नागपूर)...' : 'Search destination, city, depot or stop...'}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#e8e2d9] text-sm focus:outline-none focus:border-[#166534] focus:ring-2 focus:ring-[#166534]/20 bg-[#f9f3ea]"
+                    placeholder={lang === 'MR' ? 'गाव, शहर, आगार किंवा थांबा शोधा...' : 'Search destination, city, depot or stop...'}
+                    className="w-full pl-9 sm:pl-10 pr-8 sm:pr-9 py-2.5 rounded-xl border border-[#e8e2d9] text-xs sm:text-sm focus:outline-none focus:border-[#166534] focus:ring-2 focus:ring-[#166534]/20 bg-[#f9f3ea] text-[#1d1b16] placeholder:text-[#707974]"
                   />
-                  <Navigation className="w-4 h-4 text-[#707974] absolute left-3.5 top-3.5" />
+                  <Navigation className="w-4 h-4 text-[#707974] absolute left-3 top-3 pointer-events-none" />
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-3 text-xs text-[#707974] hover:text-[#1d1b16]"
+                      className="absolute right-2.5 top-2.5 p-0.5 text-[#707974] hover:text-[#1d1b16]"
+                      aria-label="Clear search"
                     >
-                      Clear
+                      <X className="w-3.5 h-3.5" />
                     </button>
                   )}
                 </div>
 
-                {/* Time Filter */}
-                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
-                  <span className="text-xs font-bold text-[#707974] whitespace-nowrap mr-1">
-                    {lang === 'MR' ? 'वेळ:' : 'Time:'}
+                {/* Filter Icon Button in Flex */}
+                <button
+                  type="button"
+                  onClick={() => setIsFilterOpen(true)}
+                  className={`relative shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all shadow-xs ${
+                    (selectedRouteFilter !== 'all' || timeFilter !== 'all')
+                      ? 'bg-[#166534] text-white border-[#166534] ring-2 ring-[#166534]/20'
+                      : 'bg-[#f4efe8] text-[#1d1b16] border-[#e8e2d9] hover:bg-[#eae2d7]'
+                  }`}
+                  aria-label="Open filter options"
+                >
+                  <SlidersHorizontal className="w-4 h-4" />
+                  <span className="hidden sm:inline">
+                    {lang === 'MR' ? 'फिल्टर' : 'Filter'}
                   </span>
-                  {(
-                    [
-                      { id: 'all', label: lang === 'MR' ? 'सर्व' : 'All' },
-                      { id: 'morning', label: lang === 'MR' ? 'सकाळ (६-१२)' : 'Morning' },
-                      { id: 'afternoon', label: lang === 'MR' ? 'दुपार (१२-४)' : 'Afternoon' },
-                      { id: 'evening', label: lang === 'MR' ? 'सायंकाळ (४-९)' : 'Evening' },
-                      { id: 'night', label: lang === 'MR' ? 'रात्र (९ नंतर)' : 'Night' }
-                    ] as const
-                  ).map((t) => (
-                    <button
-                      key={t.id}
-                      onClick={() => setTimeFilter(t.id)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${timeFilter === t.id
-                          ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] border border-[#006a4e]'
-                          : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
-                        }`}
-                    >
-                      {t.label}
-                    </button>
-                  ))}
-                </div>
+                  {(selectedRouteFilter !== 'all' || timeFilter !== 'all') && (
+                    <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-400 text-stone-900 text-[10px] sm:text-[11px] font-black flex items-center justify-center">
+                      {(selectedRouteFilter !== 'all' ? 1 : 0) + (timeFilter !== 'all' ? 1 : 0)}
+                    </span>
+                  )}
+                </button>
               </div>
 
-              {/* Route Destination Quick Tabs */}
-              <div className="mt-4 pt-4 border-t border-[#f0eee8] flex items-center gap-2 overflow-x-auto">
-                <span className="text-xs font-bold text-[#707974] whitespace-nowrap mr-1">
-                  {lang === 'MR' ? 'मार्ग:' : 'Route:'}
-                </span>
-                {(
-                  [
-                    { id: 'all', label: lang === 'MR' ? 'सर्व मार्ग' : 'All Routes' },
-                    { id: 'pauni', label: lang === 'MR' ? 'पवनी' : 'Pauni' },
-                    { id: 'bhandara', label: lang === 'MR' ? 'भंडारा' : 'Bhandara' },
-                    { id: 'nagpur', label: lang === 'MR' ? 'नागपूर' : 'Nagpur' },
-                    { id: 'other', label: lang === 'MR' ? 'साकोली / इतर' : 'Other' },
-                    { id: 'incoming', label: lang === 'MR' ? 'आसगावात येणाऱ्या' : 'Incoming' }
-                  ] as const
-                ).map((r) => (
+              {/* Active Filter Chips (Ultra-compact dismissible bar, appears ONLY when filters active) */}
+              {(selectedRouteFilter !== 'all' || timeFilter !== 'all') && (
+                <div className="mt-2.5 pt-2 border-t border-[#f0eee8] flex items-center gap-1.5 flex-wrap text-xs">
+                  <span className="text-[11px] font-medium text-[#707974]">
+                    {lang === 'MR' ? 'सक्रिय फिल्टर्स:' : 'Active:'}
+                  </span>
+                  {selectedRouteFilter !== 'all' && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                      {selectedRouteFilter === 'pauni' ? (lang === 'MR' ? 'पवनी' : 'Pauni') :
+                       selectedRouteFilter === 'bhandara' ? (lang === 'MR' ? 'भंडारा' : 'Bhandara') :
+                       selectedRouteFilter === 'nagpur' ? (lang === 'MR' ? 'नागपूर' : 'Nagpur') :
+                       selectedRouteFilter === 'incoming' ? (lang === 'MR' ? 'आसगावात येणाऱ्या' : 'Incoming') :
+                       (lang === 'MR' ? 'साकोली / इतर' : 'Other')}
+                      <button
+                        onClick={() => setSelectedRouteFilter('all')}
+                        className="hover:opacity-70 ml-0.5"
+                        aria-label="Clear route filter"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </span>
+                  )}
+                  {timeFilter !== 'all' && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                      {timeFilter === 'morning' ? (lang === 'MR' ? 'सकाळ (६-१२)' : 'Morning') :
+                       timeFilter === 'afternoon' ? (lang === 'MR' ? 'दुपार (१२-४)' : 'Afternoon') :
+                       timeFilter === 'evening' ? (lang === 'MR' ? 'सायंकाळ (४-९)' : 'Evening') :
+                       (lang === 'MR' ? 'रात्र (९ नंतर)' : 'Night')}
+                      <button
+                        onClick={() => setTimeFilter('all')}
+                        className="hover:opacity-70 ml-0.5"
+                        aria-label="Clear time filter"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </span>
+                  )}
                   <button
-                    key={r.id}
-                    onClick={() => setSelectedRouteFilter(r.id)}
-                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${selectedRouteFilter === r.id
-                        ? 'bg-[#166534] text-[#a7f3d0] shadow-xs'
-                        : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
-                      }`}
+                    onClick={() => {
+                      setSelectedRouteFilter('all');
+                      setTimeFilter('all');
+                    }}
+                    className="text-[11px] font-bold text-[#c2410c] hover:underline ml-1"
                   >
-                    {r.label}
+                    {lang === 'MR' ? 'सर्व काढा' : 'Clear all'}
                   </button>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
+
+            {/* Filter Dialog Modal / Mobile Bottom Sheet */}
+            {isFilterOpen && (
+              <div
+                className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
+                onClick={() => setIsFilterOpen(false)}
+              >
+                <div
+                  className="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-[#e8e2d9] flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Modal Header */}
+                  <div className="px-5 py-4 border-b border-[#e8e2d9] flex items-center justify-between bg-[#fdfbf7]">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-[#e8f1ec] text-[#166534] flex items-center justify-center">
+                        <SlidersHorizontal className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-bold text-[#1d1b16]">
+                          {lang === 'MR' ? 'बस वेळापत्रक फिल्टर्स' : 'Filter Bus Schedules'}
+                        </h3>
+                        <p className="text-[11px] text-[#707974]">
+                          {lang === 'MR'
+                            ? 'मार्ग व वेळेनुसार आवश्यक बस निवडा'
+                            : 'Filter buses by destination route and departure time'}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setIsFilterOpen(false)}
+                      className="w-8 h-8 rounded-full bg-[#f4efe8] hover:bg-[#eae2d7] text-[#707974] hover:text-[#1d1b16] flex items-center justify-center transition-all"
+                      aria-label="Close filters"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  {/* Modal Body */}
+                  <div className="p-5 overflow-y-auto space-y-5 text-sm">
+                    {/* Section 1: Route Destination */}
+                    <div>
+                      <div className="flex items-center justify-between mb-2.5">
+                        <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider">
+                          {lang === 'MR' ? '१. मार्ग / गंतव्यस्थान' : '1. Route / Destination'}
+                        </span>
+                        {selectedRouteFilter !== 'all' && (
+                          <button
+                            onClick={() => setSelectedRouteFilter('all')}
+                            className="text-[11px] text-[#c2410c] font-semibold hover:underline"
+                          >
+                            {lang === 'MR' ? 'सर्व दाखवा' : 'Reset'}
+                          </button>
+                        )}
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {[
+                          { id: 'all', label: lang === 'MR' ? 'सर्व मार्ग' : 'All Routes' },
+                          { id: 'pauni', label: lang === 'MR' ? 'पवनी' : 'Pauni' },
+                          { id: 'bhandara', label: lang === 'MR' ? 'भंडारा' : 'Bhandara' },
+                          { id: 'nagpur', label: lang === 'MR' ? 'नागपूर' : 'Nagpur' },
+                          { id: 'other', label: lang === 'MR' ? 'साकोली / इतर' : 'Other' },
+                          { id: 'incoming', label: lang === 'MR' ? 'आसगावात येणाऱ्या' : 'Incoming' }
+                        ].map((r) => {
+                          const isSelected = selectedRouteFilter === r.id;
+                          return (
+                            <button
+                              key={r.id}
+                              onClick={() => setSelectedRouteFilter(r.id as any)}
+                              className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                                isSelected
+                                  ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                                  : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                              }`}
+                            >
+                              <span className="truncate">{r.label}</span>
+                              {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Section 2: Time of Day */}
+                    <div>
+                      <div className="flex items-center justify-between mb-2.5">
+                        <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider">
+                          {lang === 'MR' ? '२. प्रस्थान वेळ' : '2. Departure Time'}
+                        </span>
+                        {timeFilter !== 'all' && (
+                          <button
+                            onClick={() => setTimeFilter('all')}
+                            className="text-[11px] text-[#c2410c] font-semibold hover:underline"
+                          >
+                            {lang === 'MR' ? 'सर्व दाखवा' : 'Reset'}
+                          </button>
+                        )}
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {[
+                          { id: 'all', label: lang === 'MR' ? 'सर्व वेळ' : 'All Times' },
+                          { id: 'morning', label: lang === 'MR' ? 'सकाळ (०६:०० ते १२:००)' : 'Morning (6am - 12pm)' },
+                          { id: 'afternoon', label: lang === 'MR' ? 'दुपार (१२:०० ते १६:००)' : 'Afternoon (12pm - 4pm)' },
+                          { id: 'evening', label: lang === 'MR' ? 'सायंकाळ (१६:०० ते २१:००)' : 'Evening (4pm - 9pm)' },
+                          { id: 'night', label: lang === 'MR' ? 'रात्र (२१:०० नंतर)' : 'Night (After 9pm)' }
+                        ].map((t) => {
+                          const isSelected = timeFilter === t.id;
+                          return (
+                            <button
+                              key={t.id}
+                              onClick={() => setTimeFilter(t.id as any)}
+                              className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                                isSelected
+                                  ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                                  : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                              }`}
+                            >
+                              <span className="truncate">{t.label}</span>
+                              {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Modal Footer */}
+                  <div className="p-4 border-t border-[#e8e2d9] bg-[#f9f3ea] flex items-center justify-between gap-3">
+                    <button
+                      onClick={() => {
+                        setSelectedRouteFilter('all');
+                        setTimeFilter('all');
+                      }}
+                      disabled={selectedRouteFilter === 'all' && timeFilter === 'all'}
+                      className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                        selectedRouteFilter !== 'all' || timeFilter !== 'all'
+                          ? 'text-[#c2410c] hover:bg-orange-100/60'
+                          : 'text-stone-400 cursor-not-allowed'
+                      }`}
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      <span>{lang === 'MR' ? 'सर्व रीसेट' : 'Clear All'}</span>
+                    </button>
+
+                    <button
+                      onClick={() => setIsFilterOpen(false)}
+                      className="flex-1 sm:flex-initial px-6 py-2.5 rounded-xl bg-[#166534] text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-[#14532d] transition-all flex items-center justify-center gap-2"
+                    >
+                      <span>
+                        {lang === 'MR'
+                          ? `निकाल दाखवा (${filteredBuses.length})`
+                          : `Show ${filteredBuses.length} Buses`}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Results Count & Note */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 px-1">
               <div className="text-xs sm:text-sm font-bold text-[#166534]">
                 एकूण <span className="text-[#c2410c] font-black">{filteredBuses.length}</span> बसेस उपलब्ध
-              </div>
-              <div className="inline-flex items-center gap-1.5 text-[11px] text-[#166534] bg-[#a7f3d0]/25 px-2.5 py-1 rounded-lg border border-[#cadbcf]/50">
-                <AlertCircle className="w-3.5 h-3.5 text-[#006a4e] shrink-0" />
-                <span>एसटी फेऱ्यांमध्ये शासकीय किंवा सणासुदीच्या बदलानुसार वेळ बदलू शकते.</span>
               </div>
             </div>
 
@@ -537,17 +699,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome }) 
                           </div>
                         </div>
 
-                        {/* Boarding Point */}
-                        <div className="mt-3 flex items-start gap-1.5 text-xs text-[#404945] bg-[#f9f3ea] p-2.5 rounded-xl border border-[#e8e2d9]">
-                          <Navigation className="w-3.5 h-3.5 text-[#166534] shrink-0 mt-0.5" />
-                          <div>
-                            <span className="font-bold text-[#166534]">आसगाव थांबा: </span>
-                            <span>{bus.boardingPointMarathi}</span>
-                            <span className="block text-[11px] text-[#707974] font-normal">
-                              ({bus.boardingPointAtAsgaon})
-                            </span>
-                          </div>
-                        </div>
+                        
 
                         {/* Fare Breakdown */}
                         <div className="mt-3 grid grid-cols-3 gap-2 text-center">
@@ -678,12 +830,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome }) 
         {/* TAB 3: DEPOT CONTACTS */}
         {selectedTab === 'depots' && (
           <div className="mt-6 space-y-6">
-            <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-              <h2 className="text-lg font-bold text-[#166534]">एसटी आगार एसटी नियंत्रण व चौकशी कक्ष</h2>
-              <p className="text-xs text-[#707974] mt-1">
-                बस सुटण्याची अचूक वेळ, रखडलेली फेरी किंवा तक्रारीसाठी आगार व्यवस्थापक व वाहतूक नियंत्रक यांना थेट संपर्क करा.
-              </p>
-            </div>
+            
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {depots.map((depot, idx) => (

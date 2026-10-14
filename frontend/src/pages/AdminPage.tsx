@@ -622,8 +622,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
   const [schemeForm, setSchemeForm] = useState({
     title: '',
     category: 'Farmer',
-    sponsoringAgency: 'महाराष्ट्र शासन / केंद्र शासन',
-    deadlineText: 'चालू योजना',
     description: '',
     benefits: '',
     eligibility: '',
@@ -984,8 +982,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
     const payload: any = {
       title: schemeForm.title.trim(),
       category: schemeForm.category,
-      sponsoringAgency: schemeForm.sponsoringAgency.trim(),
-      deadlineText: schemeForm.deadlineText.trim(),
       description: schemeForm.description.trim(),
       benefits: schemeForm.benefits.trim(),
       eligibility: schemeForm.eligibility.trim(),
@@ -1015,8 +1011,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       setSchemeForm({
         title: '',
         category: 'Farmer',
-        sponsoringAgency: 'महाराष्ट्र शासन / केंद्र शासन',
-        deadlineText: 'चालू योजना',
         description: '',
         benefits: '',
         eligibility: '',
@@ -1524,22 +1518,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       <div className="bg-gradient-to-r from-[#166534] via-[#14532d] to-[#052e16] text-white rounded-2xl p-4 sm:p-6 shadow-sm border border-[#cadbcf]/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5 w-full md:w-auto">
           <div className="w-full">
-            <div className="flex items-center gap-2 flex-wrap mb-1">
-              {isSuperAdmin ? (
-                <span className="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#ef9f27] to-[#ba7200] text-white font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
-                  <LucideIcon name="military_tech" className="text-[13px]" />
-                  👑 मुख्य प्रशासक
-                </span>
-              ) : (
-                <span className="px-2.5 py-0.5 rounded-full bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
-                  <LucideIcon name="verified_user" className="text-[13px]" />
-                  🛡️ अधिकृत व्यवस्थापक ({allowedModules.length} मॉड्यूल्स अधिकार)
-                </span>
-              )}
-              <span className="text-[11px] text-[#a7f3d0] font-medium hidden sm:inline">
-                {currentUser.fullName || (isSuperAdmin ? 'मुख्य प्रशासक' : 'व्यवस्थापक')}
-              </span>
-            </div>
+            
 
             <h1 className="font-heading font-extrabold text-[19px] sm:text-[23px] text-white leading-tight">
               आसगाव ग्राम माहिती व डेटा व्यवस्थापन केंद्र
@@ -1607,7 +1586,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               { id: 'schemes', label: `📋 योजना व्यवस्थापन (${schemes.length})` },
               { id: 'contacts', label: `📞 महत्त्वाचे संपर्क (${contacts.length})` },
               { id: 'projects', label: `🏗️ विकासकामे (${projects.length})` },
-              { id: 'complaints', label: `📝 गावकऱ्यांच्या तक्रारी (${complaints.length})` },
               { id: 'broadcast', label: '🚨 तातडीची दवंडी ' },
               { id: 'users', label: '👥 गावकऱ्यांची यादी' },
               { id: 'logs', label: '📜 ऑडिट नोंदी ' }
@@ -1648,7 +1626,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           { id: 'schemes', icon: 'description', label: `योजना व्यवस्थापन (${schemes.length})` },
           { id: 'contacts', icon: 'contacts', label: `महत्त्वाचे संपर्क (${contacts.length})` },
           { id: 'projects', icon: 'construction', label: `विकासकामे (${projects.length})` },
-          { id: 'complaints', icon: 'support_agent', label: `गावकऱ्यांच्या तक्रारी (${complaints.length})` },
           { id: 'broadcast', icon: 'cell_tower', label: 'तातडीची दवंडी ' },
           { id: 'users', icon: 'group', label: 'गावकऱ्यांची यादी' },
           { id: 'logs', icon: 'manage_history', label: 'ऑडिट नोंदी ' }
@@ -2559,8 +2536,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     onChange={(e) => setEventForm({ ...eventForm, badge: e.target.value })}
                     placeholder="उदा. वार्षिक उत्सव / मोफत सेवा"
                     className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
-                  >
-                  </input>
+                  />
                 </div>
               </div>
 
@@ -5063,17 +5039,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     <option value="Health">आरोग्य </option>
                   </select>
                 </div>
-                <div>
-                  <label className="block text-[12px] font-bold mb-1">शेवटची तारीख / मुदत</label>
-                  <input
-                    type="text"
-                    value={schemeForm.deadlineText}
-                    onChange={(e) => setSchemeForm({ ...schemeForm, deadlineText: e.target.value })}
-                    placeholder="उदा. ३१ ऑक्टोबर २०२६"
-                    className="w-full p-2.5 bg-[#f9f3ea] text-[12px] rounded-xl border border-[#e8e2d9]"
-                  >
-                  </input>
-                </div>
               </div>
 
               <div>
@@ -5161,8 +5126,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         setSchemeForm({
                           title: s.title,
                           category: s.category || 'Farmer',
-                          sponsoringAgency: s.sponsoringAgency || '',
-                          deadlineText: s.deadlineText || '',
                           description: s.description || '',
                           benefits: s.benefits || '',
                           eligibility: s.eligibility || '',
@@ -5187,9 +5150,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
                 </div>
                 <p className="text-[12px] text-[#404945]"><strong>फायदा:</strong> {s.benefits}</p>
-                <div className="text-[11px] text-[#707974]">
-                  मुदत: <strong>{s.deadlineText}</strong>
-                </div>
               </div>
             ))}
           </div>

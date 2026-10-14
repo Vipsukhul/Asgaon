@@ -1,5 +1,6 @@
 import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect } from 'react';
+import { SlidersHorizontal, X, RotateCcw, Check } from 'lucide-react';
 import { api } from '../services/api';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { useLanguage } from '../context/LanguageContext';
@@ -13,6 +14,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
   const { lang, t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<'all' | 'resolutions' | 'urgent' | 'tenders' | 'health'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [verifyNoticeId, setVerifyNoticeId] = useState('');
   const [verifyStatus, setVerifyStatus] = useState<string | null>(null);
@@ -21,18 +23,19 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
   const [announcements, setAnnouncements] = useState<any[]>(initialAnnouncements || []);
 
   // Modals state
-  const [showRtiModal, setShowRtiModal] = useState(false);
   const [showTankerModal, setShowTankerModal] = useState(false);
   const [showAgendaPointModal, setShowAgendaPointModal] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
 
-  // RTI Form fields
-  const [rtiName, setRtiName] = useState('');
-  const [rtiPhone, setRtiPhone] = useState('');
-  const [rtiSubject, setRtiSubject] = useState('');
-  const [rtiDetails, setRtiDetails] = useState('');
-  const [rtiTrackingNumber, setRtiTrackingNumber] = useState('');
-  const [isSubmittingRti, setIsSubmittingRti] = useState(false);
+  const handleVerify = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!verifyNoticeId.trim()) return;
+    setVerifyStatus(
+      lang === 'MR'
+        ? `पडताळणी पूर्ण: सूचना क्र. [${verifyNoticeId.trim()}] अधिकृत ग्रामपंचायत राजपत्रात नोंदणीकृत आहे.`
+        : `VERIFIED: Official Gazette Circular verified in Citizen Register under Stamp #MH-BHD-ASG-2026 for Notice [${verifyNoticeId.trim()}].`
+    );
+  };
 
   useEffect(() => {
     if (!initialAnnouncements || initialAnnouncements.length === 0) {
@@ -43,63 +46,6 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
         .catch((err) => console.log('Announcements local cache:', err.message));
     }
   }, [initialAnnouncements]);
-
-  const handleVerify = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!verifyNoticeId.trim()) return;
-    try {
-      const comp = await api.trackComplaint(verifyNoticeId.trim());
-      if (comp) {
-        setVerifyStatus(
-          lang === 'MR'
-            ? `नोंद सापडली: [${comp.trackingNumber}] - ${comp.title}. स्थिती: ${comp.status}. प्रभाग: ${comp.wardOrArea}.`
-            : `FOUND: Record [${comp.trackingNumber}] - ${comp.title}. Status: ${comp.status}. Ward: ${comp.wardOrArea}.`
-        );
-        return;
-      }
-    } catch {
-      // fallback
-    }
-    setVerifyStatus(
-      lang === 'MR'
-        ? `पडताळणी पूर्ण: सूचना क्र. [${verifyNoticeId.trim()}] अधिकृत नागरिक नोंदवहीमध्ये नोंदलेली आहे.`
-        : `VERIFIED: Official Gazette Circular verified in Citizen Register under Stamp #MH-BHD-ASG-2026 for Notice [${verifyNoticeId.trim()}].`
-    );
-  };
-
-  const handleRtiSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmittingRti(true);
-    try {
-      const res = await api.lodgeComplaint({
-        title: rtiSubject,
-        description: rtiDetails || rtiSubject,
-        category: 'RTI / Gazette Query',
-        citizenName: rtiName,
-        citizenPhone: rtiPhone,
-        ward: 'Ward 2 (Civic Information Desk)'
-      });
-      setRtiTrackingNumber(res.trackingNumber || 'ASG-2026-RTI');
-      setModalSuccess(true);
-      setTimeout(() => {
-        setModalSuccess(false);
-        setShowRtiModal(false);
-        setRtiName('');
-        setRtiPhone('');
-        setRtiSubject('');
-        setRtiDetails('');
-      }, 3500);
-    } catch (err: any) {
-      setRtiTrackingNumber('ASG-2026-8491');
-      setModalSuccess(true);
-      setTimeout(() => {
-        setModalSuccess(false);
-        setShowRtiModal(false);
-      }, 3000);
-    } finally {
-      setIsSubmittingRti(false);
-    }
-  };
 
   const handleModalSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -145,14 +91,6 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <LucideIcon name="download" className="text-[16px]" />
             <span>{lang === 'MR' ? 'मासिक राजपत्र' : 'Download Gazette'}</span>
           </button>
-          <button
-            onClick={() => setShowRtiModal(true)}
-            className="px-4 py-2.5 bg-[#c2410c] hover:bg-[#852f00] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all"
-          >
-            <LucideIcon name="report_problem" className="text-[16px]" />
-            <span>{lang === 'MR' ? 'नागरी तक्रार' : 'Complaint'}</span>
-          </button>
-          
         </div>
       </div>
 
@@ -223,9 +161,10 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
         </div>
       </div>
 
-      {/* 4. SEARCH & FILTER PILLS */}
-      <div className="flex flex-col gap-3">
-        <div className="bg-white p-2.5 sm:p-3 rounded-xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+      {/* 4. SEARCH & UNIFIED FILTER ROW */}
+      <div className="bg-white p-3 sm:p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col gap-2.5">
+        <div className="flex items-center gap-2">
+          {/* Search Bar */}
           <div className="relative flex-1">
             <LucideIcon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
             <input
@@ -234,70 +173,178 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
               placeholder={
                 lang === 'MR'
-                  ? 'कीवर्ड, विभाग किंवा ठराव क्रमांकाने शोधा (उदा. पाईपलाईन, १५ वा वित्त, वीज वितरण)...'
-                  : 'Search notices by keyword, department, resolution number (e.g. Pipeline, 15th Finance, MSEDCL)...'
+                  ? 'कीवर्ड, विभाग किंवा ठराव क्रमांकाने शोधा...'
+                  : 'Search notices by keyword, department, resolution...'
               }
-              className="w-full pl-9 pr-3 py-2 bg-[#f3ede4]/40 rounded-lg text-[13px] text-[#1a1c1b] placeholder-[#707974] border border-transparent focus:border-[#006a4e] focus:bg-white outline-none"
+              className="w-full pl-9 pr-9 py-2.5 bg-[#f9f3ea] text-[#1a1c1b] placeholder-[#707974] rounded-xl text-xs sm:text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => { setSearchQuery(''); setCurrentPage(1); }}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-[#707974] hover:text-[#1d1b16]"
+                aria-label="Clear Search"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
-         
+
+          {/* Corporate Filter Icon Button in Flex */}
+          <button
+            type="button"
+            onClick={() => setIsFilterOpen(true)}
+            className={`relative shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all shadow-xs ${
+              activeFilter !== 'all'
+                ? 'bg-[#166534] text-white border-[#166534] ring-2 ring-[#166534]/20'
+                : 'bg-[#f4efe8] text-[#1d1b16] border-[#e8e2d9] hover:bg-[#eae2d7]'
+            }`}
+            aria-label="Filter Notices"
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            <span className="hidden sm:inline">{lang === 'MR' ? 'फिल्टर' : 'Filter'}</span>
+            {activeFilter !== 'all' && (
+              <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-400 text-stone-900 text-[10px] sm:text-[11px] font-black flex items-center justify-center">
+                1
+              </span>
+            )}
+          </button>
         </div>
 
-        {/* Filter categories pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 text-[12px] font-medium no-scrollbar">
-          <button
-            onClick={() => { setActiveFilter('all'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-bold shrink-0 transition-all ${
-              activeFilter === 'all'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            {lang === 'MR' ? 'सर्व सूचना' : 'All Notices'} ({announcements.length})
-          </button>
-          <button
-            onClick={() => { setActiveFilter('resolutions'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all ${
-              activeFilter === 'resolutions'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            {lang === 'MR' ? 'ग्रामसभा ठराव' : 'Gram Sabha Resolutions'} ({announcements.filter(a => ((a.category || '') + (a.title || '')).toLowerCase().includes('sabha')).length})
-          </button>
-          <button
-            onClick={() => { setActiveFilter('urgent'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1 ${
-              activeFilter === 'urgent'
-                ? 'bg-[#ba1a1a] text-white shadow-xs'
-                : 'bg-white text-[#ba1a1a] hover:bg-[#fef3c7]/40 border border-[#fef3c7]'
-            }`}
-          >
-            <LucideIcon name="priority_high" className="text-[15px]" />
-            <span>{lang === 'MR' ? 'तातडीच्या सूचना' : 'Urgent & Civic Alerts'} ({announcements.filter(a => (a.priority || '').toLowerCase() === 'urgent' || (a.priority || '').toLowerCase() === 'high').length})</span>
-          </button>
-          <button
-            onClick={() => { setActiveFilter('tenders'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all ${
-              activeFilter === 'tenders'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            {lang === 'MR' ? 'विकासकामे व निविदा' : 'Public Works & Tenders'} ({announcements.filter(a => ((a.category || '') + (a.title || '')).toLowerCase().includes('tender') || ((a.category || '') + (a.title || '')).toLowerCase().includes('work')).length})
-          </button>
-          <button
-            onClick={() => { setActiveFilter('health'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all ${
-              activeFilter === 'health'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            {lang === 'MR' ? 'आरोग्य व स्वच्छता' : 'Health & Sanitation'} ({announcements.filter(a => ((a.category || '') + (a.title || '')).toLowerCase().includes('health')).length})
-          </button>
-        </div>
+        {/* Active Filter Chips (Micro Row) */}
+        {activeFilter !== 'all' && (
+          <div className="pt-2 border-t border-[#f0eee8] flex items-center gap-1.5 flex-wrap text-xs">
+            <span className="text-[11px] font-medium text-[#707974]">
+              {lang === 'MR' ? 'सक्रिय फिल्टर्स:' : 'Active:'}
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+              {activeFilter === 'resolutions' ? (lang === 'MR' ? 'ग्रामसभा ठराव' : 'Resolutions') :
+               activeFilter === 'urgent' ? (lang === 'MR' ? 'तातडीच्या सूचना' : 'Urgent Alerts') :
+               activeFilter === 'tenders' ? (lang === 'MR' ? 'विकासकामे व निविदा' : 'Tenders') :
+               (lang === 'MR' ? 'आरोग्य व स्वच्छता' : 'Health & Sanitation')}
+              <button onClick={() => { setActiveFilter('all'); setCurrentPage(1); }} className="hover:opacity-70 ml-0.5" aria-label="Clear filter">
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+            <button
+              onClick={() => {
+                setActiveFilter('all');
+                setCurrentPage(1);
+              }}
+              className="text-[11px] font-bold text-[#c2410c] hover:underline ml-1"
+            >
+              {lang === 'MR' ? 'सर्व काढा' : 'Clear all'}
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* Corporate Filter Modal / Bottom Sheet */}
+      {isFilterOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
+          onClick={() => setIsFilterOpen(false)}
+        >
+          <div
+            className="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-[#e8e2d9] flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-5 py-4 border-b border-[#e8e2d9] flex items-center justify-between bg-[#fdfbf7]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#e8f1ec] text-[#166534] flex items-center justify-center">
+                  <SlidersHorizontal className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#1d1b16]">
+                    {lang === 'MR' ? 'सूचना व ठराव फिल्टर्स' : 'Filter Public Notices'}
+                  </h3>
+                  <p className="text-[11px] text-[#707974]">
+                    {lang === 'MR' ? 'सूचना प्रकार व विभागांनुसार निवडा' : 'Filter by notice category and department'}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#f4efe8] hover:bg-[#eae2d7] text-[#707974] hover:text-[#1d1b16] flex items-center justify-center transition-all"
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 overflow-y-auto space-y-5 text-sm">
+              <div>
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider">
+                    {lang === 'MR' ? 'सूचना प्रवर्ग' : 'Notice Category'}
+                  </span>
+                  {activeFilter !== 'all' && (
+                    <button
+                      onClick={() => { setActiveFilter('all'); setCurrentPage(1); }}
+                      className="text-[11px] text-[#c2410c] font-semibold hover:underline"
+                    >
+                      {lang === 'MR' ? 'सर्व दाखवा' : 'Reset'}
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {[
+                    { id: 'all', label: lang === 'MR' ? 'सर्व सूचना' : 'All Notices', count: announcements.length },
+                    { id: 'resolutions', label: lang === 'MR' ? 'ग्रामसभा ठराव' : 'Gram Sabha Resolutions', count: announcements.filter(a => ((a.category || '') + (a.title || '')).toLowerCase().includes('sabha')).length },
+                    { id: 'urgent', label: lang === 'MR' ? 'तातडीच्या सूचना' : 'Urgent Alerts', count: announcements.filter(a => (a.priority || '').toLowerCase() === 'urgent' || (a.priority || '').toLowerCase() === 'high').length },
+                    { id: 'tenders', label: lang === 'MR' ? 'विकासकामे व निविदा' : 'Works & Tenders', count: announcements.filter(a => ((a.category || '') + (a.title || '')).toLowerCase().includes('tender') || ((a.category || '') + (a.title || '')).toLowerCase().includes('work')).length },
+                    { id: 'health', label: lang === 'MR' ? 'आरोग्य व स्वच्छता' : 'Health & Sanitation', count: announcements.filter(a => ((a.category || '') + (a.title || '')).toLowerCase().includes('health')).length }
+                  ].map((cat) => {
+                    const isSelected = activeFilter === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={() => { setActiveFilter(cat.id as any); setCurrentPage(1); }}
+                        className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                          isSelected
+                            ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                            : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                        }`}
+                      >
+                        <span className="truncate">{cat.label} ({cat.count})</span>
+                        {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-[#e8e2d9] bg-[#f9f3ea] flex items-center justify-between gap-3">
+              <button
+                onClick={() => {
+                  setActiveFilter('all');
+                  setCurrentPage(1);
+                }}
+                disabled={activeFilter === 'all'}
+                className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  activeFilter !== 'all'
+                    ? 'text-[#c2410c] hover:bg-orange-100/60'
+                    : 'text-stone-400 cursor-not-allowed'
+                }`}
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>{lang === 'MR' ? 'सर्व रीसेट' : 'Clear All'}</span>
+              </button>
+
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="flex-1 sm:flex-initial px-6 py-2.5 rounded-xl bg-[#166534] text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-[#14532d] transition-all flex items-center justify-center gap-2"
+              >
+                <span>{lang === 'MR' ? 'सूचना दाखवा' : 'Show Notices'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 5. MAIN 2-COLUMN LAYOUT */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -355,7 +402,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   </div>
                 ) : (
                   paginatedNotices.map((item) => (
-                    <div key={item.id} className="bg-white rounded-2xl p-5 sm:p-6 border-2 border-[#006a4e]/30 shadow-xs flex flex-col gap-3 relative overflow-hidden">
+                    <div key={item.id} className="bg-white card-hover-subtle rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-3 relative overflow-hidden">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-2.5">
                         <div className="flex items-center gap-2">
                           <span className={`text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider flex items-center gap-1 ${item.priority === 'HIGH' || item.priority === 'URGENT' ? 'bg-[#ba1a1a]' : 'bg-[#006a4e]'}`}>
@@ -846,21 +893,19 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               </span>
               <h4 className="font-heading font-bold text-[15px] text-[#166534] leading-snug">
                 {lang === 'MR'
-                  ? 'परिपत्रक किंवा ठराव सापडला नाही? माहिती अर्ज किंवा तक्रार नोंदवा'
-                  : "Can't find a circular? Submit a Citizen Request or RTI Query"}
+                  ? 'परिपत्रक किंवा ठराव माहिती कक्ष'
+                  : "Need assistance with a Gazette Circular or Resolution?"}
               </h4>
               <p className="text-[#404945] mt-1 leading-relaxed">
                 {lang === 'MR'
                   ? 'माहिती अधिकार कायदा कलम ४(१)(बी) अंतर्गत असगाव गावातील सर्व सार्वजनिक ठराव व मंजुरी नोंदी नागरिकांसाठी उपलब्ध आहेत. सीएससी केंद्रात कोणत्याही शुल्काविना माहिती सहाय्य उपलब्ध.'
-                  : 'Every resolution passed by Asgaon Gram Panchayat is public record under Section 4(1)(b) of the Right to Information Act. Fee: No fee for collection of listed copies at the CSC desk.'}
+                  : 'Every resolution passed by Asgaon Gram Panchayat is public record under Section 4(1)(b) of the Right to Information Act. Free assistance is available at the CSC desk.'}
               </p>
               <div className="flex items-center gap-4 mt-2">
-                <button onClick={() => setShowRtiModal(true)} className="text-[#006a4e] font-bold hover:underline">
-                  {lang === 'MR' ? '१२०+ सार्वजनिक नोंदी पहा →' : 'View 120+ Public Records →'}
-                </button>
-                <button onClick={() => setShowRtiModal(true)} className="text-[#c2410c] font-bold hover:underline">
-                  {lang === 'MR' ? 'माहिती अधिकार मार्गदर्शक ↗' : 'RTI Cell Guidelines ↗'}
-                </button>
+                <a href="tel:9822104500" className="text-[#006a4e] font-bold hover:underline flex items-center gap-1">
+                  <LucideIcon name="call" className="text-[14px]" />
+                  <span>{lang === 'MR' ? 'माहिती कक्ष संपर्क (+91 98221 04500) →' : 'Panchayat Helpdesk (+91 98221 04500) →'}</span>
+                </a>
               </div>
             </div>
           </div>
@@ -1050,17 +1095,17 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             </a>
           </div>
 
-          {/* WIDGET 4: RECENT GRIEVANCE ACTION */}
+          {/* WIDGET 4: VILLAGE DEVELOPMENT WORKS */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
             <div className="flex items-center justify-between border-b border-[#f3ede4] pb-3">
               <div className="flex items-center gap-1.5">
                 <LucideIcon name="task_alt" className="text-[#006a4e] text-[18px]" />
                 <h3 className="font-heading font-bold text-[14px] text-[#166534]">
-                  {lang === 'MR' ? 'नुकत्याच सोडवलेल्या तक्रारी' : 'Recent Grievance Action'}
+                  {lang === 'MR' ? 'ग्रामविकास कामे व प्रगती अहवाल' : 'Village Works & Progress'}
                 </h3>
               </div>
               <span className="text-[10px] font-bold text-[#006a4e] bg-[#e8f1ec] px-2 py-0.5 rounded">
-                {lang === 'MR' ? 'गेल्या ४८ तासांत निवारण' : 'Resolved in last 48h'}
+                {lang === 'MR' ? 'थेट अद्यतन' : 'Live Update'}
               </span>
             </div>
 
@@ -1068,15 +1113,15 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               <div className="p-2.5 rounded-lg bg-[#f3ede4]/40 border border-[#e8e2d9]">
                 <div className="flex justify-between items-center mb-1">
                   <strong className="text-[#166534]">
-                    Ticket #104 - {lang === 'MR' ? 'पथदिवे दुरुस्ती' : 'Streetlight Repair'}
+                    {lang === 'MR' ? 'प्रकल्प #१०४ — पथदिवे दुरुस्ती' : 'Work #104 — Streetlight Wiring'}
                   </strong>
                   <span className="text-[9px] font-bold text-[#006a4e] bg-[#a7f3d0] px-1.5 py-0.2 rounded">
-                    {lang === 'MR' ? 'निवारण' : 'RESOLVED'}
+                    {lang === 'MR' ? 'पूर्ण' : 'COMPLETED'}
                   </span>
                 </div>
                 <p className="text-[10px] text-[#707974] leading-tight">
                   {lang === 'MR'
-                    ? 'प्रभाग २ व ५ विठ्ठल मंदिर बायपास खांबांवर नवीन वायरिंग सुरू केली.'
+                    ? 'प्रभाग २ व ५ विठ्ठल मंदिर बायपास खांबांवर नवीन वायरिंग पूर्ण केली.'
                     : 'Wards 2 & 5 Vitthal Mandir bypass poles re-wired and operational.'}
                 </p>
               </div>
@@ -1084,15 +1129,15 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               <div className="p-2.5 rounded-lg bg-[#f3ede4]/40 border border-[#e8e2d9]">
                 <div className="flex justify-between items-center mb-1">
                   <strong className="text-[#166534]">
-                    Ticket #102 - {lang === 'MR' ? 'बोअरवेल क्लोरीनेशन' : 'Borewell Chlorination'}
+                    {lang === 'MR' ? 'प्रकल्प #१०२ — बोअरवेल क्लोरीनेशन' : 'Work #102 — Water Chlorination'}
                   </strong>
                   <span className="text-[9px] font-bold text-[#006a4e] bg-[#a7f3d0] px-1.5 py-0.2 rounded">
-                    {lang === 'MR' ? 'निवारण' : 'RESOLVED'}
+                    {lang === 'MR' ? 'पूर्ण' : 'COMPLETED'}
                   </span>
                 </div>
                 <p className="text-[10px] text-[#707974] leading-tight">
                   {lang === 'MR'
-                    ? 'हातपंपाचे निर्जंतुकीकरण व स्वच्छ पाणी चाचणी पूर्ण.'
+                    ? 'हातपंपाचे निर्जंतुकीकरण व शुद्ध पाणी चाचणी यशस्वीरीत्या पूर्ण.'
                     : 'Handpump disinfected and clean water test verified.'}
                 </p>
               </div>
@@ -1100,7 +1145,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               <div className="p-2.5 rounded-lg bg-[#fef9ee] border border-[#fde68a]">
                 <div className="flex justify-between items-center mb-1">
                   <strong className="text-[#c2410c]">
-                    Ticket #098 - {lang === 'MR' ? 'पेव्हर ब्लॉक स्वच्छता' : 'Paver Block Cleaning'}
+                    {lang === 'MR' ? 'प्रकल्प #०९८ — पेव्हर ब्लॉक व स्वच्छता' : 'Work #098 — Paver Blocks & Sanitation'}
                   </strong>
                   <span className="text-[9px] font-bold text-[#c2410c] bg-[#fef9ee] px-1.5 py-0.2 rounded border border-[#fde68a]">
                     {lang === 'MR' ? 'प्रगतीपथावर' : 'IN PROGRESS'}
@@ -1108,125 +1153,18 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 </div>
                 <p className="text-[10px] text-[#707974] leading-tight">
                   {lang === 'MR'
-                    ? 'सकाळच्या स्वच्छतेसाठी कचरा व्यवस्थापन पथक नियुक्त.'
+                    ? 'सकाळच्या स्वच्छतेसाठी कचरा व्यवस्थापन पथक कार्यरत.'
                     : 'Solid waste team assigned for morning clearance.'}
                 </p>
               </div>
             </div>
 
-            <button
-              onClick={() => setShowRtiModal(true)}
-              className="text-[#006a4e] font-bold text-[11px] hover:underline text-center pt-1"
-            >
-              {lang === 'MR' ? 'सर्व नागरी तक्रार नोंदवही पहा →' : 'View All Public Grievance Log →'}
-            </button>
+            <div className="text-[10px] text-[#707974] text-center pt-1 border-t border-[#f3ede4]">
+              {lang === 'MR' ? 'ग्रामपंचायत आसगाव • सार्वजनिक विकास अहवाल' : 'Gram Panchayat Asgaon • Public Works Log'}
+            </div>
           </div>
         </div>
       </div>
-
-      {/* MODAL 1: REGISTER GRIEVANCE / RTI */}
-      {showRtiModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 border border-[#e8e2d9] shadow-xl relative animate-fadeIn">
-            <button
-              onClick={() => setShowRtiModal(false)}
-              className="absolute top-4 right-4 text-[#707974] hover:text-[#1a1c1b] p-1 rounded-full hover:bg-[#f3ede4]"
-            >
-              <LucideIcon name="close" className="text-[20px]" />
-            </button>
-
-            <div className="flex items-center gap-2 mb-4">
-              <LucideIcon name="gavel" className="text-[#c2410c] text-[24px]" />
-              <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
-                  {lang === 'MR' ? 'नागरिक माहिती अधिकार व तक्रार निवारण' : 'Citizen RTI / Grievance Desk'}
-                </h3>
-                <span className="text-[11px] text-[#707974]">
-                  {lang === 'MR' ? 'कलम ४(१)(बी) व नागरिक सनद अंतर्गत' : 'Under Section 4(1)(b) & Citizen Charter'}
-                </span>
-              </div>
-            </div>
-
-            {modalSuccess ? (
-              <div className="bg-[#e8f1ec] border border-[#006a4e] rounded-xl p-4 text-center">
-                <LucideIcon name="check_circle" className="text-[#006a4e] text-[40px] mb-2" />
-                <h4 className="font-bold text-[15px] text-[#166534]">
-                  {lang === 'MR' ? 'अर्ज यशस्वीरीत्या नोंदवला गेला!' : 'Request Submitted Successfully!'}
-                </h4>
-                <p className="text-[12px] text-[#404945] mt-1">
-                  {lang === 'MR'
-                    ? `तक्रार नोंदणी क्र. ${rtiTrackingNumber} तयार झाला. ४८ तासांत निवारण केले जाईल.`
-                    : `Grievance Ref No. ${rtiTrackingNumber} generated. Official update within 48 hours.`}
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleRtiSubmit} className="flex flex-col gap-3 text-[12px]">
-                <div>
-                  <label className="font-bold text-[#166534] block mb-1">
-                    {lang === 'MR' ? 'नागरिकाचे पूर्ण नाव' : 'Citizen Full Name'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={rtiName}
-                    onChange={(e) => setRtiName(e.target.value)}
-                    placeholder={lang === 'MR' ? 'उदा. सुनील रमेश जाधव' : 'e.g. Sunil Ramesh Jadhav'}
-                    className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="font-bold text-[#166534] block mb-1">
-                    {lang === 'MR' ? 'मोबाईल नंबर' : 'Mobile Number'}
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={rtiPhone}
-                    onChange={(e) => setRtiPhone(e.target.value)}
-                    placeholder={lang === 'MR' ? '१०-अंकी मोबाईल नंबर' : '10-digit mobile number'}
-                    className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="font-bold text-[#166534] block mb-1">
-                    {lang === 'MR' ? 'अर्जाचा विषय / ठराव आयडी' : 'Request Subject / Resolution ID'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={rtiSubject}
-                    onChange={(e) => setRtiSubject(e.target.value)}
-                    placeholder={lang === 'MR' ? 'उदा. १५ वा वित्त निधी लेखापरीक्षण प्रत / पाईपलाईन समस्या' : 'e.g. 15th Finance Fund Audit copy / Pipeline grievance'}
-                    className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="font-bold text-[#166534] block mb-1">
-                    {lang === 'MR' ? 'सविस्तर तपशील' : 'Details & Query'}
-                  </label>
-                  <textarea
-                    rows={3}
-                    required
-                    value={rtiDetails}
-                    onChange={(e) => setRtiDetails(e.target.value)}
-                    placeholder={lang === 'MR' ? 'आवश्यक कागदपत्रांचे किंवा समस्येचे सविस्तर वर्णन करा...' : 'Describe details of the documents or issue required...'}
-                    className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none resize-none"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={isSubmittingRti}
-                  className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs mt-1 disabled:opacity-50"
-                >
-                  {isSubmittingRti
-                    ? (lang === 'MR' ? 'अर्ज दाखल होत आहे...' : 'Submitting to Panchayat Desk...')
-                    : (lang === 'MR' ? 'अधिकृत अर्ज दाखल करा' : 'Submit Official Query')}
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* MODAL 2: LIVE TANKER TRACKER */}
       {showTankerModal && (

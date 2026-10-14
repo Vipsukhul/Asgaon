@@ -4,6 +4,7 @@ import { api } from '../services/api';
 import type { Scheme } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { useLanguage } from '../context/LanguageContext';
+import { useToast } from '../context/ToastContext';
 import { isPushSubscribed, subscribeUserToPush, unsubscribeUserFromPush } from '../services/pushNotifications';
 
 export interface UserProfileData {
@@ -14,14 +15,15 @@ export interface UserProfileData {
   village: string;
   isLoggedIn: boolean;
   avatarInitials: string;
+  profileImage?: string;
   occupation?: string;
   landHolding?: string;
   shopName?: string;
+  preferredLanguage?: 'MR' | 'EN';
 }
 
 interface ProfilePageProps {
   onNavigateHome: () => void;
-  onOpenGrievanceModal: () => void;
   onOpenLoginModal?: () => void;
   currentUser?: UserProfileData;
   onUpdateUser?: (updated: UserProfileData) => void;
@@ -31,7 +33,6 @@ interface ProfilePageProps {
 
 export const ProfilePage: React.FC<ProfilePageProps> = ({
   onNavigateHome,
-  onOpenGrievanceModal,
   onOpenLoginModal,
   currentUser = {
     fullName: 'Asgaon Citizen',
@@ -40,26 +41,18 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     ward: 'Gandhi Ward',
     village: 'Asgaon, Pauni (PIN 441910)',
     isLoggedIn: false,
-    avatarInitials: 'AC'
+    avatarInitials: 'AC',
+    preferredLanguage: 'MR'
   },
   onUpdateUser,
   onLogout,
   schemes = []
 }) => {
-  const { lang, t } = useLanguage();
+  const { lang, setLang, t } = useLanguage();
+  const toast = useToast();
   const isMr = lang === 'MR';
-  const [activeTab, setActiveTab] = useState<'overview' | 'grievances' | 'saved' | 'broadcasts'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'saved' | 'broadcasts'>('overview');
   const [showRosterAlert, setShowRosterAlert] = useState(true);
-
-  // Live Complaints from Backend
-  const [userComplaints, setUserComplaints] = useState<any[]>([]);
-  const [loadingComplaints, setLoadingComplaints] = useState(false);
-
-  // Track Token Search
-  const [trackInput, setTrackInput] = useState('');
-  const [trackResult, setTrackResult] = useState<any | null>(null);
-  const [trackError, setTrackError] = useState('');
-  const [trackingLoading, setTrackingLoading] = useState(false);
 
   // Edit Profile Modal
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -68,6 +61,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   const [editWard, setEditWard] = useState(currentUser.ward);
   const [editRole, setEditRole] = useState(currentUser.role);
   const [editOccupation, setEditOccupation] = useState(currentUser.occupation || 'Farmer / Cultivator');
+  const [editLang, setEditLang] = useState<'MR' | 'EN'>(currentUser.preferredLanguage || lang);
 
   // SMS Subscriptions state
   const [mandiSms, setMandiSms] = useState(true);
@@ -86,16 +80,59 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     try {
       if (pushEnabled) {
         const res = await unsubscribeUserFromPush();
-        alert(res.message);
+        toast.info(res.message, isMr ? 'पुश सूचना बंद' : 'Push Alerts Disabled');
         setPushEnabled(false);
       } else {
         const res = await subscribeUserToPush(currentUser.phone, currentUser.role);
-        alert(res.message);
-        if (res.success) setPushEnabled(true);
+        if (res.success) {
+          toast.success(res.message, isMr ? 'पुश सूचना सक्रिय' : 'Push Alerts Enabled');
+          setPushEnabled(true);
+        } else {
+          toast.warning(res.message, isMr ? 'सूचना' : 'Notification');
+        }
       }
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : String(err);
+      toast.error(errorMsg || (isMr ? 'पुश सूचना बदलताना त्रुटी आली' : 'Failed to update push notifications'));
     } finally {
       setPushToggling(false);
     }
+  };
+
+  const handleToggleMandiSms = (val: boolean) => {
+    setMandiSms(val);
+    toast.info(
+      val
+        ? (isMr ? 'दैनिक कृषी बाजारभाव (मंडी भाव) एसएमएस सुरू केले.' : 'Daily Mandi Price SMS enabled.')
+        : (isMr ? 'दैनिक कृषी बाजारभाव एसएमएस बंद केले.' : 'Daily Mandi Price SMS disabled.')
+    );
+  };
+
+  const handleToggleWeatherAlerts = (val: boolean) => {
+    setWeatherAlerts(val);
+    toast.info(
+      val
+        ? (isMr ? 'हवामान अंदाज व कालवा पाणी वाटप सूचना सुरू केल्या.' : 'Weather & Canal Water Alerts enabled.')
+        : (isMr ? 'हवामान अंदाज सूचना बंद केल्या.' : 'Weather & Canal Water Alerts disabled.')
+    );
+  };
+
+  const handleToggleGramSabhaSms = (val: boolean) => {
+    setGramSabhaSms(val);
+    toast.info(
+      val
+        ? (isMr ? 'ग्रामसभा विषयसूची व बैठक एसएमएस सुरू केले.' : 'Gram Sabha Agenda & Meeting Alerts enabled.')
+        : (isMr ? 'ग्रामसभा बैठक एसएमएस बंद केले.' : 'Gram Sabha Alerts disabled.')
+    );
+  };
+
+  const handleTogglePowerSchedule = (val: boolean) => {
+    setPowerSchedule(val);
+    toast.info(
+      val
+        ? (isMr ? 'शेती वीज पुरवठा वेळापत्रक सूचना सुरू केल्या.' : 'Agri Feeder Power Schedule Alerts enabled.')
+        : (isMr ? 'शेती वीज पुरवठा सूचना बंद केल्या.' : 'Agri Feeder Power Schedule Alerts disabled.')
+    );
   };
 
   // Saved items list
@@ -120,18 +157,77 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     }
   ]);
 
-  // Fetch real complaints on mount
-  useEffect(() => {
-    setLoadingComplaints(true);
-    api.getAllComplaints()
-      .then((data) => {
-        if (data && data.length > 0) {
-          setUserComplaints(data);
+  const handleSetDefaultLanguage = (newLang: 'MR' | 'EN') => {
+    setLang(newLang);
+    setEditLang(newLang);
+    const updated: UserProfileData = {
+      ...currentUser,
+      preferredLanguage: newLang
+    };
+    onUpdateUser?.(updated);
+    const existing = localStorage.getItem('dg_user');
+    let extra = {};
+    if (existing) {
+      try { extra = JSON.parse(existing); } catch {}
+    }
+    localStorage.setItem('dg_user', JSON.stringify({ ...extra, preferredLanguage: newLang }));
+    toast.success(
+      newLang === 'MR'
+        ? 'पोर्टलची डीफॉल्ट भाषा मराठी (MR) म्हणून सेव्ह केली.'
+        : 'Portal default language saved as English (EN).',
+      isMr ? 'भाषा बदलली' : 'Language Updated'
+    );
+  };
+
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+
+  const applyNewProfileImage = (imageUrl: string) => {
+    const updated: UserProfileData = {
+      ...currentUser,
+      profileImage: imageUrl
+    };
+    onUpdateUser?.(updated);
+    const saved = localStorage.getItem('dg_user');
+    if (saved) {
+      try {
+        const u = JSON.parse(saved);
+        localStorage.setItem('dg_user', JSON.stringify({ ...u, profileImage: imageUrl }));
+      } catch {
+        localStorage.setItem('dg_user', JSON.stringify(updated));
+      }
+    } else {
+      localStorage.setItem('dg_user', JSON.stringify(updated));
+    }
+    toast.success(
+      isMr ? 'प्रोफाइल फोटो यशस्वीरीत्या अद्ययावत केला!' : 'Profile picture updated successfully!',
+      isMr ? 'यशस्वी' : 'Success'
+    );
+  };
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = '';
+    setUploadingAvatar(true);
+    try {
+      const url = await api.uploadImage(file, 'profiles');
+      if (url) {
+        applyNewProfileImage(url);
+        return;
+      }
+      throw new Error('Upload returned empty');
+    } catch {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          applyNewProfileImage(event.target.result as string);
         }
-      })
-      .catch((err) => console.log('Complaints load notice:', err.message))
-      .finally(() => setLoadingComplaints(false));
-  }, []);
+      };
+      reader.readAsDataURL(file);
+    } finally {
+      setUploadingAvatar(false);
+    }
+  };
 
   const handleSaveProfile = (e: React.FormEvent) => {
     e.preventDefault();
@@ -146,43 +242,43 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       ward: editWard,
       role: editRole,
       avatarInitials: initials,
-      occupation: editOccupation
+      occupation: editOccupation,
+      profileImage: currentUser?.profileImage,
+      preferredLanguage: editLang
     };
 
     onUpdateUser?.(updated);
+    setLang(editLang);
+    const existing = localStorage.getItem('dg_user');
+    let extra = {};
+    if (existing) {
+      try {
+        extra = JSON.parse(existing);
+      } catch {}
+    }
     localStorage.setItem('dg_user', JSON.stringify({
+      ...extra,
       fullName: editName,
       phone: editPhone,
       roles: ['ROLE_' + editRole],
       ward: editWard,
-      occupation: editOccupation
+      occupation: editOccupation,
+      profileImage: currentUser?.profileImage,
+      preferredLanguage: editLang
     }));
     setEditModalOpen(false);
-  };
-
-  const handleTrackSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!trackInput.trim()) return;
-    setTrackingLoading(true);
-    setTrackError('');
-    setTrackResult(null);
-
-    try {
-      const res = await api.trackComplaint(trackInput.trim());
-      if (res) {
-        setTrackResult(res);
-      } else {
-        setTrackError(`Grievance [${trackInput.trim()}] is registered and under routine Gram Sevak review.`);
-      }
-    } catch {
-      setTrackError(`No active record found for [${trackInput.trim()}]. Please double-check the grievance number.`);
-    } finally {
-      setTrackingLoading(false);
-    }
+    toast.success(
+      isMr ? 'तुमची प्रोफाइल माहिती यशस्वीरीत्या जतन केली!' : 'Profile details updated successfully!',
+      isMr ? 'प्रोफाइल जतन' : 'Profile Saved'
+    );
   };
 
   const removeSavedItem = (id: number) => {
     setSavedItems((prev) => prev.filter((item) => item.id !== id));
+    toast.info(
+      isMr ? 'जतन केलेल्या यादीतून योजना काढली.' : 'Item removed from saved bookmarks.',
+      isMr ? 'काढले' : 'Removed'
+    );
   };
 
   const getRoleLabel = (role: string) => {
@@ -213,14 +309,14 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
       {/* 1. Rotational Canal Water Alert Banner */}
       {showRosterAlert && (
-        <div className="w-full bg-[#fef3c7] text-[#93000a] py-2.5 px-4 rounded-xl shadow-xs border border-[#fde68a] flex items-center justify-between gap-3">
+        <div className="w-full bg-amber-50/90 text-amber-950 py-3 px-4 rounded-2xl shadow-xs border border-amber-200/90 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
-            <LucideIcon name="water_drop" className="text-[20px] text-[#ba1a1a] shrink-0" />
+            <LucideIcon name="water_drop" className="text-[20px] text-amber-700 shrink-0" />
             <div className="truncate">
-              <span className="font-heading font-extrabold text-[13px] text-[#ba1a1a] mr-2">
+              <span className="font-heading font-extrabold text-[13px] text-amber-900 mr-2">
                 {isMr ? 'आसगाव कालवा पाणी वाटप रोस्टर:' : 'Asgaon Canal Water Roster:'}
               </span>
-              <span className="text-[13px] font-semibold text-[#93000a]">
+              <span className="text-[13px] font-semibold text-amber-950/80">
                 {isMr
                   ? 'खडकवासला कालव्याचे सिंचन आवर्तन उद्या सकाळी ०६:०० वाजता सेक्टर २ व ३ साठी सुरू होईल.'
                   : 'Rotational irrigation release from Khadakwasla canal commences tomorrow at 06:00 AM for Sector 2 & 3.'}
@@ -228,12 +324,12 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             </div>
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            <span className="text-[10px] font-extrabold bg-[#ba1a1a] text-white px-2 py-0.5 rounded uppercase tracking-wider">
+            <span className="text-[10px] font-extrabold bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full uppercase tracking-wider">
               {isMr ? 'अधिकृत सूचना' : 'OFFICIAL NOTICE'}
             </span>
             <button
               onClick={() => setShowRosterAlert(false)}
-              className="text-[12px] font-bold text-[#93000a] hover:underline cursor-pointer"
+              className="text-[12px] font-bold text-amber-900 hover:underline cursor-pointer"
             >
               {isMr ? 'बंद करा' : 'Dismiss'}
             </button>
@@ -241,48 +337,103 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         </div>
       )}
 
-      {/* 2. Dynamic Citizen Profile Header Card */}
-      <div className="bg-white rounded-2xl p-6 shadow-xs border border-[#e8e2d9] flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#166534] to-[#006a4e] text-[#a7f3d0] flex items-center justify-center font-heading font-black text-[28px] border-2 border-[#cadbcf] shadow-sm">
-              {currentUser.avatarInitials}
+      {/* 2. Dynamic Citizen Profile Header Card (Clean & Proper Modern Design) */}
+      <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-stone-200/90 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 w-full lg:w-auto">
+          {/* Prominent Circular Profile Avatar */}
+          <div className="relative group shrink-0">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-gradient-to-br from-emerald-800 to-emerald-950 text-emerald-100 flex items-center justify-center font-heading font-black text-3xl sm:text-4xl ring-4 ring-emerald-50 border-2 border-emerald-600/30 shadow-md">
+              {currentUser.profileImage ? (
+                <img
+                  src={currentUser.profileImage}
+                  alt={currentUser.fullName}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span>{currentUser.avatarInitials}</span>
+              )}
             </div>
-            <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full bg-[#166534] text-[#a7f3d0] flex items-center justify-center border-2 border-white shadow-xs" title={isMr ? "सत्यापित आसगाव नागरिक" : "Verified Asgaon Citizen"}>
-              <LucideIcon name="verified" className="text-[15px]" />
-            </div>
+
+            {uploadingAvatar && (
+              <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center text-white backdrop-blur-2xs">
+                <LucideIcon name="refresh" className="animate-spin text-[24px]" />
+              </div>
+            )}
           </div>
 
-          <div>
-            <div className="flex flex-wrap items-center gap-2 mb-1">
-              <h1 className="font-heading font-extrabold text-[24px] text-[#1d1b16] tracking-tight">
+          {/* Citizen Identity and Photo Action Buttons */}
+          <div className="flex-1 text-center sm:text-left space-y-2.5">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
+              <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-stone-900 tracking-tight">
                 {currentUser.fullName}
               </h1>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[11px] font-bold uppercase tracking-wider">
-                <LucideIcon name={currentUser.role === 'BUSINESS_OWNER' ? 'storefront' : currentUser.role === 'ADMIN' ? 'shield_person' : currentUser.role === 'STUDENT' ? 'school' : 'agriculture'} className=" text-[13px]" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold uppercase tracking-wider">
+                <LucideIcon name="verified" className="text-[14px] text-emerald-700" />
                 <span>{getRoleLabel(currentUser.role)}</span>
               </span>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4 text-[13px] text-[#707974] mt-1">
-              <span className="flex items-center gap-1">
-                <LucideIcon name="location_on" className="text-[16px] text-[#c2410c]" />
-                <span>{currentUser.ward || (isMr ? 'प्रभाग २' : 'Ward 2')}, {isMr ? 'आसगाव (पिन ४४१९१०)' : 'Asgaon (PIN 441910)'}</span>
+            {/* Meta chips: Ward & Phone */}
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs sm:text-sm text-stone-600">
+              <span className="flex items-center gap-1.5">
+                <LucideIcon name="location_on" className="text-[16px] text-amber-600" />
+                <span>{currentUser.ward || (isMr ? 'प्रभाग २' : 'Ward 2')}, {isMr ? 'आसगाव (४४१९१०)' : 'Asgaon (441910)'}</span>
               </span>
-              <span className="flex items-center gap-1">
-                <LucideIcon name="smartphone" className="text-[16px] text-[#166534]" />
-                <span className="font-semibold text-[#1d1b16]">
+              <span className="flex items-center gap-1.5">
+                <LucideIcon name="smartphone" className="text-[16px] text-emerald-700" />
+                <span className="font-semibold text-stone-800">
                   {currentUser.phone ? `+91 ${currentUser.phone}` : (isMr ? 'नोंदणी नसलेला मोबाईल' : 'Unregistered Mobile')}
                 </span>
-                <span className="text-[10px] text-[#376757] font-bold bg-[#a7f3d0] px-1.5 py-0.2 rounded ml-1">
+                <span className="text-[10px] text-emerald-800 font-extrabold bg-emerald-100 px-1.5 py-0.5 rounded-md">
                   {isMr ? 'सक्रिय' : 'Active'}
                 </span>
               </span>
             </div>
+
+            {/* Direct Profile Photo Upload & Camera Action Controls */}
+            <div className="pt-1.5 flex flex-wrap items-center justify-center sm:justify-start gap-2 text-xs">
+              <label className="cursor-pointer inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-stone-200 hover:border-emerald-700 bg-stone-50 hover:bg-emerald-50/60 text-stone-700 hover:text-emerald-900 font-bold transition-all shadow-2xs">
+                <LucideIcon name="upload" className="text-[14px] text-emerald-700" />
+                <span>{isMr ? 'डिव्हाइसवरून फोटो जोडा' : 'Upload from Device'}</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarUpload}
+                  disabled={uploadingAvatar}
+                  className="hidden"
+                />
+              </label>
+
+              <label className="cursor-pointer inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-stone-200 hover:border-emerald-700 bg-stone-50 hover:bg-emerald-50/60 text-stone-700 hover:text-emerald-900 font-bold transition-all shadow-2xs">
+                <LucideIcon name="camera" className="text-[14px] text-emerald-700" />
+                <span>{isMr ? 'कॅमेऱ्याने फोटो काढा' : 'Take with Camera'}</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="user"
+                  onChange={handleAvatarUpload}
+                  disabled={uploadingAvatar}
+                  className="hidden"
+                />
+              </label>
+
+              {currentUser.profileImage && (
+                <button
+                  type="button"
+                  onClick={() => applyNewProfileImage('')}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-red-200 hover:bg-red-50 text-red-600 font-bold transition-all"
+                  title={isMr ? "फोटो काढून टाका" : "Remove photo"}
+                >
+                  <LucideIcon name="close" className="text-[14px]" />
+                  <span>{isMr ? 'काढा' : 'Remove'}</span>
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 w-full md:w-auto">
+        {/* Action Buttons: Edit Profile & Sign Out */}
+        <div className="flex items-center gap-2.5 w-full lg:w-auto justify-end">
           <button
             onClick={() => {
               setEditName(currentUser.fullName);
@@ -292,7 +443,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               setEditOccupation(currentUser.occupation || 'Farmer / Cultivator');
               setEditModalOpen(true);
             }}
-            className="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+            className="flex-1 lg:flex-initial px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer"
           >
             <LucideIcon name="edit" className="text-[16px]" />
             <span>{isMr ? 'माहिती बदला' : 'Edit Profile'}</span>
@@ -301,7 +452,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           {currentUser.isLoggedIn ? (
             <button
               onClick={onLogout}
-              className="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-[#fef3c7]/60 hover:bg-[#fef3c7] text-[#ba1a1a] text-[13px] font-bold flex items-center justify-center gap-1.5 border border-[#fde68a] transition-colors cursor-pointer"
+              className="flex-1 lg:flex-initial px-4 py-2.5 rounded-xl bg-stone-100 hover:bg-red-50 text-stone-700 hover:text-red-700 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 border border-stone-200 hover:border-red-200 transition-colors cursor-pointer"
             >
               <LucideIcon name="logout" className="text-[16px]" />
               <span>{isMr ? 'बाहेर पडा' : 'Sign Out'}</span>
@@ -309,7 +460,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           ) : (
             <button
               onClick={onOpenLoginModal}
-              className="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+              className="flex-1 lg:flex-initial px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer"
             >
               <LucideIcon name="login" className="text-[16px]" />
               <span>{isMr ? 'गुगलने लॉगिन करा' : 'Sign In with Google'}</span>
@@ -330,20 +481,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           >
             <LucideIcon name="badge" className="text-[18px]" />
             <span>{isMr ? 'नागरिक माहिती' : 'Citizen Overview'}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('grievances')}
-            className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all cursor-pointer ${activeTab === 'grievances'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-              }`}
-          >
-            <LucideIcon name="assignment_turned_in" className="text-[18px]" />
-            <span>{isMr ? 'माझ्या तक्रारी व स्थिती' : 'My Grievances & Tracking'}</span>
-            <span className="bg-[#fed7aa] text-[#c2410c] text-[11px] px-1.5 py-0.2 rounded-full font-bold">
-              {userComplaints.length}
-            </span>
           </button>
 
           <button
@@ -375,24 +512,28 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
       {/* 4. Four Summary KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center justify-between">
+        <div
+          onClick={() => handleSetDefaultLanguage(lang === 'MR' ? 'EN' : 'MR')}
+          className="bg-white card-hover-subtle rounded-2xl p-4 border border-[#e8e2d9] hover:border-emerald-600 shadow-xs flex items-center justify-between cursor-pointer group transition-all"
+          title={isMr ? "भाषा बदलण्यासाठी क्लिक करा" : "Click to toggle default language"}
+        >
           <div>
-            <div className="text-[12px] font-bold text-[#707974]">
-              {isMr ? 'नोंदवलेल्या तक्रारी' : 'Logged Grievances'}
+            <div className="text-[12px] font-bold text-[#707974] flex items-center gap-1">
+              <span>{isMr ? 'डीफॉल्ट भाषा' : 'Default Language'}</span>
             </div>
-            <div className="font-heading font-extrabold text-[26px] text-[#166534] mt-0.5">
-              {userComplaints.length}
+            <div className="font-heading font-extrabold text-[22px] text-[#166534] mt-0.5">
+              {lang === 'MR' ? 'मराठी' : 'English'}
             </div>
-            <div className="text-[11px] text-[#376757] font-semibold mt-0.5">
-              {isMr ? 'नोंदणीकृत तक्रारी' : 'Officially Registered'}
+            <div className="text-[11px] text-[#376757] font-semibold mt-0.5 flex items-center gap-1">
+              <span>{isMr ? 'बदलण्यासाठी टॅप करा' : 'Click to Toggle'}</span>
             </div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] flex items-center justify-center">
-            <LucideIcon name="assignment" className="text-[22px]" />
+          <div className="w-10 h-10 rounded-xl bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] flex items-center justify-center group-hover:scale-110 transition-transform">
+            <LucideIcon name="globe" className="text-[22px]" />
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center justify-between">
+        <div className="bg-white card-hover-subtle rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center justify-between">
           <div>
             <div className="text-[12px] font-bold text-[#707974]">
               {isMr ? 'उपलब्ध ग्राम योजना' : 'Village Schemes'}
@@ -409,7 +550,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center justify-between">
+        <div className="bg-white card-hover-subtle rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center justify-between">
           <div>
             <div className="text-[12px] font-bold text-[#707974]">
               {isMr ? 'गाव अधिकार क्षेत्र' : 'Village Jurisdiction'}
@@ -426,7 +567,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center justify-between">
+        <div className="bg-white card-hover-subtle rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center justify-between">
           <div>
             <div className="text-[12px] font-bold text-[#707974]">
               {isMr ? 'जतन केलेल्या योजना' : 'Saved Bookmarks'}
@@ -528,172 +669,72 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs flex flex-col justify-between">
-            <div>
-              <h3 className="font-heading font-extrabold text-[16px] text-[#166534] flex items-center gap-2 mb-3">
-                <LucideIcon name="support_agent" className="text-[#006a4e]" />
-                <span>{isMr ? 'नागरिक मदत कक्ष (CSC केंद्र)' : 'CSC Assistance Desk'}</span>
-              </h3>
-              <p className="text-[12px] text-[#404945] leading-relaxed mb-4">
-                {isMr
-                  ? '७/१२ उतारा, उत्पन्न दाखला, जात प्रमाणपत्र किंवा प्रत्यक्ष कागदपत्रे जमा करण्यासाठी मदत कक्ष:'
-                  : 'Need to apply for 7/12 land extract, income certificates, caste validity, or submit manual documentation?'}
-              </p>
-              <div className="space-y-2 text-[12px]">
-                <div className="flex items-center gap-2 text-[#707974]">
-                  <LucideIcon name="store" className="text-[16px] text-[#166534]" />
-                  <span>{isMr ? 'केंद्र: आसगाव ग्राम सचिवालय' : 'Center: Asgaon Panchayat Bhawan'}</span>
-                </div>
-                <div className="flex items-center gap-2 text-[#707974]">
-                  <LucideIcon name="schedule" className="text-[16px] text-[#166534]" />
-                  <span>{isMr ? 'वेळ: सोम - शनि, सकाळी ०९:३० — ०५:३०' : 'Timings: Mon - Sat, 09:30 AM — 05:30 PM'}</span>
-                </div>
-                <div className="flex items-center gap-2 text-[#707974]">
-                  <LucideIcon name="call" className="text-[16px] text-[#166534]" />
-                  <span>{isMr ? 'मदत क्रमांक:' : 'Helpline:'} +91 98221 04500</span>
-                </div>
-              </div>
-            </div>
-
-            <button
-              onClick={onOpenGrievanceModal}
-              className="mt-6 w-full py-2.5 rounded-xl bg-[#c2410c] hover:bg-[#852f00] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer"
-            >
-              <LucideIcon name="campaign" className="text-[18px]" />
-              <span>{isMr ? 'नवीन तक्रार नोंदवा' : 'Lodge a Grievance'}</span>
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Grievances Tab */}
-      {activeTab === 'grievances' && (
-        <div className="flex flex-col gap-6">
-          {/* Tracking Search Card */}
-          <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <h3 className="font-heading font-bold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
-              <LucideIcon name="search" className="text-[#c2410c]" />
-              <span>{isMr ? 'तक्रार स्थिती तपासा' : 'Track Grievance Status'}</span>
-            </h3>
-            <p className="text-[12px] text-[#707974] mb-3">
-              {isMr
-                ? 'तुमचा तक्रार क्रमांक टाका (उदा. ASG-2026-XXXXX किंवा KS-6181) आणि थेट स्थिती पहा.'
-                : 'Enter your grievance tracking number (e.g. ASG-2026-XXXXX or KS-6181) to check status.'}
-            </p>
-
-            <form onSubmit={handleTrackSubmit} className="flex gap-2">
-              <input
-                type="text"
-                required
-                value={trackInput}
-                onChange={(e) => setTrackInput(e.target.value)}
-                placeholder={isMr ? "तक्रार क्रमांक टाका (उदा. ASG-2026-41513)..." : "Enter Grievance No. e.g. ASG-2026-41513..."}
-                className="flex-1 bg-[#f9f3ea] p-2.5 rounded-xl border border-[#e8e2d9] text-[13px] font-mono uppercase focus:outline-none focus:ring-2 focus:ring-[#166534]"
-              />
-              <button
-                type="submit"
-                disabled={trackingLoading}
-                className="px-5 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl text-[13px] flex items-center gap-1 shrink-0 disabled:opacity-50 cursor-pointer"
-              >
-                {trackingLoading ? (isMr ? 'तपासत आहे...' : 'Checking...') : (isMr ? 'स्थिती तपासा' : 'Check Status')}
-              </button>
-            </form>
-
-            {trackResult && (
-              <div className="mt-4 p-4 rounded-xl bg-[#e8f1ec] border border-[#006a4e] flex flex-col gap-2 animate-fadeIn text-[13px]">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-[#166534] text-[15px]">
-                    {isMr ? 'तक्रार क्रमांक:' : 'Grievance No:'} {trackResult.trackingNumber}
-                  </span>
-                  <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${trackResult.status === 'RESOLVED' ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]' :
-                      trackResult.status === 'IN_PROGRESS' ? 'bg-[#dbe1ff] text-[#002873]' :
-                        'bg-[#fef3c7] text-[#ba1a1a]'
-                    }`}>
-                    {trackResult.status}
-                  </span>
-                </div>
-                <div className="font-bold text-[#1d1b16]">{trackResult.title}</div>
-                <p className="text-[#404945] text-[12px]">{trackResult.description}</p>
-                <div className="text-[11px] text-[#707974]">
-                  {isMr ? 'प्रभाग:' : 'Ward:'} {trackResult.wardOrArea} • {isMr ? 'नोंदणी:' : 'Lodged:'} {new Date(trackResult.createdAt).toLocaleString()}
-                </div>
-              </div>
-            )}
-
-            {trackError && (
-              <div className="mt-3 p-3 rounded-xl bg-[#fef3c7] text-[#ba1a1a] text-[12px] font-bold">
-                {trackError}
-              </div>
-            )}
-          </div>
-
-          {/* List of Live Complaints */}
-          <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
-            <div className="flex items-center justify-between mb-4">
+          {/* Default Language Setting Section in Profile */}
+          <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs md:col-span-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
-                <h3 className="font-heading font-extrabold text-[18px] text-[#166534]">
-                  {isMr ? `गावातील थेट तक्रारी (${userComplaints.length})` : `Live Village Grievances (${userComplaints.length})`}
+                <h3 className="font-heading font-extrabold text-[17px] text-[#166534] flex items-center gap-2">
+                  <LucideIcon name="globe" className="text-[#006a4e]" />
+                  <span>{isMr ? 'पोर्टलची डीफॉल्ट भाषा (Default Language)' : 'Portal Default Language'}</span>
                 </h3>
-                <p className="text-[12px] text-[#707974]">
-                  {isMr ? 'थेट ग्रामपंचायत अद्यतन' : 'Real-time Gram Panchayat records'}
+                <p className="text-[12px] text-[#707974] mt-0.5">
+                  {isMr
+                    ? 'गावातील पोर्टल वापरण्यासाठी तुमची पसंतीची भाषा निवडा. ही निवड तुमच्या प्रोफाइलमध्ये कायम सेव्ह केली जाईल.'
+                    : 'Choose your default language for browsing the village portal. This is saved to your profile and device.'}
                 </p>
               </div>
-
-              <button
-                onClick={onOpenGrievanceModal}
-                className="px-3.5 py-2 rounded-xl bg-[#c2410c] hover:bg-[#852f00] text-white text-[12px] font-bold flex items-center gap-1 shadow-xs cursor-pointer"
-              >
-                <LucideIcon name="add" className="text-[16px]" />
-                <span>{isMr ? 'नवीन तक्रार नोंदवा' : 'Lodge New Grievance'}</span>
-              </button>
+              <span className="px-3 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 self-start sm:self-auto">
+                {lang === 'MR' ? 'सध्याची भाषा: मराठी' : 'Current: English'}
+              </span>
             </div>
 
-            {loadingComplaints ? (
-              <div className="text-center py-8 text-[#707974] text-[13px]">
-                {isMr ? 'तक्रारी लोड होत आहेत...' : 'Loading village grievances...'}
-              </div>
-            ) : userComplaints.length === 0 ? (
-              <div className="text-center py-8 text-[#707974] text-[13px]">
-                {isMr
-                  ? 'सध्या कोणतीही तक्रार नोंदवलेली नाही. नागरी समस्या मांडण्यासाठी वरील बटण वापरा.'
-                  : 'No grievances on record. Use the button above to report a civic issue.'}
-              </div>
-            ) : (
-              <div className="flex flex-col gap-3">
-                {userComplaints.map((item) => (
-                  <div
-                    key={item.id}
-                    className="p-4 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9] flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:shadow-xs transition-all"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-mono font-bold text-[#ba1a1a] bg-white px-2 py-0.5 rounded text-[11px] border border-[#e8e2d9]">
-                          {item.trackingNumber}
-                        </span>
-                        <span className="text-[11px] font-semibold text-[#707974]">
-                          {item.category || (isMr ? 'सामान्य' : 'General')} • {item.wardOrArea || (isMr ? 'आसगाव' : 'Asgaon')}
-                        </span>
-                      </div>
-                      <h4 className="font-heading font-bold text-[14px] text-[#1d1b16]">
-                        {item.title}
-                      </h4>
-                      <p className="text-[12px] text-[#404945] mt-0.5 line-clamp-2">
-                        {item.description}
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-2 shrink-0">
-                      <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${item.status === 'RESOLVED' ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]' :
-                          item.status === 'IN_PROGRESS' ? 'bg-[#dbe1ff] text-[#002873]' :
-                            'bg-[#fef3c7] text-[#ba1a1a]'
-                        }`}>
-                        {item.status}
-                      </span>
-                    </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <button
+                type="button"
+                onClick={() => handleSetDefaultLanguage('MR')}
+                className={`p-4 rounded-xl border flex items-center justify-between transition-all cursor-pointer text-left ${
+                  lang === 'MR'
+                    ? 'border-emerald-600 bg-emerald-50/80 text-emerald-950 ring-2 ring-emerald-600/20 shadow-xs'
+                    : 'border-[#e8e2d9] bg-white text-stone-700 hover:bg-[#faf6ee]'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${lang === 'MR' ? 'bg-emerald-800 text-white' : 'bg-stone-100 text-stone-600'}`}>
+                    <LucideIcon name="globe" className="text-[20px]" />
                   </div>
-                ))}
-              </div>
-            )}
+                  <div>
+                    <div className="font-heading font-extrabold text-[15px] text-emerald-950">मराठी (Default)</div>
+                    <div className="text-[11px] text-stone-500 font-medium">स्थानिक बोली व शासकीय परिभाषा</div>
+                  </div>
+                </div>
+                {lang === 'MR' && (
+                  <LucideIcon name="check_circle" className="text-[22px] text-emerald-800 shrink-0" />
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleSetDefaultLanguage('EN')}
+                className={`p-4 rounded-xl border flex items-center justify-between transition-all cursor-pointer text-left ${
+                  lang === 'EN'
+                    ? 'border-emerald-600 bg-emerald-50/80 text-emerald-950 ring-2 ring-emerald-600/20 shadow-xs'
+                    : 'border-[#e8e2d9] bg-white text-stone-700 hover:bg-[#faf6ee]'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${lang === 'EN' ? 'bg-emerald-800 text-white' : 'bg-stone-100 text-stone-600'}`}>
+                    <LucideIcon name="globe" className="text-[20px]" />
+                  </div>
+                  <div>
+                    <div className="font-heading font-extrabold text-[15px] text-emerald-950">English</div>
+                    <div className="text-[11px] text-stone-500 font-medium">Standard civic portal layout</div>
+                  </div>
+                </div>
+                {lang === 'EN' && (
+                  <LucideIcon name="check_circle" className="text-[22px] text-emerald-800 shrink-0" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -710,7 +751,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             {savedItems.map((item) => (
               <div
                 key={item.id}
-                className="bg-[#f9f3ea] rounded-xl p-4 border border-[#e8e2d9] flex flex-col justify-between"
+                className="bg-white card-hover-subtle rounded-xl p-4 border border-[#e8e2d9] flex flex-col justify-between shadow-xs transition-all"
               >
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <div className="flex items-start gap-2.5">
@@ -826,7 +867,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               <input
                 type="checkbox"
                 checked={mandiSms}
-                onChange={(e) => setMandiSms(e.target.checked)}
+                onChange={(e) => handleToggleMandiSms(e.target.checked)}
                 className="w-4 h-4 accent-[#166534] cursor-pointer"
               />
             </div>
@@ -846,7 +887,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               <input
                 type="checkbox"
                 checked={weatherAlerts}
-                onChange={(e) => setWeatherAlerts(e.target.checked)}
+                onChange={(e) => handleToggleWeatherAlerts(e.target.checked)}
                 className="w-4 h-4 accent-[#166534] cursor-pointer"
               />
             </div>
@@ -866,7 +907,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               <input
                 type="checkbox"
                 checked={gramSabhaSms}
-                onChange={(e) => setGramSabhaSms(e.target.checked)}
+                onChange={(e) => handleToggleGramSabhaSms(e.target.checked)}
                 className="w-4 h-4 accent-[#166534] cursor-pointer"
               />
             </div>
@@ -886,7 +927,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               <input
                 type="checkbox"
                 checked={powerSchedule}
-                onChange={(e) => setPowerSchedule(e.target.checked)}
+                onChange={(e) => handleTogglePowerSchedule(e.target.checked)}
                 className="w-4 h-4 accent-[#166534] cursor-pointer"
               />
             </div>
@@ -917,7 +958,58 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </div>
             </div>
 
-            <form onSubmit={handleSaveProfile} className="flex flex-col gap-3 text-[12px]">
+            <form onSubmit={handleSaveProfile} className="flex flex-col gap-3.5 text-[12px]">
+              {/* Profile Photo Row inside Modal */}
+              <div className="flex items-center gap-3 p-3 bg-stone-50 rounded-2xl border border-stone-200">
+                <div className="w-12 h-12 rounded-full overflow-hidden bg-emerald-800 text-white flex items-center justify-center font-bold text-sm shrink-0 border border-emerald-600/30">
+                  {currentUser.profileImage ? (
+                    <img src={currentUser.profileImage} alt="Preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <span>{currentUser.avatarInitials}</span>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="block font-bold text-stone-800 text-xs mb-1">
+                    {isMr ? 'प्रोफाइल फोटो' : 'Profile Photo'}
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <label className="cursor-pointer py-1 px-2.5 rounded-lg bg-white border border-stone-200 hover:border-emerald-700 text-stone-700 hover:text-emerald-900 text-[11px] font-bold flex items-center gap-1 shadow-2xs">
+                      <LucideIcon name="upload" className="text-[12px] text-emerald-700" />
+                      <span>{isMr ? 'डिव्हाइस' : 'Device'}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleAvatarUpload}
+                        disabled={uploadingAvatar}
+                        className="hidden"
+                      />
+                    </label>
+                    <label className="cursor-pointer py-1 px-2.5 rounded-lg bg-white border border-stone-200 hover:border-emerald-700 text-stone-700 hover:text-emerald-900 text-[11px] font-bold flex items-center gap-1 shadow-2xs">
+                      <LucideIcon name="camera" className="text-[12px] text-emerald-700" />
+                      <span>{isMr ? 'कॅमेरा' : 'Camera'}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        capture="user"
+                        onChange={handleAvatarUpload}
+                        disabled={uploadingAvatar}
+                        className="hidden"
+                      />
+                    </label>
+                    {currentUser.profileImage && (
+                      <button
+                        type="button"
+                        onClick={() => applyNewProfileImage('')}
+                        className="p-1 rounded-lg text-red-500 hover:text-red-700 hover:bg-red-50"
+                        title={isMr ? "फोटो काढा" : "Remove"}
+                      >
+                        <LucideIcon name="close" className="text-[14px]" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
               <div>
                 <label className="font-bold text-[#166534] block mb-1">
                   {isMr ? 'पूर्ण नाव' : 'Full Name'}
@@ -983,15 +1075,34 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
               <div>
                 <label className="font-bold text-[#166534] block mb-1">
-                  {isMr ? 'व्यवसाय किंवा थोडक्यात माहिती' : 'Occupation / Bio'}
+                  {isMr ? 'डीफॉल्ट भाषा (Default Language)' : 'Default Language Preference'}
                 </label>
-                <input
-                  type="text"
-                  value={editOccupation}
-                  onChange={(e) => setEditOccupation(e.target.value)}
-                  placeholder={isMr ? "उदा. सोयाबीन व कापूस उत्पादक शेतकरी" : "e.g. Cultivator of Soybean & Cotton / Grocery Store Owner"}
-                  className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
-                />
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setEditLang('MR')}
+                    className={`py-2 px-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
+                      editLang === 'MR'
+                        ? 'border-emerald-600 bg-emerald-50 text-emerald-950 ring-2 ring-emerald-600/20'
+                        : 'border-[#e8e2d9] bg-white text-stone-700 hover:bg-[#faf6ee]'
+                    }`}
+                  >
+                    <LucideIcon name="globe" className="text-[14px] text-emerald-800" />
+                    <span>मराठी (Default)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditLang('EN')}
+                    className={`py-2 px-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
+                      editLang === 'EN'
+                        ? 'border-emerald-600 bg-emerald-50 text-emerald-950 ring-2 ring-emerald-600/20'
+                        : 'border-[#e8e2d9] bg-white text-stone-700 hover:bg-[#faf6ee]'
+                    }`}
+                  >
+                    <LucideIcon name="globe" className="text-[14px] text-emerald-800" />
+                    <span>English</span>
+                  </button>
+                </div>
               </div>
 
               <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#f3ede4] mt-2">

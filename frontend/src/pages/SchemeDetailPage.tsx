@@ -173,7 +173,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
         serviceType: scheme.category,
         provider: {
           '@type': 'GovernmentOrganization',
-          name: scheme.sponsoringAgency
+          name: scheme.sponsoringAgency || 'Government of Maharashtra'
         },
         areaServed: {
           '@type': 'AdministrativeArea',
@@ -242,7 +242,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
 
         <button
           onClick={onNavigateBack}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[12px] font-bold transition-colors border border-[#e8e2d9]"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-stone-50 text-[#1d1b16] text-[12px] font-bold transition-colors border border-[#e8e2d9] shadow-xs cursor-pointer"
         >
           <LucideIcon name="arrow_back" className="text-[16px]" />
           <span>{lang === 'MR' ? 'परत जा' : 'Back'}</span>
@@ -274,10 +274,12 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           {scheme.title}
         </h1>
 
-        <div className="flex items-center gap-2 text-[14px] font-bold text-[#c2410c] mb-4">
-          <LucideIcon name="account_balance" className="text-[18px]" />
-          <span>{scheme.sponsoringAgency}</span>
-        </div>
+        {scheme.sponsoringAgency && (
+          <div className="flex items-center gap-2 text-[14px] font-bold text-[#c2410c] mb-4">
+            <LucideIcon name="account_balance" className="text-[18px]" />
+            <span>{scheme.sponsoringAgency}</span>
+          </div>
+        )}
 
         <p className="text-[14px] text-[#404945] leading-relaxed max-w-4xl">
           {scheme.description}
@@ -285,7 +287,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
 
         {/* Highlight Metrics Strip */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 pt-6 border-t border-[#f3ede4]">
-          <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+          <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
               <LucideIcon name="payments" className="text-[16px] text-[#c2410c]" />
               <span>{lang === 'MR' ? 'थेट लाभ / अनुदान' : 'Direct Benefit / Subsidy'}</span>
@@ -295,7 +297,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
             </div>
           </div>
 
-          <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+          <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
               <LucideIcon name="verified" className="text-[16px] text-[#002873]" />
               <span>{lang === 'MR' ? 'अर्ज शुल्क' : 'Application Fee'}</span>
@@ -305,7 +307,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
             </div>
           </div>
 
-          <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+          <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
               <LucideIcon name="how_to_reg" className="text-[16px] text-[#376757]" />
               <span>{lang === 'MR' ? 'नोंदणी व मदत कक्ष' : 'Approval Desk'}</span>
@@ -315,7 +317,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
             </div>
           </div>
 
-          <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
+          <div className="bg-[#f9f3ea] card-hover-subtle p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
               <LucideIcon name="timer" className="text-[16px] text-[#c2410c]" />
               <span>{lang === 'MR' ? 'वितरण पद्धत' : 'Disbursement Mode'}</span>
@@ -456,7 +458,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
                       onSelectScheme(rel.slug);
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="p-3.5 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] border border-[#e8e2d9] text-left transition-colors flex flex-col justify-between"
+                    className="p-3.5 rounded-xl bg-white card-hover-subtle hover:bg-stone-50 border border-[#e8e2d9] text-left transition-colors flex flex-col justify-between shadow-xs cursor-pointer"
                   >
                     <div>
                       <span className="text-[10px] font-bold uppercase text-[#002873] bg-[#dbe1ff] px-2 py-0.5 rounded">

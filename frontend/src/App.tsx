@@ -8,7 +8,6 @@ import { LiveMandiTicker } from './components/LiveMandiTicker';
 import { FeaturedEnterprises } from './components/FeaturedEnterprises';
 import { JobsBoardSection } from './components/JobsBoardSection';
 import { GovtSchemesSection } from './components/GovtSchemesSection';
-import { GrievanceDeskSection } from './components/GrievanceDeskSection';
 import { PanchayatNoticeStrip } from './components/PanchayatNoticeStrip';
 import { Footer } from './components/Footer';
 import { VillageGraffitiBackdrop } from './components/WarliWallGraffiti';
@@ -35,14 +34,13 @@ import { ReviewsPage } from './pages/ReviewsPage';
 import { AdminPage } from './pages/AdminPage';
 
 // Modals
-import { GrievanceModal } from './components/GrievanceModal';
 import { LoginModal } from './components/LoginModal';
 import { GuestUpgradeModal } from './components/GuestUpgradeModal';
 import { RegisterShopModal } from './components/RegisterShopModal';
 import { PostJobModal } from './components/PostJobModal';
 import { DetailModal } from './components/DetailModal';
 import { VillageMasterMapModal } from './components/VillageMasterMapModal';
-import type { Business, Job, Scheme, Grievance, MandiPrice } from './types';
+import type { Business, Job, Scheme, MandiPrice } from './types';
 import { api } from './services/api';
 import { useSEO } from './hooks/useSEO';
 
@@ -206,6 +204,7 @@ export function App() {
           village: 'Asgaon, Pauni (PIN 441910)',
           isLoggedIn: true,
           avatarInitials: name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase() || 'GC',
+          profileImage: u.profileImage || '',
           occupation: u.occupation || 'Asgaon Citizen'
         };
       } catch {
@@ -234,7 +233,6 @@ export function App() {
   const [schemes, setSchemes] = useState<Scheme[]>([]);
   const [mandiPrices, setMandiPrices] = useState<MandiPrice[]>([]);
   const [announcements, setAnnouncements] = useState<any[]>([]);
-  const [grievances, setGrievances] = useState<Grievance[]>([]);
   const [isServerWaking, setIsServerWaking] = useState(false);
 
   useEffect(() => {
@@ -313,8 +311,6 @@ export function App() {
             title: s.title,
             slug: s.slug || s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
             category: s.category || 'farmer',
-            sponsoringAgency: s.sponsoringAgency || 'Government of Maharashtra',
-            deadlineText: s.deadlineText || 'Open all year',
             description: s.description || '',
             benefits: s.benefits || '',
             eligibility: s.eligibility || '',
@@ -355,34 +351,10 @@ export function App() {
       })
       .catch((err) => console.error('Failed to load announcements from database API:', err.message));
 
-    // 6. Fetch live complaints from Neon PostgreSQL
-    api.getAllComplaints()
-      .then((comps) => {
-        if (comps && comps.length > 0) {
-          const mapped: Grievance[] = comps.map((c: any, index: number) => ({
-            id: c.id || ('g-' + index),
-            trackingNumber: c.trackingNumber || `ASG-2026-${index + 1000}`,
-            category: c.category || 'Civic Infrastructure',
-            title: c.title,
-            description: c.description || 'Public grievance registered in Asgaon civic system.',
-            wardOrArea: c.wardOrArea || 'Village Center',
-            contactPhone: c.citizenPhone || '9822104500',
-            status: (c.status === 'RESOLVED' ? 'RESOLVED' : c.status === 'IN_PROGRESS' ? 'IN_PROGRESS' : 'SUBMITTED') as 'RESOLVED' | 'IN_PROGRESS' | 'SUBMITTED',
-            statusBadge: c.status === 'RESOLVED' ? 'Resolved & Verified' : c.status === 'IN_PROGRESS' ? 'Repair Crew on Site' : 'Received (Under Review)',
-            reportedBy: c.citizenName || 'Citizen (' + (c.citizenPhone ? c.citizenPhone.slice(-4) : '4500') + ')',
-            progressPercent: c.status === 'RESOLVED' ? 100 : c.status === 'IN_PROGRESS' ? 65 : 20,
-            actionTimeline: c.createdAt ? new Date(c.createdAt).toLocaleDateString() : 'Recently Registered',
-            isVerifiedClosed: c.status === 'RESOLVED'
-          }));
-          setGrievances(mapped);
-        }
-      })
-      .catch((err) => console.error('Failed to load complaints from database API:', err.message));
   }, []);
 
   // Modals state
   const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [grievanceModalOpen, setGrievanceModalOpen] = useState(false);
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
   const [upgradeActionTitle, setUpgradeActionTitle] = useState('');
   const [registerShopOpen, setRegisterShopOpen] = useState(false);
@@ -455,10 +427,6 @@ export function App() {
 
   const handleSelectBusiness = (biz: Business) => {
     navigateToBusiness(biz.slug || biz.id);
-  };
-
-  const handleGrievanceSubmit = (newGrievance: Grievance) => {
-    setGrievances((prev) => [newGrievance, ...prev]);
   };
 
   const handleAddBusiness = (newBiz: Business) => {
@@ -607,7 +575,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fdfbf7] text-[#1d1b16] flex flex-col font-sans relative">
+    <div className="min-h-screen bg-[var(--site-bg)] text-[#1d1b16] flex flex-col font-sans relative">
       {/* Authentic Village Folk Art Graffiti Backdrop */}
       <VillageGraffitiBackdrop />
 
@@ -616,7 +584,6 @@ export function App() {
         activeNav={activeNav}
         setActiveNav={(nav) => navigateTo(nav)}
         onOpenLogin={() => setLoginModalOpen(true)}
-        onOpenGrievance={() => setGrievanceModalOpen(true)}
         onSearch={handleSearch}
         userRole={userRole}
         currentUser={currentUser}
@@ -652,7 +619,6 @@ export function App() {
               localStorage.setItem('dg_user', JSON.stringify(updated));
             }}
             onNavigateHome={() => navigateTo('home')}
-            onOpenGrievanceModal={() => setGrievanceModalOpen(true)}
             onOpenLoginModal={() => setLoginModalOpen(true)}
             onLogout={handleLogout}
             schemes={schemes}
@@ -850,7 +816,6 @@ export function App() {
                 setActiveNav(moduleId);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              onOpenGrievance={() => setGrievanceModalOpen(true)}
               onOpenRegisterShop={() => setRegisterShopOpen(true)}
               onOpenPostJob={() => setPostJobOpen(true)}
               mandiPrices={mandiPrices}
@@ -886,27 +851,6 @@ export function App() {
               onSelectScheme={navigateToScheme}
             />
 
-            {/* Public Grievance Desk */}
-            <GrievanceDeskSection
-              grievances={grievances}
-              onOpenReportModal={() => setGrievanceModalOpen(true)}
-              onTrackComplaint={async () => {
-                const token = prompt('Enter Grievance Ref (उदा. ASG-2026-XXXXX):');
-                if (token && token.trim()) {
-                  try {
-                    const comp = await api.trackComplaint(token.trim());
-                    if (comp) {
-                      alert(`Grievance [${comp.trackingNumber}]:\n• Title: ${comp.title}\n• Status: ${comp.status}\n• Category: ${comp.category}\n• Ward: ${comp.wardOrArea}\n• Lodged on: ${new Date(comp.createdAt).toLocaleDateString()}`);
-                    } else {
-                      alert(`Grievance Ref [${token.trim()}]: Status is Active / Under review by Village Office.`);
-                    }
-                  } catch (err: any) {
-                    alert(`Grievance Ref [${token.trim()}]: Status is Active / Under review by Village Office.`);
-                  }
-                }
-              }}
-            />
-
             {/* Official Notice Strip */}
             <PanchayatNoticeStrip />
           </div>
@@ -917,11 +861,6 @@ export function App() {
       <Footer onNavigate={navigateTo} />
 
       {/* Interactive Modals */}
-      <GrievanceModal
-        isOpen={grievanceModalOpen}
-        onClose={() => setGrievanceModalOpen(false)}
-        onSubmitGrievance={handleGrievanceSubmit}
-      />
 
       {loginModalOpen && (
         <LoginModal

@@ -1,5 +1,6 @@
 import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useMemo, useEffect } from 'react';
+import { SlidersHorizontal, X, RotateCcw, Check } from 'lucide-react';
 import { INITIAL_BLOG_POSTS, type BlogPost } from '../data/blogData';
 import { SEOHead } from '../components/SEOHead';
 import { Breadcrumb } from '../components/Breadcrumb';
@@ -34,9 +35,15 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          const existingIds = new Set(parsed.map((p: BlogPost) => (p.id || p.slug).toLowerCase()));
-          const missing = INITIAL_BLOG_POSTS.filter((p) => !existingIds.has(p.id.toLowerCase()) && !existingIds.has(p.slug.toLowerCase()));
-          return [...missing, ...parsed];
+          const normalized = parsed.map((p: BlogPost) => {
+            if (p.id === 'c7f9e2b1' && p.slug === 'c7f9e2b1') {
+              return { ...p, slug: 'how-to-write-and-publish-community-blogs' };
+            }
+            return p;
+          });
+          const existingIds = new Set(normalized.map((p: BlogPost) => (p.slug || p.id).toLowerCase()));
+          const missing = INITIAL_BLOG_POSTS.filter((p) => !existingIds.has((p.slug || p.id).toLowerCase()) && !existingIds.has(p.id.toLowerCase()));
+          return [...missing, ...normalized];
         }
       } catch {
         /* ignore */
@@ -48,6 +55,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<'latest' | 'popular' | 'views'>('latest');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [writeModalOpen, setWriteModalOpen] = useState(false);
 
   // Sync when Admin or User publishes new blog or on mount from API
@@ -144,7 +152,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
 
   const handleShare = (e: React.MouseEvent, post: BlogPost) => {
     e.stopPropagation();
-    const url = `${window.location.origin}/blogs/${post.id || post.slug}`;
+    const url = `${window.location.origin}/blogs/${post.slug || post.id}`;
     const text = `📖 *${post.titleMarathi}*\n\n${post.excerptMarathi}\n\n👉 संपूर्ण लेख येथे वाचा: ${url}`;
     const encoded = encodeURIComponent(text);
     window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
@@ -247,7 +255,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
       {/* 3. Featured Spotlight Card */}
       {!searchQuery && selectedCategory === 'all' && featuredPost && (
         <section
-          onClick={() => onSelectBlogSlug(featuredPost.id || featuredPost.slug)}
+          onClick={() => onSelectBlogSlug(featuredPost.slug || featuredPost.id)}
           className="bg-white rounded-3xl p-6 sm:p-8 shadow-xs hover:shadow-md border border-[#e8e2d9] hover:border-[#052e16] cursor-pointer group flex flex-col lg:flex-row items-center gap-6 transition-all"
         >
           <div className="lg:w-1/2 rounded-2xl overflow-hidden bg-stone-100 max-h-[280px] w-full">
@@ -304,70 +312,196 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
         </section>
       )}
 
-      {/* 4. Search, Category Filter & Sort Bar */}
-      <div id="blogs-list-container" className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-          <div className="relative w-full md:flex-1">
-            <LucideIcon name="search" className="absolute left-3 top-2.5 text-[#707974] text-[20px]" />
+      {/* 4. SEARCH & UNIFIED FILTER BAR */}
+      <div id="blogs-list-container" className="bg-white rounded-2xl p-3 sm:p-4 border border-[#e8e2d9] shadow-xs flex flex-col gap-2.5">
+        <div className="flex items-center gap-2">
+          {/* Search Bar */}
+          <div className="relative flex-1">
+            <LucideIcon name="search" className="absolute left-3 top-2.5 text-[#707974] text-[18px]" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={
                 lang === 'MR'
-                  ? 'शोध: शीर्षक, योजना, पीक किंवा लेखक (उदा. घरकुल, सातबारा, एसटी, कापूस)...'
-                  : 'Search: title, scheme, crop or author (e.g. Gharkul, 7/12, ST, Cotton)...'
+                  ? 'शोध: लेख, योजना, पीक किंवा लेखक...'
+                  : 'Search blogs by title, crop, author...'
               }
-              className="w-full pl-10 pr-10 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
+              className="w-full pl-9 sm:pl-10 pr-9 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-xs sm:text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-2.5 text-xs text-[#707974] hover:text-[#1d1b16]"
+                className="absolute right-2.5 top-2.5 p-0.5 text-[#707974] hover:text-[#1d1b16]"
+                aria-label="Clear Search"
               >
-                {lang === 'MR' ? 'साफ करा' : 'Clear'}
+                <X className="w-4 h-4" />
               </button>
             )}
           </div>
 
-          <div className="flex items-center gap-2 w-full md:w-auto shrink-0">
-            <span className="text-[12px] font-bold text-[#707974] flex items-center gap-1">
-              <LucideIcon name="sort" className="text-[16px]" />
-              <span>{lang === 'MR' ? 'क्रमवारी:' : 'Sort By:'}</span>
-            </span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="bg-[#f9f3ea] text-[#1d1b16] p-2 rounded-xl text-[12px] font-bold border border-[#e8e2d9] focus:outline-none"
-            >
-              <option value="latest">{lang === 'MR' ? 'नवीनतम लेख' : 'Latest First'}</option>
-              <option value="popular">{lang === 'MR' ? 'सर्वाधिक पसंती' : 'Most Liked'}</option>
-              <option value="views">{lang === 'MR' ? 'सर्वाधिक वाचलेले' : 'Most Viewed'}</option>
-            </select>
-          </div>
+          {/* Corporate Filter Icon Button in Flex */}
+          <button
+            type="button"
+            onClick={() => setIsFilterOpen(true)}
+            className={`relative shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all shadow-xs ${
+              selectedCategory !== 'all'
+                ? 'bg-[#166534] text-white border-[#166534] ring-2 ring-[#166534]/20'
+                : 'bg-[#f4efe8] text-[#1d1b16] border-[#e8e2d9] hover:bg-[#eae2d7]'
+            }`}
+            aria-label="Filter Blogs"
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            <span className="hidden sm:inline">{lang === 'MR' ? 'फिल्टर' : 'Filter'}</span>
+            {selectedCategory !== 'all' && (
+              <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-400 text-stone-900 text-[10px] sm:text-[11px] font-black flex items-center justify-center">
+                1
+              </span>
+            )}
+          </button>
         </div>
 
-        {/* Category Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 border-t border-[#f0eee8]">
-          <span className="text-xs font-bold text-[#707974] whitespace-nowrap mr-1">
-            {lang === 'MR' ? 'विभाग:' : 'Category:'}
-          </span>
-          {categories.map((cat) => (
+        {/* Active Filter Chips (Micro Row) */}
+        {selectedCategory !== 'all' && (
+          <div className="pt-2 border-t border-[#f0eee8] flex items-center gap-1.5 flex-wrap text-xs">
+            <span className="text-[11px] font-medium text-[#707974]">
+              {lang === 'MR' ? 'सक्रिय फिल्टर्स:' : 'Active:'}
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+              {categories.find((c) => c.id === selectedCategory)?.label}
+              <button onClick={() => setSelectedCategory('all')} className="hover:opacity-70 ml-0.5" aria-label="Clear category">
+                <X className="w-3 h-3" />
+              </button>
+            </span>
             <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${selectedCategory === cat.id
-                  ? 'bg-[#166534] text-[#a7f3d0] shadow-xs'
-                  : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
-                }`}
+              onClick={() => setSelectedCategory('all')}
+              className="text-[11px] font-bold text-[#c2410c] hover:underline ml-1"
             >
-              <span>{cat.label}</span>
-              <span className="ml-1 text-[10px] opacity-80">({cat.count})</span>
+              {lang === 'MR' ? 'सर्व काढा' : 'Clear all'}
             </button>
-          ))}
-        </div>
+          </div>
+        )}
       </div>
+
+      {/* Corporate Filter Modal / Bottom Sheet */}
+      {isFilterOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
+          onClick={() => setIsFilterOpen(false)}
+        >
+          <div
+            className="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-[#e8e2d9] flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-5 py-4 border-b border-[#e8e2d9] flex items-center justify-between bg-[#fdfbf7]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#e8f1ec] text-[#166534] flex items-center justify-center">
+                  <SlidersHorizontal className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#1d1b16]">
+                    {lang === 'MR' ? 'ब्लॉग व लेख फिल्टर्स' : 'Filter Blog Articles'}
+                  </h3>
+                  <p className="text-[11px] text-[#707974]">
+                    {lang === 'MR' ? 'विषय विभाग व क्रमवारीनुसार लेख निवडा' : 'Filter by topic and sort order'}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#f4efe8] hover:bg-[#eae2d7] text-[#707974] hover:text-[#1d1b16] flex items-center justify-center transition-all"
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 overflow-y-auto space-y-5 text-sm">
+              {/* Category Section */}
+              <div>
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider">
+                    {lang === 'MR' ? '१. लेख विभाग' : '1. Article Category'}
+                  </span>
+                  {selectedCategory !== 'all' && (
+                    <button
+                      onClick={() => setSelectedCategory('all')}
+                      className="text-[11px] text-[#c2410c] font-semibold hover:underline"
+                    >
+                      {lang === 'MR' ? 'सर्व दाखवा' : 'Reset'}
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {categories.map((cat) => {
+                    const isSelected = selectedCategory === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={() => setSelectedCategory(cat.id)}
+                        className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                          isSelected
+                            ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                            : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                        }`}
+                      >
+                        <span className="truncate">{cat.label} ({cat.count})</span>
+                        {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Sort By Section */}
+              <div>
+                <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider block mb-2">
+                  {lang === 'MR' ? '२. क्रमवारी (Sort By)' : '2. Sort By'}
+                </span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-xs font-bold border border-[#e8e2d9] focus:outline-none"
+                >
+                  <option value="latest">{lang === 'MR' ? 'नवीनतम लेख' : 'Latest First'}</option>
+                  <option value="popular">{lang === 'MR' ? 'सर्वाधिक पसंती (Most Liked)' : 'Most Liked'}</option>
+                  <option value="views">{lang === 'MR' ? 'सर्वाधिक वाचलेले (Most Viewed)' : 'Most Viewed'}</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-[#e8e2d9] bg-[#f9f3ea] flex items-center justify-between gap-3">
+              <button
+                onClick={() => setSelectedCategory('all')}
+                disabled={selectedCategory === 'all'}
+                className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  selectedCategory !== 'all'
+                    ? 'text-[#c2410c] hover:bg-orange-100/60'
+                    : 'text-stone-400 cursor-not-allowed'
+                }`}
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>{lang === 'MR' ? 'सर्व रीसेट' : 'Clear All'}</span>
+              </button>
+
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="flex-1 sm:flex-initial px-6 py-2.5 rounded-xl bg-[#166534] text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-[#14532d] transition-all flex items-center justify-center gap-2"
+              >
+                <span>
+                  {lang === 'MR'
+                    ? `लेख दाखवा (${filteredPosts.length})`
+                    : `Show ${filteredPosts.length} Articles`}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 5. Blog Grid */}
       {filteredPosts.length === 0 ? (
@@ -395,9 +529,9 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPosts.map((post) => (
             <article
-              key={post.id}
-              onClick={() => onSelectBlogSlug(post.id || post.slug)}
-              className="bg-white rounded-2xl border border-[#e8e2d9] shadow-xs hover:shadow-md hover:border-[#052e16] transition-all overflow-hidden flex flex-col justify-between group cursor-pointer"
+              key={post.slug || post.id}
+              onClick={() => onSelectBlogSlug(post.slug || post.id)}
+              className="bg-white rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-md hover:border-emerald-800 transition-all overflow-hidden flex flex-col justify-between group cursor-pointer"
             >
               <div>
                 {/* Cover Image */}
@@ -411,9 +545,6 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                   <div className="absolute top-3 left-3 flex items-center gap-1.5">
                     <span className="px-2.5 py-0.5 rounded-md bg-[#166534]/95 text-[#a7f3d0] text-[11px] font-bold shadow-sm">
                       {lang === 'MR' ? (post.categoryMarathi || post.category) : post.category}
-                    </span>
-                    <span className="px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-[#a7f3d0] text-[10px] font-mono font-bold shadow-sm">
-                      #{post.id}
                     </span>
                   </div>
                   <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-xs text-white text-[11px] px-2 py-0.5 rounded-md font-mono flex items-center gap-1">
@@ -439,10 +570,10 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                   </div>
 
                   <a
-                    href={`/blogs/${post.id || post.slug}`}
+                    href={`/blogs/${post.slug || post.id}`}
                     onClick={(e) => {
                       e.preventDefault();
-                      onSelectBlogSlug(post.id || post.slug);
+                      onSelectBlogSlug(post.slug || post.id);
                     }}
                     className="block font-heading font-extrabold text-[16px] text-[#166534] group-hover:text-[#c2410c] leading-snug line-clamp-2 mb-2 transition-colors"
                   >

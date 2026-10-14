@@ -22,7 +22,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-5 gap-3">
         <div>
           <h2 className="font-heading font-extrabold text-[24px] text-emerald-950 flex items-center gap-2">
-            <LucideIcon name="storefront" className="text-[#c2410c] text-[28px]" />
+            <LucideIcon name="storefront" className="text-orange-600 text-[28px]" />
             <span>{lang === 'MR' ? 'स्थानिक वैशिष्ट्यपूर्ण दुकाने व व्यवसाय' : 'Featured Village Enterprises'}</span>
           </h2>
           <p className="text-[13px] text-stone-600">
@@ -35,7 +35,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
         <button
           type="button"
           onClick={onRegisterShop}
-          className="px-4 py-2 rounded-xl bg-[#c2410c] hover:bg-[#ea580c] text-white text-[13px] font-extrabold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+          className="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-[13px] font-extrabold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
         >
           <LucideIcon name="add_business" className="text-[18px]" />
           <span>{lang === 'MR' ? 'मोफत दुकान नोंदवा (आपला व्यापार)' : 'List Your Shop Free'}</span>
@@ -47,7 +47,8 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
         {businesses.map((biz) => (
           <div
             key={biz.id}
-            className="bg-white rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all border border-[#efe7dc] hover:border-emerald-700 flex flex-col justify-between group"
+            onClick={() => onSelectBusiness(biz)}
+            className="group bg-white rounded-2xl overflow-hidden shadow-xs hover:shadow-xl hover:shadow-orange-900/10 border border-stone-200/80 hover:border-orange-500 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer"
           >
             {/* Image Thumbnail with Floating Tags */}
             <div className="relative h-44 w-full overflow-hidden bg-[#faf6ee]">
@@ -73,7 +74,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
 
               {/* Verification badge pill */}
               {biz.isVerified && (
-                <div className="absolute top-2.5 right-2.5 bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs">
+                <div className="absolute top-2.5 right-2.5 bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs transition-colors">
                   <LucideIcon name="verified" className="text-[12px] text-emerald-700" />
                   <span>{lang === 'MR' && biz.verificationBadge === 'VERIFIED MERCHANT' ? 'प्रमाणित व्यावसायिक' : (biz.verificationBadge || 'VERIFIED')}</span>
                 </div>
@@ -82,12 +83,11 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
 
             {/* Content Body */}
             <div className="p-4 flex-1 flex flex-col">
-              <span className="text-[10px] uppercase font-extrabold tracking-wider text-[#c2410c] mb-1">
+              <span className="text-[10px] uppercase font-extrabold tracking-wider text-orange-700 mb-1 transition-colors">
                 {biz.category}
               </span>
               <h3
-                onClick={() => onSelectBusiness(biz)}
-                className="font-heading font-extrabold text-[16px] text-stone-900 hover:text-emerald-800 cursor-pointer transition-colors leading-snug line-clamp-1"
+                className="font-heading font-extrabold text-[16px] text-stone-900 group-hover:text-orange-800 transition-colors leading-snug line-clamp-1"
               >
                 {biz.name}
               </h3>
@@ -96,7 +96,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
               </p>
 
               {/* Timing */}
-              <div className="mt-3 flex items-center gap-1.5 text-[11px] text-stone-600 bg-[#faf6ee] px-2 py-1 rounded-lg border border-[#efe7dc]">
+              <div className="mt-3 flex items-center gap-1.5 text-[11px] text-stone-600 bg-[#faf6ee] px-2.5 py-1.5 rounded-lg border border-[#efe7dc]">
                 <LucideIcon name="schedule" className="text-[14px] text-emerald-700" />
                 <span className="truncate">{biz.openingHours}</span>
               </div>
@@ -105,7 +105,8 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
               <div className="mt-4 pt-3 border-t border-[#efe7dc] flex items-center gap-2">
                 <a
                   href={`tel:${biz.phone}`}
-                  className="flex-1 flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-[#faf6ee] text-stone-800 hover:bg-[#f3ede4] transition-colors text-[12px] font-bold border border-[#efe7dc]"
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex-1 flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-[#faf6ee] text-stone-800 hover:bg-[#f3ede4] transition-all text-[12px] font-bold border border-[#efe7dc] shadow-2xs"
                 >
                   <LucideIcon name="call" className="text-[15px] text-emerald-800" />
                   <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
@@ -114,6 +115,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
                   href={`https://wa.me/91${biz.whatsapp}?text=Hello%20${encodeURIComponent(biz.name)},%20I%20saw%20your%20listing%20on%20Digital%20Gaon%20Asgaon.`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
                   className="flex-1 flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-emerald-800 text-white hover:bg-emerald-900 transition-colors text-[12px] font-extrabold shadow-2xs"
                 >
                   <LucideIcon name="chat" className="text-[15px] text-emerald-200" />
@@ -123,6 +125,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
                   href={`https://www.google.com/maps/dir/?api=1&destination=${biz.latitude || 20.7850},${biz.longitude || 79.6350}`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
                   className="p-2 rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors border border-amber-200"
                   title={lang === 'MR' ? 'Google Maps वर ठिकाण पहा' : 'View on Map'}
                 >

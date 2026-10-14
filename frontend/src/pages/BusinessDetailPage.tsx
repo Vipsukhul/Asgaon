@@ -197,7 +197,11 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
               </div>
             </div>
 
-            
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/40 backdrop-blur-md text-amber-300 font-bold text-sm border border-white/20 self-start sm:self-auto">
+              <span>★</span>
+              <span>{(liveRating ?? business.rating ?? 4.8).toFixed(1)}</span>
+              <span className="text-white/80 text-xs font-normal">({liveCount ?? business.ratingCount ?? 0})</span>
+            </div>
           </div>
         </div>
 

@@ -18,7 +18,7 @@ export const JobsBoardSection: React.FC<JobsBoardSectionProps> = ({ jobs, onPost
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-5 gap-3">
         <div>
           <h2 className="font-heading font-extrabold text-[24px] text-emerald-950 flex items-center gap-2">
-            <LucideIcon name="work" className="text-[#c2410c] text-[28px]" />
+            <LucideIcon name="work" className="text-blue-700 text-[28px]" />
             <span>{lang === 'MR' ? 'ग्रामीण रोजगार मंच • स्थानिक काम व नोकऱ्या' : 'Gramin Rojgar Manch • Village Jobs Board'}</span>
           </h2>
           <p className="text-[13px] text-stone-600">
@@ -31,7 +31,7 @@ export const JobsBoardSection: React.FC<JobsBoardSectionProps> = ({ jobs, onPost
         <button
           type="button"
           onClick={onPostJob}
-          className="px-4 py-2 rounded-xl bg-white text-emerald-900 border-2 border-emerald-800 text-[13px] font-extrabold hover:bg-emerald-800 hover:text-white transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer"
+          className="px-4 py-2 rounded-xl bg-white text-blue-900 border-2 border-blue-800 text-[13px] font-extrabold hover:bg-blue-800 hover:text-white transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer"
         >
           <LucideIcon name="post_add" className="text-[18px]" />
           <span>{lang === 'MR' ? 'मोफत कामगार / नोकरी जाहिरात टाका' : 'Post Free Job Vacancy'}</span>
@@ -43,12 +43,12 @@ export const JobsBoardSection: React.FC<JobsBoardSectionProps> = ({ jobs, onPost
         {jobs.map((job) => (
           <div
             key={job.id}
-            className="bg-white rounded-2xl p-5 shadow-xs hover:shadow-md transition-all border border-[#efe7dc] hover:border-emerald-700 flex flex-col justify-between"
+            className="group bg-white rounded-2xl p-5 shadow-xs hover:shadow-xl hover:shadow-blue-900/10 border border-stone-200/80 hover:border-blue-500 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer"
           >
             <div>
               {/* Badges */}
               <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-300">
+                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-blue-50 text-blue-800 border border-blue-200">
                   {job.employmentType}
                 </span>
                 <span className="text-[11px] font-semibold text-stone-500">
@@ -57,18 +57,18 @@ export const JobsBoardSection: React.FC<JobsBoardSectionProps> = ({ jobs, onPost
               </div>
 
               {/* Title & Employer */}
-              <h3 className="font-heading font-extrabold text-[17px] text-stone-900 mb-1">
+              <h3 className="font-heading font-extrabold text-[17px] text-stone-900 group-hover:text-blue-900 mb-1 transition-colors">
                 {job.title}
               </h3>
-              <div className="text-[12px] font-bold text-[#c2410c] mb-3 flex items-center gap-1">
+              <div className="text-[12px] font-bold text-orange-700 mb-3 flex items-center gap-1">
                 <LucideIcon name="apartment" className="text-[15px]" />
                 <span className="truncate">{job.employerName}</span>
               </div>
 
               {/* Compensation Box */}
-              <div className="bg-[#faf6ee] p-2.5 rounded-xl border border-[#efe7dc] mb-3 flex items-center justify-between">
+              <div className="bg-[#faf6ee] p-2.5 rounded-xl border border-[#efe7dc] mb-3 flex items-center justify-between shadow-2xs">
                 <span className="text-[11px] font-bold text-stone-600">{lang === 'MR' ? 'वेतन / मोबदला' : 'Compensation'}</span>
-                <span className="font-heading font-black text-[16px] text-emerald-800">
+                <span className="font-heading font-black text-[16px] text-emerald-700">
                   {job.salaryRange}
                 </span>
               </div>
@@ -89,15 +89,19 @@ export const JobsBoardSection: React.FC<JobsBoardSectionProps> = ({ jobs, onPost
               <div className="flex items-center gap-2">
                 <a
                   href={`tel:${job.contactPhone}`}
-                  className="px-3 py-1.5 rounded-lg bg-[#faf6ee] hover:bg-[#f3ede4] text-stone-800 text-[12px] font-bold transition-colors flex items-center gap-1 border border-[#efe7dc]"
+                  onClick={(e) => e.stopPropagation()}
+                  className="px-3 py-1.5 rounded-lg bg-[#faf6ee] text-stone-800 hover:bg-[#f3ede4] text-[12px] font-bold transition-all flex items-center gap-1 border border-[#efe7dc] shadow-2xs"
                 >
                   <LucideIcon name="call" className="text-[14px] text-emerald-800" />
                   <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
                 </a>
                 <button
                   type="button"
-                  onClick={() => onApplyJob(job)}
-                  className="px-3.5 py-1.5 rounded-lg bg-emerald-800 text-white hover:bg-emerald-900 text-[12px] font-extrabold transition-all flex items-center gap-1 shadow-2xs cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onApplyJob(job);
+                  }}
+                  className="px-3.5 py-1.5 rounded-lg bg-blue-700 text-white hover:bg-blue-800 text-[12px] font-extrabold transition-all flex items-center gap-1 shadow-2xs cursor-pointer"
                 >
                   <span>{lang === 'MR' ? 'अर्ज करा' : 'Apply Now'}</span>
                   <LucideIcon name="arrow_forward" className="text-[14px]" />

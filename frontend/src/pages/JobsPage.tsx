@@ -1,5 +1,6 @@
 import { LucideIcon } from '../components/LucideIcon';
 import React, { useState } from 'react';
+import { SlidersHorizontal, X, RotateCcw, Check } from 'lucide-react';
 import type { Job } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { useLanguage } from '../context/LanguageContext';
@@ -16,6 +17,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
   const [filterType, setFilterType] = useState('All');
   const [search, setSearch] = useState('');
   const [payRange, setPayRange] = useState('All');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const categories = [
@@ -169,50 +171,234 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
         </div>
       </div>
 
-      {/* 4. Search & Filter Bar */}
-      <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-          <div className="relative w-full md:flex-1">
-            <LucideIcon name="search" className="absolute left-3 top-2.5 text-[#707974] text-[20px]" />
+      {/* 4. Search & Unified Filter Bar */}
+      <div className="bg-white rounded-2xl p-3 sm:p-4 border border-[#e8e2d9] shadow-xs flex flex-col gap-2.5">
+        <div className="flex items-center gap-2">
+          {/* Search Bar */}
+          <div className="relative flex-1">
+            <LucideIcon name="search" className="absolute left-3 top-2.5 text-[#707974] text-[18px]" />
             <input
               type="text"
               value={search}
               onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
-              placeholder={lang === 'MR' ? 'पद, मालक किंवा कौशल्यानुसार शोधा (उदा. ड्रायव्हर, हिशेबनीस, वायरमन, शेतमजूर)...' : 'Search by job role, employer, village (e.g. Tractor Driver, Accountant, ZP Teacher, Electrician)...'}
-              className="w-full pl-10 pr-4 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
+              placeholder={lang === 'MR' ? 'पद, मालक किंवा कौशल्यानुसार शोधा...' : 'Search jobs by role, employer, trade...'}
+              className="w-full pl-9 sm:pl-10 pr-9 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-xs sm:text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
+            {search && (
+              <button
+                type="button"
+                onClick={() => { setSearch(''); setCurrentPage(1); }}
+                className="absolute right-2.5 top-2.5 p-0.5 text-[#707974] hover:text-[#1d1b16]"
+                aria-label="Clear Search"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
 
-          <div className="flex items-center gap-2 w-full md:w-auto shrink-0">
-            <select
-              value={payRange}
-              onChange={(e) => { setPayRange(e.target.value); setCurrentPage(1); }}
-              className="bg-[#f9f3ea] text-[#1d1b16] p-2 rounded-xl text-[12px] font-bold border border-[#e8e2d9] focus:outline-none"
-            >
-              <option value="All">{lang === 'MR' ? 'सर्व वेतन श्रेणी' : 'All Pay Ranges'}</option>
-              <option value="daily">{lang === 'MR' ? 'रोजंदारी (₹५०० - ₹१,०००)' : 'Daily Wage (₹500 - ₹1,000)'}</option>
-              <option value="monthly">{lang === 'MR' ? 'मासिक (₹१२,००० - ₹२०,०००)' : 'Monthly (₹12,000 - ₹20,000)'}</option>
-            </select>
-          </div>
+          {/* Corporate Filter Icon Button in Flex */}
+          <button
+            type="button"
+            onClick={() => setIsFilterOpen(true)}
+            className={`relative shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all shadow-xs ${
+              (filterType !== 'All' || payRange !== 'All')
+                ? 'bg-[#166534] text-white border-[#166534] ring-2 ring-[#166534]/20'
+                : 'bg-[#f4efe8] text-[#1d1b16] border-[#e8e2d9] hover:bg-[#eae2d7]'
+            }`}
+            aria-label="Filter Jobs"
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            <span className="hidden sm:inline">{lang === 'MR' ? 'फिल्टर' : 'Filter'}</span>
+            {((filterType !== 'All' ? 1 : 0) + (payRange !== 'All' ? 1 : 0)) > 0 && (
+              <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-400 text-stone-900 text-[10px] sm:text-[11px] font-black flex items-center justify-center">
+                {(filterType !== 'All' ? 1 : 0) + (payRange !== 'All' ? 1 : 0)}
+              </span>
+            )}
+          </button>
         </div>
 
-        {/* Categories Chips Bar */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-          {categories.map((cat) => (
+        {/* Active Filter Chips (Micro Row) */}
+        {((filterType !== 'All' ? 1 : 0) + (payRange !== 'All' ? 1 : 0)) > 0 && (
+          <div className="pt-2 border-t border-[#f0eee8] flex items-center gap-1.5 flex-wrap text-xs">
+            <span className="text-[11px] font-medium text-[#707974]">
+              {lang === 'MR' ? 'सक्रिय फिल्टर्स:' : 'Active:'}
+            </span>
+            {filterType !== 'All' && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {categories.find((c) => c.id === filterType)?.label}
+                <button onClick={() => { setFilterType('All'); setCurrentPage(1); }} className="hover:opacity-70 ml-0.5" aria-label="Clear category">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {payRange !== 'All' && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {payRange === 'daily' ? (lang === 'MR' ? 'रोजंदारी' : 'Daily Wage') : (lang === 'MR' ? 'मासिक' : 'Monthly')}
+                <button onClick={() => { setPayRange('All'); setCurrentPage(1); }} className="hover:opacity-70 ml-0.5" aria-label="Clear pay range">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
             <button
-              key={cat.id}
-              onClick={() => { setFilterType(cat.id); setCurrentPage(1); }}
-              className={`px-3 py-1.5 rounded-xl text-[12px] font-bold transition-all whitespace-nowrap ${
-                filterType === cat.id
-                  ? 'bg-[#166534] text-white shadow-xs'
-                  : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9] border border-[#e8e2d9]'
-              }`}
+              onClick={() => {
+                setFilterType('All');
+                setPayRange('All');
+                setCurrentPage(1);
+              }}
+              className="text-[11px] font-bold text-[#c2410c] hover:underline ml-1"
             >
-              {cat.label}
+              {lang === 'MR' ? 'सर्व काढा' : 'Clear all'}
             </button>
-          ))}
-        </div>
+          </div>
+        )}
       </div>
+
+      {/* Corporate Filter Modal / Bottom Sheet */}
+      {isFilterOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
+          onClick={() => setIsFilterOpen(false)}
+        >
+          <div
+            className="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-[#e8e2d9] flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-5 py-4 border-b border-[#e8e2d9] flex items-center justify-between bg-[#fdfbf7]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#e8f1ec] text-[#166534] flex items-center justify-center">
+                  <SlidersHorizontal className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#1d1b16]">
+                    {lang === 'MR' ? 'रोजगार व काम फिल्टर्स' : 'Filter Job Openings'}
+                  </h3>
+                  <p className="text-[11px] text-[#707974]">
+                    {lang === 'MR' ? 'कामाचे स्वरूप व वेतन श्रेणीनुसार निवडा' : 'Filter by trade category and pay schedule'}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#f4efe8] hover:bg-[#eae2d7] text-[#707974] hover:text-[#1d1b16] flex items-center justify-center transition-all"
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 overflow-y-auto space-y-5 text-sm">
+              {/* Category Section */}
+              <div>
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider">
+                    {lang === 'MR' ? '१. कामाचे स्वरूप' : '1. Job Category'}
+                  </span>
+                  {filterType !== 'All' && (
+                    <button
+                      onClick={() => { setFilterType('All'); setCurrentPage(1); }}
+                      className="text-[11px] text-[#c2410c] font-semibold hover:underline"
+                    >
+                      {lang === 'MR' ? 'सर्व दाखवा' : 'Reset'}
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {categories.map((cat) => {
+                    const isSelected = filterType === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={() => { setFilterType(cat.id); setCurrentPage(1); }}
+                        className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                          isSelected
+                            ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                            : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                        }`}
+                      >
+                        <span className="truncate">{cat.label}</span>
+                        {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Pay Range Section */}
+              <div>
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider">
+                    {lang === 'MR' ? '२. वेतन श्रेणी' : '2. Pay Range'}
+                  </span>
+                  {payRange !== 'All' && (
+                    <button
+                      onClick={() => { setPayRange('All'); setCurrentPage(1); }}
+                      className="text-[11px] text-[#c2410c] font-semibold hover:underline"
+                    >
+                      {lang === 'MR' ? 'सर्व दाखवा' : 'Reset'}
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-1 gap-2">
+                  {[
+                    { id: 'All', label: lang === 'MR' ? 'सर्व वेतन श्रेणी' : 'All Pay Ranges' },
+                    { id: 'daily', label: lang === 'MR' ? 'रोजंदारी (₹५०० - ₹१,००० प्रति दिन)' : 'Daily Wage (₹500 - ₹1,000 / Day)' },
+                    { id: 'monthly', label: lang === 'MR' ? 'मासिक वेतन (₹१२,००० - ₹२०,००० प्रति महिना)' : 'Monthly (₹12,000 - ₹20,000 / Month)' }
+                  ].map((p) => {
+                    const isSelected = payRange === p.id;
+                    return (
+                      <button
+                        key={p.id}
+                        onClick={() => { setPayRange(p.id); setCurrentPage(1); }}
+                        className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                          isSelected
+                            ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                            : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                        }`}
+                      >
+                        <span>{p.label}</span>
+                        {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-[#e8e2d9] bg-[#f9f3ea] flex items-center justify-between gap-3">
+              <button
+                onClick={() => {
+                  setFilterType('All');
+                  setPayRange('All');
+                  setCurrentPage(1);
+                }}
+                disabled={filterType === 'All' && payRange === 'All'}
+                className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  (filterType !== 'All' || payRange !== 'All')
+                    ? 'text-[#c2410c] hover:bg-orange-100/60'
+                    : 'text-stone-400 cursor-not-allowed'
+                }`}
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>{lang === 'MR' ? 'सर्व रीसेट' : 'Clear All'}</span>
+              </button>
+
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="flex-1 sm:flex-initial px-6 py-2.5 rounded-xl bg-[#166534] text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-[#14532d] transition-all flex items-center justify-center gap-2"
+              >
+                <span>
+                  {lang === 'MR'
+                    ? `संधी दाखवा (${filtered.length})`
+                    : `Show ${filtered.length} Openings`}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 5. Main 2-Column Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -258,7 +444,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
             paginatedJobs.map((job) => (
               <div
                 key={job.id}
-                className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                className="bg-white card-hover-subtle rounded-2xl p-5 border border-[#e8e2d9] shadow-xs flex flex-col justify-between"
               >
                 <div>
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-2">

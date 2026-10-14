@@ -41,8 +41,8 @@ export interface Scheme {
   title: string;
   slug: string;
   category: 'Farmer' | 'Student' | 'Solar' | 'Women' | 'Health' | 'Housing' | string;
-  sponsoringAgency: string;
-  deadlineText: string;
+  sponsoringAgency?: string;
+  deadlineText?: string;
   description: string;
   benefits: string;
   eligibility: string;

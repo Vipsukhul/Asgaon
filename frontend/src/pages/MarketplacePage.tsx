@@ -1,5 +1,6 @@
 import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect } from 'react';
+import { SlidersHorizontal, X, RotateCcw, Check } from 'lucide-react';
 import { api } from '../services/api';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { useLanguage } from '../context/LanguageContext';
@@ -13,6 +14,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
   const [activeFilter, setActiveFilter] = useState<'all' | 'harvest' | 'livestock' | 'machinery' | 'household'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [verifiedOnly, setVerifiedOnly] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [showPostModal, setShowPostModal] = useState(false);
   const [showStallModal, setShowStallModal] = useState(false);
@@ -250,81 +252,217 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
         </div>
       </div>
 
-      {/* 4. FILTER PILLS & SEARCH BAR */}
-      <div className="flex flex-col gap-3">
-        {/* Search row */}
-        <div className="bg-white p-2 sm:p-3 rounded-xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+      {/* 4. SEARCH & UNIFIED FILTER ROW */}
+      <div className="bg-white p-3 sm:p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col gap-2.5">
+        <div className="flex items-center gap-2">
+          {/* Search Bar */}
           <div className="relative flex-1">
             <LucideIcon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-              placeholder={lang === 'MR' ? 'वस्तू किंवा शेतमाल शोधा (उदा. सोयाबीन, गाय, ट्रॅक्टर, रोटाव्हेटर)...' : 'Search by item (e.g. JS335 Soybean, Buffalo, 150Ah Solar, Shaktiman Rotavator)...'}
-              className="w-full pl-9 pr-3 py-2 bg-[#f3ede4]/40 rounded-lg text-[13px] text-[#1a1c1b] placeholder-[#707974] border border-transparent focus:border-[#006a4e] focus:bg-white outline-none"
+              placeholder={lang === 'MR' ? 'वस्तू किंवा शेतमाल शोधा (उदा. सोयाबीन, गाय, ट्रॅक्टर)...' : 'Search marketplace (e.g. Soybean, Cattle, Tractor)...'}
+              className="w-full pl-9 pr-9 py-2.5 bg-[#f9f3ea] text-[#1a1c1b] placeholder-[#707974] rounded-xl text-xs sm:text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => { setSearchQuery(''); setCurrentPage(1); }}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-[#707974] hover:text-[#1d1b16]"
+                aria-label="Clear Search"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
-          
+
+          {/* Corporate Filter Icon Button in Flex */}
+          <button
+            type="button"
+            onClick={() => setIsFilterOpen(true)}
+            className={`relative shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all shadow-xs ${
+              (activeFilter !== 'all' || verifiedOnly)
+                ? 'bg-[#166534] text-white border-[#166534] ring-2 ring-[#166534]/20'
+                : 'bg-[#f4efe8] text-[#1d1b16] border-[#e8e2d9] hover:bg-[#eae2d7]'
+            }`}
+            aria-label="Filter Marketplace"
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            <span className="hidden sm:inline">{lang === 'MR' ? 'फिल्टर' : 'Filter'}</span>
+            {((activeFilter !== 'all' ? 1 : 0) + (verifiedOnly ? 1 : 0)) > 0 && (
+              <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-400 text-stone-900 text-[10px] sm:text-[11px] font-black flex items-center justify-center">
+                {(activeFilter !== 'all' ? 1 : 0) + (verifiedOnly ? 1 : 0)}
+              </span>
+            )}
+          </button>
         </div>
 
-        {/* Filter categories pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 text-[12px] font-medium no-scrollbar">
-          <button
-            onClick={() => { setActiveFilter('all'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-bold shrink-0 transition-all ${
-              activeFilter === 'all'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            {lang === 'MR' ? `सर्व नोंदी (${extraItems.length})` : `ALL LISTINGS (${extraItems.length})`}
-          </button>
-          <button
-            onClick={() => { setActiveFilter('harvest'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
-              activeFilter === 'harvest'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            <LucideIcon name="eco" className="text-[16px] text-[#c2410c]" />
-            <span>{lang === 'MR' ? `थेट शेतमाल (${harvestCount})` : `Direct Farm Harvest (${harvestCount})`}</span>
-          </button>
-          <button
-            onClick={() => { setActiveFilter('livestock'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
-              activeFilter === 'livestock'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            <LucideIcon name="cruelty_free" className="text-[16px] text-[#006a4e]" />
-            <span>{lang === 'MR' ? `पशुधन व जनावरे (${livestockCount})` : `Cattle & Livestock (${livestockCount})`}</span>
-          </button>
-          <button
-            onClick={() => { setActiveFilter('machinery'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
-              activeFilter === 'machinery'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            <LucideIcon name="agriculture" className="text-[16px] text-[#006a4e]" />
-            <span>{lang === 'MR' ? `ट्रॅक्टर व शेती अवजारे (${machineryCount})` : `Tractors & Implements (${machineryCount})`}</span>
-          </button>
-          <button
-            onClick={() => { setActiveFilter('household'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
-              activeFilter === 'household'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            <LucideIcon name="handyman" className="text-[16px] text-[#707974]" />
-            <span>{lang === 'MR' ? `घरगुती वस्तू व साधने (${householdCount})` : `Household & Small Goods (${householdCount})`}</span>
-          </button>
-        </div>
+        {/* Active Filter Chips (Micro Row) */}
+        {((activeFilter !== 'all' ? 1 : 0) + (verifiedOnly ? 1 : 0)) > 0 && (
+          <div className="pt-2 border-t border-[#f0eee8] flex items-center gap-1.5 flex-wrap text-xs">
+            <span className="text-[11px] font-medium text-[#707974]">
+              {lang === 'MR' ? 'सक्रिय फिल्टर्स:' : 'Active:'}
+            </span>
+            {activeFilter !== 'all' && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {activeFilter === 'harvest' ? (lang === 'MR' ? 'थेट शेतमाल' : 'Farm Harvest') :
+                 activeFilter === 'livestock' ? (lang === 'MR' ? 'पशुधन व जनावरे' : 'Livestock') :
+                 activeFilter === 'machinery' ? (lang === 'MR' ? 'ट्रॅक्टर व अवजारे' : 'Machinery') :
+                 (lang === 'MR' ? 'घरगुती वस्तू' : 'Household')}
+                <button onClick={() => { setActiveFilter('all'); setCurrentPage(1); }} className="hover:opacity-70 ml-0.5" aria-label="Clear category">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {verifiedOnly && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {lang === 'MR' ? 'प्रमाणित नोंदी' : 'Verified Listings'}
+                <button onClick={() => { setVerifiedOnly(false); setCurrentPage(1); }} className="hover:opacity-70 ml-0.5">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            <button
+              onClick={() => {
+                setActiveFilter('all');
+                setVerifiedOnly(false);
+                setCurrentPage(1);
+              }}
+              className="text-[11px] font-bold text-[#c2410c] hover:underline ml-1"
+            >
+              {lang === 'MR' ? 'सर्व काढा' : 'Clear all'}
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* Corporate Filter Modal / Bottom Sheet */}
+      {isFilterOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
+          onClick={() => setIsFilterOpen(false)}
+        >
+          <div
+            className="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-[#e8e2d9] flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-5 py-4 border-b border-[#e8e2d9] flex items-center justify-between bg-[#fdfbf7]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#e8f1ec] text-[#166534] flex items-center justify-center">
+                  <SlidersHorizontal className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#1d1b16]">
+                    {lang === 'MR' ? 'बाजारपेठ फिल्टर्स' : 'Filter Marketplace'}
+                  </h3>
+                  <p className="text-[11px] text-[#707974]">
+                    {lang === 'MR' ? 'शेतमाल, पशुधन व अवजारांनुसार शोधा' : 'Filter by category and verified status'}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#f4efe8] hover:bg-[#eae2d7] text-[#707974] hover:text-[#1d1b16] flex items-center justify-center transition-all"
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 overflow-y-auto space-y-5 text-sm">
+              {/* Category Section */}
+              <div>
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider">
+                    {lang === 'MR' ? '१. वस्तू व शेतमाल प्रवर्ग' : '1. Marketplace Category'}
+                  </span>
+                  {activeFilter !== 'all' && (
+                    <button
+                      onClick={() => { setActiveFilter('all'); setCurrentPage(1); }}
+                      className="text-[11px] text-[#c2410c] font-semibold hover:underline"
+                    >
+                      {lang === 'MR' ? 'सर्व दाखवा' : 'Reset'}
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {[
+                    { id: 'all', label: lang === 'MR' ? 'सर्व नोंदी' : 'All Listings', count: extraItems.length },
+                    { id: 'harvest', label: lang === 'MR' ? 'थेट शेतमाल' : 'Farm Harvest', count: harvestCount },
+                    { id: 'livestock', label: lang === 'MR' ? 'पशुधन व जनावरे' : 'Cattle & Livestock', count: livestockCount },
+                    { id: 'machinery', label: lang === 'MR' ? 'ट्रॅक्टर व अवजारे' : 'Tractors & Machinery', count: machineryCount },
+                    { id: 'household', label: lang === 'MR' ? 'घरगुती साधने' : 'Household Goods', count: householdCount }
+                  ].map((cat) => {
+                    const isSelected = activeFilter === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={() => { setActiveFilter(cat.id as any); setCurrentPage(1); }}
+                        className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                          isSelected
+                            ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                            : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                        }`}
+                      >
+                        <span className="truncate">{cat.label} ({cat.count})</span>
+                        {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Verified Filter Section */}
+              <div>
+                <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider block mb-2.5">
+                  {lang === 'MR' ? '२. पडताळणी स्थिती' : '2. Verification Status'}
+                </span>
+                <button
+                  onClick={() => { setVerifiedOnly(!verifiedOnly); setCurrentPage(1); }}
+                  className={`w-full px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                    verifiedOnly
+                      ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                      : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                  }`}
+                >
+                  <span>{lang === 'MR' ? 'फक्त प्रमाणित शेतकरी व विक्रेते (Verified Only)' : 'Verified Local Sellers Only'}</span>
+                  {verifiedOnly && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-[#e8e2d9] bg-[#f9f3ea] flex items-center justify-between gap-3">
+              <button
+                onClick={() => {
+                  setActiveFilter('all');
+                  setVerifiedOnly(false);
+                  setCurrentPage(1);
+                }}
+                disabled={activeFilter === 'all' && !verifiedOnly}
+                className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  (activeFilter !== 'all' || verifiedOnly)
+                    ? 'text-[#c2410c] hover:bg-orange-100/60'
+                    : 'text-stone-400 cursor-not-allowed'
+                }`}
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>{lang === 'MR' ? 'सर्व रीसेट' : 'Clear All'}</span>
+              </button>
+
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="flex-1 sm:flex-initial px-6 py-2.5 rounded-xl bg-[#166534] text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-[#14532d] transition-all flex items-center justify-center gap-2"
+              >
+                <span>{lang === 'MR' ? 'नोंदी दाखवा' : 'Show Listings'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 5. MAIN 2-COLUMN LAYOUT */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -376,7 +514,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 {allHarvest.map((item) => (
                   <div
                     key={item.id}
-                    className="border border-[#e8e2d9] rounded-xl overflow-hidden hover:shadow-md transition-all flex flex-col justify-between bg-white"
+                    className="border border-[#e8e2d9] rounded-xl overflow-hidden card-hover-subtle shadow-xs flex flex-col justify-between bg-white"
                   >
                     <div>
                       <div className="relative h-44 w-full bg-[#f3ede4] overflow-hidden">
@@ -466,7 +604,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 {allLivestock.map((item) => (
                   <div
                     key={item.id}
-                    className="border border-[#e8e2d9] rounded-xl overflow-hidden hover:shadow-md transition-all flex flex-col justify-between bg-white"
+                    className="border border-[#e8e2d9] rounded-xl overflow-hidden card-hover-subtle shadow-xs flex flex-col justify-between bg-white"
                   >
                     <div>
                       <div className="relative h-40 w-full bg-[#f3ede4] overflow-hidden">
@@ -535,7 +673,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 {allMachinery.map((item) => (
                   <div
                     key={item.id}
-                    className="border border-[#e8e2d9] rounded-xl overflow-hidden hover:shadow-md transition-all flex flex-col justify-between bg-white"
+                    className="border border-[#e8e2d9] rounded-xl overflow-hidden card-hover-subtle shadow-xs flex flex-col justify-between bg-white"
                   >
                     <div>
                       <div className="relative h-40 w-full bg-[#f3ede4] overflow-hidden">
@@ -598,7 +736,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 {allHousehold.map((item) => (
                   <div
                     key={item.id}
-                    className="border border-[#e8e2d9] rounded-xl overflow-hidden hover:shadow-md transition-all flex flex-col justify-between bg-white"
+                    className="border border-[#e8e2d9] rounded-xl overflow-hidden card-hover-subtle shadow-xs flex flex-col justify-between bg-white"
                   >
                     <div>
                       <div className="relative h-44 w-full bg-[#f3ede4] overflow-hidden">

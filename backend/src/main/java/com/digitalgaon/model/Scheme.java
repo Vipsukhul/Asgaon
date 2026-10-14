@@ -21,11 +21,6 @@ public class Scheme {
     @Column(nullable = false, length = 50)
     private String category;
 
-    @Column(name = "sponsoring_agency", length = 150)
-    private String sponsoringAgency;
-
-    @Column(name = "deadline_text", length = 100)
-    private String deadlineText;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
@@ -62,11 +57,6 @@ public class Scheme {
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
 
-    public String getSponsoringAgency() { return sponsoringAgency; }
-    public void setSponsoringAgency(String sponsoringAgency) { this.sponsoringAgency = sponsoringAgency; }
-
-    public String getDeadlineText() { return deadlineText; }
-    public void setDeadlineText(String deadlineText) { this.deadlineText = deadlineText; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }

@@ -175,12 +175,6 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           const s = data as Scheme;
           return (
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="bg-[#dbe1ff] text-[#002873] text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-                  {s.sponsoringAgency}
-                </span>
-                <span className="text-[11px] font-bold text-[#ba1a1a]">{s.deadlineText}</span>
-              </div>
               <h3 className="font-heading font-extrabold text-[22px] text-[#166534] mb-2">
                 {s.title}
               </h3>

@@ -1,5 +1,6 @@
 import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect } from 'react';
+import { SlidersHorizontal, X, RotateCcw, Check } from 'lucide-react';
 import type { Scheme } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { SEOHead } from '../components/SEOHead';
@@ -38,6 +39,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
     free: false,
     land: false
   });
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedModalScheme, setSelectedModalScheme] = useState<any | null>(null);
 
@@ -367,125 +369,255 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
         </div>
       </section>
 
-      {/* 5. Search & Filter Bar */}
-      <section className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
-        <div className="relative w-full">
-          <LucideIcon name="search" className="absolute left-3 top-2.5 text-[#707974] text-[20px]" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setCurrentPage(1);
-            }}
-            placeholder={lang === 'MR' ? "योजना शोधा (उदा. घरकुल, रमाई, मोदी आवास, पीएम किसान, लाडकी बहीण, सौर कृषी पंप)..." : "Search schemes by name, category (e.g. Gharkul, Ramai, Modi Awas, PM-Kisan, Ladki Bahin, Solar Pump)..."}
-            className="w-full pl-10 pr-10 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
-            aria-label="Search schemes"
-          />
-          {search && (
-            <button
-              onClick={() => {
-                setSearch('');
+      {/* 5. Search & Unified Filter Bar */}
+      <section className="bg-white rounded-2xl p-3 sm:p-4 border border-[#e8e2d9] shadow-xs flex flex-col gap-2.5">
+        <div className="flex items-center gap-2">
+          {/* Search Bar */}
+          <div className="relative flex-1">
+            <LucideIcon name="search" className="absolute left-3 top-2.5 text-[#707974] text-[18px]" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
                 setCurrentPage(1);
               }}
-              className="absolute right-3 top-2.5 text-[#707974] hover:text-[#1d1b16]"
-              aria-label="Clear Search"
-            >
-              <LucideIcon name="close" className="text-[18px]" />
-            </button>
-          )}
-        </div>
-
-        {/* Category Pills Bar */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-          {categories.map((cat) => {
-            const count =
-              cat.id === 'All'
-                ? allSchemes.length
-                : allSchemes.filter((s) => s.categoryKey === cat.id).length;
-
-            return (
+              placeholder={lang === 'MR' ? "योजना शोधा (उदा. घरकुल, पीएम किसान, लाडकी बहीण)..." : "Search schemes by name, category, eligibility..."}
+              className="w-full pl-9 sm:pl-10 pr-9 py-2.5 bg-[#f9f3ea] text-[#1d1b16] rounded-xl text-xs sm:text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
+              aria-label="Search schemes"
+            />
+            {search && (
               <button
-                key={cat.id}
                 onClick={() => {
-                  setSelectedCat(cat.id);
+                  setSearch('');
                   setCurrentPage(1);
                 }}
-                className={`px-3 py-1.5 rounded-xl text-[12px] font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                  selectedCat === cat.id
-                    ? 'bg-[#166534] text-white shadow-xs'
-                    : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9] border border-[#e8e2d9]'
+                className="absolute right-2.5 top-2.5 p-0.5 text-[#707974] hover:text-[#1d1b16]"
+                aria-label="Clear Search"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+
+          {/* Corporate Filter Icon Button in Flex */}
+          <button
+            type="button"
+            onClick={() => setIsFilterOpen(true)}
+            className={`relative shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all shadow-xs ${
+              (selectedCat !== 'All' || activeCheckboxes.active || activeCheckboxes.dbt || activeCheckboxes.free || activeCheckboxes.land)
+                ? 'bg-[#166534] text-white border-[#166534] ring-2 ring-[#166534]/20'
+                : 'bg-[#f4efe8] text-[#1d1b16] border-[#e8e2d9] hover:bg-[#eae2d7]'
+            }`}
+            aria-label="Filter Schemes"
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            <span className="hidden sm:inline">{lang === 'MR' ? 'फिल्टर' : 'Filter'}</span>
+            {((selectedCat !== 'All' ? 1 : 0) + (activeCheckboxes.active ? 1 : 0) + (activeCheckboxes.dbt ? 1 : 0) + (activeCheckboxes.free ? 1 : 0) + (activeCheckboxes.land ? 1 : 0)) > 0 && (
+              <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-400 text-stone-900 text-[10px] sm:text-[11px] font-black flex items-center justify-center">
+                {(selectedCat !== 'All' ? 1 : 0) + (activeCheckboxes.active ? 1 : 0) + (activeCheckboxes.dbt ? 1 : 0) + (activeCheckboxes.free ? 1 : 0) + (activeCheckboxes.land ? 1 : 0)}
+              </span>
+            )}
+          </button>
+        </div>
+
+        {/* Active Filter Chips (Micro Row) */}
+        {((selectedCat !== 'All' ? 1 : 0) + (activeCheckboxes.active ? 1 : 0) + (activeCheckboxes.dbt ? 1 : 0) + (activeCheckboxes.free ? 1 : 0) + (activeCheckboxes.land ? 1 : 0)) > 0 && (
+          <div className="pt-2 border-t border-[#f0eee8] flex items-center gap-1.5 flex-wrap text-xs">
+            <span className="text-[11px] font-medium text-[#707974]">
+              {lang === 'MR' ? 'सक्रिय फिल्टर्स:' : 'Active:'}
+            </span>
+            {selectedCat !== 'All' && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {categories.find((c) => c.id === selectedCat)?.label}
+                <button onClick={() => { setSelectedCat('All'); setCurrentPage(1); }} className="hover:opacity-70 ml-0.5" aria-label="Clear category">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {activeCheckboxes.active && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {lang === 'MR' ? 'सध्या सुरू' : 'Active'}
+                <button onClick={() => { setActiveCheckboxes(prev => ({ ...prev, active: false })); setCurrentPage(1); }} className="hover:opacity-70 ml-0.5">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {activeCheckboxes.dbt && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {lang === 'MR' ? 'थेट बँक (DBT)' : 'DBT'}
+                <button onClick={() => { setActiveCheckboxes(prev => ({ ...prev, dbt: false })); setCurrentPage(1); }} className="hover:opacity-70 ml-0.5">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {activeCheckboxes.free && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {lang === 'MR' ? '१००% मोफत' : '100% Free'}
+                <button onClick={() => { setActiveCheckboxes(prev => ({ ...prev, free: false })); setCurrentPage(1); }} className="hover:opacity-70 ml-0.5">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {activeCheckboxes.land && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {lang === 'MR' ? '७/१२ आवश्यक' : '7/12'}
+                <button onClick={() => { setActiveCheckboxes(prev => ({ ...prev, land: false })); setCurrentPage(1); }} className="hover:opacity-70 ml-0.5">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            <button
+              onClick={() => {
+                setSelectedCat('All');
+                setActiveCheckboxes({ active: false, dbt: false, free: false, land: false });
+                setCurrentPage(1);
+              }}
+              className="text-[11px] font-bold text-[#c2410c] hover:underline ml-1"
+            >
+              {lang === 'MR' ? 'सर्व काढा' : 'Clear all'}
+            </button>
+          </div>
+        )}
+      </section>
+
+      {/* Corporate Filter Modal / Bottom Sheet */}
+      {isFilterOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
+          onClick={() => setIsFilterOpen(false)}
+        >
+          <div
+            className="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-[#e8e2d9] flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-5 py-4 border-b border-[#e8e2d9] flex items-center justify-between bg-[#fdfbf7]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#e8f1ec] text-[#166534] flex items-center justify-center">
+                  <SlidersHorizontal className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#1d1b16]">
+                    {lang === 'MR' ? 'शासकीय योजना फिल्टर्स' : 'Filter Government Schemes'}
+                  </h3>
+                  <p className="text-[11px] text-[#707974]">
+                    {lang === 'MR' ? 'विभाग व अर्जाच्या स्वरूपानुसार योजना निवडा' : 'Filter by category, subsidy type & eligibility'}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#f4efe8] hover:bg-[#eae2d7] text-[#707974] hover:text-[#1d1b16] flex items-center justify-center transition-all"
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 overflow-y-auto space-y-5 text-sm">
+              {/* Category Section */}
+              <div>
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider">
+                    {lang === 'MR' ? '१. योजना विभाग' : '1. Scheme Category'}
+                  </span>
+                  {selectedCat !== 'All' && (
+                    <button
+                      onClick={() => { setSelectedCat('All'); setCurrentPage(1); }}
+                      className="text-[11px] text-[#c2410c] font-semibold hover:underline"
+                    >
+                      {lang === 'MR' ? 'सर्व दाखवा' : 'Reset'}
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {categories.map((cat) => {
+                    const count =
+                      cat.id === 'All'
+                        ? allSchemes.length
+                        : allSchemes.filter((s) => s.categoryKey === cat.id).length;
+                    const isSelected = selectedCat === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={() => { setSelectedCat(cat.id); setCurrentPage(1); }}
+                        className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                          isSelected
+                            ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                            : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                        }`}
+                      >
+                        <span className="truncate">{cat.label} ({count})</span>
+                        {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Eligibility & Features */}
+              <div>
+                <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider block mb-2.5">
+                  {lang === 'MR' ? '२. पात्रता व लाभाचे स्वरूप' : '2. Benefits & Eligibility'}
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {[
+                    { key: 'active', label: lang === 'MR' ? 'सध्या अर्ज सुरू' : 'Applications Active Now', val: activeCheckboxes.active },
+                    { key: 'dbt', label: lang === 'MR' ? 'थेट बँक खात्यात (DBT)' : 'DBT Cash Transfer', val: activeCheckboxes.dbt },
+                    { key: 'free', label: lang === 'MR' ? '१००% मोफत / पूर्ण अनुदान' : '100% Free / Full Subsidy', val: activeCheckboxes.free },
+                    { key: 'land', label: lang === 'MR' ? 'जमीन / घर नमुना (७/१२ आवश्यक)' : 'Land Record (7/12 Required)', val: activeCheckboxes.land }
+                  ].map((attr) => (
+                    <button
+                      key={attr.key}
+                      onClick={() => {
+                        setActiveCheckboxes(prev => ({ ...prev, [attr.key]: !attr.val }));
+                        setCurrentPage(1);
+                      }}
+                      className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                        attr.val
+                          ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                          : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                      }`}
+                    >
+                      <span>{attr.label}</span>
+                      {attr.val && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-[#e8e2d9] bg-[#f9f3ea] flex items-center justify-between gap-3">
+              <button
+                onClick={() => {
+                  setSelectedCat('All');
+                  setActiveCheckboxes({ active: false, dbt: false, free: false, land: false });
+                  setCurrentPage(1);
+                }}
+                disabled={selectedCat === 'All' && !activeCheckboxes.active && !activeCheckboxes.dbt && !activeCheckboxes.free && !activeCheckboxes.land}
+                className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  (selectedCat !== 'All' || activeCheckboxes.active || activeCheckboxes.dbt || activeCheckboxes.free || activeCheckboxes.land)
+                    ? 'text-[#c2410c] hover:bg-orange-100/60'
+                    : 'text-stone-400 cursor-not-allowed'
                 }`}
               >
-                <LucideIcon name={cat.icon} className="text-[15px]" />
-                <span>{cat.label}</span>
-                <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                    selectedCat === cat.id ? 'bg-white/20 text-white' : 'bg-[#e8e2d9] text-[#707974]'
-                  }`}
-                >
-                  {count}
-                </span>
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>{lang === 'MR' ? 'सर्व रीसेट' : 'Clear All'}</span>
               </button>
-            );
-          })}
+
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="flex-1 sm:flex-initial px-6 py-2.5 rounded-xl bg-[#166534] text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-[#14532d] transition-all flex items-center justify-center gap-2"
+              >
+                <span>{lang === 'MR' ? 'योजना दाखवा' : 'Show Schemes'}</span>
+              </button>
+            </div>
+          </div>
         </div>
-
-        {/* Checkbox filters */}
-        <div className="flex flex-wrap items-center gap-4 pt-2 border-t border-[#f3ede4] text-[12px] font-medium text-[#404945]">
-          <label className="flex items-center gap-1.5 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={activeCheckboxes.active}
-              onChange={(e) => {
-                setActiveCheckboxes({ ...activeCheckboxes, active: e.target.checked });
-                setCurrentPage(1);
-              }}
-              className="w-4 h-4 accent-[#166534]"
-            />
-            <span>{lang === 'MR' ? 'सध्या अर्ज सुरू' : 'Applications Active Now'}</span>
-          </label>
-
-          <label className="flex items-center gap-1.5 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={activeCheckboxes.dbt}
-              onChange={(e) => {
-                setActiveCheckboxes({ ...activeCheckboxes, dbt: e.target.checked });
-                setCurrentPage(1);
-              }}
-              className="w-4 h-4 accent-[#166534]"
-            />
-            <span>{lang === 'MR' ? 'थेट बँक खात्यात' : 'Direct Benefit Transfer (DBT) Cash'}</span>
-          </label>
-
-          <label className="flex items-center gap-1.5 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={activeCheckboxes.free}
-              onChange={(e) => {
-                setActiveCheckboxes({ ...activeCheckboxes, free: e.target.checked });
-                setCurrentPage(1);
-              }}
-              className="w-4 h-4 accent-[#166534]"
-            />
-            <span>{lang === 'MR' ? '१००% मोफत / पूर्ण अनुदान' : '100% Free / Full Subsidy'}</span>
-          </label>
-
-          <label className="flex items-center gap-1.5 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={activeCheckboxes.land}
-              onChange={(e) => {
-                setActiveCheckboxes({ ...activeCheckboxes, land: e.target.checked });
-                setCurrentPage(1);
-              }}
-              className="w-4 h-4 accent-[#166534]"
-            />
-            <span>{lang === 'MR' ? 'जमीन / घर नमुना (७/१२ किंवा ८-अ)' : 'Land / Property Record (7/12 or 8A)'}</span>
-          </label>
-        </div>
-      </section>
+      )}
 
       {/* 6. Main 2-Column Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -540,7 +672,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                 key={item.id}
                 itemScope
                 itemType="https://schema.org/GovernmentService"
-                className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                className="bg-white card-hover-subtle rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col justify-between"
               >
                 <div>
                   {/* Header tags */}
@@ -946,11 +1078,11 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
             </div>
           </div>
 
-          {/* Widget 3: Grievance & Zero Bribery */}
+          {/* Widget 3: Transparency & Anti-Bribery Helpline */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
             <div className="flex items-center gap-1.5 text-[#ba1a1a] font-bold text-[13px] mb-1">
               <LucideIcon name="verified_user" className="text-[18px]" />
-              <span>{lang === 'MR' ? 'तक्रार निवारण व लाचलुचपत प्रतिबंध' : 'Grievance & Zero Bribery'}</span>
+              <span>{lang === 'MR' ? 'पारदर्शकता व लाचलुचपत प्रतिबंध' : 'Transparency & Anti-Bribery Desk'}</span>
             </div>
             <p className="text-[12px] text-[#404945] leading-relaxed mb-3">
               {lang === 'MR'
@@ -961,7 +1093,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
             <div className="bg-[#fef3c7] text-[#93000a] p-3 rounded-xl border border-[#fde68a] text-[12px] mb-3">
               <div className="font-bold">{lang === 'MR' ? 'लाचलुचपत प्रतिबंधक विभाग' : 'Citizen Anti-Corruption Bureau (ACB)'}</div>
               <div className="font-extrabold text-[15px] mt-0.5">{lang === 'MR' ? 'टोल-फ्री १०६४' : 'Toll-Free 1064'}</div>
-              <div className="text-[10px]">{lang === 'MR' ? 'गोपनीय तक्रार नोंदणी' : 'Anonymous and confidential reporting'}</div>
+              <div className="text-[10px]">{lang === 'MR' ? 'गोपनीय शासकीय हेल्पलाईन' : 'Confidential Government Helpline'}</div>
             </div>
 
             <div className="text-[11px] text-[#707974] flex items-center justify-between">

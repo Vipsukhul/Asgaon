@@ -1,5 +1,6 @@
 import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useMemo, useEffect } from 'react';
+import { Heart } from 'lucide-react';
 import { INITIAL_BLOG_POSTS, DEFAULT_BLOG_COMMENTS, type BlogPost, type BlogComment } from '../data/blogData';
 import { SEOHead } from '../components/SEOHead';
 import { Breadcrumb } from '../components/Breadcrumb';
@@ -41,9 +42,15 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          const existingIds = new Set(parsed.map((p: BlogPost) => (p.id || p.slug).toLowerCase()));
-          const missing = INITIAL_BLOG_POSTS.filter((p) => !existingIds.has(p.id.toLowerCase()) && !existingIds.has(p.slug.toLowerCase()));
-          return [...missing, ...parsed];
+          const normalized = parsed.map((p: BlogPost) => {
+            if (p.id === 'c7f9e2b1' && p.slug === 'c7f9e2b1') {
+              return { ...p, slug: 'how-to-write-and-publish-community-blogs' };
+            }
+            return p;
+          });
+          const existingIds = new Set(normalized.map((p: BlogPost) => (p.slug || p.id).toLowerCase()));
+          const missing = INITIAL_BLOG_POSTS.filter((p) => !existingIds.has((p.slug || p.id).toLowerCase()) && !existingIds.has(p.id.toLowerCase()));
+          return [...missing, ...normalized];
         }
       } catch {
         /* ignore */
@@ -60,7 +67,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
           p.slug.toLowerCase() === decodedSlug ||
           p.id.toLowerCase() === decodedSlug ||
           p.slug.toLowerCase() === slug.toLowerCase() ||
-          (p.id === 'c7f9e2b1' && (decodedSlug === 'post-100' || decodedSlug === 'write-guide')) ||
+          (p.id === 'c7f9e2b1' && (decodedSlug === 'c7f9e2b1' || decodedSlug === 'how-to-write-and-publish-community-blogs' || decodedSlug === 'post-100' || decodedSlug === 'write-guide')) ||
           (p.id === 'a8d4e2f9' && decodedSlug === 'blog-01') ||
           (p.id === 'b3f7a1c8' && decodedSlug === 'blog-02') ||
           (p.id === '9e2d6b4a' && decodedSlug === 'blog-03') ||
@@ -71,22 +78,29 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
     );
   }, [allPosts, slug]);
 
-  // Likes state
+  // Likes state: enforce login & single like
   const [isLiked, setIsLiked] = useState<boolean>(() => {
+    const userKey = currentUser?.fullName ? currentUser.fullName.replace(/\s+/g, '_') : '';
+    if (userKey && localStorage.getItem(`dg_blog_liked_${post.slug}_${userKey}`) === 'true') {
+      return true;
+    }
     return localStorage.getItem(`dg_blog_liked_${post.slug}`) === 'true';
   });
   const [likesCount, setLikesCount] = useState<number>(post.likesCount || 12);
   const [likeToast, setLikeToast] = useState<string | null>(null);
 
   useEffect(() => {
-    setIsLiked(localStorage.getItem(`dg_blog_liked_${post.slug}`) === 'true');
+    const userKey = currentUser?.fullName ? currentUser.fullName.replace(/\s+/g, '_') : '';
+    const userLiked = userKey ? localStorage.getItem(`dg_blog_liked_${post.slug}_${userKey}`) === 'true' : false;
+    const generalLiked = localStorage.getItem(`dg_blog_liked_${post.slug}`) === 'true';
+    setIsLiked(userLiked || (!!currentUser?.isLoggedIn && generalLiked));
     setLikesCount(post.likesCount || 12);
 
     // Record view in backend
     if (post.slug) {
       api.viewBlog(post.slug).catch(() => {});
     }
-  }, [post.slug, post.likesCount]);
+  }, [post.slug, post.likesCount, currentUser]);
 
   // Sync blogs list from backend
   useEffect(() => {
@@ -129,15 +143,30 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
   }, []);
 
   const handleToggleLike = () => {
-    const newLiked = !isLiked;
-    const newCount = newLiked ? likesCount + 1 : Math.max(0, likesCount - 1);
-    setIsLiked(newLiked);
-    setLikesCount(newCount);
-    localStorage.setItem(`dg_blog_liked_${post.slug}`, String(newLiked));
-
-    if (newLiked) {
-      api.likeBlog(post.slug).catch(() => {});
+    // 1. Enforce login
+    if (!currentUser?.isLoggedIn) {
+      if (onRequireLogin) onRequireLogin();
+      setLikeToast(isMr ? 'लेखाला पसंती (Like) देण्यासाठी कृपया आधी लॉगिन करा.' : 'Please sign in to like this article.');
+      setTimeout(() => setLikeToast(null), 3000);
+      return;
     }
+
+    // 2. Enforce like once
+    if (isLiked) {
+      setLikeToast(isMr ? 'तुम्ही आधीच या लेखाला पसंती दिली आहे.' : 'You have already liked this article.');
+      setTimeout(() => setLikeToast(null), 2500);
+      return;
+    }
+
+    const newCount = (likesCount || 0) + 1;
+    setIsLiked(true);
+    setLikesCount(newCount);
+
+    const userKey = currentUser.fullName ? currentUser.fullName.replace(/\s+/g, '_') : 'user';
+    localStorage.setItem(`dg_blog_liked_${post.slug}_${userKey}`, 'true');
+    localStorage.setItem(`dg_blog_liked_${post.slug}`, 'true');
+
+    api.likeBlog(post.slug).catch(() => {});
 
     // Update in allPosts & localStorage
     const updated = allPosts.map((p) =>
@@ -147,10 +176,8 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
     localStorage.setItem('dg_village_blogs', JSON.stringify(updated));
     window.dispatchEvent(new Event('dg_blogs_updated'));
 
-    if (newLiked) {
-      setLikeToast(isMr ? '❤️ तुम्हाला हा लेख आवडला! धन्यवाद.' : '❤️ You liked this article! Thank you.');
-      setTimeout(() => setLikeToast(null), 3000);
-    }
+    setLikeToast(isMr ? '❤️ तुम्हाला हा लेख आवडला! धन्यवाद.' : '❤️ You liked this article! Thank you.');
+    setTimeout(() => setLikeToast(null), 3000);
   };
 
   // Comments state
@@ -274,8 +301,18 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
   };
 
   const handleLikeComment = (commentId: string) => {
+    if (!currentUser?.isLoggedIn) {
+      if (onRequireLogin) onRequireLogin();
+      return;
+    }
+    const userKey = currentUser.fullName ? currentUser.fullName.replace(/\s+/g, '_') : 'user';
+    const storageKey = `dg_comment_liked_${commentId}_${userKey}`;
+    if (localStorage.getItem(storageKey) === 'true') {
+      return;
+    }
+    localStorage.setItem(storageKey, 'true');
     const updated = comments.map((c) =>
-      c.id === commentId ? { ...c, likesCount: c.likesCount + 1 } : c
+      c.id === commentId ? { ...c, likesCount: (c.likesCount || 0) + 1 } : c
     );
     setComments(updated);
     localStorage.setItem(`dg_blog_comments_${post.slug}`, JSON.stringify(updated));
@@ -287,13 +324,13 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
       .slice(0, 3);
   }, [allPosts, post]);
 
-  const postShareUrl = `${window.location.origin}/blogs/${post.id || post.slug}`;
+  const postShareUrl = `${window.location.origin}/blogs/${post.slug || post.id}`;
 
-  const currentTitle = isMr ? (post.titleMarathi || post.title) : (post.title || post.titleMarathi);
-  const currentExcerpt = isMr ? (post.excerptMarathi || post.excerpt) : (post.excerpt || post.excerptMarathi);
+  const currentTitle = post.titleMarathi || post.title;
+  const currentExcerpt = post.excerptMarathi || post.excerpt;
   const currentCategory = isMr ? (post.categoryMarathi || post.category) : (post.category || post.categoryMarathi);
   const currentAuthorRole = isMr ? (post.authorRoleMarathi || post.authorRole || 'आसगाव ग्रामस्थ') : (post.authorRole || post.authorRoleMarathi || 'Asgaon Resident');
-  const currentTags = isMr ? (post.tagsMarathi && post.tagsMarathi.length > 0 ? post.tagsMarathi : post.tags) : (post.tags && post.tags.length > 0 ? post.tags : post.tagsMarathi);
+  const currentTags = (post.tagsMarathi && post.tagsMarathi.length > 0 ? post.tagsMarathi : post.tags) || [];
 
   const handleShareWhatsApp = () => {
     const text = `📖 *${currentTitle}*\n\n${currentExcerpt}\n\n👉 ${isMr ? 'संपूर्ण लेख येथे वाचा' : 'Read full article here'}: ${postShareUrl}`;
@@ -387,7 +424,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
         title={`${currentTitle} | Asgaon Village Knowledge Hub`}
         description={post.seoDescription || currentExcerpt}
         keywords={post.seoKeywords}
-        canonicalUrl={`https://asgaon.digital/blogs/${post.id || post.slug}`}
+        canonicalUrl={`https://asgaon.digital/blogs/${post.slug || post.id}`}
         ogType="article"
         ogImage={post.coverImage}
         articleAuthor={post.author}
@@ -454,16 +491,6 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
           <h1 className="font-heading font-extrabold text-[24px] sm:text-[32px] text-[#166534] leading-tight mb-2">
             {currentTitle}
           </h1>
-          {isMr && post.title && post.title !== post.titleMarathi && (
-            <p className="font-heading font-semibold text-[14px] sm:text-[16px] text-[#c2410c]">
-              {post.title}
-            </p>
-          )}
-          {!isMr && post.titleMarathi && post.titleMarathi !== post.title && (
-            <p className="font-heading font-semibold text-[14px] sm:text-[16px] text-[#c2410c]">
-              {post.titleMarathi}
-            </p>
-          )}
         </div>
 
         {/* Excerpt Box */}
@@ -482,33 +509,33 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
                 <span>{post.author}</span>
                 <LucideIcon name="verified" className="text-[16px] text-[#006a4e]" />
               </div>
-              <div className="text-xs text-[#707974] font-medium">
-                {currentAuthorRole}
-              </div>
             </div>
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
             {/* Interactive Like Button */}
             <button
+              type="button"
               onClick={handleToggleLike}
-              className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-2xs border ${isLiked
-                  ? 'bg-red-50 border-red-300 text-red-700 hover:bg-red-100 scale-102'
+              className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-2xs border ${
+                isLiked
+                  ? 'bg-red-50 border-red-300 text-red-700'
                   : 'bg-white border-[#e8e2d9] text-[#404945] hover:bg-red-50 hover:text-red-600 hover:border-red-200'
+              }`}
+              title={
+                !currentUser?.isLoggedIn
+                  ? (isMr ? 'पसंती देण्यासाठी लॉगिन करा' : 'Sign in to like')
+                  : isLiked
+                    ? (isMr ? 'तुम्ही आधीच पसंती दिली आहे' : 'Already liked')
+                    : (isMr ? 'मला हा लेख आवडला' : 'Like article')
+              }
+            >
+              <Heart
+                className={`w-4 h-4 transition-transform ${
+                  isLiked ? 'text-red-600 fill-red-600 scale-110' : 'text-stone-500'
                 }`}
-              title={isLiked ? (isMr ? 'पसंती मागे घ्या' : 'Unlike') : (isMr ? 'मला हा लेख आवडला' : 'Like article')}
-            >
-              <LucideIcon name={isLiked ? 'favorite' : 'favorite_border'} className={` text-[18px] transition-transform ${isLiked ? 'text-red-600 scale-110' : ''}`} />
+              />
               <span>{likesCount} {isMr ? 'पसंती' : 'Likes'}</span>
-            </button>
-
-            {/* WhatsApp Share Button */}
-            <button
-              onClick={handleShareWhatsApp}
-              className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#25d366] hover:bg-[#20ba59] text-white text-xs font-bold transition-all shadow-2xs"
-            >
-              <LucideIcon name="share" className="text-[16px]" />
-              <span>WhatsApp</span>
             </button>
 
             {/* Copy Link Button */}
@@ -702,11 +729,6 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
                     <div>
                       <div className="text-xs font-bold text-[#1d1b16] flex items-center gap-1.5">
                         <span>{comment.authorName}</span>
-                        {comment.authorRole && (
-                          <span className="text-[10px] font-semibold text-[#006a4e] bg-[#e6f7f0] px-2 py-0.2 rounded-md">
-                            {comment.authorRole}
-                          </span>
-                        )}
                       </div>
                       <span className="text-[10px] text-[#707974]">{comment.timestamp}</span>
                     </div>

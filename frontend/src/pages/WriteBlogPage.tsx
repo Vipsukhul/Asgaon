@@ -1,6 +1,6 @@
 import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect } from 'react';
-import type { BlogPost } from '../data/blogData';
+import { type BlogPost, slugifyTitle } from '../data/blogData';
 import { SEOHead } from '../components/SEOHead';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { MarkdownContent } from '../components/MarkdownContent';
@@ -20,15 +20,6 @@ interface WriteBlogPageProps {
   onRequireLogin?: () => void;
 }
 
-const PRESET_COVERS = [
-  { labelMr: 'शेती व कृषी', labelEn: 'Farming & Agriculture', url: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'शासकीय योजना', labelEn: 'Govt Schemes & Subsidies', url: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'गाव व ग्रामपंचायत', labelEn: 'Village Life & Panchayat', url: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'शिक्षण व शाळा', labelEn: 'Education & Youth', url: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'वाहतूक व बस', labelEn: 'Transport & Travel', url: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'आरोग्य व पोषण', labelEn: 'Health & Nutrition', url: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1200&q=80' }
-];
-
 export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
   onNavigateBack,
   onNavigateHome,
@@ -40,27 +31,57 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
   const isMr = lang === 'MR';
   const [activeTab, setActiveTab] = useState<'editor' | 'preview'>('editor');
 
-  // Generate an authentic 8-character hash ID (like YouTube / Medium / Git commit short hash)
-  const [postId] = useState(() => {
-    const hex = 'abcdef0123456789';
-    let hash = '';
-    for (let i = 0; i < 8; i++) {
-      hash += hex.charAt(Math.floor(Math.random() * hex.length));
-    }
-    return hash;
-  });
-  const [titleMarathi, setTitleMarathi] = useState('');
-  const [titleEng, setTitleEng] = useState('');
+  // Form states - Simple Hashnode-style clean writer
+  const [title, setTitle] = useState('');
+  const [slug, setSlug] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const [coverImageUrl, setCoverImageUrl] = useState('');
+  const [uploadingCover, setUploadingCover] = useState(false);
+  const [uploadError, setUploadError] = useState('');
   const [category, setCategory] = useState<BlogPost['category']>('Agriculture');
-  const [authorName, setAuthorName] = useState(currentUser?.fullName || 'आसगाव ग्रामस्थ');
-  const [authorRole, setAuthorRole] = useState(
-    currentUser?.ward ? `प्रभाग ${currentUser.ward} नागरिक` : (currentUser?.role || 'स्थानिक शेतकरी व नागरिक')
-  );
-  const [coverImage, setCoverImage] = useState(PRESET_COVERS[0].url);
-  const [customCover, setCustomCover] = useState('');
-  const [excerptMarathi, setExcerptMarathi] = useState('');
-  const [content, setContent] = useState('');
   const [tags, setTags] = useState('आसगाव, शेती, माहिती');
+  const [content, setContent] = useState('');
+
+  // Author details
+  const [authorName, setAuthorName] = useState(currentUser?.fullName || (isMr ? 'आसगाव ग्रामस्थ' : 'Asgaon Resident'));
+  const [authorRole, setAuthorRole] = useState(
+    currentUser?.ward
+      ? (isMr ? `प्रभाग ${currentUser.ward} नागरिक` : `Ward ${currentUser.ward} Citizen`)
+      : (currentUser?.role || (isMr ? 'स्थानिक शेतकरी व नागरिक' : 'Local Resident'))
+  );
+
+  // Auto-sync slug from title under the hood
+  const handleTitleChange = (newTitle: string) => {
+    setTitle(newTitle);
+    setSlug(slugifyTitle(newTitle));
+  };
+
+  const handleCoverFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = '';
+    setUploadingCover(true);
+    setUploadError('');
+    try {
+      const url = await api.uploadImage(file, 'blogs');
+      if (url) {
+        setCoverImageUrl(url);
+        return;
+      }
+      throw new Error('Upload returned empty');
+    } catch {
+      // Graceful fallback to FileReader DataURL
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setCoverImageUrl(event.target.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+    } finally {
+      setUploadingCover(false);
+    }
+  };
 
   // Auto-sync authenticated user details
   useEffect(() => {
@@ -68,11 +89,11 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
       setAuthorName(currentUser.fullName);
     }
     if (currentUser?.ward) {
-      setAuthorRole(`प्रभाग ${currentUser.ward} नागरिक`);
+      setAuthorRole(isMr ? `प्रभाग ${currentUser.ward} नागरिक` : `Ward ${currentUser.ward} Citizen`);
     } else if (currentUser?.role) {
       setAuthorRole(currentUser.role);
     }
-  }, [currentUser]);
+  }, [currentUser, isMr]);
 
   const handleInsertSyntax = (prefix: string, suffix: string = '') => {
     const textarea = document.getElementById('blog-content-textarea') as HTMLTextAreaElement | null;
@@ -80,7 +101,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
 
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
-    const selected = content.substring(start, end) || 'मजकूर';
+    const selected = content.substring(start, end) || (isMr ? 'मजकूर' : 'text');
     const replacement = `${prefix}${selected}${suffix}`;
 
     const newContent = content.substring(0, start) + replacement + content.substring(end);
@@ -94,8 +115,8 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!titleMarathi.trim() || !content.trim()) {
-      alert(isMr ? 'कृपया लेखाचे शीर्षक व सविस्तर मजकूर पूर्ण भरा.' : 'Please fill in both the article title and content.');
+    if (!title.trim() || !content.trim()) {
+      alert(isMr ? 'कृपया लेखाचे शीर्षक व सविस्तर मजकूर पूर्ण भरा.' : 'Please enter both an article title and content.');
       return;
     }
 
@@ -108,6 +129,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
       Health: 'आरोग्य व पोषण'
     };
 
+    const finalSlug = slugifyTitle(slug || title) || 'untitled-post';
     const tagsArr = tags.split(',').map((t) => t.trim()).filter(Boolean);
     const now = new Date();
     const marathiMonths = [
@@ -115,15 +137,15 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
       'जुलै', 'ऑगस्ट', 'सप्टेंबर', 'ऑक्टोबर', 'नोव्हेंबर', 'डिसेंबर'
     ];
 
-    const activeCover = customCover.trim() || coverImage;
+    const fallbackCover = 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80';
 
     const newPost: BlogPost = {
-      id: postId,
-      slug: postId,
-      title: titleEng || titleMarathi,
-      titleMarathi,
-      excerpt: excerptMarathi || content.substring(0, 140) + '...',
-      excerptMarathi: excerptMarathi || content.substring(0, 140) + '...',
+      id: finalSlug,
+      slug: finalSlug,
+      title: title.trim(),
+      titleMarathi: title.trim(),
+      excerpt: subtitle.trim() || content.substring(0, 140) + '...',
+      excerptMarathi: subtitle.trim() || content.substring(0, 140) + '...',
       content,
       contentMarathi: content,
       category,
@@ -134,18 +156,18 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
       publishDate: `${now.getDate()} ${marathiMonths[now.getMonth()]} ${now.getFullYear()}`,
       publishDateISO: now.toISOString().split('T')[0],
       readTimeMinutes: Math.max(2, Math.round(content.length / 500)),
-      coverImage: activeCover,
+      coverImage: coverImageUrl.trim() || fallbackCover,
       tags: tagsArr,
       tagsMarathi: tagsArr,
-      seoTitle: `${titleMarathi} | Asgaon Knowledge Studio`,
-      seoDescription: excerptMarathi || content.substring(0, 150),
+      seoTitle: `${title.trim()} | Asgaon Knowledge Studio`,
+      seoDescription: subtitle.trim() || content.substring(0, 150),
       seoKeywords: tags,
       likesCount: 1,
       commentsCount: 0,
       viewCount: 1
     };
 
-    // Persist to PostgreSQL backend database
+    // Persist to backend database
     try {
       const res = await api.createBlog({
         slug: newPost.slug,
@@ -171,8 +193,8 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
         seoKeywords: newPost.seoKeywords
       });
       if (res && res.slug) {
-        newPost.id = res.id || newPost.id;
         newPost.slug = res.slug;
+        newPost.id = res.id || res.slug;
       }
     } catch (e: any) {
       console.warn('Backend blog create notice:', e.message);
@@ -188,376 +210,362 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
         /* ignore */
       }
     }
-    const updated = [newPost, ...postsList];
+    const updated = [newPost, ...postsList.filter((p) => (p.slug || p.id) !== newPost.slug)];
     localStorage.setItem('dg_village_blogs', JSON.stringify(updated));
     window.dispatchEvent(new Event('dg_blogs_updated'));
 
     onPublishSuccess(newPost.slug);
   };
 
-  const activeCover = customCover.trim() || coverImage;
-
   return (
-    <div className="w-full flex flex-col gap-6 font-sans">
+    <div className="w-full flex flex-col gap-6 font-sans max-w-5xl mx-auto pb-16">
       <SEOHead
-        title={isMr ? "नवीन लेख लिहा | Asgaon Knowledge Studio" : "Write Village Article | Asgaon Knowledge Studio"}
+        title={isMr ? "नवीन लेख लिहा | आसगाव ब्लॉग्स" : "Write Article | Asgaon Blogs"}
         description={
           isMr
-            ? "आसगाव ग्रामस्थांसाठी स्वतःचा शेती अनुभव, शासकीय योजना मार्गदर्शन किंवा माहिती लेख प्रसिद्ध करण्याचे व्यासपीठ."
-            : "Platform for Asgaon citizens to share agricultural insights, scheme guides, and community knowledge."
+            ? "आसगाव ग्रामस्थांसाठी स्वतःचा शेती अनुभव, शासकीय योजना मार्गदर्शन किंवा माहिती लेख प्रसिद्ध करण्याचे साधे व्यासपीठ."
+            : "Clean, simple blogging platform for Asgaon citizens to share agricultural insights and knowledge."
         }
-        keywords="Write blog Asgaon, Village article writer Pauni, Asgaon Krishi advisory post, आसगाव लेख लेखन, शेती सल्ला ब्लॉग"
-        canonicalUrl="https://asgaon.vercel.app/blogs/write"
+        keywords="Write blog Asgaon, Village article writer Pauni, Asgaon Krishi advisory post, आसगाव लेख लेखन"
+        canonicalUrl="https://asgaon.digital/blogs/write"
         ogType="website"
-        ogImage={activeCover || "https://res.cloudinary.com/dl5bq3ejh/image/upload/v1791660305/asgaon/seo/ccc45725-5d89-44b3-ac8c-a113f34f5df3.png"}
-        structuredData={{
-          '@context': 'https://schema.org',
-          '@type': 'WebPage',
-          name: isMr ? 'Asgaon Village Blog Studio | आसगाव माहिती लेख लेखन मंच' : 'Asgaon Citizen Knowledge Studio',
-          description: isMr ? 'आसगाव नागरिकांसाठी लेख प्रसिद्ध करण्याचे डिजिटल पोर्टल.' : 'Digital knowledge portal for Asgaon community articles.',
-          url: 'https://asgaon.vercel.app/blogs/write'
-        }}
       />
 
-      {/* 1. Breadcrumbs & Return Navigation */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      {/* 1. Header with Breadcrumb and Hashnode-style Action Bar */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <Breadcrumb
           items={[
             { label: t('nav_home'), onClick: onNavigateHome },
             { label: t('nav_blogs'), onClick: onNavigateBack },
-            { label: isMr ? 'नवीन लेख लिहा' : 'Write Article', active: true }
+            { label: isMr ? 'नवीन लेख' : 'New Article', active: true }
           ]}
         />
 
-        <button
-          onClick={onNavigateBack}
-          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white border border-[#e8e2d9] text-[#166534] font-bold text-xs hover:bg-[#f9f3ea] shadow-2xs transition-all shrink-0 self-end sm:self-auto"
-        >
-          <LucideIcon name="arrow_back" className="text-[16px]" />
-          <span>{isMr ? 'मागे जा' : 'Back'}</span>
-        </button>
-      </div>
-
-      {/* 2. Top Banner with Tab Navigation */}
-      <div className="bg-white rounded-3xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#a7f3d0] text-[10px] font-black uppercase">
-              Blog Studio
-            </span>
-            <span className="text-xs text-[#707974] font-medium">Asgaon Citizen Publishing</span>
+        <div className="flex items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-end">
+          {/* Write / Preview Tab Switcher */}
+          <div className="inline-flex rounded-xl bg-stone-200/70 p-1 border border-stone-300/80">
+            <button
+              type="button"
+              onClick={() => setActiveTab('editor')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                activeTab === 'editor'
+                  ? 'bg-white text-stone-900 shadow-xs'
+                  : 'text-stone-600 hover:text-stone-900'
+              }`}
+            >
+              <LucideIcon name="edit" className="text-[14px]" />
+              <span>{isMr ? 'लेखन' : 'Write'}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('preview')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                activeTab === 'preview'
+                  ? 'bg-white text-stone-900 shadow-xs'
+                  : 'text-stone-600 hover:text-stone-900'
+              }`}
+            >
+              <LucideIcon name="visibility" className="text-[14px]" />
+              <span>{isMr ? 'प्रिव्ह्यू' : 'Preview'}</span>
+            </button>
           </div>
-          <h1 className="font-heading font-extrabold text-[22px] sm:text-[26px] text-[#166534] leading-tight">
-            {isMr ? 'नवीन माहिती लेख तयार करा' : 'Create Knowledge Article'}
-          </h1>
-          <p className="text-xs sm:text-[13px] text-[#404945] mt-1 max-w-xl">
-            {isMr
-              ? 'तुमचा शेती सल्ला, शासकीय योजनेचा अनुभव किंवा गावासाठी उपयुक्त माहिती लिहा. लेख प्रसिद्ध होताच तो गावकर्‍यांसाठी उपलब्ध होईल.'
-              : 'Share farming tips, scheme experiences, or useful village insights. Once published, your article will be live for all citizens.'}
-          </p>
-        </div>
 
-        {/* Tab Switcher */}
-        <div className="inline-flex rounded-2xl bg-[#f4efe8] p-1.5 border border-[#e8e2d9] shrink-0 w-full md:w-auto">
           <button
             type="button"
-            onClick={() => setActiveTab('editor')}
-            className={`flex-1 md:flex-initial px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${activeTab === 'editor'
-                ? 'bg-[#166534] text-[#a7f3d0] shadow-xs'
-                : 'text-[#555] hover:text-[#166534]'
-              }`}
+            onClick={handleSubmit}
+            className="px-5 py-2 rounded-xl bg-[#166534] hover:bg-[#14532d] text-emerald-100 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-sm transition-all"
           >
-            <LucideIcon name="edit" className="text-[16px]" />
-            <span>{isMr ? 'लेखन' : 'Editor'}</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('preview')}
-            className={`flex-1 md:flex-initial px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${activeTab === 'preview'
-                ? 'bg-[#166534] text-[#a7f3d0] shadow-xs'
-                : 'text-[#555] hover:text-[#166534]'
-              }`}
-          >
-            <LucideIcon name="visibility" className="text-[16px]" />
-            <span>{isMr ? 'थेट प्रिव्ह्यू' : 'Live Preview'}</span>
+            <LucideIcon name="publish" className="text-[16px]" />
+            <span>{isMr ? 'प्रसिद्ध करा' : 'Publish'}</span>
           </button>
         </div>
       </div>
 
-      {/* 3. Main Body based on Tab */}
-      {activeTab === 'editor' && (
-        <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-6 sm:p-8 border border-[#e8e2d9] shadow-xs space-y-6">
-          {/* Authenticated user indicator */}
-          {currentUser?.isLoggedIn ? (
-            <div className="p-3.5 bg-[#e6f7f0] rounded-2xl border border-[#b8ebd5] flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#166534] text-[#a7f3d0] flex items-center justify-center font-bold text-sm shadow-2xs">
-                  {currentUser.fullName.charAt(0)}
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-[#166534] flex items-center gap-1.5">
-                    <span>{currentUser.fullName}</span>
-                    <LucideIcon name="verified" className="text-[16px] text-[#006a4e]" />
-                  </div>
-                  <div className="text-[11px] text-[#006a4e]">
-                    {isMr
-                      ? `अधिकृत नागरिक खाते (${currentUser.ward || currentUser.role || 'आसगाव'}) • लेखक म्हणून जोडले जाईल`
-                      : `Verified Citizen Account (${currentUser.ward || currentUser.role || 'Asgaon'}) • Connected as author`}
-                  </div>
-                </div>
-              </div>
-              <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] hidden sm:inline">
-                {isMr ? 'सत्यापित लेखक' : 'Verified Author'}
-              </span>
-            </div>
-          ) : (
-            <div className="p-4 bg-[#fef9ee] rounded-2xl border border-[#ffeed4] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-[#c2410c]">
-              <div className="flex items-center gap-2">
-                <LucideIcon name="info" className="text-[20px]" />
-                <span>
-                  {isMr
-                    ? 'तुम्ही सध्या अतिथी म्हणून लेख तयार करत आहात. अधिकृत ओळखीसाठी कृपया लॉगिन करा.'
-                    : 'You are currently drafting as a guest. Please sign in to link your verified citizen profile.'}
-                </span>
-              </div>
-              {onRequireLogin && (
-                <button
-                  type="button"
-                  onClick={onRequireLogin}
-                  className="px-3.5 py-1.5 rounded-xl bg-[#166534] text-[#a7f3d0] font-bold text-xs shrink-0"
-                >
-                  {isMr ? 'लॉगिन करा' : 'Sign In'}
-                </button>
-              )}
-            </div>
+      {/* Guest notice if not logged in */}
+      {!currentUser?.isLoggedIn && (
+        <div className="p-3.5 bg-amber-50/80 rounded-2xl border border-amber-200/70 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs text-amber-900">
+          <div className="flex items-center gap-2">
+            <LucideIcon name="info" className="text-[18px] text-amber-700 shrink-0" />
+            <span>
+              {isMr
+                ? 'तुम्ही अतिथी म्हणून लेख लिहीत आहात. अधिकृत लेखक बॅजसाठी कृपया लॉगिन करा.'
+                : 'Writing as guest. Sign in to link your verified citizen author profile.'}
+            </span>
+          </div>
+          {onRequireLogin && (
+            <button
+              type="button"
+              onClick={onRequireLogin}
+              className="px-3 py-1 rounded-lg bg-emerald-800 text-emerald-100 font-bold text-xs shrink-0 self-end sm:self-auto"
+            >
+              {isMr ? 'लॉगिन करा' : 'Sign In'}
+            </button>
           )}
+        </div>
+      )}
 
-          {/* Marathi Title */}
+      {/* 2. Main Editor Canvas (Hashnode-inspired clean layout) */}
+      {activeTab === 'editor' && (
+        <form onSubmit={handleSubmit} className="bg-white rounded-3xl border border-stone-200/90 shadow-sm p-6 sm:p-10 space-y-7">
+          
+          {/* Cover Photo Header: Device Upload & Camera capture (No external URLs / Unsplash links) */}
           <div>
-            <label className="block font-bold text-[#166534] text-sm mb-1.5">
-              {isMr ? 'लेखाचे मराठी शीर्षक *' : 'Marathi Title (लेखाचे शीर्षक) *'}
-            </label>
+            {coverImageUrl ? (
+              <div className="relative group rounded-2xl overflow-hidden border border-stone-200 max-h-72 w-full bg-stone-100 mb-2 shadow-xs">
+                <img
+                  src={coverImageUrl}
+                  alt="Cover Preview"
+                  className="w-full h-56 sm:h-72 object-cover"
+                />
+                <div className="absolute top-3 right-3 flex items-center gap-1.5 bg-stone-950/80 backdrop-blur-xs p-1.5 rounded-xl shadow-lg">
+                  <label className="cursor-pointer px-2.5 py-1 text-xs font-bold text-white hover:text-emerald-300 transition-colors flex items-center gap-1">
+                    <LucideIcon name="upload" className="text-[14px]" />
+                    <span>{isMr ? 'डिव्हाइस' : 'Device'}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleCoverFileUpload}
+                      disabled={uploadingCover}
+                      className="hidden"
+                    />
+                  </label>
+                  <label className="cursor-pointer px-2.5 py-1 text-xs font-bold text-white hover:text-emerald-300 transition-colors flex items-center gap-1">
+                    <LucideIcon name="camera" className="text-[14px]" />
+                    <span>{isMr ? 'कॅमेरा' : 'Camera'}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={handleCoverFileUpload}
+                      disabled={uploadingCover}
+                      className="hidden"
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setCoverImageUrl('')}
+                    className="px-2.5 py-1 text-xs font-bold text-red-300 hover:text-red-100 transition-colors flex items-center gap-1 ml-1 pl-2 border-l border-white/20"
+                  >
+                    <LucideIcon name="close" className="text-[14px]" />
+                    <span>{isMr ? 'काढा' : 'Remove'}</span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-dashed border-stone-300 hover:border-emerald-700 text-stone-700 hover:text-emerald-800 text-xs font-bold transition-all bg-stone-50/70 hover:bg-emerald-50/50 shadow-2xs">
+                    <LucideIcon name="upload" className="text-[16px] text-emerald-700" />
+                    <span>{isMr ? 'डिव्हाइसवरून कव्हर फोटो जोडा' : 'Upload Cover from Device'}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleCoverFileUpload}
+                      disabled={uploadingCover}
+                      className="hidden"
+                    />
+                  </label>
+
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-dashed border-stone-300 hover:border-emerald-700 text-stone-700 hover:text-emerald-800 text-xs font-bold transition-all bg-stone-50/70 hover:bg-emerald-50/50 shadow-2xs">
+                    <LucideIcon name="camera" className="text-[16px] text-emerald-700" />
+                    <span>{isMr ? 'कॅमेऱ्याने फोटो काढा' : 'Take Photo (Camera)'}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={handleCoverFileUpload}
+                      disabled={uploadingCover}
+                      className="hidden"
+                    />
+                  </label>
+
+                  {uploadingCover && (
+                    <span className="text-xs text-emerald-800 font-bold flex items-center gap-1.5 animate-pulse ml-1">
+                      <LucideIcon name="refresh" className="animate-spin text-[14px]" />
+                      {isMr ? 'फोटो अपलोड होत आहे...' : 'Uploading cover...'}
+                    </span>
+                  )}
+                </div>
+                {uploadError && (
+                  <p className="text-xs text-red-600 font-medium">{uploadError}</p>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Clean Distraction-Free Article Title (No slug input/preview client-side) */}
+          <div>
             <input
               type="text"
               required
-              value={titleMarathi}
-              onChange={(e) => setTitleMarathi(e.target.value)}
-              placeholder={isMr ? 'उदा. कापूस वेचणी व भाव: आसगाव शेतकऱ्यांचा प्रत्यक्ष अनुभव' : 'उदा. कापूस वेचणी व भाव: आसगाव शेतकऱ्यांचा प्रत्यक्ष अनुभव'}
-              className="w-full p-3.5 rounded-2xl border border-[#e8e2d9] focus:border-[#166534] focus:ring-2 focus:ring-[#166534]/10 outline-none font-bold text-[15px]"
+              value={title}
+              onChange={(e) => handleTitleChange(e.target.value)}
+              placeholder={isMr ? 'लेखाचे शीर्षक येथे लिहा...' : 'Article Title...'}
+              className="w-full text-2xl sm:text-4xl font-extrabold text-stone-900 placeholder:text-stone-300 border-none outline-none bg-transparent font-heading tracking-tight"
             />
           </div>
 
-          {/* English Title & Category */}
+          {/* Subtitle / Excerpt */}
+          <div>
+            <input
+              type="text"
+              value={subtitle}
+              onChange={(e) => setSubtitle(e.target.value)}
+              placeholder={isMr ? 'थोडक्यात उपशीर्षक किंवा सारांश (पर्यायी)...' : 'Write a subtitle or brief excerpt (optional)...'}
+              className="w-full text-sm sm:text-base text-stone-600 placeholder:text-stone-300 border-none outline-none bg-transparent font-medium"
+            />
+          </div>
+
+          <hr className="border-stone-100" />
+
+          {/* Category & Tags Configuration */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-bold text-[#2d312e] text-xs mb-1.5">
-                {isMr ? 'इंग्रजी शीर्षक / कीवर्ड्स' : 'English Title / Search Keywords'}
-              </label>
-              <input
-                type="text"
-                value={titleEng}
-                onChange={(e) => setTitleEng(e.target.value)}
-                placeholder="e.g. Asgaon Cotton Harvest and Market Update"
-                className="w-full p-3 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none text-xs"
-              />
-            </div>
-            <div>
-              <label className="block font-bold text-[#2d312e] text-xs mb-1.5">
-                {isMr ? 'विभाग *' : 'Category *'}
+              <label className="block text-xs font-bold text-stone-600 mb-1.5">
+                {isMr ? 'विभाग / कॅटेगरी *' : 'Category *'}
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as any)}
-                className="w-full p-3 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none font-bold text-xs bg-white"
+                className="w-full p-2.5 rounded-xl border border-stone-200 bg-stone-50/60 focus:border-emerald-700 outline-none text-xs font-bold text-stone-800"
               >
-                <option value="General">{isMr ? 'सामान्य / इतर' : 'General / Other'}</option>
                 <option value="Agriculture">{isMr ? 'कृषी व शेती' : 'Agriculture & Farming'}</option>
                 <option value="Schemes">{isMr ? 'शासकीय योजना' : 'Government Schemes'}</option>
                 <option value="Governance">{isMr ? 'प्रशासन व गाव सेवा' : 'Governance & Civic Services'}</option>
                 <option value="Education">{isMr ? 'शिक्षण व युवक' : 'Education & Youth'}</option>
                 <option value="Health">{isMr ? 'आरोग्य व पोषण' : 'Health & Nutrition'}</option>
+                <option value="General">{isMr ? 'सामान्य / इतर' : 'General / Other'}</option>
               </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-stone-600 mb-1.5">
+                {isMr ? 'टॅग्ज (स्वल्पविरामाने वेगळे करा)' : 'Tags (Comma-separated)'}
+              </label>
+              <input
+                type="text"
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+                placeholder={isMr ? 'उदा. कापूस, आसगाव, भाव, शेती' : 'e.g. Cotton, Asgaon, Mandi, Agriculture'}
+                className="w-full p-2.5 rounded-xl border border-stone-200 bg-stone-50/60 focus:border-emerald-700 outline-none text-xs text-stone-800"
+              />
             </div>
           </div>
 
-          {/* Author Name and Role (if not logged in) */}
+          {/* Author Name (if not logged in) */}
           {!currentUser?.isLoggedIn && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block font-bold text-[#2d312e] text-xs mb-1.5">
-                  {isMr ? 'लेखकाचे नाव *' : 'Author Name *'}
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={authorName}
-                  onChange={(e) => setAuthorName(e.target.value)}
-                  placeholder={isMr ? 'उदा. रमेश देशमुख' : 'e.g. Ramesh Deshmukh'}
-                  className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none text-xs"
-                />
-              </div>
-              <div>
-                <label className="block font-bold text-[#2d312e] text-xs mb-1.5">
-                  {isMr ? 'हुद्दा किंवा प्रभाग' : 'Role / Ward in Asgaon'}
-                </label>
-                <input
-                  type="text"
-                  value={authorRole}
-                  onChange={(e) => setAuthorRole(e.target.value)}
-                  placeholder={isMr ? 'उदा. शेतकरी, प्रभाग क्र. २' : 'e.g. Farmer, Ward No. 2'}
-                  className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none text-xs"
-                />
-              </div>
+            <div className="pt-1">
+              <label className="block text-xs font-bold text-stone-600 mb-1.5">
+                {isMr ? 'लेखकाचे नाव *' : 'Author Name *'}
+              </label>
+              <input
+                type="text"
+                required
+                value={authorName}
+                onChange={(e) => setAuthorName(e.target.value)}
+                placeholder={isMr ? 'उदा. रमेश देशमुख' : 'e.g. Ramesh Deshmukh'}
+                className="w-full p-2.5 rounded-xl border border-stone-200 bg-stone-50/60 focus:border-emerald-700 outline-none text-xs text-stone-800"
+              />
             </div>
           )}
 
-          {/* Cover Photo Selection */}
-          <div>
-            <label className="block font-bold text-[#2d312e] text-xs mb-2">
-              {isMr ? 'कव्हर फोटो निवडा' : 'Select Cover Photo'}
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5 mb-2.5">
-              {PRESET_COVERS.map((preset, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => {
-                    setCoverImage(preset.url);
-                    setCustomCover('');
-                  }}
-                  className={`cursor-pointer rounded-xl overflow-hidden border-2 transition-all p-1 text-center ${coverImage === preset.url && !customCover
-                      ? 'border-[#166534] ring-2 ring-[#166534]/20'
-                      : 'border-[#e8e2d9] hover:border-stone-400'
-                    }`}
-                >
-                  <img src={preset.url} alt={isMr ? preset.labelMr : preset.labelEn} className="w-full h-12 object-cover rounded-lg mb-1" />
-                  <span className="text-[10px] font-bold text-[#555] block truncate">
-                    {isMr ? preset.labelMr : preset.labelEn}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <input
-              type="url"
-              value={customCover}
-              onChange={(e) => setCustomCover(e.target.value)}
-              placeholder={isMr ? 'किंवा स्वतःचा फोटो URL टाका (उदा. https://...)' : 'Or enter custom photo URL (e.g. https://...)'}
-              className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none text-xs"
-            />
-          </div>
-
-          {/* Excerpt */}
-          <div>
-            <label className="block font-bold text-[#2d312e] text-xs mb-1.5">
-              {isMr
-                ? 'थोडक्यात सारांश *'
-                : 'Short Excerpt *'}
-            </label>
-            <textarea
-              rows={2}
-              required
-              value={excerptMarathi}
-              onChange={(e) => setExcerptMarathi(e.target.value)}
-              placeholder={isMr ? 'लेखाचा २ ओळींत थोडक्यात सारांश द्या...' : 'Provide a concise 2-sentence summary...'}
-              className="w-full p-3 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none text-xs leading-relaxed"
-            />
-          </div>
-
-          {/* Markdown Formatting Toolbar & Full Article Content */}
-          <div>
-            <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <label className="font-bold text-[#2d312e] text-xs">
-                {isMr ? 'सविस्तर मजकूर *' : 'Full Article Content *'}
+          {/* Hashnode-style Markdown Formatting Toolbar */}
+          <div className="space-y-2 pt-2">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <label className="text-xs font-bold text-stone-700">
+                {isMr ? 'मजकूर (Markdown)' : 'Article Content (Markdown)'}
               </label>
 
-              {/* Formatting Toolbar */}
-              <div className="flex flex-wrap items-center gap-1 bg-[#f4efe8] p-1 rounded-xl border border-[#e8e2d9]">
+              {/* Toolbar */}
+              <div className="flex flex-wrap items-center gap-1 bg-stone-100 p-1 rounded-xl border border-stone-200">
+                <button
+                  type="button"
+                  onClick={() => handleInsertSyntax('## ')}
+                  className="px-2 py-1 rounded text-xs font-bold bg-white hover:bg-stone-50 text-stone-700 border border-stone-200"
+                  title="Heading 2"
+                >
+                  H2
+                </button>
                 <button
                   type="button"
                   onClick={() => handleInsertSyntax('### ')}
-                  className="px-2 py-0.5 rounded text-[11px] font-bold bg-white hover:bg-stone-100 text-[#166534] border border-[#e8e2d9]"
-                  title={isMr ? 'मथळा' : 'Heading'}
+                  className="px-2 py-1 rounded text-xs font-bold bg-white hover:bg-stone-50 text-stone-700 border border-stone-200"
+                  title="Heading 3"
                 >
-                  {isMr ? 'H3 मथळा' : 'H3 Heading'}
+                  H3
                 </button>
                 <button
                   type="button"
                   onClick={() => handleInsertSyntax('**', '**')}
-                  className="px-2 py-0.5 rounded text-[11px] font-bold bg-white hover:bg-stone-100 text-[#166534] border border-[#e8e2d9]"
-                  title={isMr ? 'ठळक' : 'Bold'}
+                  className="px-2 py-1 rounded text-xs font-bold bg-white hover:bg-stone-50 text-stone-700 border border-stone-200"
+                  title="Bold"
                 >
-                  <strong>B</strong> {isMr ? 'ठळक' : 'Bold'}
+                  <strong>B</strong>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleInsertSyntax('*', '*')}
+                  className="px-2 py-1 rounded text-xs font-bold italic bg-white hover:bg-stone-50 text-stone-700 border border-stone-200"
+                  title="Italic"
+                >
+                  I
                 </button>
                 <button
                   type="button"
                   onClick={() => handleInsertSyntax('- ')}
-                  className="px-2 py-0.5 rounded text-[11px] font-bold bg-white hover:bg-stone-100 text-[#166534] border border-[#e8e2d9]"
-                  title={isMr ? 'मुद्दे / यादी' : 'Bullet List'}
+                  className="px-2 py-1 rounded text-xs font-bold bg-white hover:bg-stone-50 text-stone-700 border border-stone-200"
+                  title="Bullet List"
                 >
-                  • {isMr ? 'यादी' : 'Bullet'}
+                  • List
                 </button>
                 <button
                   type="button"
                   onClick={() => handleInsertSyntax('1. ')}
-                  className="px-2 py-0.5 rounded text-[11px] font-bold bg-white hover:bg-stone-100 text-[#166534] border border-[#e8e2d9]"
-                  title={isMr ? 'क्रमांक' : 'Numbered List'}
+                  className="px-2 py-1 rounded text-xs font-bold bg-white hover:bg-stone-50 text-stone-700 border border-stone-200"
+                  title="Numbered List"
                 >
-                  1. {isMr ? 'क्रमांक' : 'Number'}
+                  1. List
                 </button>
                 <button
                   type="button"
                   onClick={() => handleInsertSyntax('> ')}
-                  className="px-2 py-0.5 rounded text-[11px] font-bold bg-white hover:bg-stone-100 text-[#c2410c] border border-[#e8e2d9]"
-                  title={isMr ? 'सूचना बॉक्स' : 'Quote Box'}
+                  className="px-2 py-1 rounded text-xs font-bold bg-white hover:bg-stone-50 text-amber-700 border border-stone-200"
+                  title="Quote Box"
                 >
-                  " {isMr ? 'सूचना' : 'Quote'}
+                  " Quote
                 </button>
                 <button
                   type="button"
                   onClick={() => handleInsertSyntax('`', '`')}
-                  className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-white hover:bg-stone-100 text-[#166534] border border-[#e8e2d9]"
-                  title={isMr ? 'कोड' : 'Code'}
+                  className="px-2 py-1 rounded text-xs font-mono font-bold bg-white hover:bg-stone-50 text-emerald-800 border border-stone-200"
+                  title="Inline Code"
                 >
-                  `{isMr ? 'कोड' : 'code'}`
+                  `Code`
                 </button>
               </div>
             </div>
 
             <textarea
               id="blog-content-textarea"
-              rows={12}
+              rows={14}
               required
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder={
                 isMr
-                  ? 'तुमचा सविस्तर लेख येथे लिहा. आसगावमधील शेतकरी व नागरिकांना उपयोगी पडेल असा प्रत्यक्ष अनुभव, माहिती किंवा उपाय सविस्तरपणे मांडा...'
-                  : 'Write your detailed article here in Markdown. Share helpful experiences, advisories, or information for fellow citizens...'
+                  ? 'तुमचा सविस्तर लेख येथे लिहा. आसगावमधील शेतकरी व नागरिकांना उपयोगी पडेल असा प्रत्यक्ष अनुभव, माहिती किंवा उपाय सविस्तरपणे मांडा...\n\n### मुख्य मुद्दे\n- पहिला मुद्दा\n- दुसरा मुद्दा\n\n> महत्त्वाची सूचना येथे लिहू शकता.'
+                  : 'Write your article here using Markdown...\n\n### Main Points\n- Point 1\n- Point 2\n\n> Important quote or callout.'
               }
-              className="w-full p-4 rounded-2xl border border-[#e8e2d9] focus:border-[#166534] focus:ring-2 focus:ring-[#166534]/10 outline-none text-xs sm:text-sm leading-relaxed font-sans"
+              className="w-full p-4 rounded-2xl border border-stone-200 focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10 outline-none text-sm leading-relaxed font-sans text-stone-800 placeholder:text-stone-300 min-h-[320px]"
             />
           </div>
 
-          {/* Tags */}
-          <div>
-            <label className="block font-bold text-[#2d312e] text-xs mb-1.5">
-              {isMr ? 'टॅग्ज / कीवर्ड्स (स्वल्पविरामाने वेगळे करा)' : 'Tags / Keywords (Comma-separated)'}
-            </label>
-            <input
-              type="text"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-              placeholder={isMr ? 'उदा. कापूस, आसगाव, भाव, शेती, पीक सल्ला' : 'e.g. Cotton, Asgaon, Mandi, Agriculture, Farming'}
-              className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none text-xs"
-            />
-          </div>
-
-          {/* Action Buttons */}
-          <div className="pt-4 border-t border-[#f0eee8] flex items-center justify-between gap-3">
+          {/* Action Footer */}
+          <div className="pt-4 border-t border-stone-100 flex items-center justify-between gap-3">
             <button
               type="button"
               onClick={() => setActiveTab('preview')}
-              className="px-4 py-2.5 rounded-xl bg-[#f4efe8] hover:bg-[#eae2d7] text-[#166534] text-xs font-bold transition-all flex items-center gap-1.5"
+              className="px-4 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold transition-all flex items-center gap-1.5"
             >
               <LucideIcon name="visibility" className="text-[16px]" />
               <span>{isMr ? 'प्रिव्ह्यू पहा' : 'Preview'}</span>
@@ -567,101 +575,73 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
               <button
                 type="button"
                 onClick={onNavigateBack}
-                className="px-4 py-2.5 rounded-xl border border-[#e8e2d9] text-[#707974] hover:bg-stone-50 text-xs font-bold transition-colors"
+                className="px-4 py-2.5 rounded-xl border border-stone-200 text-stone-600 hover:bg-stone-50 text-xs font-bold transition-colors"
               >
                 {isMr ? 'रद्द करा' : 'Cancel'}
               </button>
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-[#a7f3d0] text-xs sm:text-sm font-bold transition-all shadow-md flex items-center gap-2"
+                className="px-6 py-2.5 rounded-xl bg-[#166534] hover:bg-[#14532d] text-emerald-100 text-xs sm:text-sm font-bold transition-all shadow-sm flex items-center gap-2"
               >
                 <LucideIcon name="publish" className="text-[18px]" />
-                <span>{isMr ? 'लेख प्रसिद्ध करा' : 'Publish Article'}</span>
+                <span>{isMr ? 'प्रसिद्ध करा' : 'Publish'}</span>
               </button>
             </div>
           </div>
         </form>
       )}
 
-      {/* 4. Live Article Preview Tab */}
+      {/* 3. Live Article Preview Tab */}
       {activeTab === 'preview' && (
         <div className="space-y-6">
-          <div className="p-4 bg-[#e6f7f0] border border-[#b8ebd5] rounded-2xl flex items-center justify-between text-xs text-[#006a4e] font-medium">
-            <div className="flex items-center gap-2">
-              <LucideIcon name="visibility" className="text-[18px]" />
-              <span>
-                {isMr
-                  ? 'हा तुमच्या लेखाचा थेट प्रिव्ह्यू आहे. लेख प्रसिद्ध झाल्यानंतर तो वाचकांना असा दिसेल.'
-                  : 'This is a live preview of how your article will appear once published.'}
-              </span>
-            </div>
-            <button
-              onClick={() => setActiveTab('editor')}
-              className="px-3 py-1 rounded-lg bg-[#166534] text-[#a7f3d0] font-bold text-xs"
-            >
-              {isMr ? 'संपादनात परत जा' : 'Back to Editor'}
-            </button>
-          </div>
-
-          {/* Article Header Preview */}
-          <header className="bg-white rounded-3xl p-6 sm:p-8 border border-[#e8e2d9] shadow-xs space-y-4">
-            <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="px-2.5 py-1 rounded-md bg-[#166534] text-[#a7f3d0] text-[11px] font-bold uppercase">
-                {category}
-              </span>
-              <span className="text-[#707974]">
-                {isMr ? 'आज' : 'Today'} • {Math.max(2, Math.round(content.length / 500))} {isMr ? 'मि. वाचन' : 'min read'}
-              </span>
-            </div>
-
-            <h2 className="font-heading font-extrabold text-[22px] sm:text-[28px] text-[#166534] leading-tight">
-              {titleMarathi || (isMr ? 'लेखाचे मराठी शीर्षक येथे दिसेल' : 'Article Title Preview')}
-            </h2>
-
-            {titleEng && (
-              <p className="font-heading font-semibold text-sm text-[#c2410c]">{titleEng}</p>
-            )}
-
-            {excerptMarathi && (
-              <div className="bg-[#fef9ee] border-l-4 border-[#c2410c] p-4 rounded-r-xl text-xs sm:text-sm text-[#7a2b00] font-medium">
-                {excerptMarathi}
+         
+          <article className="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-sm space-y-6">
+            {/* Cover image in preview */}
+            {coverImageUrl && (
+              <div className="rounded-2xl overflow-hidden max-h-80 w-full bg-stone-100">
+                <img src={coverImageUrl} alt={title} className="w-full h-full object-cover" />
               </div>
             )}
 
-            {/* Author */}
-            <div className="flex items-center gap-3 p-3 bg-[#fcfaf7] rounded-xl border border-[#e8e2d9]">
-              <div className="w-10 h-10 rounded-xl bg-[#166534] text-[#a7f3d0] flex items-center justify-center font-bold text-sm">
-                {(authorName || 'अ').charAt(0)}
+            <div className="space-y-3">
+              <div className="flex flex-wrap items-center gap-2 text-xs">
+                <span className="px-2.5 py-0.5 rounded-md bg-emerald-800 text-emerald-100 text-[11px] font-bold">
+                  {category}
+                </span>
               </div>
-              <div>
-                <div className="text-xs font-bold text-[#1d1b16] flex items-center gap-1">
-                  <span>{authorName || (isMr ? 'आसगाव ग्रामस्थ' : 'Asgaon Citizen')}</span>
-                  <LucideIcon name="verified" className="text-[15px] text-[#006a4e]" />
+
+              <h1 className="font-heading font-extrabold text-2xl sm:text-4xl text-stone-900 leading-tight">
+                {title || (isMr ? 'लेखाचे शीर्षक येथे दिसेल' : 'Article Title Preview')}
+              </h1>
+
+              {subtitle && (
+                <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
+                  {subtitle}
+                </p>
+              )}
+
+              {/* Author badge */}
+              <div className="flex items-center gap-3 pt-2 text-xs text-stone-600">
+                <div className="w-9 h-9 rounded-full bg-emerald-800 text-emerald-100 flex items-center justify-center font-bold">
+                  {(authorName || 'A').charAt(0)}
                 </div>
-                <div className="text-[11px] text-[#707974]">
-                  {authorRole || (isMr ? 'स्थानिक नागरिक' : 'Local Resident')}
-                </div>
+                <div className="font-bold text-stone-900">{authorName}</div>
               </div>
             </div>
 
-            {/* Cover Image Preview */}
-            <div className="rounded-2xl overflow-hidden border border-[#e8e2d9] h-48 sm:h-60 max-h-[260px] w-full bg-stone-100">
-              <img src={activeCover} alt="Cover Preview" className="w-full h-full object-cover" />
-            </div>
-          </header>
+            <hr className="border-stone-100" />
 
-          {/* Article Content Preview */}
-          <main className="bg-white rounded-3xl p-6 sm:p-10 border border-[#e8e2d9] shadow-xs">
-            {content.trim() ? (
-              <MarkdownContent content={content} />
-            ) : (
-              <p className="text-xs text-[#707974] italic text-center py-8">
-                {isMr
-                  ? 'अद्याप कोणताही मजकूर लिहिलेला नाही. संपादकामध्ये जाऊन लेख टाईप करा.'
-                  : 'No content written yet. Switch to the Editor tab to compose your article.'}
-              </p>
-            )}
-          </main>
+            {/* Markdown content preview */}
+            <div>
+              {content.trim() ? (
+                <MarkdownContent content={content} />
+              ) : (
+                <p className="text-xs text-stone-400 italic py-10 text-center">
+                  {isMr ? 'अद्याप कोणताही मजकूर नाही.' : 'No content written yet.'}
+                </p>
+              )}
+            </div>
+          </article>
         </div>
       )}
     </div>

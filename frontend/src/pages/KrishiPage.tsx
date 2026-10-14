@@ -291,7 +291,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
             {/* Commodity Cards Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {dynamicCommodities.map((item) => (
-                <div key={item.id} className="bg-[#f9f3ea] rounded-xl p-4 border border-[#e8e2d9] flex flex-col justify-between">
+                <div key={item.id} className="bg-white card-hover-subtle rounded-xl p-4 border border-[#e8e2d9] flex flex-col justify-between shadow-xs transition-all">
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-bold text-[14px] text-[#1d1b16]">{item.name}</span>
@@ -344,9 +344,6 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                 <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   Kisan Tractor, Drone &amp; Implement Rental Pool
                 </h3>
-                <p className="text-[12px] text-[#707974]">
-                  Zero middlemen fees.
-                </p>
               </div>
 
               <button
@@ -360,7 +357,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[...dbMachinery, ...machineryList].map((m) => (
-                <div key={m.id} className="bg-[#f9f3ea] rounded-xl overflow-hidden border border-[#e8e2d9] flex flex-col justify-between">
+                <div key={m.id} className="bg-white card-hover-subtle rounded-xl overflow-hidden border border-[#e8e2d9] flex flex-col justify-between shadow-xs transition-all">
                   <div className="h-36 w-full relative bg-[#f3ede4]">
                     <img src={m.image} alt={m.name} className="w-full h-full object-cover" />
                     <span className="absolute top-2 left-2 bg-[#166534] text-white text-[10px] font-bold px-2 py-0.5 rounded">
@@ -383,7 +380,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                       className="w-full py-2 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1 transition-colors shadow-xs"
                     >
                       <LucideIcon name="call" className="text-[14px]" />
-                      <span>Call Owner ({m.phone})</span>
+                      <span>Call</span>
                     </a>
                   </div>
                 </div>
@@ -398,9 +395,6 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                 <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   Soil Health Card &amp; Fertilizer Stock Roster
                 </h3>
-                <p className="text-[12px] text-[#707974]">
-                  Check nutrient levels for Asgaon village soil zones, verified by Regional Krishi Vigyan Kendra (KVK).
-                </p>
               </div>
 
               <button
@@ -488,9 +482,6 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                 <h4 className="font-heading font-extrabold text-[15px] text-[#ba1a1a]">
                   CRITICAL FIELD WARNING: Fall Armyworm &amp; Pod Borer Alert for Rabi Gram (Harbhara)
                 </h4>
-                <p className="text-[12px] mt-0.5 leading-relaxed">
-                  Heavy morning fog and dew drops triggering pest outbreak. Immediate spraying of approved bio-pesticides or Neem oil recommended.
-                </p>
               </div>
             </div>
 

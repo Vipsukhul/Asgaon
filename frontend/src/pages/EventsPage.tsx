@@ -1,5 +1,6 @@
 import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect } from 'react';
+import { SlidersHorizontal, X, RotateCcw, Check } from 'lucide-react';
 import { api } from '../services/api';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { useLanguage } from '../context/LanguageContext';
@@ -64,6 +65,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
   const [activeCategory, setActiveCategory] = useState<'all' | 'religious' | 'health' | 'agriculture' | 'sports'>('all');
   const [activeMonthFilter, setActiveMonthFilter] = useState<'nov' | 'dec' | 'winter' | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   // Modals state
@@ -293,9 +295,10 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
         </div>
       </div>
 
-      {/* 4. SEARCH & TIMELINE FILTER ROW */}
-      <div className="flex flex-col gap-3">
-        <div className="bg-white p-2.5 sm:p-3 rounded-xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+      {/* 4. SEARCH & UNIFIED FILTER ROW */}
+      <div className="bg-white p-3 sm:p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col gap-2.5">
+        <div className="flex items-center gap-2">
+          {/* Search Bar */}
           <div className="relative flex-1">
             <LucideIcon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
             <input
@@ -304,106 +307,234 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
               placeholder={
                 lang === 'MR'
-                  ? 'नाव, तारीख, उत्सव, क्रीडा, ठिकाण किंवा आयोजकाने शोधा...'
-                  : 'Search event by name, date, festival, sports, venue, or organizer...'
+                  ? 'नाव, तारीख, उत्सव, क्रीडा किंवा आयोजकाने शोधा...'
+                  : 'Search events by name, festival, sports, organizer...'
               }
-              className="w-full pl-9 pr-3 py-2 bg-[#f3ede4]/40 rounded-lg text-[13px] text-[#1a1c1b] placeholder-[#707974] border border-transparent focus:border-[#006a4e] focus:bg-white outline-none"
+              className="w-full pl-9 pr-9 py-2.5 bg-[#f9f3ea] text-[#1a1c1b] placeholder-[#707974] rounded-xl text-xs sm:text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => { setSearchQuery(''); setCurrentPage(1); }}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-[#707974] hover:text-[#1d1b16]"
+                aria-label="Clear Search"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
-          <div className="flex items-center gap-1.5 overflow-x-auto text-[11px] font-medium shrink-0">
-            <button
-              onClick={() => { setActiveMonthFilter('nov'); setCurrentPage(1); }}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                activeMonthFilter === 'nov' ? 'bg-[#166534] text-white font-bold' : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9]'
-              }`}
-            >
-              {lang === 'MR' ? 'या महिन्यात (नोव्हें)' : 'This Month (Nov)'}
-            </button>
-            <button
-              onClick={() => { setActiveMonthFilter('dec'); setCurrentPage(1); }}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                activeMonthFilter === 'dec' ? 'bg-[#166534] text-white font-bold' : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9]'
-              }`}
-            >
-              {lang === 'MR' ? 'पुढील महिन्यात (डिसें)' : 'Next Month (Dec)'}
-            </button>
-            <button
-              onClick={() => { setActiveMonthFilter('winter'); setCurrentPage(1); }}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                activeMonthFilter === 'winter' ? 'bg-[#166534] text-white font-bold' : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9]'
-              }`}
-            >
-              {lang === 'MR' ? 'हिवाळी हंगाम' : 'Winter Season'}
-            </button>
-            <button
-              onClick={() => { setActiveMonthFilter('all'); setCurrentPage(1); }}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                activeMonthFilter === 'all' ? 'bg-[#166534] text-white font-bold' : 'bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9]'
-              }`}
-            >
-              {lang === 'MR' ? 'संपूर्ण वर्ष' : 'Full Year'}
-            </button>
-          </div>
+
+          {/* Corporate Filter Icon Button in Flex */}
+          <button
+            type="button"
+            onClick={() => setIsFilterOpen(true)}
+            className={`relative shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all shadow-xs ${
+              (activeCategory !== 'all' || activeMonthFilter !== 'all')
+                ? 'bg-[#166534] text-white border-[#166534] ring-2 ring-[#166534]/20'
+                : 'bg-[#f4efe8] text-[#1d1b16] border-[#e8e2d9] hover:bg-[#eae2d7]'
+            }`}
+            aria-label="Filter Events"
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            <span className="hidden sm:inline">{lang === 'MR' ? 'फिल्टर' : 'Filter'}</span>
+            {((activeCategory !== 'all' ? 1 : 0) + (activeMonthFilter !== 'all' ? 1 : 0)) > 0 && (
+              <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-400 text-stone-900 text-[10px] sm:text-[11px] font-black flex items-center justify-center">
+                {(activeCategory !== 'all' ? 1 : 0) + (activeMonthFilter !== 'all' ? 1 : 0)}
+              </span>
+            )}
+          </button>
         </div>
 
-        {/* Filter categories pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 text-[12px] font-medium no-scrollbar">
-          <button
-            onClick={() => { setActiveCategory('all'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-bold shrink-0 transition-all ${
-              activeCategory === 'all'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            {lang === 'MR' ? 'सर्व कार्यक्रम' : 'All Events'} ({backendEvents.length})
-          </button>
-          <button
-            onClick={() => { setActiveCategory('religious'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
-              activeCategory === 'religious'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            <LucideIcon name="temple_hindu" className="text-[16px] text-[#c2410c]" />
-            <span>{lang === 'MR' ? 'धार्मिक उत्सव व जत्रा' : 'Religious Festivals & Jatras'} ({backendEvents.filter(e => (e.category || '').toLowerCase().includes('relig') || (e.category || '').toLowerCase().includes('cult')).length})</span>
-          </button>
-          <button
-            onClick={() => { setActiveCategory('health'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
-              activeCategory === 'health'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            <LucideIcon name="medical_services" className="text-[16px] text-[#ba1a1a]" />
-            <span>{lang === 'MR' ? 'आरोग्य शिबिरे' : 'Health & Camps'} ({backendEvents.filter(e => (e.category || '').toLowerCase().includes('health')).length})</span>
-          </button>
-          <button
-            onClick={() => { setActiveCategory('agriculture'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
-              activeCategory === 'agriculture'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            <LucideIcon name="agriculture" className="text-[16px] text-[#006a4e]" />
-            <span>{lang === 'MR' ? 'कृषी व शेतकरी मेळावे' : 'Agriculture & Seminars'} ({backendEvents.filter(e => (e.category || '').toLowerCase().includes('agri')).length})</span>
-          </button>
-          <button
-            onClick={() => { setActiveCategory('sports'); setCurrentPage(1); }}
-            className={`px-4 py-2 rounded-lg font-medium shrink-0 transition-all flex items-center gap-1.5 ${
-              activeCategory === 'sports'
-                ? 'bg-[#166534] text-white shadow-xs'
-                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
-            }`}
-          >
-            <LucideIcon name="sports_kabaddi" className="text-[16px] text-[#006a4e]" />
-            <span>{lang === 'MR' ? 'क्रीडा व युवक स्पर्धा' : 'Sports & Youth'} ({backendEvents.filter(e => (e.category || '').toLowerCase().includes('sport')).length})</span>
-          </button>
-        </div>
+        {/* Active Filter Chips (Micro Row) */}
+        {((activeCategory !== 'all' ? 1 : 0) + (activeMonthFilter !== 'all' ? 1 : 0)) > 0 && (
+          <div className="pt-2 border-t border-[#f0eee8] flex items-center gap-1.5 flex-wrap text-xs">
+            <span className="text-[11px] font-medium text-[#707974]">
+              {lang === 'MR' ? 'सक्रिय फिल्टर्स:' : 'Active:'}
+            </span>
+            {activeCategory !== 'all' && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {activeCategory === 'religious' ? (lang === 'MR' ? 'धार्मिक उत्सव' : 'Religious') :
+                 activeCategory === 'health' ? (lang === 'MR' ? 'आरोग्य शिबिरे' : 'Health') :
+                 activeCategory === 'agriculture' ? (lang === 'MR' ? 'कृषी मेळावे' : 'Agriculture') :
+                 (lang === 'MR' ? 'क्रीडा स्पर्धा' : 'Sports')}
+                <button onClick={() => { setActiveCategory('all'); setCurrentPage(1); }} className="hover:opacity-70 ml-0.5" aria-label="Clear category">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {activeMonthFilter !== 'all' && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                {activeMonthFilter === 'nov' ? (lang === 'MR' ? 'नोव्हेंबर' : 'Nov') :
+                 activeMonthFilter === 'dec' ? (lang === 'MR' ? 'डिसेंबर' : 'Dec') :
+                 (lang === 'MR' ? 'हिवाळी हंगाम' : 'Winter')}
+                <button onClick={() => { setActiveMonthFilter('all'); setCurrentPage(1); }} className="hover:opacity-70 ml-0.5" aria-label="Clear month">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            <button
+              onClick={() => {
+                setActiveCategory('all');
+                setActiveMonthFilter('all');
+                setCurrentPage(1);
+              }}
+              className="text-[11px] font-bold text-[#c2410c] hover:underline ml-1"
+            >
+              {lang === 'MR' ? 'सर्व काढा' : 'Clear all'}
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* Corporate Filter Modal / Bottom Sheet */}
+      {isFilterOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
+          onClick={() => setIsFilterOpen(false)}
+        >
+          <div
+            className="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-[#e8e2d9] flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-5 py-4 border-b border-[#e8e2d9] flex items-center justify-between bg-[#fdfbf7]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#e8f1ec] text-[#166534] flex items-center justify-center">
+                  <SlidersHorizontal className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#1d1b16]">
+                    {lang === 'MR' ? 'कार्यक्रम फिल्टर्स' : 'Filter Village Events'}
+                  </h3>
+                  <p className="text-[11px] text-[#707974]">
+                    {lang === 'MR' ? 'प्रकार व महिन्यानुसार कार्यक्रम निवडा' : 'Filter by category and timeline'}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#f4efe8] hover:bg-[#eae2d7] text-[#707974] hover:text-[#1d1b16] flex items-center justify-center transition-all"
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 overflow-y-auto space-y-5 text-sm">
+              {/* Category Section */}
+              <div>
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider">
+                    {lang === 'MR' ? '१. कार्यक्रमाचा प्रकार' : '1. Event Category'}
+                  </span>
+                  {activeCategory !== 'all' && (
+                    <button
+                      onClick={() => { setActiveCategory('all'); setCurrentPage(1); }}
+                      className="text-[11px] text-[#c2410c] font-semibold hover:underline"
+                    >
+                      {lang === 'MR' ? 'सर्व दाखवा' : 'Reset'}
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {[
+                    { id: 'all', label: lang === 'MR' ? 'सर्व कार्यक्रम' : 'All Events', count: backendEvents.length },
+                    { id: 'religious', label: lang === 'MR' ? 'धार्मिक उत्सव व जत्रा' : 'Religious & Jatras', count: backendEvents.filter(e => (e.category || '').toLowerCase().includes('relig') || (e.category || '').toLowerCase().includes('cult')).length },
+                    { id: 'health', label: lang === 'MR' ? 'आरोग्य शिबिरे' : 'Health & Camps', count: backendEvents.filter(e => (e.category || '').toLowerCase().includes('health')).length },
+                    { id: 'agriculture', label: lang === 'MR' ? 'कृषी मेळावे' : 'Agriculture & Seminars', count: backendEvents.filter(e => (e.category || '').toLowerCase().includes('agri')).length },
+                    { id: 'sports', label: lang === 'MR' ? 'क्रीडा व युवक स्पर्धा' : 'Sports & Youth', count: backendEvents.filter(e => (e.category || '').toLowerCase().includes('sport')).length }
+                  ].map((cat) => {
+                    const isSelected = activeCategory === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={() => { setActiveCategory(cat.id as any); setCurrentPage(1); }}
+                        className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                          isSelected
+                            ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                            : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                        }`}
+                      >
+                        <span className="truncate">{cat.label} ({cat.count})</span>
+                        {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Month / Timeline Section */}
+              <div>
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider">
+                    {lang === 'MR' ? '२. कालावधी / महिना' : '2. Timeline / Month'}
+                  </span>
+                  {activeMonthFilter !== 'all' && (
+                    <button
+                      onClick={() => { setActiveMonthFilter('all'); setCurrentPage(1); }}
+                      className="text-[11px] text-[#c2410c] font-semibold hover:underline"
+                    >
+                      {lang === 'MR' ? 'सर्व दाखवा' : 'Reset'}
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { id: 'all', label: lang === 'MR' ? 'संपूर्ण वर्ष' : 'Full Year' },
+                    { id: 'nov', label: lang === 'MR' ? 'या महिन्यात (नोव्हें)' : 'This Month (Nov)' },
+                    { id: 'dec', label: lang === 'MR' ? 'पुढील महिन्यात (डिसें)' : 'Next Month (Dec)' },
+                    { id: 'winter', label: lang === 'MR' ? 'हिवाळी हंगाम' : 'Winter Season' }
+                  ].map((m) => {
+                    const isSelected = activeMonthFilter === m.id;
+                    return (
+                      <button
+                        key={m.id}
+                        onClick={() => { setActiveMonthFilter(m.id as any); setCurrentPage(1); }}
+                        className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
+                          isSelected
+                            ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                            : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
+                        }`}
+                      >
+                        <span className="truncate">{m.label}</span>
+                        {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-[#e8e2d9] bg-[#f9f3ea] flex items-center justify-between gap-3">
+              <button
+                onClick={() => {
+                  setActiveCategory('all');
+                  setActiveMonthFilter('all');
+                  setCurrentPage(1);
+                }}
+                disabled={activeCategory === 'all' && activeMonthFilter === 'all'}
+                className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  (activeCategory !== 'all' || activeMonthFilter !== 'all')
+                    ? 'text-[#c2410c] hover:bg-orange-100/60'
+                    : 'text-stone-400 cursor-not-allowed'
+                }`}
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>{lang === 'MR' ? 'सर्व रीसेट' : 'Clear All'}</span>
+              </button>
+
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="flex-1 sm:flex-initial px-6 py-2.5 rounded-xl bg-[#166534] text-white text-xs sm:text-sm font-bold shadow-sm hover:bg-[#14532d] transition-all flex items-center justify-center gap-2"
+              >
+                <span>{lang === 'MR' ? 'फिल्टर्स लागू करा' : 'Apply Filters'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 5. MAIN 2-COLUMN LAYOUT */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -464,7 +595,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                   </div>
                 ) : (
                   paginatedEvents.map((evt) => (
-                    <div key={evt.id} className="bg-white rounded-2xl border-2 border-[#006a4e]/20 p-5 shadow-xs flex flex-col sm:flex-row gap-4 hover:shadow-md transition-all">
+                    <div key={evt.id} className="bg-white card-hover-subtle rounded-2xl border border-[#e8e2d9] p-5 shadow-xs flex flex-col sm:flex-row gap-4">
                       <img
                         src={evt.imageUrl || "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=600&q=80"}
                         alt={evt.title}

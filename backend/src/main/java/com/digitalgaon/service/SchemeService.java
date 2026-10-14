@@ -49,8 +49,6 @@ public class SchemeService {
                 .orElseThrow(() -> new RuntimeException("Scheme not found with id: " + id));
         if (schemeDetails.getTitle() != null) scheme.setTitle(schemeDetails.getTitle());
         if (schemeDetails.getCategory() != null) scheme.setCategory(schemeDetails.getCategory());
-        if (schemeDetails.getSponsoringAgency() != null) scheme.setSponsoringAgency(schemeDetails.getSponsoringAgency());
-        if (schemeDetails.getDeadlineText() != null) scheme.setDeadlineText(schemeDetails.getDeadlineText());
         if (schemeDetails.getDescription() != null) scheme.setDescription(schemeDetails.getDescription());
         if (schemeDetails.getBenefits() != null) scheme.setBenefits(schemeDetails.getBenefits());
         if (schemeDetails.getEligibility() != null) scheme.setEligibility(schemeDetails.getEligibility());

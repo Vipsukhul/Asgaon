@@ -1,6 +1,22 @@
 @import "tailwindcss";
 
+:root {
+  /* =========================================================================
+     GLOBAL THEME CONTROLS: Centralized single place to adjust site colors
+     1. --site-bg: Main website background color
+     2. --card-hover-bg: Card background color on hover
+     3. --card-hover-border: Card border color on hover (matches the card hover bg)
+     ========================================================================= */
+  --site-bg: #ecfdf5;
+  --card-hover-bg: #d1fae5;
+  --card-hover-border: #a7f3d0;
+}
+
 @theme {
+  --color-site-bg: var(--site-bg);
+  --color-card-hover: var(--card-hover-bg);
+  --color-card-hover-border: var(--card-hover-border);
+
   --color-primary: #166534;
   --color-primary-container: #14532d;
   --color-primary-light: #dcfce7;
@@ -10,7 +26,7 @@
   --color-secondary-container: #ea580c;
   --color-on-secondary: #ffffff;
   --color-accent-amber: #d97706;
-  --color-surface: #fdfbf7;
+  --color-surface: var(--site-bg);
   --color-surface-container: #f7f3ea;
   --color-surface-container-low: #faf6ee;
   --color-surface-container-lowest: #ffffff;
@@ -31,9 +47,25 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #fdfbf7;
+  background-color: var(--site-bg);
   color: #1c1917;
   font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+}
+
+/* =========================================================================
+   UNIVERSAL SUBTLE CARD HOVER UTILITY
+   Add 'card-hover-subtle' to any card to automatically use --card-hover-bg
+   and --card-hover-border on hover with smooth micro-elevation!
+   ========================================================================= */
+.card-hover-subtle {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover-subtle:hover {
+  background-color: var(--card-hover-bg) !important;
+  border-color: var(--card-hover-border) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px -3px rgba(22, 101, 52, 0.08);
 }
 
 .font-heading {

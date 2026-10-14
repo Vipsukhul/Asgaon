@@ -1,5 +1,6 @@
 import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect } from 'react';
+import { SlidersHorizontal, X, RotateCcw, Check } from 'lucide-react';
 import { api } from '../services/api';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { SEOHead } from '../components/SEOHead';
@@ -29,7 +30,6 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
   const { lang, t } = useLanguage();
   const [showDeskModal, setShowDeskModal] = useState(false);
   const [showCounselingModal, setShowCounselingModal] = useState(false);
-  const [showGrievanceModal, setShowGrievanceModal] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
 
   // Dynamic Data States with localStorage persistence
@@ -75,7 +75,12 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
 
   // Filter states
   const [schoolCategoryFilter, setSchoolCategoryFilter] = useState<'all' | 'highschool' | 'primary' | 'technical' | 'hostel'>('all');
+  const [schoolSearch, setSchoolSearch] = useState('');
+  const [isSchoolFilterOpen, setIsSchoolFilterOpen] = useState(false);
+
   const [scholarshipFilter, setScholarshipFilter] = useState<string>('all');
+  const [scholarshipSearch, setScholarshipSearch] = useState('');
+  const [isScholarshipFilterOpen, setIsScholarshipFilterOpen] = useState(false);
 
   // Listen for storage changes across tabs or admin edits
   useEffect(() => {
@@ -144,7 +149,6 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
       setBookingSuccess(false);
       setShowDeskModal(false);
       setShowCounselingModal(false);
-      setShowGrievanceModal(false);
       setDeskName('');
       setDeskPhone('');
     }, 2000);
@@ -289,32 +293,173 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
               </a>
             </div>
 
-            {/* Filter categories pills */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 text-[12px] font-medium no-scrollbar">
-              {[
-                { id: 'all', label: lang === 'MR' ? `सर्व शाळा (${schools.length})` : `All (${schools.length})` },
-                { id: 'highschool', label: lang === 'MR' ? 'हायस्कूल व कनिष्ठ महाविद्यालय' : 'High School & Jr College' },
-                { id: 'primary', label: lang === 'MR' ? 'प्राथमिक शाळा' : 'Primary Schools' },
-                { id: 'technical', label: lang === 'MR' ? 'आयटीआय व तांत्रिक' : 'ITI & Technical' },
-                { id: 'hostel', label: lang === 'MR' ? 'वसतिगृह' : 'Hostels' },
-              ].map(f => (
+            {/* Search + Filter Row */}
+            <div className="bg-[#fdfbf7] rounded-xl p-2.5 sm:p-3 border border-[#e8e2d9] flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <LucideIcon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
+                  <input
+                    type="text"
+                    value={schoolSearch}
+                    onChange={(e) => setSchoolSearch(e.target.value)}
+                    placeholder={
+                      lang === 'MR'
+                        ? 'शाळेचे नाव किंवा प्रकार शोधा...'
+                        : 'Search schools by name or category...'
+                    }
+                    className="w-full pl-9 pr-9 py-2 bg-white text-[#1d1b16] placeholder-[#707974] rounded-lg text-xs sm:text-sm border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
+                  />
+                  {schoolSearch && (
+                    <button
+                      type="button"
+                      onClick={() => setSchoolSearch('')}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-[#707974] hover:text-[#1d1b16] cursor-pointer"
+                      aria-label="Clear Search"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
                 <button
-                  key={f.id}
-                  onClick={() => setSchoolCategoryFilter(f.id as any)}
-                  className={`px-3 py-1.5 rounded-lg font-bold shrink-0 transition-all ${
-                    schoolCategoryFilter === f.id
-                      ? 'bg-[#166534] text-white shadow-xs'
-                      : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
+                  type="button"
+                  onClick={() => setIsSchoolFilterOpen(true)}
+                  className={`relative shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-lg border font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer ${
+                    schoolCategoryFilter !== 'all'
+                      ? 'bg-[#166534] text-white border-[#166534] ring-2 ring-[#166534]/20'
+                      : 'bg-white text-[#1d1b16] border-[#e8e2d9] hover:bg-[#eae2d7]'
                   }`}
+                  aria-label="Filter Schools"
                 >
-                  {f.label}
+                  <SlidersHorizontal className="w-4 h-4" />
+                  <span className="hidden sm:inline">{lang === 'MR' ? 'प्रकार' : 'Filter'}</span>
+                  {schoolCategoryFilter !== 'all' && (
+                    <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-400 text-stone-900 text-[10px] sm:text-[11px] font-black flex items-center justify-center">
+                      1
+                    </span>
+                  )}
                 </button>
-              ))}
+              </div>
+
+              {/* Active Micro-Chips */}
+              {schoolCategoryFilter !== 'all' && (
+                <div className="pt-1.5 border-t border-[#f0eee8] flex items-center gap-1.5 flex-wrap text-xs">
+                  <span className="text-[11px] font-medium text-[#707974]">
+                    {lang === 'MR' ? 'सक्रिय:' : 'Active:'}
+                  </span>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                    <span>
+                      {schoolCategoryFilter === 'highschool' ? (lang === 'MR' ? 'हायस्कूल व कनिष्ठ महाविद्यालय' : 'High School & Jr College') :
+                       schoolCategoryFilter === 'primary' ? (lang === 'MR' ? 'प्राथमिक शाळा' : 'Primary Schools') :
+                       schoolCategoryFilter === 'technical' ? (lang === 'MR' ? 'आयटीआय व तांत्रिक' : 'ITI & Technical') :
+                       (lang === 'MR' ? 'वसतिगृह' : 'Hostels')}
+                    </span>
+                    <button onClick={() => setSchoolCategoryFilter('all')} className="hover:opacity-70 ml-0.5 cursor-pointer">
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                  <button
+                    onClick={() => setSchoolCategoryFilter('all')}
+                    className="text-[11px] font-bold text-[#c2410c] hover:underline ml-1 cursor-pointer"
+                  >
+                    {lang === 'MR' ? 'काढा' : 'Clear'}
+                  </button>
+                </div>
+              )}
             </div>
+
+            {/* School Filter Modal */}
+            {isSchoolFilterOpen && (
+              <div
+                className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
+                onClick={() => setIsSchoolFilterOpen(false)}
+              >
+                <div
+                  className="w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-[#e8e2d9] flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="px-5 py-4 border-b border-[#e8e2d9] flex items-center justify-between bg-[#fdfbf7]">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-[#e8f1ec] text-[#166534] flex items-center justify-center">
+                        <SlidersHorizontal className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-bold text-[#1d1b16]">
+                          {lang === 'MR' ? 'शाळा प्रकार निवडा' : 'Filter Schools'}
+                        </h3>
+                        <p className="text-[11px] text-[#707974]">
+                          {lang === 'MR' ? 'शाळा व महाविद्यालयांचे वर्गीकरण' : 'Filter by institution type'}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setIsSchoolFilterOpen(false)}
+                      className="w-8 h-8 rounded-full bg-[#f4efe8] hover:bg-[#eae2d7] text-[#707974] hover:text-[#1d1b16] flex items-center justify-center transition-all cursor-pointer"
+                      aria-label="Close"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="p-5 space-y-2">
+                    {[
+                      { id: 'all', label: lang === 'MR' ? `सर्व शाळा (${schools.length})` : `All (${schools.length})` },
+                      { id: 'highschool', label: lang === 'MR' ? 'हायस्कूल व कनिष्ठ महाविद्यालय' : 'High School & Jr College' },
+                      { id: 'primary', label: lang === 'MR' ? 'प्राथमिक शाळा' : 'Primary Schools' },
+                      { id: 'technical', label: lang === 'MR' ? 'आयटीआय व तांत्रिक' : 'ITI & Technical' },
+                      { id: 'hostel', label: lang === 'MR' ? 'वसतिगृह' : 'Hostels' },
+                    ].map(f => {
+                      const isSelected = schoolCategoryFilter === f.id;
+                      return (
+                        <button
+                          key={f.id}
+                          type="button"
+                          onClick={() => {
+                            setSchoolCategoryFilter(f.id as any);
+                            setIsSchoolFilterOpen(false);
+                          }}
+                          className={`w-full p-3 rounded-xl border text-xs sm:text-sm font-bold flex items-center justify-between transition-all cursor-pointer ${
+                            isSelected
+                              ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                              : 'bg-white text-[#1d1b16] border-[#e8e2d9] hover:bg-[#f9f3ea]'
+                          }`}
+                        >
+                          <span>{f.label}</span>
+                          {isSelected && <Check className="w-4 h-4 shrink-0" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="px-5 py-3.5 border-t border-[#e8e2d9] bg-[#fdfbf7] flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setSchoolCategoryFilter('all')}
+                      className="flex items-center gap-1.5 text-xs font-bold text-[#707974] hover:text-[#ba1a1a] px-3 py-2 rounded-lg hover:bg-stone-100 transition-colors cursor-pointer"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      <span>{lang === 'MR' ? 'रीसेट' : 'Reset'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsSchoolFilterOpen(false)}
+                      className="px-5 py-2 rounded-xl bg-[#166534] hover:bg-[#14532d] text-white font-bold text-xs shadow-sm cursor-pointer"
+                    >
+                      {lang === 'MR' ? 'लागू करा' : 'Apply'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="flex flex-col gap-4">
               {schools
                 .filter(s => {
+                  if (schoolSearch.trim()) {
+                    const q = schoolSearch.toLowerCase();
+                    const name = (s.name || '').toLowerCase();
+                    const cat = (s.category || '').toLowerCase();
+                    const badge = (s.badge || '').toLowerCase();
+                    if (!name.includes(q) && !cat.includes(q) && !badge.includes(q)) return false;
+                  }
                   if (schoolCategoryFilter === 'all') return true;
                   const cat = (s.category || '').toLowerCase();
                   const name = (s.name || '').toLowerCase();
@@ -433,32 +578,173 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
               </a>
             </div>
 
-            {/* Filter pills for scholarships */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 text-[12px] font-medium no-scrollbar">
-              {[
-                { id: 'all', label: lang === 'MR' ? `सर्व शिष्यवृत्ती (${scholarships.length})` : `All (${scholarships.length})` },
-                { id: 'matric', label: lang === 'MR' ? 'मॅट्रिकोत्तर' : 'Post-Matric' },
-                { id: 'open', label: lang === 'MR' ? 'खुला प्रवर्ग / EWS' : 'Open / EWS' },
-                { id: 'girls', label: lang === 'MR' ? 'मुलींसाठी विशेष' : 'For Girls' },
-                { id: 'merit', label: lang === 'MR' ? 'राष्ट्रीय गुणवत्ता परीक्षा' : 'National Merit' }
-              ].map(f => (
+            {/* Search + Filter Row for Scholarships */}
+            <div className="bg-[#fdfbf7] rounded-xl p-2.5 sm:p-3 border border-[#e8e2d9] flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <LucideIcon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
+                  <input
+                    type="text"
+                    value={scholarshipSearch}
+                    onChange={(e) => setScholarshipSearch(e.target.value)}
+                    placeholder={
+                      lang === 'MR'
+                        ? 'शिष्यवृत्तीचे नाव शोधा (उदा. मॅट्रिकोत्तर, सावित्रीबाई)...'
+                        : 'Search scholarships by title or keyword...'
+                    }
+                    className="w-full pl-9 pr-9 py-2 bg-white text-[#1d1b16] placeholder-[#707974] rounded-lg text-xs sm:text-sm border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#c2410c]"
+                  />
+                  {scholarshipSearch && (
+                    <button
+                      type="button"
+                      onClick={() => setScholarshipSearch('')}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-[#707974] hover:text-[#1d1b16] cursor-pointer"
+                      aria-label="Clear Search"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
                 <button
-                  key={f.id}
-                  onClick={() => setScholarshipFilter(f.id)}
-                  className={`px-3 py-1.5 rounded-lg font-bold shrink-0 transition-all ${
-                    scholarshipFilter === f.id
-                      ? 'bg-[#c2410c] text-white shadow-xs'
-                      : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
+                  type="button"
+                  onClick={() => setIsScholarshipFilterOpen(true)}
+                  className={`relative shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-lg border font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer ${
+                    scholarshipFilter !== 'all'
+                      ? 'bg-[#c2410c] text-white border-[#c2410c] ring-2 ring-[#c2410c]/20'
+                      : 'bg-white text-[#1d1b16] border-[#e8e2d9] hover:bg-[#eae2d7]'
                   }`}
+                  aria-label="Filter Scholarships"
                 >
-                  {f.label}
+                  <SlidersHorizontal className="w-4 h-4" />
+                  <span className="hidden sm:inline">{lang === 'MR' ? 'प्रवर्ग' : 'Filter'}</span>
+                  {scholarshipFilter !== 'all' && (
+                    <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-400 text-stone-900 text-[10px] sm:text-[11px] font-black flex items-center justify-center">
+                      1
+                    </span>
+                  )}
                 </button>
-              ))}
+              </div>
+
+              {/* Active Micro-Chips */}
+              {scholarshipFilter !== 'all' && (
+                <div className="pt-1.5 border-t border-[#f0eee8] flex items-center gap-1.5 flex-wrap text-xs">
+                  <span className="text-[11px] font-medium text-[#707974]">
+                    {lang === 'MR' ? 'सक्रिय:' : 'Active:'}
+                  </span>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#fef2f2] text-[#991b1b] font-bold text-[11px] border border-[#fecaca]">
+                    <span>
+                      {scholarshipFilter === 'matric' ? (lang === 'MR' ? 'मॅट्रिकोत्तर' : 'Post-Matric') :
+                       scholarshipFilter === 'open' ? (lang === 'MR' ? 'खुला प्रवर्ग / EWS' : 'Open / EWS') :
+                       scholarshipFilter === 'girls' ? (lang === 'MR' ? 'मुलींसाठी विशेष' : 'For Girls') :
+                       (lang === 'MR' ? 'राष्ट्रीय गुणवत्ता परीक्षा' : 'National Merit')}
+                    </span>
+                    <button onClick={() => setScholarshipFilter('all')} className="hover:opacity-70 ml-0.5 cursor-pointer">
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                  <button
+                    onClick={() => setScholarshipFilter('all')}
+                    className="text-[11px] font-bold text-[#c2410c] hover:underline ml-1 cursor-pointer"
+                  >
+                    {lang === 'MR' ? 'काढा' : 'Clear'}
+                  </button>
+                </div>
+              )}
             </div>
+
+            {/* Scholarship Filter Modal */}
+            {isScholarshipFilterOpen && (
+              <div
+                className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
+                onClick={() => setIsScholarshipFilterOpen(false)}
+              >
+                <div
+                  className="w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-[#e8e2d9] flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="px-5 py-4 border-b border-[#e8e2d9] flex items-center justify-between bg-[#fdfbf7]">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-[#ffedd5] text-[#c2410c] flex items-center justify-center">
+                        <SlidersHorizontal className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-bold text-[#1d1b16]">
+                          {lang === 'MR' ? 'शिष्यवृत्ती प्रवर्ग निवडा' : 'Filter Scholarships'}
+                        </h3>
+                        <p className="text-[11px] text-[#707974]">
+                          {lang === 'MR' ? 'प्रवर्ग व पात्रता निकषांनुसार वर्गीकरण' : 'Filter by category and criteria'}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setIsScholarshipFilterOpen(false)}
+                      className="w-8 h-8 rounded-full bg-[#f4efe8] hover:bg-[#eae2d7] text-[#707974] hover:text-[#1d1b16] flex items-center justify-center transition-all cursor-pointer"
+                      aria-label="Close"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="p-5 space-y-2">
+                    {[
+                      { id: 'all', label: lang === 'MR' ? `सर्व शिष्यवृत्ती (${scholarships.length})` : `All (${scholarships.length})` },
+                      { id: 'matric', label: lang === 'MR' ? 'मॅट्रिकोत्तर' : 'Post-Matric' },
+                      { id: 'open', label: lang === 'MR' ? 'खुला प्रवर्ग / EWS' : 'Open / EWS' },
+                      { id: 'girls', label: lang === 'MR' ? 'मुलींसाठी विशेष' : 'For Girls' },
+                      { id: 'merit', label: lang === 'MR' ? 'राष्ट्रीय गुणवत्ता परीक्षा' : 'National Merit' }
+                    ].map(f => {
+                      const isSelected = scholarshipFilter === f.id;
+                      return (
+                        <button
+                          key={f.id}
+                          type="button"
+                          onClick={() => {
+                            setScholarshipFilter(f.id);
+                            setIsScholarshipFilterOpen(false);
+                          }}
+                          className={`w-full p-3 rounded-xl border text-xs sm:text-sm font-bold flex items-center justify-between transition-all cursor-pointer ${
+                            isSelected
+                              ? 'bg-[#c2410c] text-white border-[#c2410c] shadow-xs'
+                              : 'bg-white text-[#1d1b16] border-[#e8e2d9] hover:bg-[#f9f3ea]'
+                          }`}
+                        >
+                          <span>{f.label}</span>
+                          {isSelected && <Check className="w-4 h-4 shrink-0" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="px-5 py-3.5 border-t border-[#e8e2d9] bg-[#fdfbf7] flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setScholarshipFilter('all')}
+                      className="flex items-center gap-1.5 text-xs font-bold text-[#707974] hover:text-[#ba1a1a] px-3 py-2 rounded-lg hover:bg-stone-100 transition-colors cursor-pointer"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      <span>{lang === 'MR' ? 'रीसेट' : 'Reset'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsScholarshipFilterOpen(false)}
+                      className="px-5 py-2 rounded-xl bg-[#c2410c] hover:bg-[#9a3412] text-white font-bold text-xs shadow-sm cursor-pointer"
+                    >
+                      {lang === 'MR' ? 'लागू करा' : 'Apply'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {scholarships
                 .filter(sch => {
+                  if (scholarshipSearch.trim()) {
+                    const q = scholarshipSearch.toLowerCase();
+                    const title = (sch.title || '').toLowerCase();
+                    const badge = (sch.badge || '').toLowerCase();
+                    const desc = (sch.description || '').toLowerCase();
+                    if (!title.includes(q) && !badge.includes(q) && !desc.includes(q)) return false;
+                  }
                   if (scholarshipFilter === 'all') return true;
                   const title = (sch.title || '').toLowerCase();
                   const badge = (sch.badge || '').toLowerCase();
@@ -839,25 +1125,25 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             </button>
           </div>
 
-          {/* WIDGET 3: EDUCATION GRIEVANCE DESK */}
+          {/* WIDGET 3: EDUCATION GUIDANCE & ASSISTANCE */}
           <div className="bg-[#fef9ee] rounded-2xl p-5 border border-[#fde68a] shadow-xs flex flex-col gap-3.5">
             <div className="flex items-center gap-2 border-b border-[#fde68a] pb-3">
-              <LucideIcon name="report" className="text-[#c2410c] text-[20px]" />
+              <LucideIcon name="school" className="text-[#166534] text-[20px]" />
               <div>
-                <h3 className="font-heading font-bold text-[14px] text-[#c2410c]">
-                  {lang === 'MR' ? 'शालेय तक्रार व विचारणा कक्ष' : 'Education Grievance Desk'}
+                <h3 className="font-heading font-bold text-[14px] text-[#166534]">
+                  {lang === 'MR' ? 'शालेय शिक्षण व RTE सहाय्यता केंद्र' : 'Education & RTE Guidance Desk'}
                 </h3>
-                <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'थेट नागरिक नोंदणी' : 'Direct reporting'}</span>
+                <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'मार्गदर्शन व माहिती' : 'Guidance & Helpline'}</span>
               </div>
             </div>
 
             <div className="flex flex-col gap-2.5 text-[11px] text-[#404945]">
               <div className="bg-white p-2.5 rounded-lg border border-[#fde68a]">
                 <strong className="text-[#166534] block">
-                  {lang === 'MR' ? 'शालेय पोषण आहार (PM पोषण) गुणवत्ता:' : 'Mid-Day Meal Quality Complaint:'}
+                  {lang === 'MR' ? 'शालेय पोषण आहार (PM पोषण):' : 'Mid-Day Meal Support:'}
                 </strong>
                 <p className="text-[10px] text-[#707974] mt-0.5 leading-tight">
-                  {lang === 'MR' ? 'आहाराच्या गुणवत्तेबाबत तक्रार नोंदवून ४८ तासांत निवारण मिळवा.' : 'Submit concern regarding mid-day meal hygiene.'}
+                  {lang === 'MR' ? 'शासकीय निकषांनुसार दर्जेदार पोषण आहार व नियमित तपासणी.' : 'Standard mid-day meal guidelines and nutrition info.'}
                 </p>
               </div>
 
@@ -871,13 +1157,13 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
               </div>
             </div>
 
-            <button
-              onClick={() => setShowGrievanceModal(true)}
-              className="w-full py-2 bg-[#c2410c] hover:bg-[#852f00] text-white text-[11px] font-bold rounded-lg transition-all shadow-xs flex items-center justify-center gap-1.5"
+            <a
+              href="tel:07185255201"
+              className="w-full py-2 bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold rounded-lg transition-all shadow-xs flex items-center justify-center gap-1.5"
             >
-              <LucideIcon name="edit_note" className="text-[14px]" />
-              <span>{lang === 'MR' ? 'शैक्षणिक तक्रार / विचारणा नोंदवा' : 'Submit an Education Complaint / Inquiry'}</span>
-            </button>
+              <LucideIcon name="call" className="text-[14px]" />
+              <span>{lang === 'MR' ? 'शिक्षण सहाय्यता कक्ष संपर्क' : 'Contact Education Desk'}</span>
+            </a>
           </div>
 
           {/* WIDGET 4: CIVIC EDUCATION VISION */}
@@ -1083,90 +1369,6 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
                 >
                   {lang === 'MR' ? 'समुपदेशन वेळ निश्चित करा' : 'Confirm Appointment'}
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* MODAL 3: GRIEVANCE DESK */}
-      {showGrievanceModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 border border-[#e8e2d9] shadow-xl relative animate-fadeIn">
-            <button
-              onClick={() => setShowGrievanceModal(false)}
-              className="absolute top-4 right-4 text-[#707974] hover:text-[#1a1c1b] p-1 rounded-full hover:bg-[#f3ede4]"
-            >
-              <LucideIcon name="close" className="text-[20px]" />
-            </button>
-
-            <div className="flex items-center gap-2 mb-4">
-              <LucideIcon name="report" className="text-[#c2410c] text-[24px]" />
-              <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
-                  {lang === 'MR' ? 'शालेय तक्रार व विचारणा कक्ष' : 'Education Grievance Desk'}
-                </h3>
-                <span className="text-[11px] text-[#707974]">
-                  {lang === 'MR' ? 'स्थानिक शिक्षण सहाय्यता समितीकडे थेट नोंदणी' : 'Direct reporting to Education Assistance Desk'}
-                </span>
-              </div>
-            </div>
-
-            {bookingSuccess ? (
-              <div className="bg-[#e8f1ec] border border-[#006a4e] rounded-xl p-4 text-center">
-                <LucideIcon name="check_circle" className="text-[#006a4e] text-[40px] mb-2" />
-                <h4 className="font-bold text-[15px] text-[#166534]">
-                  {lang === 'MR' ? 'तक्रार / विचारणा नोंदवली गेली!' : 'Grievance Registered!'}
-                </h4>
-                <p className="text-[12px] text-[#404945] mt-1">
-                  {lang === 'MR'
-                    ? 'नोंदणी क्रमांक #EDU-3891 जारी केला आहे. ४८ तासांच्या आत कार्यवाही अहवाल प्राप्त होईल.'
-                    : 'Ticket #EDU-3891 logged. Action report will be delivered within 48 hours.'}
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleBookingSubmit} className="flex flex-col gap-3 text-[12px]">
-                <div>
-                  <label className="font-bold text-[#166534] block mb-1">
-                    {lang === 'MR' ? 'संबंधित शाळा किंवा संस्था' : 'Concern School / Institution'}
-                  </label>
-                  <select className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none bg-white">
-                    <option>{lang === 'MR' ? 'जि.प. हायस्कूल व कनिष्ठ महाविद्यालय, आसगाव' : 'ZP High School & Jr College, Asgaon'}</option>
-                    <option>{lang === 'MR' ? 'सरस्वती विद्या मंदिर प्राथमिक शाळा' : 'Saraswati Vidya Mandir Primary School'}</option>
-                    <option>{lang === 'MR' ? 'शासकीय आयटीआय पवनी' : 'Govt ITI Pauni'}</option>
-                    <option>{lang === 'MR' ? 'डॉ. आंबेडकर समाजकल्याण वसतिगृह' : 'Dr. Ambedkar Social Welfare Hostel'}</option>
-                    <option>{lang === 'MR' ? 'अंगणवाडी केंद्र १ किंवा २' : 'Anganwadi Center 1 or 2'}</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="font-bold text-[#166534] block mb-1">
-                    {lang === 'MR' ? 'मुद्द्याचा प्रकार' : 'Issue Category'}
-                  </label>
-                  <select className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none bg-white">
-                    <option>{lang === 'MR' ? 'शालेय पोषण आहार गुणवत्ता व स्वच्छता' : 'Mid-Day Meal Quality & Hygiene'}</option>
-                    <option>{lang === 'MR' ? 'RTE २५% मोफत प्रवेश सहाय्यता' : 'RTE 25% Admission Assistance'}</option>
-                    <option>{lang === 'MR' ? 'शिक्षक उपस्थिती / विषय पद रिक्तता' : 'Teacher Attendance / Subject Vacancy'}</option>
-                    <option>{lang === 'MR' ? 'पिण्याचे पाणी व स्वच्छतागृह सुविधा' : 'Drinking Water / Sanitation Facility'}</option>
-                    <option>{lang === 'MR' ? 'शिष्यवृत्ती वाटप विलंब विचारणा' : 'Scholarship Disbursement Delay'}</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="font-bold text-[#166534] block mb-1">
-                    {lang === 'MR' ? 'सविस्तर तपशील व निरीक्षण' : 'Details & Observations'}
-                  </label>
-                  <textarea
-                    rows={3}
-                    required
-                    placeholder={lang === 'MR' ? 'तक्रारीचा किंवा मुद्द्याचा सविस्तर तपशील लिहा...' : 'Provide detailed description of the matter...'}
-                    className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none resize-none"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-2.5 bg-[#c2410c] hover:bg-[#852f00] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
-                >
-                  {lang === 'MR' ? 'तक्रार / विचारणा सादर करा' : 'Submit Official Education Report'}
                 </button>
               </form>
             )}

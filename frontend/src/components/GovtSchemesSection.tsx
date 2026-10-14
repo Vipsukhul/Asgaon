@@ -49,32 +49,13 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
         {schemes.map((scheme) => (
           <div
             key={scheme.id}
-            className="bg-white rounded-2xl p-5 shadow-xs hover:shadow-md transition-all border border-[#efe7dc] hover:border-indigo-700 flex flex-col justify-between"
+            onClick={() => onSelectScheme && onSelectScheme(scheme.slug)}
+            className="group bg-white rounded-2xl p-5 shadow-xs hover:shadow-xl hover:shadow-indigo-900/10 border border-stone-200/80 hover:border-indigo-500 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer"
           >
             <div>
-              {/* Sponsoring Agency & Deadline */}
-              <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-indigo-100 text-indigo-950 border border-indigo-200">
-                  {scheme.sponsoringAgency}
-                </span>
-                <span className="text-[11px] font-extrabold text-amber-800">
-                  {scheme.deadlineText}
-                </span>
-              </div>
-
               {/* Title */}
-              <h3 className="font-heading font-extrabold text-[17px] text-stone-900 mb-2 hover:text-emerald-800 transition-colors">
-                {onSelectScheme ? (
-                  <button
-                    type="button"
-                    onClick={() => onSelectScheme(scheme.slug)}
-                    className="text-left hover:underline cursor-pointer"
-                  >
-                    {scheme.title}
-                  </button>
-                ) : (
-                  scheme.title
-                )}
+              <h3 className="font-heading font-extrabold text-[17px] text-stone-900 group-hover:text-indigo-900 mb-2 transition-colors">
+                {scheme.title}
               </h3>
 
               {/* Description */}
@@ -83,15 +64,15 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
               </p>
 
               {/* Documents Required Checklist */}
-              <div className="bg-[#faf6ee] p-3 rounded-xl border border-[#efe7dc] mb-4">
-                <div className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-900 mb-2 flex items-center gap-1">
-                  <LucideIcon name="task_alt" className="text-[16px] text-emerald-700" />
+              <div className="bg-[#faf6ee] p-3 rounded-xl border border-[#efe7dc] mb-4 shadow-2xs">
+                <div className="text-[11px] font-extrabold uppercase tracking-wider text-indigo-900 mb-2 flex items-center gap-1">
+                  <LucideIcon name="task_alt" className="text-[16px] text-indigo-700" />
                   <span>{lang === 'MR' ? 'आवश्यक कागदपत्रे' : 'Required Documents'}</span>
                 </div>
                 <ul className="space-y-1.5">
                   {scheme.documentsRequired.map((doc, idx) => (
                     <li key={idx} className="text-[12px] text-stone-800 flex items-center gap-1.5">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#c2410c] shrink-0"></span>
+                      <span className="h-1.5 w-1.5 rounded-full bg-indigo-600 shrink-0"></span>
                       <span>{doc}</span>
                     </li>
                   ))}
@@ -105,6 +86,7 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
                 href={scheme.officialUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
                 className="text-[12px] text-indigo-800 font-extrabold hover:underline flex items-center gap-0.5"
               >
                 <span>{scheme.actionLabel || (lang === 'MR' ? 'अधिकृत पोर्टलवर अर्ज करा' : 'Apply on Portal')}</span>
@@ -119,9 +101,12 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
                 )}
                 <button
                   type="button"
-                  onClick={() => onSaveScheme(scheme)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSaveScheme(scheme);
+                  }}
                   title={lang === 'MR' ? 'योजना जतन करा' : 'Bookmark this Scheme'}
-                  className="p-1 rounded-lg text-stone-500 hover:text-emerald-900 hover:bg-[#faf6ee] transition-colors cursor-pointer"
+                  className="p-1 rounded-lg text-stone-500 hover:text-indigo-900 hover:bg-[#faf6ee] transition-colors cursor-pointer"
                 >
                   <LucideIcon name="bookmark_border" className="text-[20px]" />
                 </button>

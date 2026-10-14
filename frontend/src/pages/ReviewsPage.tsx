@@ -1,5 +1,6 @@
 import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect, useMemo } from 'react';
+import { SlidersHorizontal, X, RotateCcw, Check } from 'lucide-react';
 import type { Business } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { SEOHead } from '../components/SEOHead';
@@ -124,6 +125,12 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
   const [selectedRatingFilter, setSelectedRatingFilter] = useState<number | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<'recent' | 'highest' | 'lowest'>('recent');
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
+  const activeFilterCount =
+    (selectedBusinessFilter !== 'all' ? 1 : 0) +
+    (selectedRatingFilter !== 'all' ? 1 : 0) +
+    (sortBy !== 'recent' ? 1 : 0);
 
   // Write Review Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -351,66 +358,244 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
 
       {/* Main Content Area */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-6">
-        {/* Search & Filter Bar */}
-        <div className="bg-white rounded-2xl border border-[#e8e2d9] p-4 shadow-xs mb-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-          {/* Search Input */}
-          <div className="relative flex-1">
-            <LucideIcon name="search" className=" absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={
-                isMr
-                  ? 'दुकान, ग्राहक नाव किंवा शब्दाने शोधा (उदा. खडके किराणा, खते)...'
-                  : 'Search by shop, customer name or keyword...'
-              }
-              className="w-full pl-9 pr-3 py-2 bg-[#f9f3ea]/60 rounded-xl text-xs sm:text-sm text-[#1d1b16] placeholder-[#707974] border border-[#e8e2d9] focus:border-[#006a4e] focus:bg-white outline-none"
-            />
+        {/* Search & Filter Bar - Flex Row */}
+        <div className="bg-white rounded-2xl border border-[#e8e2d9] p-3 sm:p-4 shadow-xs mb-6 flex flex-col gap-2.5">
+          <div className="flex items-center gap-2">
+            {/* Search Input in flex-1 */}
+            <div className="relative flex-1">
+              <LucideIcon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={
+                  isMr
+                    ? 'दुकान, ग्राहक नाव किंवा शब्दाने शोधा (उदा. खडके किराणा, खते)...'
+                    : 'Search by shop, customer name or keyword...'
+                }
+                className="w-full pl-9 pr-9 py-2.5 bg-[#f9f3ea] text-[#1d1b16] placeholder-[#707974] rounded-xl text-xs sm:text-sm border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-[#707974] hover:text-[#1d1b16] cursor-pointer"
+                  aria-label="Clear Search"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+
+            {/* Corporate Filter Icon Button */}
+            <button
+              type="button"
+              onClick={() => setIsFilterModalOpen(true)}
+              className={`relative shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer ${
+                activeFilterCount > 0
+                  ? 'bg-[#166534] text-white border-[#166534] ring-2 ring-[#166534]/20'
+                  : 'bg-[#f4efe8] text-[#1d1b16] border-[#e8e2d9] hover:bg-[#eae2d7]'
+              }`}
+              aria-label="Filter Reviews"
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              <span className="hidden sm:inline">{isMr ? 'फिल्टर' : 'Filter'}</span>
+              {activeFilterCount > 0 && (
+                <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-400 text-stone-900 text-[10px] sm:text-[11px] font-black flex items-center justify-center">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            {/* Business Dropdown Filter */}
-            <select
-              value={selectedBusinessFilter}
-              onChange={(e) => setSelectedBusinessFilter(e.target.value)}
-              className="p-2 rounded-xl bg-white border border-[#e8e2d9] text-xs font-bold text-[#166534] focus:outline-none focus:border-[#006a4e] cursor-pointer"
-            >
-              <option value="all">{isMr ? 'सर्व दुकाने' : 'All Businesses'}</option>
-              {businesses.map((b) => (
-                <option key={b.id} value={String(b.id)}>
-                  {b.name}
-                </option>
-              ))}
-            </select>
-
-            {/* Rating Filter */}
-            <select
-              value={String(selectedRatingFilter)}
-              onChange={(e) => {
-                const val = e.target.value;
-                setSelectedRatingFilter(val === 'all' ? 'all' : Number(val));
-              }}
-              className="p-2 rounded-xl bg-white border border-[#e8e2d9] text-xs font-bold text-[#166534] focus:outline-none focus:border-[#006a4e] cursor-pointer"
-            >
-              <option value="all">{isMr ? 'सर्व मानांकन' : 'All Stars'}</option>
-              <option value="5">⭐⭐⭐⭐⭐ (५ स्टार)</option>
-              <option value="4">⭐⭐⭐⭐ (४ स्टार)</option>
-              <option value="3">⭐⭐⭐ (३ स्टार)</option>
-            </select>
-
-            {/* Sort Dropdown */}
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="p-2 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9] text-xs font-bold text-[#55605a] focus:outline-none focus:border-[#006a4e] cursor-pointer"
-            >
-              <option value="recent">{isMr ? 'नवीनतम' : 'Most Recent'}</option>
-              <option value="highest">{isMr ? 'उच्च मानांकन' : 'Highest Rated'}</option>
-              <option value="lowest">{isMr ? 'कमी मानांकन' : 'Lowest Rated'}</option>
-            </select>
-          </div>
+          {/* Active Filter Micro-Chips */}
+          {activeFilterCount > 0 && (
+            <div className="pt-2 border-t border-[#f0eee8] flex items-center gap-1.5 flex-wrap text-xs">
+              <span className="text-[11px] font-medium text-[#707974]">
+                {isMr ? 'सक्रिय फिल्टर्स:' : 'Active:'}
+              </span>
+              {selectedBusinessFilter !== 'all' && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                  <span>{businesses.find(b => String(b.id) === String(selectedBusinessFilter))?.name || (isMr ? 'निवडलेले दुकान' : 'Selected Business')}</span>
+                  <button onClick={() => setSelectedBusinessFilter('all')} className="hover:opacity-70 ml-0.5 cursor-pointer" aria-label="Clear business filter">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              {selectedRatingFilter !== 'all' && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                  <span>{selectedRatingFilter} ⭐</span>
+                  <button onClick={() => setSelectedRatingFilter('all')} className="hover:opacity-70 ml-0.5 cursor-pointer" aria-label="Clear rating filter">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              {sortBy !== 'recent' && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#e8f1ec] text-[#14532d] font-bold text-[11px] border border-[#cadbcf]">
+                  <span>{sortBy === 'highest' ? (isMr ? 'उच्च मानांकन' : 'Highest Rated') : (isMr ? 'कमी मानांकन' : 'Lowest Rated')}</span>
+                  <button onClick={() => setSortBy('recent')} className="hover:opacity-70 ml-0.5 cursor-pointer" aria-label="Clear sort">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              <button
+                onClick={() => {
+                  setSelectedBusinessFilter('all');
+                  setSelectedRatingFilter('all');
+                  setSortBy('recent');
+                }}
+                className="text-[11px] font-bold text-[#c2410c] hover:underline ml-1 cursor-pointer"
+              >
+                {isMr ? 'सर्व काढा' : 'Clear all'}
+              </button>
+            </div>
+          )}
         </div>
+
+        {/* Filter Modal Dialog */}
+        {isFilterModalOpen && (
+          <div
+            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
+            onClick={() => setIsFilterModalOpen(false)}
+          >
+            <div
+              className="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border border-[#e8e2d9] flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="px-5 py-4 border-b border-[#e8e2d9] flex items-center justify-between bg-[#fdfbf7]">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-[#e8f1ec] text-[#166534] flex items-center justify-center">
+                    <SlidersHorizontal className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-[#1d1b16]">
+                      {isMr ? 'अभिप्राय फिल्टर्स' : 'Filter Reviews'}
+                    </h3>
+                    <p className="text-[11px] text-[#707974]">
+                      {isMr ? 'दुकान, मानांकन व क्रमानुसार निवडा' : 'Filter by business, rating and sort order'}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setIsFilterModalOpen(false)}
+                  className="w-8 h-8 rounded-full bg-[#f4efe8] hover:bg-[#eae2d7] text-[#707974] hover:text-[#1d1b16] flex items-center justify-center transition-all cursor-pointer"
+                  aria-label="Close"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="p-5 overflow-y-auto space-y-5">
+                {/* 1. Business Filter */}
+                <div>
+                  <label className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider block mb-2">
+                    {isMr ? 'स्थानिक दुकान / व्यवसाय' : 'Local Business'}
+                  </label>
+                  <select
+                    value={selectedBusinessFilter}
+                    onChange={(e) => setSelectedBusinessFilter(e.target.value)}
+                    className="w-full p-2.5 rounded-xl bg-[#fdfbf7] border border-[#e8e2d9] text-xs sm:text-sm font-bold text-[#166534] focus:outline-none focus:border-[#006a4e] cursor-pointer"
+                  >
+                    <option value="all">{isMr ? 'सर्व दुकाने (सर्व अभिप्राय)' : 'All Businesses (All Reviews)'}</option>
+                    {businesses.map((b) => (
+                      <option key={b.id} value={String(b.id)}>
+                        {b.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* 2. Rating Star Filter */}
+                <div>
+                  <label className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider block mb-2">
+                    {isMr ? 'स्टार मानांकन' : 'Star Rating'}
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {[
+                      { id: 'all', label: isMr ? 'सर्व' : 'All' },
+                      { id: 5, label: '5 ⭐' },
+                      { id: 4, label: '4 ⭐' },
+                      { id: 3, label: '3 ⭐' },
+                    ].map((r) => {
+                      const isSelected = selectedRatingFilter === r.id;
+                      return (
+                        <button
+                          key={String(r.id)}
+                          type="button"
+                          onClick={() => setSelectedRatingFilter(r.id as any)}
+                          className={`p-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                            isSelected
+                              ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                              : 'bg-white text-[#1d1b16] border-[#e8e2d9] hover:bg-[#f9f3ea]'
+                          }`}
+                        >
+                          {isSelected && <Check className="w-3.5 h-3.5 shrink-0" />}
+                          <span>{r.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 3. Sort By Filter */}
+                <div>
+                  <label className="text-xs font-bold text-[#1d1b16] uppercase tracking-wider block mb-2">
+                    {isMr ? 'क्रमवारी' : 'Sort By'}
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: 'recent', label: isMr ? 'नवीनतम' : 'Most Recent' },
+                      { id: 'highest', label: isMr ? 'उच्च मानांकन' : 'Highest Rated' },
+                      { id: 'lowest', label: isMr ? 'कमी मानांकन' : 'Lowest Rated' },
+                    ].map((s) => {
+                      const isSelected = sortBy === s.id;
+                      return (
+                        <button
+                          key={s.id}
+                          type="button"
+                          onClick={() => setSortBy(s.id as any)}
+                          className={`p-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                            isSelected
+                              ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
+                              : 'bg-white text-[#1d1b16] border-[#e8e2d9] hover:bg-[#f9f3ea]'
+                          }`}
+                        >
+                          {isSelected && <Check className="w-3.5 h-3.5 shrink-0" />}
+                          <span>{s.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="px-5 py-3.5 border-t border-[#e8e2d9] bg-[#fdfbf7] flex items-center justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedBusinessFilter('all');
+                    setSelectedRatingFilter('all');
+                    setSortBy('recent');
+                  }}
+                  className="flex items-center gap-1.5 text-xs font-bold text-[#707974] hover:text-[#ba1a1a] px-3 py-2 rounded-lg hover:bg-stone-100 transition-colors cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>{isMr ? 'रीसेट' : 'Reset'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsFilterModalOpen(false)}
+                  className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-[#166534] hover:bg-[#14532d] text-white font-bold text-xs sm:text-sm shadow-sm transition-all cursor-pointer"
+                >
+                  {isMr ? `निकाल पहा (${filteredReviews.length})` : `Show ${filteredReviews.length} Reviews`}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Reviews Listing */}
         <div className="space-y-4">
@@ -449,7 +634,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
               {filteredReviews.map((rev) => (
                 <div
                   key={rev.id}
-                  className="bg-white rounded-2xl p-5 border border-[#e8e2d9] hover:border-[#006a4e]/40 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                  className="bg-white card-hover-subtle rounded-2xl p-5 border border-[#e8e2d9] shadow-xs flex flex-col justify-between"
                 >
                   <div>
                     {/* Header: User & Rating */}
