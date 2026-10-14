@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useMemo, useState } from 'react';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { SEOHead } from '../components/SEOHead';
@@ -24,7 +25,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
   onSelectShiksha,
   onNavigateHome
 }) => {
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const [bookingDeskOpen, setBookingDeskOpen] = useState(false);
   const [deskName, setDeskName] = useState('');
   const [deskPhone, setDeskPhone] = useState('');
@@ -150,7 +151,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
       setBookingDeskOpen(false);
       setDeskName('');
       setDeskPhone('');
-      alert(`Study desk reserved successfully! Token #ASG-DESK-${Math.floor(100 + Math.random() * 900)} sent to ${deskPhone}.`);
+      alert(lang === 'MR' ? `अभ्यासिका डेस्क यशस्वीरीत्या आरक्षित झाला! पुष्टी क्रमांक #ASG-DESK-${Math.floor(100 + Math.random() * 900)} ${deskPhone} क्रमांकावर पाठवला आहे.` : `Study desk reserved successfully! Confirmation #ASG-DESK-${Math.floor(100 + Math.random() * 900)} sent to ${deskPhone}.`);
     }, 1200);
   };
 
@@ -170,8 +171,8 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <Breadcrumb
           items={[
-            { label: lang === 'MR' ? 'मुख्यपृष्ठ' : 'Home', onClick: onNavigateHome },
-            { label: lang === 'MR' ? 'शिक्षण व अभ्यासिका पोर्टल' : 'Shiksha & Education Portal', onClick: onNavigateBack },
+            { label: t('nav_home'), onClick: onNavigateHome },
+            { label: t('nav_education'), onClick: onNavigateBack },
             { label: title, active: true }
           ]}
         />
@@ -180,7 +181,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
           onClick={onNavigateBack}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[12px] font-bold transition-colors border border-[#e8e2d9]"
         >
-          <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+          <LucideIcon name="arrow_back" className="text-[16px]" />
           <span>{lang === 'MR' ? 'शिक्षण पोर्टलवर परत जा' : 'Back to Shiksha Portal'}</span>
         </button>
       </div>
@@ -192,7 +193,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
             <span className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#dbe1ff] text-[#002873]">
               {category}
             </span>
-            <span className="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#bbf7d0] text-[#002117]">
+            <span className="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]">
               {lang === 'MR' ? 'जि.प. व शासकीय मान्यताप्राप्त' : 'ZP & Govt Accredited'}
             </span>
           </div>
@@ -202,7 +203,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
               onClick={handleShareWhatsApp}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#25d366] hover:bg-[#20ba5a] text-white text-[12px] font-bold transition-colors shadow-xs"
             >
-              <span className="material-symbols-outlined text-[16px]">share</span>
+              <LucideIcon name="share" className="text-[16px]" />
               <span>{lang === 'MR' ? 'व्हॉट्सअ‍ॅप शेअर' : 'WhatsApp Share'}</span>
             </button>
           </div>
@@ -213,7 +214,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
         </h1>
 
         <div className="flex items-center gap-2 text-[14px] text-[#707974] mb-4">
-          <span className="material-symbols-outlined text-[18px] text-[#c2410c]">location_on</span>
+          <LucideIcon name="location_on" className="text-[18px] text-[#c2410c]" />
           <span>
             {type === 'school'
               ? (data as SchoolItem).address
@@ -341,8 +342,8 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
           {/* Overview & Description */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[18px] text-[#166534] mb-3 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#376757]">school</span>
-              <span>{lang === 'MR' ? 'शाळा व अभ्यासक्रम माहिती (Overview)' : 'Overview & Programs'}</span>
+              <LucideIcon name="school" className="text-[#376757]" />
+              <span>{lang === 'MR' ? 'शाळा व अभ्यासक्रम माहिती' : 'Overview & Programs'}</span>
             </h2>
             <p className="text-[14px] text-[#404945] leading-relaxed">
               {type === 'school'
@@ -363,7 +364,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[13px]">
                   {(data as SchoolItem).tags.map((tag, idx) => (
                     <div key={idx} className="flex items-center gap-2 bg-[#f9f3ea] p-2.5 rounded-xl border border-[#e8e2d9]">
-                      <span className="material-symbols-outlined text-[16px] text-[#376757]">check_circle</span>
+                      <LucideIcon name="check_circle" className="text-[16px] text-[#376757]" />
                       <span className="text-[#1d1b16] font-medium">{tag}</span>
                     </div>
                   ))}
@@ -378,28 +379,28 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[13px]">
                   <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[18px] text-[#002873]">wifi</span>
+                    <LucideIcon name="wifi" className="text-[18px] text-[#002873]" />
                     <div>
                       <div className="font-bold">{lang === 'MR' ? 'मोफत हाय-स्पीड वायफाय' : 'Free High-Speed WiFi'}</div>
                       <div className="text-[11px] text-[#707974]">{(data as AbhyasikaConfig).wifiSpeed} {lang === 'MR' ? 'ऑनलाइन लेक्चरसाठी' : 'for online lectures'}</div>
                     </div>
                   </div>
                   <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[18px] text-[#c2410c]">menu_book</span>
+                    <LucideIcon name="menu_book" className="text-[18px] text-[#c2410c]" />
                     <div>
                       <div className="font-bold">{lang === 'MR' ? 'संदर्भ ग्रंथालय' : 'Reference Library'}</div>
                       <div className="text-[11px] text-[#707974]">{(data as AbhyasikaConfig).bookCount} {lang === 'MR' ? 'MPSC/पोलीस भरती पुस्तके' : 'MPSC/UPSC/Police Bharti books'}</div>
                     </div>
                   </div>
                   <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[18px] text-[#376757]">power</span>
+                    <LucideIcon name="power" className="text-[18px] text-[#376757]" />
                     <div>
                       <div className="font-bold">{lang === 'MR' ? 'अखंड वीज पुरवठा व इन्व्हर्टर' : 'Inverter & Power Backup'}</div>
                       <div className="text-[11px] text-[#707974]">{lang === 'MR' ? 'प्रत्येक डेस्कला चार्जिंग सॉकेट' : '24x7 power with charging sockets'}</div>
                     </div>
                   </div>
                   <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[18px] text-[#166534]">water_drop</span>
+                    <LucideIcon name="water_drop" className="text-[18px] text-[#166534]" />
                     <div>
                       <div className="font-bold">{lang === 'MR' ? 'आरओ शुद्ध पेयजल' : 'RO Filtered Drinking Water'}</div>
                       <div className="text-[11px] text-[#707974]">{lang === 'MR' ? 'स्वच्छ पाणी व स्वच्छतागृह' : 'Clean hygienic water & washrooms'}</div>
@@ -413,7 +414,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
           {/* Admission & Enrolment Roadmap */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[18px] text-[#166534] mb-4 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#c2410c]">how_to_reg</span>
+              <LucideIcon name="how_to_reg" className="text-[#c2410c]" />
               <span>{lang === 'MR' ? 'प्रवेश व नावनोंदणी प्रक्रिया' : 'Admission & Registration Process'}</span>
             </h2>
 
@@ -428,7 +429,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   </h3>
                   <p className="text-[12px] text-[#404945] mt-0.5">
                     {lang === 'MR'
-                      ? 'मागील वर्षाचे गुणपत्रक (Marksheet), शाळा सोडल्याचा दाखला (TC/LC), आधार कार्ड, जातीचा दाखला व २ पासपोर्ट फोटो.'
+                      ? 'मागील वर्षाचे गुणपत्रक, शाळा सोडल्याचा दाखला, आधार कार्ड, जातीचा दाखला व २ पासपोर्ट फोटो.'
                       : 'Previous marksheet, School Leaving Certificate (TC/LC), Aadhaar Card, caste certificate, and 2 passport photos.'}
                   </p>
                 </div>
@@ -494,7 +495,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   </div>
                   <div className="mt-3 text-[11px] font-bold text-[#c2410c] flex items-center gap-1">
                     <span>{lang === 'MR' ? 'माहिती पहा' : 'View Campus'}</span>
-                    <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
+                    <LucideIcon name="arrow_forward" className="text-[13px]" />
                   </div>
                 </button>
               ))}
@@ -516,7 +517,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 </div>
                 <div className="mt-3 text-[11px] font-bold text-[#c2410c] flex items-center gap-1">
                   <span>{lang === 'MR' ? 'जागा आरक्षित करा' : 'Book Desk'}</span>
-                  <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
+                  <LucideIcon name="arrow_forward" className="text-[13px]" />
                 </div>
               </button>
             </div>
@@ -544,7 +545,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   onClick={() => setBookingDeskOpen(true)}
                   className="w-full py-3 px-4 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
                 >
-                  <span className="material-symbols-outlined text-[18px]">desk</span>
+                  <LucideIcon name="desk" className="text-[18px]" />
                   <span>{lang === 'MR' ? 'अभ्यासिका जागा आता बुक करा' : 'Book a Study Desk Now'}</span>
                 </button>
               </>
@@ -559,7 +560,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   href={`tel:${type === 'school' ? (data as SchoolItem).contactPhone : (data as TutorCenterItem).phone}`}
                   className="w-full py-3 px-4 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
                 >
-                  <span className="material-symbols-outlined text-[18px]">call</span>
+                  <LucideIcon name="call" className="text-[18px]" />
                   <span>
                     {lang === 'MR' ? 'कार्यालयाशी संपर्क:' : 'Call Office:'} +91 {type === 'school' ? (data as SchoolItem).contactPhone : (data as TutorCenterItem).phone}
                   </span>
@@ -571,7 +572,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
               onClick={handleShareWhatsApp}
               className="w-full py-2.5 px-4 rounded-xl bg-[#25d366] hover:bg-[#20ba5a] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors"
             >
-              <span className="material-symbols-outlined text-[18px]">share</span>
+              <LucideIcon name="share" className="text-[18px]" />
               <span>{lang === 'MR' ? 'व्हॉट्सअ‍ॅपवर शेअर करा' : 'Share on WhatsApp'}</span>
             </button>
           </div>
@@ -588,15 +589,15 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
 
             <div className="space-y-2 text-[12px] text-[#404945]">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[16px] text-[#166534]">schedule</span>
+                <LucideIcon name="schedule" className="text-[16px] text-[#166534]" />
                 <span><strong>{lang === 'MR' ? 'वेळ:' : 'Timing:'}</strong> {lang === 'MR' ? 'सकाळी ८:०० ते संध्याकाळी ५:३० (सोम-शनि)' : '8:00 AM - 5:30 PM (Mon-Sat)'}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[16px] text-[#166534]">person</span>
+                <LucideIcon name="person" className="text-[16px] text-[#166534]" />
                 <span><strong>{lang === 'MR' ? 'प्रमुख:' : 'In-Charge:'}</strong> {type === 'school' ? (data as SchoolItem).principalName : (lang === 'MR' ? 'स्थानिक शिक्षण कक्ष समन्वयक' : 'Civic Education Desk')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[16px] text-[#166534]">location_on</span>
+                <LucideIcon name="location_on" className="text-[16px] text-[#166534]" />
                 <span><strong>{lang === 'MR' ? 'पत्ता:' : 'Area:'}</strong> {lang === 'MR' ? 'गावठाण, वॉर्ड २, आसगाव (पिन ४४१९१०)' : 'Gaothan, Ward 2, Asgaon (PIN 441910)'}</span>
               </div>
             </div>
@@ -625,7 +626,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                 onClick={() => setBookingDeskOpen(false)}
                 className="w-8 h-8 rounded-full bg-[#f3ede4] flex items-center justify-center text-[#1d1b16]"
               >
-                <span className="material-symbols-outlined text-[18px]">close</span>
+                <LucideIcon name="close" className="text-[18px]" />
               </button>
             </div>
 
@@ -660,7 +661,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
 
               <div>
                 <label className="block font-bold text-[#1d1b16] mb-1">
-                  {lang === 'MR' ? 'अभ्यासिका वेळ (Slot)' : 'Preferred Time Slot'}
+                  {lang === 'MR' ? 'अभ्यासिका वेळ' : 'Preferred Time Slot'}
                 </label>
                 <select
                   value={deskSlot}

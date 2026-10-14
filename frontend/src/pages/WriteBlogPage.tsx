@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect } from 'react';
 import type { BlogPost } from '../data/blogData';
 import { SEOHead } from '../components/SEOHead';
@@ -20,12 +21,12 @@ interface WriteBlogPageProps {
 }
 
 const PRESET_COVERS = [
-  { labelMr: 'शेती व कृषी (Farming)', labelEn: 'Farming & Agriculture', url: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'शासकीय योजना (Schemes)', labelEn: 'Govt Schemes & Subsidies', url: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'गाव व ग्रामपंचायत (Village)', labelEn: 'Village Life & Panchayat', url: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'शिक्षण व शाळा (Education)', labelEn: 'Education & Youth', url: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'वाहतूक व बस (Transport)', labelEn: 'Transport & Travel', url: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'आरोग्य व पोषण (Health)', labelEn: 'Health & Nutrition', url: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1200&q=80' }
+  { labelMr: 'शेती व कृषी', labelEn: 'Farming & Agriculture', url: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80' },
+  { labelMr: 'शासकीय योजना', labelEn: 'Govt Schemes & Subsidies', url: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80' },
+  { labelMr: 'गाव व ग्रामपंचायत', labelEn: 'Village Life & Panchayat', url: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80' },
+  { labelMr: 'शिक्षण व शाळा', labelEn: 'Education & Youth', url: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80' },
+  { labelMr: 'वाहतूक व बस', labelEn: 'Transport & Travel', url: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1200&q=80' },
+  { labelMr: 'आरोग्य व पोषण', labelEn: 'Health & Nutrition', url: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1200&q=80' }
 ];
 
 export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
@@ -199,7 +200,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
   return (
     <div className="w-full flex flex-col gap-6 font-sans">
       <SEOHead
-        title={isMr ? "नवीन लेख लिहा (Write Blog) | Asgaon Knowledge Studio" : "Write Village Article | Asgaon Knowledge Studio"}
+        title={isMr ? "नवीन लेख लिहा | Asgaon Knowledge Studio" : "Write Village Article | Asgaon Knowledge Studio"}
         description={
           isMr
             ? "आसगाव ग्रामस्थांसाठी स्वतःचा शेती अनुभव, शासकीय योजना मार्गदर्शन किंवा माहिती लेख प्रसिद्ध करण्याचे व्यासपीठ."
@@ -222,9 +223,9 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <Breadcrumb
           items={[
-            { label: t('nav_home') || (isMr ? 'मुख्य पृष्ठ' : 'Home'), onClick: onNavigateHome },
-            { label: isMr ? 'माहिती व ज्ञान केंद्र (ब्लॉग्स)' : 'Village Knowledge Hub & Blogs', onClick: onNavigateBack },
-            { label: isMr ? 'नवीन लेख लिहा (Write Article)' : 'Write Article', active: true }
+            { label: t('nav_home'), onClick: onNavigateHome },
+            { label: t('nav_blogs'), onClick: onNavigateBack },
+            { label: isMr ? 'नवीन लेख लिहा' : 'Write Article', active: true }
           ]}
         />
 
@@ -232,8 +233,8 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
           onClick={onNavigateBack}
           className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white border border-[#e8e2d9] text-[#166534] font-bold text-xs hover:bg-[#f9f3ea] shadow-2xs transition-all shrink-0 self-end sm:self-auto"
         >
-          <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-          <span>{isMr ? 'मागे जा (Back)' : 'Back'}</span>
+          <LucideIcon name="arrow_back" className="text-[16px]" />
+          <span>{isMr ? 'मागे जा' : 'Back'}</span>
         </button>
       </div>
 
@@ -241,7 +242,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
       <div className="bg-white rounded-3xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#bbf7d0] text-[10px] font-black uppercase">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#a7f3d0] text-[10px] font-black uppercase">
               Blog Studio
             </span>
             <span className="text-xs text-[#707974] font-medium">Asgaon Citizen Publishing</span>
@@ -262,22 +263,22 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
             type="button"
             onClick={() => setActiveTab('editor')}
             className={`flex-1 md:flex-initial px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${activeTab === 'editor'
-                ? 'bg-[#166534] text-[#bbf7d0] shadow-xs'
+                ? 'bg-[#166534] text-[#a7f3d0] shadow-xs'
                 : 'text-[#555] hover:text-[#166534]'
               }`}
           >
-            <span className="material-symbols-outlined text-[16px]">edit</span>
-            <span>{isMr ? 'लेखन (Editor)' : 'Editor'}</span>
+            <LucideIcon name="edit" className="text-[16px]" />
+            <span>{isMr ? 'लेखन' : 'Editor'}</span>
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('preview')}
             className={`flex-1 md:flex-initial px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${activeTab === 'preview'
-                ? 'bg-[#166534] text-[#bbf7d0] shadow-xs'
+                ? 'bg-[#166534] text-[#a7f3d0] shadow-xs'
                 : 'text-[#555] hover:text-[#166534]'
               }`}
           >
-            <span className="material-symbols-outlined text-[16px]">visibility</span>
+            <LucideIcon name="visibility" className="text-[16px]" />
             <span>{isMr ? 'थेट प्रिव्ह्यू' : 'Live Preview'}</span>
           </button>
         </div>
@@ -290,13 +291,13 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
           {currentUser?.isLoggedIn ? (
             <div className="p-3.5 bg-[#e6f7f0] rounded-2xl border border-[#b8ebd5] flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#166534] text-[#bbf7d0] flex items-center justify-center font-bold text-sm shadow-2xs">
+                <div className="w-10 h-10 rounded-xl bg-[#166534] text-[#a7f3d0] flex items-center justify-center font-bold text-sm shadow-2xs">
                   {currentUser.fullName.charAt(0)}
                 </div>
                 <div>
                   <div className="text-xs font-bold text-[#166534] flex items-center gap-1.5">
                     <span>{currentUser.fullName}</span>
-                    <span className="material-symbols-outlined text-[16px] text-[#006a4e]">verified</span>
+                    <LucideIcon name="verified" className="text-[16px] text-[#006a4e]" />
                   </div>
                   <div className="text-[11px] text-[#006a4e]">
                     {isMr
@@ -305,14 +306,14 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
                   </div>
                 </div>
               </div>
-              <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#bbf7d0] text-[#002117] hidden sm:inline">
+              <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] hidden sm:inline">
                 {isMr ? 'सत्यापित लेखक' : 'Verified Author'}
               </span>
             </div>
           ) : (
             <div className="p-4 bg-[#fef9ee] rounded-2xl border border-[#ffeed4] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-[#c2410c]">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[20px]">info</span>
+                <LucideIcon name="info" className="text-[20px]" />
                 <span>
                   {isMr
                     ? 'तुम्ही सध्या अतिथी म्हणून लेख तयार करत आहात. अधिकृत ओळखीसाठी कृपया लॉगिन करा.'
@@ -323,7 +324,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
                 <button
                   type="button"
                   onClick={onRequireLogin}
-                  className="px-3.5 py-1.5 rounded-xl bg-[#166534] text-[#bbf7d0] font-bold text-xs shrink-0"
+                  className="px-3.5 py-1.5 rounded-xl bg-[#166534] text-[#a7f3d0] font-bold text-xs shrink-0"
                 >
                   {isMr ? 'लॉगिन करा' : 'Sign In'}
                 </button>
@@ -334,7 +335,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
           {/* Marathi Title */}
           <div>
             <label className="block font-bold text-[#166534] text-sm mb-1.5">
-              {isMr ? 'लेखाचे मराठी शीर्षक (Marathi Title) *' : 'Marathi Title (लेखाचे शीर्षक) *'}
+              {isMr ? 'लेखाचे मराठी शीर्षक *' : 'Marathi Title (लेखाचे शीर्षक) *'}
             </label>
             <input
               type="text"
@@ -350,7 +351,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block font-bold text-[#2d312e] text-xs mb-1.5">
-                {isMr ? 'इंग्रजी शीर्षक / शोध कीवर्ड्स (English Title / Search Keywords)' : 'English Title / Search Keywords'}
+                {isMr ? 'इंग्रजी शीर्षक / कीवर्ड्स' : 'English Title / Search Keywords'}
               </label>
               <input
                 type="text"
@@ -362,19 +363,19 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
             </div>
             <div>
               <label className="block font-bold text-[#2d312e] text-xs mb-1.5">
-                {isMr ? 'विभाग (Category) *' : 'Category *'}
+                {isMr ? 'विभाग *' : 'Category *'}
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as any)}
                 className="w-full p-3 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none font-bold text-xs bg-white"
               >
-                <option value="General">{isMr ? 'सामान्य / इतर (General)' : 'General / Other'}</option>
-                <option value="Agriculture">{isMr ? 'कृषी व शेती (Agriculture)' : 'Agriculture & Farming'}</option>
-                <option value="Schemes">{isMr ? 'शासकीय योजना (Govt Schemes)' : 'Government Schemes'}</option>
-                <option value="Governance">{isMr ? 'प्रशासन व गाव सेवा (Governance)' : 'Governance & Civic Services'}</option>
-                <option value="Education">{isMr ? 'शिक्षण व युवक (Education)' : 'Education & Youth'}</option>
-                <option value="Health">{isMr ? 'आरोग्य व पोषण (Health)' : 'Health & Nutrition'}</option>
+                <option value="General">{isMr ? 'सामान्य / इतर' : 'General / Other'}</option>
+                <option value="Agriculture">{isMr ? 'कृषी व शेती' : 'Agriculture & Farming'}</option>
+                <option value="Schemes">{isMr ? 'शासकीय योजना' : 'Government Schemes'}</option>
+                <option value="Governance">{isMr ? 'प्रशासन व गाव सेवा' : 'Governance & Civic Services'}</option>
+                <option value="Education">{isMr ? 'शिक्षण व युवक' : 'Education & Youth'}</option>
+                <option value="Health">{isMr ? 'आरोग्य व पोषण' : 'Health & Nutrition'}</option>
               </select>
             </div>
           </div>
@@ -384,7 +385,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block font-bold text-[#2d312e] text-xs mb-1.5">
-                  {isMr ? 'लेखकाचे नाव (Author Name) *' : 'Author Name *'}
+                  {isMr ? 'लेखकाचे नाव *' : 'Author Name *'}
                 </label>
                 <input
                   type="text"
@@ -397,7 +398,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
               </div>
               <div>
                 <label className="block font-bold text-[#2d312e] text-xs mb-1.5">
-                  {isMr ? 'हुद्दा किंवा प्रभाग (Role / Ward)' : 'Role / Ward in Asgaon'}
+                  {isMr ? 'हुद्दा किंवा प्रभाग' : 'Role / Ward in Asgaon'}
                 </label>
                 <input
                   type="text"
@@ -413,7 +414,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
           {/* Cover Photo Selection */}
           <div>
             <label className="block font-bold text-[#2d312e] text-xs mb-2">
-              {isMr ? 'कव्हर फोटो निवडा (Cover Photo)' : 'Select Cover Photo'}
+              {isMr ? 'कव्हर फोटो निवडा' : 'Select Cover Photo'}
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5 mb-2.5">
               {PRESET_COVERS.map((preset, idx) => (
@@ -449,8 +450,8 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
           <div>
             <label className="block font-bold text-[#2d312e] text-xs mb-1.5">
               {isMr
-                ? 'थोडक्यात सारांश (Short Excerpt - Meta Description साठी वापरला जाईल) *'
-                : 'Short Excerpt (Used for search & card previews) *'}
+                ? 'थोडक्यात सारांश *'
+                : 'Short Excerpt *'}
             </label>
             <textarea
               rows={2}
@@ -466,7 +467,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
           <div>
             <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
               <label className="font-bold text-[#2d312e] text-xs">
-                {isMr ? 'सविस्तर मजकूर (Full Article Content) *' : 'Full Article Content (Markdown) *'}
+                {isMr ? 'सविस्तर मजकूर *' : 'Full Article Content *'}
               </label>
 
               {/* Formatting Toolbar */}
@@ -475,7 +476,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
                   type="button"
                   onClick={() => handleInsertSyntax('### ')}
                   className="px-2 py-0.5 rounded text-[11px] font-bold bg-white hover:bg-stone-100 text-[#166534] border border-[#e8e2d9]"
-                  title={isMr ? 'मथळा (Heading)' : 'Heading'}
+                  title={isMr ? 'मथळा' : 'Heading'}
                 >
                   {isMr ? 'H3 मथळा' : 'H3 Heading'}
                 </button>
@@ -483,7 +484,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
                   type="button"
                   onClick={() => handleInsertSyntax('**', '**')}
                   className="px-2 py-0.5 rounded text-[11px] font-bold bg-white hover:bg-stone-100 text-[#166534] border border-[#e8e2d9]"
-                  title={isMr ? 'ठळक (Bold)' : 'Bold'}
+                  title={isMr ? 'ठळक' : 'Bold'}
                 >
                   <strong>B</strong> {isMr ? 'ठळक' : 'Bold'}
                 </button>
@@ -491,7 +492,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
                   type="button"
                   onClick={() => handleInsertSyntax('- ')}
                   className="px-2 py-0.5 rounded text-[11px] font-bold bg-white hover:bg-stone-100 text-[#166534] border border-[#e8e2d9]"
-                  title={isMr ? 'मुद्दे / यादी (Bullet List)' : 'Bullet List'}
+                  title={isMr ? 'मुद्दे / यादी' : 'Bullet List'}
                 >
                   • {isMr ? 'यादी' : 'Bullet'}
                 </button>
@@ -499,7 +500,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
                   type="button"
                   onClick={() => handleInsertSyntax('1. ')}
                   className="px-2 py-0.5 rounded text-[11px] font-bold bg-white hover:bg-stone-100 text-[#166534] border border-[#e8e2d9]"
-                  title={isMr ? 'क्रमांक (Numbered List)' : 'Numbered List'}
+                  title={isMr ? 'क्रमांक' : 'Numbered List'}
                 >
                   1. {isMr ? 'क्रमांक' : 'Number'}
                 </button>
@@ -507,7 +508,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
                   type="button"
                   onClick={() => handleInsertSyntax('> ')}
                   className="px-2 py-0.5 rounded text-[11px] font-bold bg-white hover:bg-stone-100 text-[#c2410c] border border-[#e8e2d9]"
-                  title={isMr ? 'सूचना बॉक्स (Quote Box)' : 'Quote Box'}
+                  title={isMr ? 'सूचना बॉक्स' : 'Quote Box'}
                 >
                   " {isMr ? 'सूचना' : 'Quote'}
                 </button>
@@ -515,7 +516,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
                   type="button"
                   onClick={() => handleInsertSyntax('`', '`')}
                   className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-white hover:bg-stone-100 text-[#166534] border border-[#e8e2d9]"
-                  title={isMr ? 'कोड (Code)' : 'Code'}
+                  title={isMr ? 'कोड' : 'Code'}
                 >
                   `{isMr ? 'कोड' : 'code'}`
                 </button>
@@ -540,7 +541,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
           {/* Tags */}
           <div>
             <label className="block font-bold text-[#2d312e] text-xs mb-1.5">
-              {isMr ? 'टॅग्ज / कीवर्ड्स (Tags - स्वल्पविरामाने वेगळे करा)' : 'Tags / Keywords (Comma-separated)'}
+              {isMr ? 'टॅग्ज / कीवर्ड्स (स्वल्पविरामाने वेगळे करा)' : 'Tags / Keywords (Comma-separated)'}
             </label>
             <input
               type="text"
@@ -558,8 +559,8 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
               onClick={() => setActiveTab('preview')}
               className="px-4 py-2.5 rounded-xl bg-[#f4efe8] hover:bg-[#eae2d7] text-[#166534] text-xs font-bold transition-all flex items-center gap-1.5"
             >
-              <span className="material-symbols-outlined text-[16px]">visibility</span>
-              <span>{isMr ? 'प्रिव्ह्यू पहा (Preview)' : 'Preview'}</span>
+              <LucideIcon name="visibility" className="text-[16px]" />
+              <span>{isMr ? 'प्रिव्ह्यू पहा' : 'Preview'}</span>
             </button>
 
             <div className="flex items-center gap-3">
@@ -568,14 +569,14 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
                 onClick={onNavigateBack}
                 className="px-4 py-2.5 rounded-xl border border-[#e8e2d9] text-[#707974] hover:bg-stone-50 text-xs font-bold transition-colors"
               >
-                {isMr ? 'रद्द करा (Cancel)' : 'Cancel'}
+                {isMr ? 'रद्द करा' : 'Cancel'}
               </button>
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-[#bbf7d0] text-xs sm:text-sm font-bold transition-all shadow-md flex items-center gap-2"
+                className="px-6 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-[#a7f3d0] text-xs sm:text-sm font-bold transition-all shadow-md flex items-center gap-2"
               >
-                <span className="material-symbols-outlined text-[18px]">publish</span>
-                <span>{isMr ? 'लेख प्रसिद्ध करा (Publish Article)' : 'Publish Article'}</span>
+                <LucideIcon name="publish" className="text-[18px]" />
+                <span>{isMr ? 'लेख प्रसिद्ध करा' : 'Publish Article'}</span>
               </button>
             </div>
           </div>
@@ -587,7 +588,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
         <div className="space-y-6">
           <div className="p-4 bg-[#e6f7f0] border border-[#b8ebd5] rounded-2xl flex items-center justify-between text-xs text-[#006a4e] font-medium">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px]">visibility</span>
+              <LucideIcon name="visibility" className="text-[18px]" />
               <span>
                 {isMr
                   ? 'हा तुमच्या लेखाचा थेट प्रिव्ह्यू आहे. लेख प्रसिद्ध झाल्यानंतर तो वाचकांना असा दिसेल.'
@@ -596,7 +597,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
             </div>
             <button
               onClick={() => setActiveTab('editor')}
-              className="px-3 py-1 rounded-lg bg-[#166534] text-[#bbf7d0] font-bold text-xs"
+              className="px-3 py-1 rounded-lg bg-[#166534] text-[#a7f3d0] font-bold text-xs"
             >
               {isMr ? 'संपादनात परत जा' : 'Back to Editor'}
             </button>
@@ -605,7 +606,7 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
           {/* Article Header Preview */}
           <header className="bg-white rounded-3xl p-6 sm:p-8 border border-[#e8e2d9] shadow-xs space-y-4">
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="px-2.5 py-1 rounded-md bg-[#166534] text-[#bbf7d0] text-[11px] font-bold uppercase">
+              <span className="px-2.5 py-1 rounded-md bg-[#166534] text-[#a7f3d0] text-[11px] font-bold uppercase">
                 {category}
               </span>
               <span className="text-[#707974]">
@@ -629,13 +630,13 @@ export const WriteBlogPage: React.FC<WriteBlogPageProps> = ({
 
             {/* Author */}
             <div className="flex items-center gap-3 p-3 bg-[#fcfaf7] rounded-xl border border-[#e8e2d9]">
-              <div className="w-10 h-10 rounded-xl bg-[#166534] text-[#bbf7d0] flex items-center justify-center font-bold text-sm">
+              <div className="w-10 h-10 rounded-xl bg-[#166534] text-[#a7f3d0] flex items-center justify-center font-bold text-sm">
                 {(authorName || 'अ').charAt(0)}
               </div>
               <div>
                 <div className="text-xs font-bold text-[#1d1b16] flex items-center gap-1">
                   <span>{authorName || (isMr ? 'आसगाव ग्रामस्थ' : 'Asgaon Citizen')}</span>
-                  <span className="material-symbols-outlined text-[15px] text-[#006a4e]">verified</span>
+                  <LucideIcon name="verified" className="text-[15px] text-[#006a4e]" />
                 </div>
                 <div className="text-[11px] text-[#707974]">
                   {authorRole || (isMr ? 'स्थानिक नागरिक' : 'Local Resident')}

@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { Breadcrumb } from '../components/Breadcrumb';
@@ -8,7 +9,7 @@ interface MarketplacePageProps {
 }
 
 export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome }) => {
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<'all' | 'harvest' | 'livestock' | 'machinery' | 'household'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [verifiedOnly, setVerifiedOnly] = useState(false);
@@ -217,7 +218,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
       {/* 1. TOP WEEKLY HAAT BANNER */}
       <div className="bg-[#c2410c] text-white px-4 py-2.5 rounded-xl shadow-xs flex flex-col md:flex-row items-center justify-between gap-3 text-[12px] font-medium">
         <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-[18px] text-[#fef3c7]">campaign</span>
+          <LucideIcon name="campaign" className="text-[18px] text-[#fef3c7]" />
           <span>
             <strong className="font-bold">{lang === 'MR' ? 'साप्ताहिक आठवडी बाजार सूचना:' : 'Weekly Haat Reminder:'}</strong> {lang === 'MR' ? 'आसगाव शुक्रवार आठवडी बाजार जुना बस स्टँड मैदानावर सकाळी ०८:०० वाजता सुरू होतो • स्थानिक शेतकऱ्यांसाठी मोफत जागा' : 'Asgaon Weekly Bazaar opens this Friday at 08:00 AM at Old Bus Stand Ground • Zero stall fee for local registered farmers'}
           </span>
@@ -227,18 +228,18 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
           className="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-md text-[11px] font-bold transition-all shrink-0 flex items-center gap-1 border border-white/30"
         >
           <span>{lang === 'MR' ? 'बाजार नकाशा पहा' : 'View Haat Map'}</span>
-          <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+          <LucideIcon name="arrow_forward" className="text-[14px]" />
         </button>
       </div>
 
       {/* 2. BREADCRUMB & PLATFORM BADGE */}
       <Breadcrumb
         items={[
-          { label: lang === 'MR' ? 'मुख्यपृष्ठ' : 'Home', onClick: onNavigateHome },
-          { label: lang === 'MR' ? 'स्थानिक बाजारपेठ' : 'Local Marketplace', active: true }
+          { label: t('nav_home'), onClick: onNavigateHome },
+          { label: t('nav_marketplace'), active: true }
         ]}
         rightBadge={
-          <div className="text-[11px] font-semibold text-[#006a4e] bg-[#bbf7d0]/40 px-2.5 py-0.5 rounded-full border border-[#bbf7d0]">
+          <div className="text-[11px] font-semibold text-[#14532d] bg-[#e8f1ec] px-3 py-1 rounded-full border border-[#cadbcf]">
             {lang === 'MR' ? '९८.३% थेट शेतकरी व विक्रेते • शून्य दलाली' : '98.3% Direct Sellers • 100% Zero-Middlemen'}
           </div>
         }
@@ -265,7 +266,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             onClick={() => setShowPostModal(true)}
             className="px-5 py-3 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center gap-2 shadow-md hover:shadow-lg transition-all"
           >
-            <span className="material-symbols-outlined text-[18px]">add_circle</span>
+            <LucideIcon name="add_circle" className="text-[18px]" />
             <span>{lang === 'MR' ? '+ मोफत शेतमाल/वस्तू नोंदवा' : '+ Post a Free Village Listing'}</span>
           </button>
           <span className="text-[10px] text-[#55605a]">
@@ -279,7 +280,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
         {/* Search row */}
         <div className="bg-white p-2 sm:p-3 rounded-xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
           <div className="relative flex-1">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]">search</span>
+            <LucideIcon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
             <input
               type="text"
               value={searchQuery}
@@ -292,14 +293,14 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             <button
               onClick={() => { setVerifiedOnly(!verifiedOnly); setCurrentPage(1); }}
               className={`px-3 py-2 rounded-lg text-[12px] font-medium border flex items-center gap-1.5 transition-all ${
-                verifiedOnly ? 'bg-[#bbf7d0] text-[#002117] border-[#006a4e]' : 'bg-white text-[#404945] border-[#e8e2d9]'
+                verifiedOnly ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] border-[#006a4e]' : 'bg-white text-[#404945] border-[#e8e2d9]'
               }`}
             >
-              <span className="material-symbols-outlined text-[16px]">verified</span>
+              <LucideIcon name="verified" className="text-[16px]" />
               <span>{lang === 'MR' ? 'प्रमाणित विक्रेते' : 'Verified Sellers'}</span>
             </button>
             <div className="text-[12px] text-[#55605a] hidden sm:flex items-center gap-1 px-2">
-              <span className="material-symbols-outlined text-[16px]">sort</span>
+              <LucideIcon name="sort" className="text-[16px]" />
               <span>{lang === 'MR' ? 'क्रम: नवीन नोंदी प्रथम' : 'Sort: Newest First'}</span>
             </div>
             <div className="text-[11px] font-bold text-[#006a4e] bg-[#f3ede4] px-2.5 py-1.5 rounded-lg border border-[#e8e2d9]">
@@ -328,7 +329,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            <span className="material-symbols-outlined text-[16px] text-[#c2410c]">eco</span>
+            <LucideIcon name="eco" className="text-[16px] text-[#c2410c]" />
             <span>{lang === 'MR' ? `थेट शेतमाल (${harvestCount})` : `Direct Farm Harvest (${harvestCount})`}</span>
           </button>
           <button
@@ -339,7 +340,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            <span className="material-symbols-outlined text-[16px] text-[#006a4e]">cruelty_free</span>
+            <LucideIcon name="cruelty_free" className="text-[16px] text-[#006a4e]" />
             <span>{lang === 'MR' ? `पशुधन व जनावरे (${livestockCount})` : `Cattle & Livestock (${livestockCount})`}</span>
           </button>
           <button
@@ -350,7 +351,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            <span className="material-symbols-outlined text-[16px] text-[#006a4e]">agriculture</span>
+            <LucideIcon name="agriculture" className="text-[16px] text-[#006a4e]" />
             <span>{lang === 'MR' ? `ट्रॅक्टर व शेती अवजारे (${machineryCount})` : `Tractors & Implements (${machineryCount})`}</span>
           </button>
           <button
@@ -361,7 +362,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            <span className="material-symbols-outlined text-[16px] text-[#707974]">handyman</span>
+            <LucideIcon name="handyman" className="text-[16px] text-[#707974]" />
             <span>{lang === 'MR' ? `घरगुती वस्तू व साधने (${householdCount})` : `Household & Small Goods (${householdCount})`}</span>
           </button>
         </div>
@@ -382,7 +383,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
           {totalVisible === 0 && (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-              <span className="material-symbols-outlined text-[48px] text-[#c2410c]">storefront</span>
+              <LucideIcon name="storefront" className="text-[48px] text-[#c2410c]" />
               <h3 className="font-heading font-bold text-[18px] text-[#166534]">
                 {lang === 'MR' ? 'कोणतीही नोंद सापडली नाही' : 'No matching marketplace listings'}
               </h3>
@@ -418,7 +419,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                   className="text-[12px] font-bold text-[#006a4e] hover:underline flex items-center gap-1 self-start sm:self-auto"
                 >
                   <span>{lang === 'MR' ? `सर्व शेतमाल पहा (${allHarvest.length})` : `View ${allHarvest.length} Lots`}</span>
-                  <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                  <LucideIcon name="arrow_forward" className="text-[14px]" />
                 </button>
               </div>
 
@@ -459,7 +460,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         </p>
 
                         <div className="flex items-center gap-2 p-2 bg-[#f3ede4]/40 rounded-lg text-[11px]">
-                          <span className="material-symbols-outlined text-[16px] text-[#006a4e]">account_circle</span>
+                          <LucideIcon name="account_circle" className="text-[16px] text-[#006a4e]" />
                           <div className="truncate">
                             <strong className="text-[#166534] block truncate">{item.seller}</strong>
                             <span className="text-[#707974] text-[10px] block truncate">{item.sellerRole}</span>
@@ -473,16 +474,16 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         href={`tel:${item.phone}`}
                         className="py-2 px-3 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
-                        <span className="material-symbols-outlined text-[14px]">call</span>
+                        <LucideIcon name="call" className="text-[14px]" />
                         <span>{lang === 'MR' ? 'कॉल करा' : 'Call Seller'}</span>
                       </a>
                       <a
                         href={`https://wa.me/91${item.phone}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="py-2 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#bbf7d0]/20 text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+                        className="py-2 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#e8f1ec]/60 text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
-                        <span className="material-symbols-outlined text-[14px]">chat</span>
+                        <LucideIcon name="chat" className="text-[14px]" />
                         <span>{lang === 'MR' ? 'व्हॉट्सअ‍ॅप' : 'WhatsApp'}</span>
                       </a>
                     </div>
@@ -507,7 +508,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                     {lang === 'MR' ? 'गाय, म्हैस, बैल आणि शेळी खरेदी-विक्री' : 'Cows, bulls, buffaloes, and backyard livestock'}
                   </p>
                 </div>
-                <span className="text-[11px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-3 py-1 rounded-full border border-[#bbf7d0] self-start sm:self-auto">
+                <span className="text-[11px] font-bold text-[#006a4e] bg-[#e8f1ec] px-3 py-1 rounded-full border border-[#cadbcf] self-start sm:self-auto">
                   {allLivestock.length} {lang === 'MR' ? 'पशुधन नोंदी' : 'Live Cattle Records'}
                 </span>
               </div>
@@ -556,7 +557,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         href={`tel:${item.phone}`}
                         className="w-full py-2 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
-                        <span className="material-symbols-outlined text-[14px]">call</span>
+                        <LucideIcon name="call" className="text-[14px]" />
                         <span>{lang === 'MR' ? 'मालकाशी संपर्क' : 'Contact Owner'}</span>
                       </a>
                     </div>
@@ -603,7 +604,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         <ul className="text-[11px] text-[#404945] flex flex-col gap-1 mb-3">
                           {item.specs.map((spec, idx) => (
                             <li key={idx} className="flex items-start gap-1">
-                              <span className="material-symbols-outlined text-[13px] text-[#006a4e] mt-0.5">check_circle</span>
+                              <LucideIcon name="check_circle" className="text-[13px] text-[#006a4e] mt-0.5" />
                               <span>{spec}</span>
                             </li>
                           ))}
@@ -619,7 +620,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         href={`tel:${item.phone}`}
                         className="w-full py-2 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
-                        <span className="material-symbols-outlined text-[14px]">call</span>
+                        <LucideIcon name="call" className="text-[14px]" />
                         <span>{lang === 'MR' ? 'मालकाशी बोला' : 'Connect Seller'}</span>
                       </a>
                     </div>
@@ -679,16 +680,16 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                         href={`tel:${item.phone}`}
                         className="py-2 px-3 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
-                        <span className="material-symbols-outlined text-[14px]">call</span>
+                        <LucideIcon name="call" className="text-[14px]" />
                         <span>{lang === 'MR' ? 'कॉल करा' : 'Call Owner'}</span>
                       </a>
                       <a
                         href={`https://wa.me/91${item.phone}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="py-2 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#bbf7d0]/20 text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+                        className="py-2 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#e8f1ec]/60 text-[12px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
                       >
-                        <span className="material-symbols-outlined text-[14px]">chat</span>
+                        <LucideIcon name="chat" className="text-[14px]" />
                         <span>{lang === 'MR' ? 'चॅट' : 'Chat'}</span>
                       </a>
                     </div>
@@ -749,7 +750,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
           {/* WIDGET 1: MARKETPLACE SAFE GUIDELINES */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs flex flex-col gap-4">
             <div className="flex items-center gap-2.5 border-b border-[#f3ede4] pb-3">
-              <span className="material-symbols-outlined text-[#006a4e] text-[22px]">verified_user</span>
+              <LucideIcon name="verified_user" className="text-[#006a4e] text-[22px]" />
               <div>
                 <h3 className="font-heading font-bold text-[14px] text-[#166534]">
                   {lang === 'MR' ? 'बाजारातील सुरक्षित खरेदी-विक्री नियम' : 'Marketplace Safe Guidelines'}
@@ -762,7 +763,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
             <div className="flex flex-col gap-3">
               <div className="bg-[#fef9ee] p-3 rounded-xl border border-[#fde68a] flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-[#c2410c] text-[18px] shrink-0 mt-0.5">wb_sunny</span>
+                <LucideIcon name="wb_sunny" className="text-[#c2410c] text-[18px] shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-bold text-[12px] text-[#c2410c]">
                     {lang === 'MR' ? 'दिवसा उजेडात प्रत्यक्ष तपासणी' : 'Daylight Inspection'}
@@ -776,21 +777,21 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               </div>
 
               <div className="bg-[#fef9ee] p-3 rounded-xl border border-[#fde68a] flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-[#ba1a1a] text-[18px] shrink-0 mt-0.5">do_not_disturb_on</span>
+                <LucideIcon name="do_not_disturb_on" className="text-[#ba1a1a] text-[18px] shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-bold text-[12px] text-[#ba1a1a]">
                     {lang === 'MR' ? 'आगाऊ UPI पैसे पाठवू नका' : 'Zero Advance UPI'}
                   </h4>
                   <p className="text-[11px] text-[#404945] leading-relaxed">
                     {lang === 'MR'
-                      ? 'मालाची प्रत्यक्ष पाहणी करण्यापूर्वी Google Pay किंवा PhonePe द्वारे कधीही आगाऊ टोकन रक्कम पाठवू नका.'
-                      : 'Never transfer advance token money via Google Pay or PhonePe before physical verification scan-bills.'}
+                      ? 'मालाची प्रत्यक्ष पाहणी करण्यापूर्वी Google Pay किंवा PhonePe द्वारे कधीही आगाऊ रक्कम पाठवू नका.'
+                      : 'Never transfer advance money via Google Pay or PhonePe before seeing the goods in person.'}
                   </p>
                 </div>
               </div>
 
               <div className="bg-[#fef9ee] p-3 rounded-xl border border-[#fde68a] flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-[#006a4e] text-[18px] shrink-0 mt-0.5">scale</span>
+                <LucideIcon name="scale" className="text-[#006a4e] text-[18px] shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-bold text-[12px] text-[#006a4e]">
                     {lang === 'MR' ? 'अधिकृत धर्म काटा वजन पावती' : 'Verify Haat Weighing Tag'}
@@ -806,7 +807,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
             <div className="pt-2 border-t border-[#f3ede4] flex items-center justify-between text-[11px] text-[#707974]">
               <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[14px]">call</span>
+                <LucideIcon name="call" className="text-[14px]" />
                 <span>{lang === 'MR' ? 'कृषी हेल्पलाईन:' : 'Toll Free Krishi Desk:'}</span>
               </span>
               <strong className="text-[#166534]">07185-221101</strong>
@@ -824,7 +825,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                   {lang === 'MR' ? 'असगाव शुक्रवार बाजार' : 'Asgaon Friday Bazaar'}
                 </h3>
               </div>
-              <span className="text-[10px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-2 py-0.5 rounded border border-[#bbf7d0]">
+              <span className="text-[10px] font-bold text-[#006a4e] bg-[#e8f1ec] px-2 py-0.5 rounded border border-[#cadbcf]">
                 {lang === 'MR' ? 'दर शुक्रवारी' : 'Every Friday'}
               </span>
             </div>
@@ -837,7 +838,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
             {/* Map visual card */}
             <div className="relative rounded-xl overflow-hidden border border-[#c4d6cf] h-32 bg-[#e2eee9] flex flex-col items-center justify-center p-3 text-center">
-              <span className="material-symbols-outlined text-[32px] text-[#006a4e] mb-1">map</span>
+              <LucideIcon name="map" className="text-[32px] text-[#006a4e] mb-1" />
               <span className="font-bold text-[11px] text-[#166534]">
                 {lang === 'MR' ? 'जुना बस स्टँड मैदान • ४२ ओटे/गाळे उपलब्ध' : 'Old Bus Stand Ground • 42 Stalls Allocated'}
               </span>
@@ -868,7 +869,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
           {/* WIDGET 3: APMC COMPUTERIZED WEIGHBRIDGE */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs flex flex-col gap-4">
             <div className="flex items-center gap-2 border-b border-[#f3ede4] pb-3">
-              <span className="material-symbols-outlined text-[#006a4e] text-[20px]">scale</span>
+              <LucideIcon name="scale" className="text-[#006a4e] text-[20px]" />
               <div>
                 <span className="text-[9px] font-bold text-[#006a4e] uppercase tracking-wider block">
                   {lang === 'MR' ? 'एपीएमसी प्रमाणित' : 'APMC CERTIFIED'}
@@ -913,9 +914,9 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
             <a
               href="tel:9370488102"
-              className="w-full py-2 border border-[#006a4e] text-[#006a4e] hover:bg-[#bbf7d0]/20 text-[11px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+              className="w-full py-2 border border-[#006a4e] text-[#006a4e] hover:bg-[#e8f1ec]/60 text-[11px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors"
             >
-              <span className="material-symbols-outlined text-[14px]">call</span>
+              <LucideIcon name="call" className="text-[14px]" />
               <span>
                 {lang === 'MR' ? 'धर्म काटा प्रमुख: ९३७०४ ८८१०२' : 'Call Weighbridge In-charge: 93704 88102'}
               </span>
@@ -925,16 +926,16 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
           {/* WIDGET 4: OFFICIAL MSP CHECKER */}
           <div className="bg-[#166534] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-[#bbf7d0]">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-[#a7f3d0]">
                 {lang === 'MR' ? 'शासकीय हमीभाव' : 'OFFICIAL PROCUREMENT'}
               </span>
-              <span className="bg-[#bbf7d0]/20 text-[#bbf7d0] text-[9px] font-bold px-2 py-0.5 rounded">
+              <span className="bg-[#e8f1ec]/60 text-[#a7f3d0] text-[9px] font-bold px-2 py-0.5 rounded">
                 {lang === 'MR' ? 'खरेदी केंद्र आज सुरू' : 'Centre Open Today'}
               </span>
             </div>
 
             <h3 className="font-heading font-extrabold text-[15px] leading-snug">
-              {lang === 'MR' ? 'माल विकण्यापूर्वी शासकीय हमीभाव (MSP) तपासा' : 'Check Government MSP Before You Sell'}
+              {lang === 'MR' ? 'माल विकण्यापूर्वी शासकीय हमीभाव तपासा' : 'Check Government MSP Before You Sell'}
             </h3>
 
             <p className="text-[11px] text-[#e8e2d9] leading-relaxed">
@@ -945,10 +946,10 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
             <a
               href="#mandi-bulletin"
-              className="w-full py-2.5 bg-[#bbf7d0] hover:bg-[#a0dec5] text-[#002117] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors mt-1"
+              className="w-full py-2.5 bg-[#a7f3d0] hover:bg-[#a0dec5] text-[#002117] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors mt-1"
             >
               <span>{lang === 'MR' ? 'बाजारभाव पत्रिका पहा' : 'Open Mandi Price Bulletin'}</span>
-              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+              <LucideIcon name="arrow_forward" className="text-[16px]" />
             </a>
           </div>
         </div>
@@ -962,11 +963,11 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               onClick={() => setShowPostModal(false)}
               className="absolute top-4 right-4 text-[#707974] hover:text-[#1a1c1b] p-1 rounded-full hover:bg-[#f3ede4]"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <LucideIcon name="close" className="text-[20px]" />
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#006a4e] text-[24px]">post_add</span>
+              <LucideIcon name="post_add" className="text-[#006a4e] text-[24px]" />
               <div>
                 <h3 className="font-heading font-extrabold text-[18px] text-[#166534]">
                   {lang === 'MR' ? 'मोफत गाव जाहिरात नोंदवा' : 'Post a Free Village Listing'}
@@ -980,8 +981,8 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             </div>
 
             {bookingSuccess ? (
-              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
-                <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
+              <div className="bg-[#e8f1ec] border border-[#006a4e] rounded-xl p-4 text-center">
+                <LucideIcon name="check_circle" className="text-[#006a4e] text-[40px] mb-2" />
                 <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'जाहिरात यशस्वीरित्या प्रकाशित झाली!' : 'Listing Published Successfully!'}
                 </h4>
@@ -1014,17 +1015,17 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="font-bold text-[#166534] block mb-1">
-                      {lang === 'MR' ? 'श्रेणी (Category)' : 'Category'}
+                      {lang === 'MR' ? 'श्रेणी' : 'Category'}
                     </label>
                     <select
                       value={newCategory}
                       onChange={(e) => setNewCategory(e.target.value)}
                       className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none bg-white"
                     >
-                      <option value="harvest">{lang === 'MR' ? 'शेतमाल (Farm Harvest)' : 'Farm Harvest'}</option>
-                      <option value="livestock">{lang === 'MR' ? 'पशुधन (Livestock & Cattle)' : 'Livestock & Cattle'}</option>
-                      <option value="machinery">{lang === 'MR' ? 'अवजारे (Tractors & Implements)' : 'Tractors & Implements'}</option>
-                      <option value="household">{lang === 'MR' ? 'घरगुती सामान (Household Goods)' : 'Household Goods'}</option>
+                      <option value="harvest">{lang === 'MR' ? 'शेतमाल' : 'Farm Harvest'}</option>
+                      <option value="livestock">{lang === 'MR' ? 'पशुधन' : 'Livestock & Cattle'}</option>
+                      <option value="machinery">{lang === 'MR' ? 'अवजारे' : 'Tractors & Implements'}</option>
+                      <option value="household">{lang === 'MR' ? 'घरगुती सामान' : 'Household Goods'}</option>
                     </select>
                   </div>
                   <div>
@@ -1096,7 +1097,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                   </label>
                   <div className="flex items-center gap-3">
                     <label className="cursor-pointer inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-[#166534] text-white text-[11px] font-bold hover:bg-[#052e16] transition-colors shadow-xs">
-                      <span className="material-symbols-outlined text-[17px]">add_a_photo</span>
+                      <LucideIcon name="add_a_photo" className="text-[17px]" />
                       <span>
                         {uploadingImage
                           ? (lang === 'MR' ? 'अपलोड होत आहे...' : 'Uploading...')
@@ -1119,7 +1120,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                           className="w-10 h-10 object-cover rounded-lg border border-[#006a4e]"
                         />
                         <span className="text-[11px] text-[#006a4e] font-bold flex items-center gap-0.5">
-                          <span className="material-symbols-outlined text-[15px]">check_circle</span>
+                          <LucideIcon name="check_circle" className="text-[15px]" />
                           {lang === 'MR' ? 'जोडले' : 'Attached'}
                         </span>
                         <button
@@ -1142,7 +1143,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                 </div>
 
                 <div className="bg-[#fef9ee] p-2.5 rounded-lg border border-[#fde68a] text-[11px] text-[#c2410c] flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[16px]">verified</span>
+                  <LucideIcon name="verified" className="text-[16px]" />
                   <span>
                     {lang === 'MR'
                       ? 'ही सेवा १००% मोफत असून कोणतीही मध्यस्थी किंवा कमिशन घेतले जात नाही.'
@@ -1173,11 +1174,11 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               onClick={() => setShowStallModal(false)}
               className="absolute top-4 right-4 text-[#707974] hover:text-[#1a1c1b] p-1 rounded-full hover:bg-[#f3ede4]"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <LucideIcon name="close" className="text-[20px]" />
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#c2410c] text-[24px]">storefront</span>
+              <LucideIcon name="storefront" className="text-[#c2410c] text-[24px]" />
               <div>
                 <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'शुक्रवार आठवडे बाजारासाठी मोफत गाळा नोंदवा' : 'Book Free Stall for Friday Haat'}
@@ -1189,8 +1190,8 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             </div>
 
             {bookingSuccess ? (
-              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
-                <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
+              <div className="bg-[#e8f1ec] border border-[#006a4e] rounded-xl p-4 text-center">
+                <LucideIcon name="check_circle" className="text-[#006a4e] text-[40px] mb-2" />
                 <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'गाळा जागा निश्चित झाली!' : 'Stall Slot Confirmed!'}
                 </h4>
@@ -1239,7 +1240,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                   />
                 </div>
-                <div className="bg-[#bbf7d0]/30 p-2.5 rounded-lg border border-[#006a4e]/20 text-[11px] text-[#166534]">
+                <div className="bg-[#a7f3d0]/30 p-2.5 rounded-lg border border-[#006a4e]/20 text-[11px] text-[#166534]">
                   {lang === 'MR'
                     ? 'सूचना: असगावच्या स्थानिक रहिवासी शेतकऱ्यांना मोफत गाळा मिळतो. कृपया सोबत ७/१२ किंवा आधार कार्ड ठेवा.'
                     : 'Notice: Asgaon resident farmers receive free stalls. Please bring your 7/12 extract or Aadhaar card.'}

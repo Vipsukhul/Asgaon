@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useState } from 'react';
 import type { Business } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
@@ -142,13 +143,13 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
       {/* 1. Breadcrumbs & Verified Status */}
       <Breadcrumb
         items={[
-          { label: t('nav_home', 'मुख्यपृष्ठ'), onClick: onNavigateHome },
-          { label: t('nav_businesses', 'स्थानिक दुकाने व सेवा'), active: true }
+          { label: t('nav_home'), onClick: onNavigateHome },
+          { label: t('nav_businesses'), active: true }
         ]}
         rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#bbf7d0] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
-            <span className="material-symbols-outlined text-[15px] text-[#002117]">verified_user</span>
-            <span>{lang === 'MR' ? 'प्रभाग नागरी ग्राहक मदत केंद्र पडताळणीकृत • आज सकाळी ०८:०० वा. अद्ययावत' : 'Ward Civic Consumer Cell Hotline Verified • Updated today 08:00 AM'}</span>
+          <div className="flex items-center gap-1.5 bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] px-3 py-1 rounded-full text-[11px] font-bold">
+            <LucideIcon name="verified_user" className="text-[15px] text-[#14532d]" />
+            <span>{lang === 'MR' ? 'प्रमाणित स्थानिक दुकाने • आज अद्ययावत' : 'Verified Local Businesses • Updated Today'}</span>
           </div>
         }
       />
@@ -156,28 +157,28 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
       {/* 2. Hero / Header Banner */}
       <div className="bg-white rounded-2xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
         <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#bbf7d0] text-[#002117] text-[10px] font-extrabold uppercase tracking-wider mb-2">
-            {allBusinesses.length} {lang === 'MR' ? 'नोंदणीकृत स्थानिक दुकाने व सेवा केंद्र' : 'VERIFIED LOCAL OUTLETS IN WARD REGISTRY'}
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[10px] font-extrabold uppercase tracking-wider mb-2">
+            {allBusinesses.length} {lang === 'MR' ? 'नोंदणीकृत स्थानिक दुकाने व सेवा केंद्र' : 'Verified Local Businesses'}
           </span>
 
           <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#166534] leading-tight mb-1">
             {lang === 'MR' ? 'स्थानिक दुकाने व सेवा निर्देशिका' : 'Local Business & Service Directory'}
           </h1>
           <p className="font-heading font-bold text-[15px] text-[#c2410c] mb-3">
-            {lang === 'MR' ? 'आसगाव - पवनी तालुका व्यापारी व सेवा केंद्र सूची' : 'Local Business & Service Directory (Asgaon - Pauni Cluster)'}
+            {lang === 'MR' ? 'आसगाव - पवनी तालुका व्यापारी व सेवा केंद्र सूची' : 'Local Business & Service Directory (Asgaon, Pauni)'}
           </p>
 
           <div className="flex flex-wrap items-center gap-4 text-[12px] font-bold text-[#166534]">
             <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#376757]">check_circle</span>
+              <LucideIcon name="check_circle" className="text-[16px] text-[#376757]" />
               <span>{lang === 'MR' ? '१००% शून्य-दलाली थेट निर्देशिका' : '100% Zero-Commission Directory'}</span>
             </span>
             <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#376757]">check_circle</span>
+              <LucideIcon name="check_circle" className="text-[16px] text-[#376757]" />
               <span>{lang === 'MR' ? 'थेट फोन आणि व्हॉट्सॲप संपर्क' : 'Direct Phone & WhatsApp'}</span>
             </span>
             <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#376757]">check_circle</span>
+              <LucideIcon name="check_circle" className="text-[16px] text-[#376757]" />
               <span>{lang === 'MR' ? 'स्थानिक प्रभाग पडताळणीकृत दुकाने' : 'Local Ward Verified Outlets'}</span>
             </span>
           </div>
@@ -189,7 +190,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
             onClick={onRegisterShop}
             className="w-full py-2.5 px-4 rounded-xl bg-[#c2410c] hover:bg-[#852f00] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
           >
-            <span className="material-symbols-outlined text-[18px]">add_business</span>
+            <LucideIcon name="add_business" className="text-[18px]" />
             <span>{t('btn_register_shop', lang === 'MR' ? 'दुकान नोंदवा' : 'Register Business')} ({lang === 'MR' ? 'मोफत' : 'FREE'})</span>
           </button>
 
@@ -200,11 +201,11 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
             }}
             className={`w-full py-2 px-4 rounded-xl text-[12px] font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs ${
               viewMode === 'map'
-                ? 'bg-[#bbf7d0] text-[#002117] hover:bg-white'
-                : 'bg-white text-[#166534] hover:bg-[#bbf7d0]'
+                ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] hover:bg-white'
+                : 'bg-white text-[#166534] hover:bg-[#a7f3d0]'
             }`}
           >
-            <span className="material-symbols-outlined text-[16px]">map</span>
+            <LucideIcon name="map" className="text-[16px]" />
             <span>{viewMode === 'map' ? (lang === 'MR' ? 'सूची दृश्य पहा' : 'View List') : (lang === 'MR' ? 'थेट गावाचा नकाशा' : 'Live Map')}</span>
           </button>
         </div>
@@ -214,7 +215,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
       <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
         <div className="flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="relative w-full md:flex-1">
-            <span className="material-symbols-outlined absolute left-3 top-2.5 text-[#707974] text-[20px]">search</span>
+            <LucideIcon name="search" className="absolute left-3 top-2.5 text-[#707974] text-[20px]" />
             <input
               type="text"
               value={search}
@@ -228,7 +229,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               className="absolute right-3 top-2.5 text-[#166534] hover:text-[#052e16]"
               title={lang === 'MR' ? 'व्हॉइस सर्च' : 'Voice Search'}
             >
-              <span className="material-symbols-outlined text-[19px]">mic</span>
+              <LucideIcon name="mic" className="text-[19px]" />
             </button>
           </div>
 
@@ -240,12 +241,12 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               className="px-2.5 py-1.5 rounded-xl text-[12px] font-bold bg-[#f9f3ea] hover:bg-[#e8e2d9] text-[#166534] border border-[#e8e2d9] flex items-center gap-1 transition-all"
               title={lang === 'MR' ? 'Switch to English' : 'मराठीत बदला'}
             >
-              <span className="material-symbols-outlined text-[15px]">translate</span>
+              <LucideIcon name="translate" className="text-[15px]" />
               <span>{lang === 'MR' ? 'EN' : 'मराठी'}</span>
             </button>
 
             <span className="text-[12px] font-bold text-[#707974] flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px]">sort</span>
+              <LucideIcon name="sort" className="text-[16px]" />
               <span>{lang === 'MR' ? 'क्रमवारी:' : 'Sort By:'}</span>
             </span>
             <select
@@ -345,7 +346,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                     : 'text-[#404945] hover:text-[#166534]'
                 }`}
               >
-                <span className="material-symbols-outlined text-[16px]">view_list</span>
+                <LucideIcon name="view_list" className="text-[16px]" />
                 <span>{lang === 'MR' ? 'सूची' : 'List'}</span>
               </button>
 
@@ -361,7 +362,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                     : 'text-[#404945] hover:text-[#166534]'
                 }`}
               >
-                <span className="material-symbols-outlined text-[16px]">map</span>
+                <LucideIcon name="map" className="text-[16px]" />
                 <span>{lang === 'MR' ? 'थेट नकाशा' : 'Live Map'}</span>
               </button>
 
@@ -377,7 +378,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                     : 'text-[#404945] hover:text-[#166534]'
                 }`}
               >
-                <span className="material-symbols-outlined text-[16px]">vertical_split</span>
+                <LucideIcon name="vertical_split" className="text-[16px]" />
                 <span>{lang === 'MR' ? 'दोन्ही' : 'Both'}</span>
               </button>
             </div>
@@ -403,11 +404,11 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
           {allBusinesses.length === 0 ? (
             <div className="bg-white rounded-2xl p-12 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
               <div className="w-8 h-8 border-3 border-[#166534] border-t-transparent rounded-full animate-spin mb-1" />
-              <p className="text-[13px] font-bold text-[#166534]">{lang === 'MR' ? 'डेटाबेसशी जोडत आहे व दुकाने लोड होत आहेत...' : 'Connecting to database & loading businesses...'}</p>
+              <p className="text-[13px] font-bold text-[#166534]">{lang === 'MR' ? 'दुकानांची माहिती लोड होत आहे...' : 'Loading local businesses...'}</p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-              <span className="material-symbols-outlined text-[48px] text-[#c2410c]">storefront</span>
+              <LucideIcon name="storefront" className="text-[48px] text-[#c2410c]" />
               <h3 className="font-heading font-bold text-[18px] text-[#166534]">{lang === 'MR' ? 'कोणताही व्यवसाय सापडला नाही' : 'No matching enterprises found'}</h3>
               <p className="text-[13px] text-[#707974] max-w-md">{lang === 'MR' ? 'तुमच्या निवडलेल्या फिल्टरनुसार कोणतीही दुकाने सापडली नाहीत. कृपया फिल्टर बदला किंवा पुन्हा शोधा.' : 'No shops or local services match your selected category and filters. Try clearing some filters or searching with different terms.'}</p>
               <button
@@ -480,7 +481,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                         className="text-[12px] text-[#707974] hover:text-[#166534] flex items-center gap-1 group text-left transition-colors"
                         title={lang === 'MR' ? 'नकाशावर स्थान पहा' : 'Click to view shop location on map'}
                       >
-                        <span className="material-symbols-outlined text-[15px] text-[#c2410c] group-hover:scale-110 transition-transform">location_on</span>
+                        <LucideIcon name="location_on" className="text-[15px] text-[#c2410c] group-hover:scale-110 transition-transform" />
                         <span>{item.address} • <strong className="text-[#1d1b16]">{item.distance}</strong></span>
                       </button>
                     </div>
@@ -490,7 +491,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                     </div>
 
                     <div className="text-[11px] text-[#707974] flex items-center gap-1 mb-2">
-                      <span className="material-symbols-outlined text-[14px] text-[#166534]">schedule</span>
+                      <LucideIcon name="schedule" className="text-[14px] text-[#166534]" />
                       <span>{item.hours}</span>
                     </div>
 
@@ -531,7 +532,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                         href={`tel:${item.phone}`}
                         className="px-3 py-1.5 rounded-lg bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold flex items-center gap-1 transition-colors shadow-xs"
                       >
-                        <span className="material-symbols-outlined text-[14px]">call</span>
+                        <LucideIcon name="call" className="text-[14px]" />
                         <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
                       </a>
 
@@ -541,7 +542,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                         rel="noopener noreferrer"
                         className="px-3 py-1.5 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#166534] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9] transition-colors"
                       >
-                        <span className="material-symbols-outlined text-[14px] text-[#25D366]">chat</span>
+                        <LucideIcon name="chat" className="text-[14px] text-[#25D366]" />
                         <span>{lang === 'MR' ? 'व्हॉट्सॲप' : 'WhatsApp'}</span>
                       </a>
                       
@@ -552,7 +553,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                         className="px-2.5 py-1.5 rounded-lg bg-[#fef9ee] hover:bg-[#a63b00] hover:text-white text-[#a63b00] text-[12px] font-bold flex items-center gap-1 border border-[#fed7aa] hover:border-[#a63b00] transition-all shadow-xs"
                         title={lang === 'MR' ? 'दुकानाचे अचूक स्थान नकाशावर पहा' : 'View shop location on map modal'}
                       >
-                        <span className="material-symbols-outlined text-[15px]">location_on</span>
+                        <LucideIcon name="location_on" className="text-[15px]" />
                         <span>{lang === 'MR' ? 'स्थान' : 'Location'}</span>
                       </button>
                     </div>
@@ -566,9 +567,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                       }`}
                       title={lang === 'MR' ? 'जतन करा (बुकमार्क)' : 'Bookmark this shop'}
                     >
-                      <span className="material-symbols-outlined text-[18px]">
-                        {bookmarkedIds.includes(item.id) ? 'bookmark' : 'bookmark_border'}
-                      </span>
+                      <LucideIcon name={bookmarkedIds.includes(item.id) ? 'bookmark' : 'bookmark_border'} className=" text-[18px]" />
                     </button>
                   </div>
                 </div>
@@ -644,15 +643,15 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
 
             <ul className="space-y-2 text-[12px] text-[#1d1b16] mb-5">
               <li className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[16px] text-[#376757]">check_circle</span>
+                <LucideIcon name="check_circle" className="text-[16px] text-[#376757]" />
                 <span>{lang === 'MR' ? 'स्थानिक रहिवाशांसाठी १००% मोफत नोंदणी' : '100% Free Registration for Ward Residents'}</span>
               </li>
               <li className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[16px] text-[#376757]">check_circle</span>
+                <LucideIcon name="check_circle" className="text-[16px] text-[#376757]" />
                 <span>{lang === 'MR' ? 'दुकानासाठी मोफत डिजिटल क्यूआर कोड' : 'Free QR Code Standee for Your Shop'}</span>
               </li>
               <li className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[16px] text-[#376757]">check_circle</span>
+                <LucideIcon name="check_circle" className="text-[16px] text-[#376757]" />
                 <span>{lang === 'MR' ? 'नागरिक ऑर्डर्सवर शून्य कमिशन' : 'Zero middleman commission on citizen orders'}</span>
               </li>
             </ul>
@@ -664,7 +663,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#002873] bg-[#dbe1ff] px-2 py-0.5 rounded">
                 {lang === 'MR' ? 'स्थानिक दर' : 'LOCAL RATES'}
               </span>
-              <span className="material-symbols-outlined text-[18px] text-[#707974]">gavel</span>
+              <LucideIcon name="gavel" className="text-[18px] text-[#707974]" />
             </div>
 
             <h3 className="font-heading font-extrabold text-[15px] text-[#166534] mt-2 mb-1">
@@ -702,7 +701,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
               className="mt-3 text-[12px] text-[#002873] font-bold hover:underline flex items-center gap-1"
             >
               <span>{lang === 'MR' ? 'अधिकृत ग्रामसभा दरपत्रक डाउनलोड करा' : 'Download Official Gram Sabha Rate Card'}</span>
-              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+              <LucideIcon name="arrow_forward" className="text-[14px]" />
             </button>
           </div>
 
@@ -725,7 +724,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 className="p-2.5 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9] hover:bg-[#f3ede4] transition-colors flex flex-col justify-between"
               >
                 <div className="flex items-center gap-1 text-[#c2410c] font-bold">
-                  <span className="material-symbols-outlined text-[16px]">bolt</span>
+                  <LucideIcon name="bolt" className="text-[16px]" />
                   <span>{lang === 'MR' ? 'इलेक्ट्रिशियन' : 'Village Electrician'}</span>
                 </div>
                 <div className="text-[#1d1b16] font-semibold mt-1">
@@ -738,7 +737,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 className="p-2.5 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9] hover:bg-[#f3ede4] transition-colors flex flex-col justify-between"
               >
                 <div className="flex items-center gap-1 text-[#166534] font-bold">
-                  <span className="material-symbols-outlined text-[16px]">precision_manufacturing</span>
+                  <LucideIcon name="precision_manufacturing" className="text-[16px]" />
                   <span>{lang === 'MR' ? 'मोटार रिवायंडिंग' : 'Submersible Motor'}</span>
                 </div>
                 <div className="text-[#1d1b16] font-semibold mt-1">
@@ -751,7 +750,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 className="p-2.5 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9] hover:bg-[#f3ede4] transition-colors flex flex-col justify-between"
               >
                 <div className="flex items-center gap-1 text-[#c2410c] font-bold">
-                  <span className="material-symbols-outlined text-[16px]">plumbing</span>
+                  <LucideIcon name="plumbing" className="text-[16px]" />
                   <span>{lang === 'MR' ? 'बोअरवेल प्लंबर' : 'Borewell Plumber'}</span>
                 </div>
                 <div className="text-[#1d1b16] font-semibold mt-1">
@@ -764,7 +763,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                 className="p-2.5 rounded-xl bg-[#fef3c7] text-[#93000a] border border-[#fde68a] hover:bg-[#fde68a] transition-colors flex flex-col justify-between"
               >
                 <div className="flex items-center gap-1 font-bold">
-                  <span className="material-symbols-outlined text-[16px]">ambulance</span>
+                  <LucideIcon name="ambulance" className="text-[16px]" />
                   <span>{lang === 'MR' ? 'रुग्णवाहिका' : 'PHC Ambulance'}</span>
                 </div>
                 <div className="font-extrabold mt-1">{lang === 'MR' ? '१०८ (२४x७ मोफत)' : '108 (24x7 Free)'}</div>

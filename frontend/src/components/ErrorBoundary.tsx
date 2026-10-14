@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 interface Props {
@@ -29,7 +30,7 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="min-h-screen bg-[#fef9ee] flex flex-col items-center justify-center p-6 text-center font-sans">
           <div className="max-w-md bg-white p-8 rounded-2xl shadow-lg border border-[#e8e2d9]">
             <div className="w-16 h-16 rounded-full bg-[#fef3c7] text-[#ba1a1a] flex items-center justify-center mx-auto mb-4">
-              <span className="material-symbols-outlined text-[32px]">warning</span>
+              <LucideIcon name="warning" className="text-[32px]" />
             </div>
             <h2 className="font-heading font-extrabold text-[20px] text-[#166534] mb-2">
               Something went wrong

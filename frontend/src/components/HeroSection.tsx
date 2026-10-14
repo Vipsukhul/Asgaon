@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { getStoredHeroSlides } from '../data/heroSlidesData';
@@ -91,12 +92,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
             {/* Top Village Badges */}
             <div className="flex flex-wrap items-center justify-center gap-2 mb-3.5">
               <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white text-emerald-800 text-[12px] font-bold shadow-xs border border-emerald-200">
-                <span className="material-symbols-outlined text-[16px] text-emerald-700">location_on</span>
+                <LucideIcon name="location_on" className="text-[16px] text-emerald-700" />
                 <span>{t('village_full_location')}</span>
               </span>
 
               <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-100 text-amber-900 text-[12px] font-bold shadow-xs border border-amber-300">
-                <span className="material-symbols-outlined text-[16px] text-amber-700">spa</span>
+                <LucideIcon name="spa" className="text-[16px] text-amber-700" />
                 <span>{lang === 'MR' ? 'शेती, नागरिक व गावहित मंच' : 'Farmer & Village Civic Forum'}</span>
               </span>
             </div>
@@ -115,7 +116,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
             {/* High-Contrast Universal Village Search Bar */}
             <form onSubmit={handleSearch} className="w-full max-w-3xl bg-white rounded-2xl shadow-md p-2 flex flex-col md:flex-row items-center gap-2 border-2 border-emerald-700/20 focus-within:border-emerald-700 transition-all">
               <div className="flex items-center w-full px-3 py-2">
-                <span className="material-symbols-outlined text-emerald-800 text-[26px] mr-2.5 shrink-0">search</span>
+                <LucideIcon name="search" className="text-emerald-800 text-[26px] mr-2.5 shrink-0" />
                 <input
                   type="text"
                   value={searchTerm}
@@ -129,7 +130,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
                 type="submit"
                 className="w-full md:w-auto px-8 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white text-[15px] font-extrabold whitespace-nowrap transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[20px]">travel_explore</span>
+                <LucideIcon name="travel_explore" className="text-[20px]" />
                 <span>{lang === 'MR' ? 'शोधा' : 'Search'}</span>
               </button>
             </form>
@@ -156,7 +157,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
                 {/* Optional Badge */}
                 {(currentSlide.badgeMarathi || currentSlide.badgeEnglish) && (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400 text-stone-950 text-xs font-black uppercase tracking-wider mb-3 shadow-md">
-                    <span className="material-symbols-outlined text-[15px]">stars</span>
+                    <LucideIcon name="stars" className="text-[15px]" />
                     <span>{lang === 'MR' ? currentSlide.badgeMarathi : (currentSlide.badgeEnglish || currentSlide.badgeMarathi)}</span>
                   </span>
                 )}
@@ -181,10 +182,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
                         onNavigate(currentSlide.ctaLink);
                       }
                     }}
-                    className="px-6 py-2.5 rounded-xl bg-white text-stone-950 font-bold text-sm hover:bg-[#bbf7d0] hover:text-[#002117] transition-all inline-flex items-center gap-2 shadow-lg cursor-pointer"
+                    className="px-6 py-2.5 rounded-xl bg-white text-stone-950 font-bold text-sm hover:bg-[#a7f3d0] hover:text-[#002117] transition-all inline-flex items-center gap-2 shadow-lg cursor-pointer"
                   >
                     <span>{lang === 'MR' ? currentSlide.ctaTextMarathi : (currentSlide.ctaTextEnglish || currentSlide.ctaTextMarathi)}</span>
-                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    <LucideIcon name="arrow_forward" className="text-[18px]" />
                   </button>
                 )}
               </div>
@@ -208,7 +209,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
             aria-label="Previous slide"
             className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/70 hover:bg-white text-stone-900 flex items-center justify-center shadow-md backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all cursor-pointer hover:scale-105"
           >
-            <span className="material-symbols-outlined text-xl">chevron_left</span>
+            <LucideIcon name="chevron_left" className="text-xl" />
           </button>
 
           {/* Next Slide Arrow */}
@@ -218,7 +219,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
             aria-label="Next slide"
             className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/70 hover:bg-white text-stone-900 flex items-center justify-center shadow-md backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all cursor-pointer hover:scale-105"
           >
-            <span className="material-symbols-outlined text-xl">chevron_right</span>
+            <LucideIcon name="chevron_right" className="text-xl" />
           </button>
 
           {/* Bottom Indicators & Pause Indicator */}
@@ -243,9 +244,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
               className="text-white/80 hover:text-white ml-1 text-xs cursor-pointer flex items-center"
               title={isPaused ? 'Resume auto-slider' : 'Pause auto-slider'}
             >
-              <span className="material-symbols-outlined text-[14px]">
-                {isPaused ? 'play_arrow' : 'pause'}
-              </span>
+              <LucideIcon name={isPaused ? 'play_arrow' : 'pause'} className=" text-[14px]" />
             </button>
           </div>
         </>

@@ -1,15 +1,10 @@
 package com.digitalgaon.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class BlogRequest {
     private String id;
     private String slug;
@@ -36,4 +31,37 @@ public class BlogRequest {
     private String seoDescription;
     private String seoKeywords;
     private Boolean isFeatured;
+
+    public BlogRequest() {}
+
+    @Builder
+    public BlogRequest(String id, String slug, String title, String titleMarathi, String excerpt, String excerptMarathi,
+                       String content, String contentMarathi, String category, String categoryMarathi, String author,
+                       String authorRole, String authorRoleMarathi, String publishDate, String publishDateISO,
+                       Integer readTimeMinutes, String coverImage, String tags, String tagsMarathi,
+                       String seoTitle, String seoDescription, String seoKeywords, Boolean isFeatured) {
+        this.id = id;
+        this.slug = slug;
+        this.title = title;
+        this.titleMarathi = titleMarathi;
+        this.excerpt = excerpt;
+        this.excerptMarathi = excerptMarathi;
+        this.content = content;
+        this.contentMarathi = contentMarathi;
+        this.category = category;
+        this.categoryMarathi = categoryMarathi;
+        this.author = author;
+        this.authorRole = authorRole;
+        this.authorRoleMarathi = authorRoleMarathi;
+        this.publishDate = publishDate;
+        this.publishDateISO = publishDateISO;
+        this.readTimeMinutes = readTimeMinutes;
+        this.coverImage = coverImage;
+        this.tags = tags;
+        this.tagsMarathi = tagsMarathi;
+        this.seoTitle = seoTitle;
+        this.seoDescription = seoDescription;
+        this.seoKeywords = seoKeywords;
+        this.isFeatured = isFeatured;
+    }
 }

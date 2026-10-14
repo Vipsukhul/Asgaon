@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -10,7 +11,7 @@ export const PanchayatNoticeStrip: React.FC = () => {
       <div className="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white rounded-2xl p-5 sm:p-6 mb-4 shadow-sm border border-emerald-950 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-start gap-3.5">
           <div className="h-11 w-11 rounded-xl bg-white/15 flex items-center justify-center shrink-0 border border-white/20">
-            <span className="material-symbols-outlined text-[26px] text-amber-300">gavel</span>
+            <LucideIcon name="gavel" className="text-[26px] text-amber-300" />
           </div>
           <div>
             <div className="flex items-center gap-2">
@@ -31,7 +32,7 @@ export const PanchayatNoticeStrip: React.FC = () => {
           onClick={() => alert(lang === 'MR' ? 'मासिक आसगाव वृत्तपत्रक पीडीएफ डाउनलोड झाले.' : 'Monthly Asgaon Gazette PDF downloaded.')}
           className="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 transition-colors text-[13px] font-extrabold flex items-center gap-2 shrink-0 shadow-sm cursor-pointer"
         >
-          <span className="material-symbols-outlined text-[19px]">download</span>
+          <LucideIcon name="download" className="text-[19px]" />
           <span>{lang === 'MR' ? 'मासिक बातमीपत्र डाउनलोड करा' : 'Download Monthly Gazette'}</span>
         </button>
       </div>
@@ -40,7 +41,7 @@ export const PanchayatNoticeStrip: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <div className="bg-white rounded-xl p-4 border-2 border-emerald-700/20 shadow-xs flex items-center gap-3">
           <div className="h-11 w-11 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800 shrink-0">
-            <span className="material-symbols-outlined text-[24px]">calendar_month</span>
+            <LucideIcon name="calendar_month" className="text-[24px]" />
           </div>
           <div>
             <div className="text-[11px] font-extrabold text-stone-500 uppercase tracking-wider">
@@ -54,7 +55,7 @@ export const PanchayatNoticeStrip: React.FC = () => {
 
         <div className="bg-white rounded-xl p-4 border-2 border-red-600/20 shadow-xs flex items-center gap-3">
           <div className="h-11 w-11 rounded-xl bg-red-100 flex items-center justify-center text-red-800 shrink-0">
-            <span className="material-symbols-outlined text-[24px]">medical_services</span>
+            <LucideIcon name="medical_services" className="text-[24px]" />
           </div>
           <div>
             <div className="text-[11px] font-extrabold text-stone-500 uppercase tracking-wider">
@@ -68,7 +69,7 @@ export const PanchayatNoticeStrip: React.FC = () => {
 
         <div className="bg-white rounded-xl p-4 border-2 border-amber-600/20 shadow-xs flex items-center gap-3">
           <div className="h-11 w-11 rounded-xl bg-amber-100 flex items-center justify-center text-amber-800 shrink-0">
-            <span className="material-symbols-outlined text-[24px]">bolt</span>
+            <LucideIcon name="bolt" className="text-[24px]" />
           </div>
           <div>
             <div className="text-[11px] font-extrabold text-stone-500 uppercase tracking-wider">
@@ -84,7 +85,7 @@ export const PanchayatNoticeStrip: React.FC = () => {
       {/* RTI & Transparency Box */}
       <div className="bg-white rounded-xl p-4 border border-[#efe7dc] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div className="flex items-start gap-2.5">
-          <span className="material-symbols-outlined text-[22px] text-emerald-800 mt-0.5 shrink-0">policy</span>
+          <LucideIcon name="policy" className="text-[22px] text-emerald-800 mt-0.5 shrink-0" />
           <div>
             <div className="text-[13px] font-extrabold text-emerald-950">
               {lang === 'MR' ? 'माहिती अधिकार (RTI) व सार्वजनिक पारदर्शकता वचनबद्धता' : 'RTI & Public Transparency Commitment'}

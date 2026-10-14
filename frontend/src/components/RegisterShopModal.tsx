@@ -1,7 +1,9 @@
+import { LucideIcon } from './LucideIcon';
 import { useState } from 'react';
 import type { Business } from '../types';
 import { api } from '../services/api';
 import { LocationPickerMap } from './LocationPickerMap';
+import { useLanguage } from '../context/LanguageContext';
 
 interface RegisterShopModalProps {
   isOpen: boolean;
@@ -10,16 +12,16 @@ interface RegisterShopModalProps {
 }
 
 const ASGAON_PRESETS = [
-  { label: 'निवडा: परिसरातील प्रसिद्ध चौक / खूण (Select Preset)', lat: 20.7850, lng: 79.6350, name: '' },
-  { label: '🏛️ ग्रामपंचायत चौक (Gram Panchayat Chowk)', lat: 20.7850, lng: 79.6350, name: 'Gram Panchayat Chowk' },
-  { label: '🌾 मार्केट यार्ड चौक (Market Yard Chowk)', lat: 20.7858, lng: 79.6346, name: 'Market Yard Chowk' },
-  { label: '🏫 ZP प्राथमिक शाळा / वॉर्ड २ (Near ZP School)', lat: 20.7842, lng: 79.6362, name: 'Near ZP Primary School, Ward 2' },
-  { label: '🚜 हायवे बायपास रोड (Highway Bypass)', lat: 20.7865, lng: 79.6380, name: 'Highway Bypass Road' },
-  { label: '🥛 तलाव रोड दुग्ध हब (Talav Road)', lat: 20.7832, lng: 79.6335, name: 'Talav Road Dairy Area' },
-  { label: '🛠️ स्टेशन रोड मार्केट (Station Road)', lat: 20.7870, lng: 79.6320, name: 'Station Road Market' },
-  { label: '🏡 आंबेडकर वॉर्ड १ (Ambedkar Ward 1)', lat: 20.7820, lng: 79.6360, name: 'Ward No. 1 Ambedkar Ward' },
-  { label: '🛕 विठ्ठल मंदिर परिसर (Vitthal Mandir Area)', lat: 20.7860, lng: 79.6370, name: 'Near Vitthal Mandir, Ward 3' },
-  { label: '🌱 पवनी बायपास कृषी हब (Pauni Bypass)', lat: 20.7885, lng: 79.6395, name: 'Pauni Bypass Agro Hub' },
+  { label: 'निवडा: परिसरातील प्रसिद्ध चौक / खूण', lat: 20.7850, lng: 79.6350, name: '' },
+  { label: '🏛️ ग्रामपंचायत चौक', lat: 20.7850, lng: 79.6350, name: 'Gram Panchayat Chowk' },
+  { label: '🌾 मार्केट यार्ड चौक', lat: 20.7858, lng: 79.6346, name: 'Market Yard Chowk' },
+  { label: '🏫 जि.प. प्राथमिक शाळा, वॉर्ड २', lat: 20.7842, lng: 79.6362, name: 'Near ZP Primary School, Ward 2' },
+  { label: '🚜 बायपास हायवे रोड', lat: 20.7865, lng: 79.6380, name: 'Highway Bypass Road' },
+  { label: '🥛 तलाव रोड दुग्ध संकलन परिसर', lat: 20.7832, lng: 79.6335, name: 'Talav Road Dairy Area' },
+  { label: '🛠️ स्टेशन रोड मार्केट', lat: 20.7870, lng: 79.6320, name: 'Station Road Market' },
+  { label: '🏡 आंबेडकर वॉर्ड १', lat: 20.7820, lng: 79.6360, name: 'Ward No. 1 Ambedkar Ward' },
+  { label: '🛕 विठ्ठल मंदिर परिसर', lat: 20.7860, lng: 79.6370, name: 'Near Vitthal Mandir, Ward 3' },
+  { label: '🌱 पवनी बायपास कृषी केंद्र', lat: 20.7885, lng: 79.6395, name: 'Pauni Bypass Agro Hub' },
 ];
 
 export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
@@ -27,6 +29,8 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
   onClose,
   onAddBusiness
 }) => {
+  const { lang } = useLanguage();
+  const isMr = lang === 'MR';
   const [name, setName] = useState('');
   const [category, setCategory] = useState('Kirana & General Stores');
   const [address, setAddress] = useState('');
@@ -145,7 +149,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
       };
 
       onAddBusiness(newBiz);
-      alert('दुकान नोंदणी यशस्वी! आपले दुकान आता आसगाव नकाशावर आणि यादीमध्ये लाइव्ह आहे.');
+      alert(isMr ? 'दुकान नोंदणी यशस्वी! आपले दुकान आता आसगाव नकाशावर आणि यादीमध्ये लाइव्ह आहे.' : 'Shop registered successfully! It is now visible on the village map and directory.');
       onClose();
     } catch {
       const newBiz: Business = {
@@ -171,7 +175,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
       };
 
       onAddBusiness(newBiz);
-      alert('दुकान नोंदणी यशस्वी! आपले दुकान आता आसगाव नकाशावर आणि यादीमध्ये लाइव्ह आहे.');
+      alert(isMr ? 'दुकान नोंदणी यशस्वी! आपले दुकान आता आसगाव नकाशावर आणि यादीमध्ये लाइव्ह आहे.' : 'Shop registered successfully! It is now visible on the village map and directory.');
       onClose();
     } finally {
       setLoading(false);
@@ -183,63 +187,65 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
       <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-[#e8e2d9] overflow-hidden p-6 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between pb-3 border-b border-[#f3ede4] mb-4">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#c2410c] text-[24px]">storefront</span>
+            <LucideIcon name="storefront" className="text-[#c2410c] text-[24px]" />
             <div>
               <h3 className="font-heading font-bold text-[18px] text-[#1d1b16]">
-                List Your Shop Free (आपला व्यापार)
+                {isMr ? 'आपल्या दुकानाची मोफत नोंदणी करा' : 'Register Your Business for Free'}
               </h3>
-              <p className="text-[11px] text-[#707974]">Reach 14,280+ Asgaon residents at zero cost</p>
+              <p className="text-[11px] text-[#707974]">
+                {isMr ? 'आसगावमधील १४,२८०+ नागरिकांपर्यंत थेट पोहोचा' : 'Connect directly with 14,280+ village residents'}
+              </p>
             </div>
           </div>
           <button onClick={onClose} className="text-[#707974] hover:text-[#1d1b16]">
-            <span className="material-symbols-outlined text-[20px]">close</span>
+            <LucideIcon name="close" className="text-[20px]" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <div>
             <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-              Shop / Enterprise Name (दुकानाचे नाव)
+              {isMr ? 'दुकानाचे / व्यवसायाचे नाव *' : 'Shop / Enterprise Name *'}
             </label>
             <input
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Om Sai Electricals & Solar"
+              placeholder={isMr ? 'उदा. ओम साई कृषी केंद्र किंवा खडके किराणा' : 'e.g. Om Sai Agro Center or Khadke Kirana'}
               className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
           </div>
 
           <div>
             <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-              Category (प्रवर्ग)
+              {isMr ? 'व्यवसाय वर्ग / कॅटेगरी *' : 'Category *'}
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             >
-              <option>Krishi &amp; Agro Stores</option>
-              <option>Clinics &amp; Pharmacies</option>
-              <option>Tractor &amp; Machinery Rental</option>
-              <option>Dairy &amp; Animal Husbandry</option>
-              <option>Kirana &amp; General Stores</option>
-              <option>Electrical &amp; Solar Tech</option>
-              <option>Building &amp; Hardware</option>
-              <option>Tailoring &amp; Textiles</option>
+              <option value="Krishi & Agro Stores">{isMr ? 'कृषी व शेती केंद्र' : 'Krishi & Agro Stores'}</option>
+              <option value="Clinics & Pharmacies">{isMr ? 'दवाखाना व मेडिकल' : 'Clinics & Pharmacies'}</option>
+              <option value="Tractor & Machinery Rental">{isMr ? 'ट्रॅक्टर व कृषी यंत्रसामग्री' : 'Tractor & Machinery Rental'}</option>
+              <option value="Dairy & Animal Husbandry">{isMr ? 'दुग्ध व्यवसाय व पशुधन' : 'Dairy & Animal Husbandry'}</option>
+              <option value="Kirana & General Stores">{isMr ? 'किराणा व जनरल स्टोअर्स' : 'Kirana & General Stores'}</option>
+              <option value="Electrical & Solar Tech">{isMr ? 'इलेक्ट्रिकल व सौर ऊर्जा' : 'Electrical & Solar Tech'}</option>
+              <option value="Building & Hardware">{isMr ? 'बांधकाम व हार्डवेअर' : 'Building & Hardware'}</option>
+              <option value="Tailoring & Textiles">{isMr ? 'कापड दुकान व टेलरिंग' : 'Tailoring & Textiles'}</option>
             </select>
           </div>
 
           <div>
             <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-              Shop Address (पत्ता)
+              {isMr ? 'दुकानाचा पत्ता' : 'Shop Address'}
             </label>
             <input
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              placeholder="e.g. Shop 12, Market Yard Road"
+              placeholder={isMr ? 'उदा. मुख्य रस्ता, आसगाव' : 'e.g. Main Market Road, Asgaon'}
               className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
           </div>
@@ -247,20 +253,20 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-                Landmark (ठिकाण / खूण)
+                {isMr ? 'ठिकाण / जवळची खूण *' : 'Landmark *'}
               </label>
               <input
                 type="text"
                 required
                 value={landmark}
                 onChange={(e) => setLandmark(e.target.value)}
-                placeholder="e.g. Near Bus Stand"
+                placeholder={isMr ? 'उदा. बस स्टँडजवळ' : 'e.g. Near Bus Stand'}
                 className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
               />
             </div>
             <div>
               <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-                Phone &amp; WhatsApp
+                {isMr ? 'मोबाईल / WhatsApp *' : 'Phone & WhatsApp *'}
               </label>
               <input
                 type="tel"
@@ -278,17 +284,19 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
               <div>
                 <label className="block text-[12px] font-extrabold text-[#166534] flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[16px] text-[#c2410c]">location_on</span>
-                  <span>Shop Location on Map (नकाशावर दुकानाचे थेट स्थान)</span>
+                  <LucideIcon name="location_on" className="text-[16px] text-[#c2410c]" />
+                  <span>{isMr ? 'नकाशावर दुकानाचे थेट स्थान' : 'Shop Location on Map'}</span>
                 </label>
                 <p className="text-[10px] text-[#707974]">
-                  ग्राहकांना थेट नकाशावर दुकान दिसण्यासाठी GPS किंवा नकाशावर जागा निवडा
+                  {isMr
+                    ? 'ग्राहकांना थेट नकाशावर दुकान दिसण्यासाठी GPS किंवा नकाशावर जागा निवडा'
+                    : 'Select your exact location so villagers can find your shop easily'}
                 </p>
               </div>
 
               {/* Coordinates Pill */}
               <div className="bg-white px-2 py-0.5 rounded-lg border border-[#e8e2d9] text-[10px] font-bold text-[#166534] shrink-0 self-start sm:self-auto flex items-center gap-1">
-                <span className="material-symbols-outlined text-[12px] text-[#c2410c]">pin_drop</span>
+                <LucideIcon name="pin_drop" className="text-[12px] text-[#c2410c]" />
                 <span>{latitude.toFixed(4)}° N, {longitude.toFixed(4)}° E</span>
               </div>
             </div>
@@ -301,8 +309,8 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
                 disabled={locatingGps}
                 className="px-3 py-1.5 rounded-lg bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold flex items-center gap-1.5 shadow-xs transition-colors disabled:opacity-50"
               >
-                <span className="material-symbols-outlined text-[15px] text-[#bbf7d0]">my_location</span>
-                <span>{locatingGps ? 'GPS शोधत आहे...' : '🎯 माझे थेट GPS स्थान मिळवा'}</span>
+                <LucideIcon name="my_location" className="text-[15px] text-[#a7f3d0]" />
+                <span>{locatingGps ? (isMr ? 'GPS शोधत आहे...' : 'Locating GPS...') : (isMr ? '🎯 माझे थेट GPS स्थान मिळवा' : '🎯 Detect My GPS Location')}</span>
               </button>
 
               <button
@@ -310,8 +318,8 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
                 onClick={() => setShowMapPicker(!showMapPicker)}
                 className="px-3 py-1.5 rounded-lg bg-white hover:bg-[#f3ede4] text-[#c2410c] border border-[#fed7aa] text-[11px] font-bold flex items-center gap-1.5 transition-colors shadow-2xs"
               >
-                <span className="material-symbols-outlined text-[15px]">map</span>
-                <span>{showMapPicker ? 'नकाशा लपवा' : '🗺️ नकाशावर जागा निवडा'}</span>
+                <LucideIcon name="map" className="text-[15px]" />
+                <span>{showMapPicker ? (isMr ? 'नकाशा लपवा' : 'Hide Map') : (isMr ? '🗺️ नकाशावर जागा निवडा' : '🗺️ Pick on Map')}</span>
               </button>
             </div>
 
@@ -333,12 +341,10 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
             {gpsStatus && (
               <div className={`p-2 rounded-lg text-[11px] font-medium flex items-center gap-1.5 ${
                 gpsStatus.startsWith('✓') 
-                  ? 'bg-[#bbf7d0] text-[#002117]' 
+                  ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]' 
                   : 'bg-[#fef3c7] text-[#ba1a1a]'
               }`}>
-                <span className="material-symbols-outlined text-[15px]">
-                  {gpsStatus.startsWith('✓') ? 'check_circle' : 'info'}
-                </span>
+                <LucideIcon name={gpsStatus.startsWith('✓') ? 'check_circle' : 'info'} className=" text-[15px]" />
                 <span>{gpsStatus}</span>
               </div>
             )}
@@ -361,26 +367,26 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
 
           <div>
             <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-              Opening Hours (वेळ)
+              {isMr ? 'दुकान उघडण्याची वेळ' : 'Opening Hours'}
             </label>
             <input
               type="text"
               value={hours}
               onChange={(e) => setHours(e.target.value)}
-              placeholder="e.g. 7:00 AM - 9:00 PM"
+              placeholder={isMr ? 'उदा. सकाळी ८:०० ते रात्री ८:००' : 'e.g. 8:00 AM - 8:00 PM'}
               className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
           </div>
 
-          {/* Cloudinary Shop Photo Upload */}
+          {/* Shop Photo Upload */}
           <div>
             <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-              Shop Front / Board Photo (दुकानाचे छायाचित्र)
+              {isMr ? 'दुकानाचे छायाचित्र' : 'Shop Front / Board Photo'}
             </label>
             <div className="flex items-center gap-3">
               <label className="cursor-pointer inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#166534] text-white text-[12px] font-bold hover:bg-[#052e16] transition-colors shadow-xs">
-                <span className="material-symbols-outlined text-[18px]">add_a_photo</span>
-                <span>{uploadingImage ? 'Uploading to Cloudinary...' : 'Upload Photo'}</span>
+                <LucideIcon name="add_a_photo" className="text-[18px]" />
+                <span>{uploadingImage ? (isMr ? 'फोटो अपलोड होत आहे...' : 'Uploading photo...') : (isMr ? 'फोटो निवडा' : 'Upload Photo')}</span>
                 <input
                   type="file"
                   accept="image/*"
@@ -398,19 +404,19 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
                     className="w-10 h-10 object-cover rounded-lg border border-[#006a4e]"
                   />
                   <span className="text-[11px] text-[#006a4e] font-bold flex items-center gap-0.5">
-                    <span className="material-symbols-outlined text-[15px]">check_circle</span>
-                    Attached
+                    <LucideIcon name="check_circle" className="text-[15px]" />
+                    {isMr ? 'जोडले' : 'Attached'}
                   </span>
                   <button
                     type="button"
                     onClick={() => setImageUrl('')}
                     className="text-[11px] text-[#ba1a1a] hover:underline font-semibold ml-1"
                   >
-                    Remove
+                    {isMr ? 'काढून टाका' : 'Remove'}
                   </button>
                 </div>
               ) : (
-                <span className="text-[11px] text-[#707974]">Optional (Defaults to verified local photo)</span>
+                <span className="text-[11px] text-[#707974]">{isMr ? 'ऐच्छिक (नसल्यास प्रमाणित डीफॉल्ट फोटो दिसेल)' : 'Optional (Defaults to verified local photo)'}</span>
               )}
             </div>
             {uploadError && (
@@ -420,13 +426,13 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
 
           <div>
             <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-              Description / Services Offered (सेवा वर्णन)
+              {isMr ? 'सेवा किंवा उत्पादनांचे वर्णन' : 'Description / Services Offered'}
             </label>
             <textarea
               rows={2}
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
-              placeholder="What goods or services do you provide to villagers?"
+              placeholder={isMr ? 'आपल्या दुकानात कोणत्या वस्तू किंवा सेवा उपलब्ध आहेत ते लिहा...' : 'What goods or services do you provide to villagers?'}
               className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
             />
           </div>
@@ -437,14 +443,16 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
               onClick={onClose}
               className="px-4 py-2 rounded-xl bg-[#f3ede4] text-[#1d1b16] text-[13px] font-bold hover:bg-[#e8e2d9] transition-colors"
             >
-              Cancel
+              {isMr ? 'रद्द करा' : 'Cancel'}
             </button>
             <button
               type="submit"
               disabled={loading}
               className="px-5 py-2 rounded-xl bg-[#c2410c] text-white text-[13px] font-bold hover:bg-[#852f00] transition-colors shadow-xs disabled:opacity-50"
             >
-              {loading ? 'Registering...' : 'Publish Free Listing'}
+              {loading
+                ? (isMr ? 'नोंदणी होत आहे...' : 'Registering...')
+                : (isMr ? 'दुकान नोंदवा' : 'Publish Free Listing')}
             </button>
           </div>
         </form>

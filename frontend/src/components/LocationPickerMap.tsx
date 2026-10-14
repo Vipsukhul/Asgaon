@@ -46,14 +46,14 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
               height: 28px;
               border-radius: 50%;
               background: #166534;
-              color: #bbf7d0;
+              color: #a7f3d0;
               border: 2px solid #ffffff;
               box-shadow: 0 2px 8px rgba(0,0,0,0.3);
               display: flex;
               align-items: center;
               justify-content: center;
             ">
-              <span class="material-symbols-outlined" style="font-size: 16px;">account_balance</span>
+              <LucideIcon name="account_balance" class="" style="font-size: 16px;" />
             </div>
             <div style="
               width: 0;
@@ -70,7 +70,7 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
         popupAnchor: [0, -30]
       });
       L.marker(ASGAON_CENTER, { icon: gpIcon })
-        .bindPopup('<b>ग्रामपंचायत आसगाव (Gram Panchayat HQ)</b>')
+        .bindPopup('<b>ग्रामपंचायत कार्यालय, आसगाव</b>')
         .addTo(map);
 
       // Main Draggable Pin Icon
@@ -90,7 +90,7 @@ export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
               align-items: center;
               justify-content: center;
             ">
-              <span class="material-symbols-outlined" style="font-size: 20px;">storefront</span>
+              <LucideIcon name="storefront" class="" style="font-size: 20px;" />
             </div>
             <div style="
               width: 0;

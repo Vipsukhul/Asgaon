@@ -8,7 +8,7 @@ export const VILLAGE_CONTACTS: VillageContact[] = [
   {
     id: 'vc1',
     name: 'श्री. एस. एन. जाधव',
-    designation: 'ग्रामसेवक (Gram Sevak)',
+    designation: 'ग्रामसेवक',
     phone: '9822104501',
     category: 'Administration',
     officeHours: 'सकाळी १० ते दुपारी २ (सोमवार ते शुक्रवार)',
@@ -17,7 +17,7 @@ export const VILLAGE_CONTACTS: VillageContact[] = [
   {
     id: 'vc2',
     name: 'सौ. सरिताताई पाटील',
-    designation: 'सरपंच (Sarpanch)',
+    designation: 'सरपंच',
     phone: '9822104502',
     category: 'Administration',
     officeHours: 'सकाळी ९ ते ११ व दुपारी ४ ते ६',
@@ -26,7 +26,7 @@ export const VILLAGE_CONTACTS: VillageContact[] = [
   {
     id: 'vc3',
     name: 'श्री. रमेश बोरकर',
-    designation: 'तलाठी (Talathi - Land Records)',
+    designation: 'तलाठी (महसूल विभाग)',
     phone: '9822104503',
     category: 'Administration',
     officeHours: 'मंगळवार व गुरुवार: सकाळी ११ ते दुपारी ३',
@@ -35,7 +35,7 @@ export const VILLAGE_CONTACTS: VillageContact[] = [
   {
     id: 'vc4',
     name: 'श्री. विष्णू कांबळे',
-    designation: 'पाणी पुरवठा ऑपरेटर (Water Operator)',
+    designation: 'पाणी पुरवठा व्यवस्थापक',
     phone: '9822081100',
     category: 'Water & Power',
     officeHours: 'सकाळी ६ ते १० व संध्याकाळी ४ ते ८',
@@ -44,7 +44,7 @@ export const VILLAGE_CONTACTS: VillageContact[] = [
   {
     id: 'vc5',
     name: 'श्री. गजानन म्हात्रे',
-    designation: 'महावितरण वायरमन / लाइनमन (Lineman)',
+    designation: 'महावितरण वायरमन',
     phone: '9422998877',
     category: 'Water & Power',
     officeHours: '२४ तास ऑन-कॉल (आपत्कालीन वीज सेवा)',
@@ -53,7 +53,7 @@ export const VILLAGE_CONTACTS: VillageContact[] = [
   {
     id: 'vc6',
     name: 'डॉ. स्नेहल झाळके',
-    designation: 'वैद्यकीय अधिकारी (PHC / Clinic Doctor)',
+    designation: 'वैद्यकीय अधिकारी (प्रा. आ. केंद्र)',
     phone: '9422001102',
     category: 'Health & Anganwadi',
     officeHours: 'सकाळी १० ते २ व संध्याकाळी ५ ते ९',
@@ -62,7 +62,7 @@ export const VILLAGE_CONTACTS: VillageContact[] = [
   {
     id: 'vc7',
     name: 'सौ. छायाबाई वाघमारे',
-    designation: 'आशा स्वयंसेविका (ASHA Worker - Ward 1 & 2)',
+    designation: 'आशा स्वयंसेविका',
     phone: '9765432111',
     category: 'Health & Anganwadi',
     officeHours: 'सकाळी ९ ते दुपारी ३',
@@ -71,7 +71,7 @@ export const VILLAGE_CONTACTS: VillageContact[] = [
   {
     id: 'vc8',
     name: 'श्री. नितीन देशमुख',
-    designation: 'कृषी सहाय्यक (Krishi Sahayak)',
+    designation: 'कृषी सहाय्यक',
     phone: '9822334455',
     category: 'Agriculture',
     officeHours: 'सोमवार व बुधवार: सकाळी १० ते दुपारी २',
@@ -121,10 +121,10 @@ export const WATER_SCHEDULE: WaterScheduleItem[] = [
 export const VILLAGE_PROJECTS: VillageProject[] = [
   {
     id: 'vp1',
-    title: 'मुख्य बाजार रस्ता सिमेंट काँक्रीटीकरण (CC Road)',
+    title: 'मुख्य बाजार रस्ता सिमेंट काँक्रीटीकरण',
     category: 'Road & Transport',
     sanctionedAmount: '₹१२,५०,०००',
-    fundSource: '१५ वा वित्त आयोग (15th Finance Commission)',
+    fundSource: '१५ वा वित्त आयोग',
     executingAgency: 'ग्रामपंचायत आसगाव',
     progressPercent: 75,
     status: 'IN_PROGRESS',
@@ -146,8 +146,8 @@ export const VILLAGE_PROJECTS: VillageProject[] = [
     title: 'गावातील सर्व मुख्य चौकात २० सोलर हायमास्ट दिवे',
     category: 'Electricity & Solar',
     sanctionedAmount: '₹४,२०,०००',
-    fundSource: 'जिल्हा नियोजन निधी (DPDC)',
-    executingAgency: 'मेडा (MEDA) अधिकृत कंत्राटदार',
+    fundSource: 'जिल्हा नियोजन निधी',
+    executingAgency: 'महाऊर्जा अधिकृत कंत्राटदार',
     progressPercent: 100,
     status: 'COMPLETED',
     targetDate: 'पूर्ण झाले'

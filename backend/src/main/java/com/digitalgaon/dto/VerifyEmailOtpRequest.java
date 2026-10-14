@@ -2,15 +2,10 @@ package com.digitalgaon.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class VerifyEmailOtpRequest {
     @NotBlank(message = "Email address is required")
     @Email(message = "Invalid email format")
@@ -21,4 +16,14 @@ public class VerifyEmailOtpRequest {
 
     private String role;
     private String fullName;
+
+    public VerifyEmailOtpRequest() {}
+
+    @Builder
+    public VerifyEmailOtpRequest(String email, String otp, String role, String fullName) {
+        this.email = email;
+        this.otp = otp;
+        this.role = role;
+        this.fullName = fullName;
+    }
 }

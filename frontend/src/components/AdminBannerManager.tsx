@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React, { useState } from 'react';
 import { api } from '../services/api';
 import { getStoredHeroSlides, saveStoredHeroSlides, DEFAULT_HERO_SLIDES } from '../data/heroSlidesData';
@@ -175,7 +176,7 @@ export const AdminBannerManager: React.FC = () => {
             </span>
           </div>
           <h2 className="font-heading font-extrabold text-xl text-[#166534]">
-            हिरो स्लायडर व बॅनर व्यवस्थापन (Hero Carousel Manager)
+            हिरो स्लायडर व बॅनर व्यवस्थापन
           </h2>
           <p className="text-xs text-stone-600">
             मुख्यपृष्ठावरील फोटो, जाहिराती, शासकीय योजनांचे बॅनर आणि मजकूर येथे व्यवस्थापित करा.
@@ -196,7 +197,7 @@ export const AdminBannerManager: React.FC = () => {
             onClick={handleOpenAddModal}
             className="px-4 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <span className="material-symbols-outlined text-[18px]">add_photo_alternate</span>
+            <LucideIcon name="add_photo_alternate" className="text-[18px]" />
             <span>नवीन स्लायडर जोडा</span>
           </button>
         </div>
@@ -206,10 +207,10 @@ export const AdminBannerManager: React.FC = () => {
       <div className="bg-gradient-to-r from-emerald-950 to-[#166534] rounded-2xl p-4 text-white text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
-            <span className="material-symbols-outlined text-amber-300 text-xl">cloud_upload</span>
+            <LucideIcon name="cloud_upload" className="text-amber-300 text-xl" />
           </div>
           <div>
-            <div className="font-bold text-sm text-white">क्लाउड इमेज होस्टिंग (Cloudinary) जोडलेले आहे</div>
+            <div className="font-bold text-sm text-white">क्लाउड इमेज होस्टिंग जोडलेले आहे</div>
             <div className="text-emerald-200/80 text-[11px]">
               Cloud: <code className="bg-black/20 px-1 py-0.5 rounded text-amber-300">dl5bq3ejh</code> • थेट हाय-डेफिनिशन फोटो अपलोड करा
             </div>
@@ -256,7 +257,7 @@ export const AdminBannerManager: React.FC = () => {
               <div className="w-24 h-16 sm:w-32 sm:h-20 rounded-xl overflow-hidden shrink-0 bg-stone-100 border border-stone-200 relative">
                 {slide.type === 'welcome' ? (
                   <div className="w-full h-full bg-[#f9f3ea] flex flex-col items-center justify-center p-2 text-center text-[#166534]">
-                    <span className="material-symbols-outlined text-lg">travel_explore</span>
+                    <LucideIcon name="travel_explore" className="text-lg" />
                     <span className="text-[9px] font-bold mt-0.5">मुख्य शोध हब</span>
                   </div>
                 ) : (
@@ -282,7 +283,7 @@ export const AdminBannerManager: React.FC = () => {
                     </span>
                   ) : (
                     <span className="px-2 py-0.5 bg-amber-50 text-amber-800 text-[10px] font-extrabold rounded-md border border-amber-200">
-                      {slide.showTextOverlay ? 'मजकुरासह बॅनर' : 'फक्त फोटो (Blank)'}
+                      {slide.showTextOverlay ? 'मजकुरासह बॅनर' : 'फक्त फोटो '}
                     </span>
                   )}
 
@@ -295,8 +296,8 @@ export const AdminBannerManager: React.FC = () => {
 
                 <h3 className="font-heading font-bold text-sm sm:text-base text-stone-900 truncate">
                   {slide.type === 'welcome'
-                    ? 'आपल्या गावाची सर्व माहिती, एकाच ठिकाणी (Universal Search)'
-                    : (slide.titleMarathi || slide.titleEnglish || 'फक्त फोटो बॅनर (No Overlay Text)')}
+                    ? 'आपल्या गावाची सर्व माहिती, एकाच ठिकाणी'
+                    : (slide.titleMarathi || slide.titleEnglish || 'फोटो बॅनर')}
                 </h3>
 
                 {slide.type === 'custom' && (
@@ -330,7 +331,7 @@ export const AdminBannerManager: React.FC = () => {
                     className="p-2 text-stone-600 hover:text-[#166534] hover:bg-stone-100 rounded-xl transition-all cursor-pointer"
                     title="संपादन करा"
                   >
-                    <span className="material-symbols-outlined text-[18px]">edit</span>
+                    <LucideIcon name="edit" className="text-[18px]" />
                   </button>
 
                   <button
@@ -339,7 +340,7 @@ export const AdminBannerManager: React.FC = () => {
                     className="p-2 text-red-600 hover:bg-red-50 rounded-xl transition-all cursor-pointer"
                     title="हटवा"
                   >
-                    <span className="material-symbols-outlined text-[18px]">delete</span>
+                    <LucideIcon name="delete" className="text-[18px]" />
                   </button>
                 </>
               )}
@@ -378,7 +379,7 @@ export const AdminBannerManager: React.FC = () => {
               {/* 1. Image Upload via Cloudinary */}
               <div className="flex flex-col gap-2">
                 <label className="font-bold text-stone-900 flex items-center justify-between">
-                  <span>फोटो निवडा (Cloudinary Upload)</span>
+                  <span>फोटो निवडा </span>
                   <span className="text-[11px] font-normal text-stone-500">JPG, PNG किंवा WebP</span>
                 </label>
 
@@ -390,7 +391,7 @@ export const AdminBannerManager: React.FC = () => {
                       onChange={handleFileUpload}
                       className="hidden"
                     />
-                    <span className="material-symbols-outlined text-emerald-700">add_photo_alternate</span>
+                    <LucideIcon name="add_photo_alternate" className="text-emerald-700" />
                     <span className="font-bold text-emerald-900">
                       {uploading ? 'Cloudinary वर अपलोड होत आहे...' : 'कॉम्प्युटर / मोबाईलवरून फोटो निवडा'}
                     </span>
@@ -430,7 +431,7 @@ export const AdminBannerManager: React.FC = () => {
                       </div>
                     ) : (
                       <span className="absolute bottom-2 right-2 px-2 py-0.5 bg-black/70 text-white text-[10px] font-bold rounded">
-                        फक्त फोटो (Blank)
+                        फक्त फोटो 
                       </span>
                     )}
                   </div>
@@ -441,7 +442,7 @@ export const AdminBannerManager: React.FC = () => {
               <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200 flex items-center justify-between">
                 <div>
                   <span className="font-bold text-stone-900 text-sm block">
-                    फोटोवर मजकूर दाखवायचा आहे का? (Text Overlay)
+                    फोटोवर मजकूर दाखवायचा आहे का? 
                   </span>
                   <span className="text-stone-500 text-[11px]">
                     जर नको असेल, तर हा पर्याय बंद करा. मुख्यपृष्ठावर फक्त सुंदर फोटो दिसेल.
@@ -470,7 +471,7 @@ export const AdminBannerManager: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="font-bold text-stone-800 block mb-1">शीर्षक (English)</label>
+                      <label className="font-bold text-stone-800 block mb-1">शीर्षक </label>
                       <input
                         type="text"
                         value={formData.titleEnglish}
@@ -504,7 +505,7 @@ export const AdminBannerManager: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="font-bold text-stone-800 block mb-1">बटन मजकूर (CTA)</label>
+                      <label className="font-bold text-stone-800 block mb-1">बटन मजकूर </label>
                       <input
                         type="text"
                         value={formData.ctaTextMarathi}
@@ -520,13 +521,13 @@ export const AdminBannerManager: React.FC = () => {
                         onChange={(e) => setFormData(prev => ({ ...prev, ctaLink: e.target.value }))}
                         className="w-full px-3 py-2 border border-stone-300 rounded-xl text-xs bg-white cursor-pointer"
                       >
-                        <option value="schemes">शासकीय योजना (Schemes)</option>
-                        <option value="krishi">कृषी व बाजारभाव (Krishi)</option>
-                        <option value="events">गावातील कार्यक्रम (Events)</option>
-                        <option value="announcements">सूचना व परिपत्रके (Notices)</option>
-                        <option value="businesses">स्थानिक दुकाने (Businesses)</option>
-                        <option value="jobs">रोजगार मंच (Jobs)</option>
-                        <option value="emergency">आपत्कालीन मदत (Emergency)</option>
+                        <option value="schemes">शासकीय योजना </option>
+                        <option value="krishi">कृषी व बाजारभाव </option>
+                        <option value="events">गावातील कार्यक्रम </option>
+                        <option value="announcements">सूचना व परिपत्रके </option>
+                        <option value="businesses">स्थानिक दुकाने </option>
+                        <option value="jobs">रोजगार मंच </option>
+                        <option value="emergency">आपत्कालीन मदत </option>
                       </select>
                     </div>
                   </div>

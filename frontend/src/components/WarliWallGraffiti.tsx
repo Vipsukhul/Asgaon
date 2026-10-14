@@ -284,7 +284,7 @@ export const WarliGrainStalk: React.FC<{ className?: string; color?: string }> =
 export const VillageGraffitiBackdrop: React.FC = () => {
   return (
     <div
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none opacity-[0.038] text-stone-900 mix-blend-multiply"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none opacity-[0.06] text-stone-900 mix-blend-multiply"
       aria-hidden="true"
     >
       {/* Top Left: Warli Tree of Life */}

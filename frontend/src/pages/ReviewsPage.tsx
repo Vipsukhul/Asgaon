@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect, useMemo } from 'react';
 import type { Business } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
@@ -21,72 +22,72 @@ const SEED_REVIEWS: PublicReview[] = [
   {
     id: 'rev-1',
     businessId: '1',
-    businessName: 'खडके किराणा आणि जनरल स्टोअर्स (Khadke Kirana)',
+    businessName: 'खडके किराणा आणि जनरल स्टोअर्स',
     businessSlug: 'khadke-kirana',
-    userName: 'रमेश पाटील (Rameshwar Patil)',
+    userName: 'रमेश पाटील',
     wardOrArea: 'वॉर्ड २ (गावठाण)',
     rating: 5,
-    date: 'काल (Yesterday)',
+    date: 'काल',
     comment: 'उत्कृष्ट सेवा आणि वाजवी दर. वेळेवर सर्व धान्य व किराणा माल उपलब्ध असतो. गावातच अशी दर्जेदार सोय असल्याने पवनीला जाण्याची गरज भासत नाही.',
     verifiedCitizen: true
   },
   {
     id: 'rev-2',
     businessId: '2',
-    businessName: 'पाटील कृषी केंद्र (Patil Krishi Kendra)',
+    businessName: 'पाटील कृषी केंद्र',
     businessSlug: 'patil-krishi-kendra',
-    userName: 'सुनीता झाळके (Sunita Zalke)',
+    userName: 'सुनीता झाळके',
     wardOrArea: 'आंबेडकर वॉर्ड १',
     rating: 5,
-    date: '३ दिवसांपूर्वी (3 days ago)',
+    date: '३ दिवसांपूर्वी',
     comment: 'अतिशय नम्र बोलणे आणि खात्रीशीर बियाणे. रासायनिक व सेंद्रिय खतांचा योग्य सल्ला देतात. सर्व शेतकरी बांधवांना नक्की शिफारस करतो.',
     verifiedCitizen: true
   },
   {
     id: 'rev-3',
     businessId: '3',
-    businessName: 'सोनवणे मेडिकल व क्लिनिक (Sonone Medical)',
+    businessName: 'सोनवणे मेडिकल व क्लिनिक',
     businessSlug: 'sonone-medical',
-    userName: 'विठ्ठल मेश्राम (Vitthal Meshram)',
+    userName: 'विठ्ठल मेश्राम',
     wardOrArea: 'विठ्ठल मंदिर परिसर वॉर्ड ३',
     rating: 5,
-    date: '१ आठवड्यापूर्वी (1 week ago)',
+    date: '१ आठवड्यापूर्वी',
     comment: 'तातडीच्या वेळी रात्रीही आवश्यक औषधे उपलब्ध करून दिली. बीपी व शुगर तपासणी मोफत केली जाते. अतिशय तत्पर सेवा.',
     verifiedCitizen: true
   },
   {
     id: 'rev-4',
     businessId: '4',
-    businessName: 'गायत्री झेरॉक्स व सीएससी केंद्र (Gayatri CSC Center)',
+    businessName: 'गायत्री झेरॉक्स व सीएससी केंद्र',
     businessSlug: 'gayatri-csc',
-    userName: 'प्रशांत चौधरी (Prashant Choudhari)',
+    userName: 'प्रशांत चौधरी',
     wardOrArea: 'वॉर्ड ४ (शिवार)',
     rating: 4,
-    date: '२ आठवड्यांपूर्वी (2 weeks ago)',
+    date: '२ आठवड्यांपूर्वी',
     comment: 'लाडकी बहीण योजना व पीएम किसान ई-केवायसीचे काम अगदी कमी वेळेत करून दिले. डिजिटल प्रिंटिंगची सोय उत्तम आहे.',
     verifiedCitizen: true
   },
   {
     id: 'rev-5',
     businessId: '1',
-    businessName: 'खडके किराणा आणि जनरल स्टोअर्स (Khadke Kirana)',
+    businessName: 'खडके किराणा आणि जनरल स्टोअर्स',
     businessSlug: 'khadke-kirana',
-    userName: 'संजय कापसे (Sanjay Kapse)',
+    userName: 'संजय कापसे',
     wardOrArea: 'गावठाण वॉर्ड २',
     rating: 5,
-    date: '२ आठवड्यांपूर्वी (2 weeks ago)',
+    date: '२ आठवड्यांपूर्वी',
     comment: 'स्वच्छ किराणा, डिजिटल यूपीआय पेमेंट व घरपोच सेवा. आसगावमधील सर्वात विश्वासू दुकान!',
     verifiedCitizen: true
   },
   {
     id: 'rev-6',
     businessId: '5',
-    businessName: 'माऊली ट्रॅक्टर व कृषी अवजारे (Mauli Tractors)',
+    businessName: 'माऊली ट्रॅक्टर व कृषी अवजारे',
     businessSlug: 'mauli-tractors',
-    userName: 'अनिल भोंगाडे (Anil Bhongade)',
+    userName: 'अनिल भोंगाडे',
     wardOrArea: 'वॉर्ड ३ (मंदिर चौक)',
     rating: 5,
-    date: '३ आठवड्यांपूर्वी (3 weeks ago)',
+    date: '३ आठवड्यांपूर्वी',
     comment: 'नांगरणी व रोटाव्हेटरचे काम वेळेत पूर्ण केले. डिझेलचे दर आणि अवजारांचे भाडे अतिशय वाजवी आहे.',
     verifiedCitizen: true
   }
@@ -105,7 +106,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
   onSelectBusiness,
   onSelectBusinessSlug
 }) => {
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const isMr = lang === 'MR';
 
   const [allReviews, setAllReviews] = useState<PublicReview[]>(() => {
@@ -205,7 +206,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
       userName: formName.trim(),
       wardOrArea: formWard,
       rating: formRating,
-      date: isMr ? 'आत्ताच (Just now)' : 'Just now',
+      date: isMr ? 'आत्ताच' : 'Just now',
       comment: formComment.trim(),
       verifiedCitizen: Boolean(formPhone.trim())
     };
@@ -247,14 +248,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
     return (
       <div className="flex items-center gap-0.5 text-[#ef9f27]">
         {[1, 2, 3, 4, 5].map((star) => (
-          <span
-            key={star}
-            className={`material-symbols-outlined text-[18px] ${
-              star <= rating ? 'font-fill text-[#ef9f27]' : 'text-[#d6d0c4]'
-            }`}
-          >
-            star
-          </span>
+          <LucideIcon name="star" key={star} className={` text-[18px] ${ star <= rating ? 'font-fill text-[#ef9f27]' : 'text-[#d6d0c4]' }`} />
         ))}
       </div>
     );
@@ -276,16 +270,16 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-10 relative z-10">
           <Breadcrumb
             items={[
-              { label: isMr ? 'मुख्य पृष्ठ' : 'Home', onClick: onNavigateHome },
-              { label: isMr ? 'स्थानिक दुकाने' : 'Businesses', onClick: () => onNavigateHome?.() },
-              { label: isMr ? 'नागरिक अभिप्राय मंच' : 'Community Reviews', active: true }
+              { label: t('nav_home'), onClick: onNavigateHome },
+              { label: t('nav_businesses'), onClick: () => onNavigateHome?.() },
+              { label: isMr ? 'नागरिक अभिप्राय' : 'Citizen Reviews', active: true }
             ]}
           />
 
           <div className="mt-4 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#bbf7d0]/20 text-[#bbf7d0] border border-[#bbf7d0]/30 text-[11px] font-bold uppercase tracking-wider mb-2">
-                <span className="material-symbols-outlined text-[15px]">verified</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#e8f1ec]/60 text-[#a7f3d0] border border-[#cadbcf]/30 text-[11px] font-bold uppercase tracking-wider mb-2">
+                <LucideIcon name="verified" className="text-[15px]" />
                 <span>{isMr ? '१००% पारदर्शक व सत्यापित नागरी अभिप्राय' : '100% Verified Community Feedback'}</span>
               </div>
               <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
@@ -306,9 +300,9 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                 }
                 setIsModalOpen(true);
               }}
-              className="px-5 py-3 rounded-xl bg-[#bbf7d0] hover:bg-[#a3e2c9] text-[#166534] font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+              className="px-5 py-3 rounded-xl bg-[#a7f3d0] hover:bg-[#a3e2c9] text-[#166534] font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[18px]">rate_review</span>
+              <LucideIcon name="rate_review" className="text-[18px]" />
               <span>{isMr ? 'नवीन अभिप्राय नोंदवा' : 'Write a Review'}</span>
             </button>
           </div>
@@ -316,9 +310,9 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
           {/* Metric Stats Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-6">
             <div className="bg-black/20 backdrop-blur-md rounded-2xl p-4 border border-white/10 text-center">
-              <div className="text-[#bbf7d0] font-black text-2xl sm:text-3xl flex items-center justify-center gap-1">
+              <div className="text-[#a7f3d0] font-black text-2xl sm:text-3xl flex items-center justify-center gap-1">
                 <span>{stats.avg}</span>
-                <span className="material-symbols-outlined text-[20px] text-[#ef9f27] font-fill">star</span>
+                <LucideIcon name="star" className="text-[20px] text-[#ef9f27] font-fill" />
               </div>
               <div className="text-[11px] text-[#d6eee4]/80 font-bold mt-1 uppercase tracking-wider">
                 {isMr ? 'सरासरी मानांकन' : 'Average Rating'}
@@ -335,7 +329,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
             </div>
 
             <div className="bg-black/20 backdrop-blur-md rounded-2xl p-4 border border-white/10 text-center">
-              <div className="text-[#bbf7d0] font-black text-2xl sm:text-3xl">
+              <div className="text-[#a7f3d0] font-black text-2xl sm:text-3xl">
                 {stats.percentPositive}%
               </div>
               <div className="text-[11px] text-[#d6eee4]/80 font-bold mt-1 uppercase tracking-wider">
@@ -361,9 +355,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
         <div className="bg-white rounded-2xl border border-[#e8e2d9] p-4 shadow-xs mb-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
           {/* Search Input */}
           <div className="relative flex-1">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]">
-              search
-            </span>
+            <LucideIcon name="search" className=" absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
             <input
               type="text"
               value={searchQuery}
@@ -384,7 +376,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
               onChange={(e) => setSelectedBusinessFilter(e.target.value)}
               className="p-2 rounded-xl bg-white border border-[#e8e2d9] text-xs font-bold text-[#166534] focus:outline-none focus:border-[#006a4e] cursor-pointer"
             >
-              <option value="all">{isMr ? 'सर्व दुकाने (All Shops)' : 'All Businesses'}</option>
+              <option value="all">{isMr ? 'सर्व दुकाने' : 'All Businesses'}</option>
               {businesses.map((b) => (
                 <option key={b.id} value={String(b.id)}>
                   {b.name}
@@ -401,7 +393,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
               }}
               className="p-2 rounded-xl bg-white border border-[#e8e2d9] text-xs font-bold text-[#166534] focus:outline-none focus:border-[#006a4e] cursor-pointer"
             >
-              <option value="all">{isMr ? 'सर्व स्टार (All Ratings)' : 'All Stars'}</option>
+              <option value="all">{isMr ? 'सर्व मानांकन' : 'All Stars'}</option>
               <option value="5">⭐⭐⭐⭐⭐ (५ स्टार)</option>
               <option value="4">⭐⭐⭐⭐ (४ स्टार)</option>
               <option value="3">⭐⭐⭐ (३ स्टार)</option>
@@ -413,9 +405,9 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
               onChange={(e) => setSortBy(e.target.value as any)}
               className="p-2 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9] text-xs font-bold text-[#55605a] focus:outline-none focus:border-[#006a4e] cursor-pointer"
             >
-              <option value="recent">{isMr ? 'नवीनतम (Recent)' : 'Most Recent'}</option>
-              <option value="highest">{isMr ? 'उच्च मानांकन (Highest)' : 'Highest Rated'}</option>
-              <option value="lowest">{isMr ? 'कमी मानांकन (Lowest)' : 'Lowest Rated'}</option>
+              <option value="recent">{isMr ? 'नवीनतम' : 'Most Recent'}</option>
+              <option value="highest">{isMr ? 'उच्च मानांकन' : 'Highest Rated'}</option>
+              <option value="lowest">{isMr ? 'कमी मानांकन' : 'Lowest Rated'}</option>
             </select>
           </div>
         </div>
@@ -435,16 +427,14 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                 }}
                 className="text-[#006a4e] hover:underline cursor-pointer"
               >
-                {isMr ? 'फिल्टर काढा (Reset)' : 'Reset Filters'}
+                {isMr ? 'फिल्टर काढा' : 'Reset Filters'}
               </button>
             )}
           </div>
 
           {filteredReviews.length === 0 ? (
             <div className="bg-white rounded-2xl border border-[#e8e2d9] p-12 text-center shadow-xs">
-              <span className="material-symbols-outlined text-[48px] text-[#707974] mb-3 block">
-                search_off
-              </span>
+              <LucideIcon name="search_off" className=" text-[48px] text-[#707974] mb-3 block" />
               <h3 className="font-heading font-extrabold text-base text-[#1d1b16]">
                 {isMr ? 'एकही अभिप्राय सापडला नाही' : 'No Reviews Found'}
               </h3>
@@ -474,8 +464,8 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                               {rev.userName}
                             </span>
                             {rev.verifiedCitizen && (
-                              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-[#bbf7d0]/40 text-[#006a4e] text-[10px] font-bold">
-                                <span className="material-symbols-outlined text-[11px]">verified</span>
+                              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-[#e8f1ec] text-[#006a4e] text-[10px] font-bold">
+                                <LucideIcon name="verified" className="text-[11px]" />
                                 <span>{isMr ? 'सत्यापित' : 'Verified'}</span>
                               </span>
                             )}
@@ -492,7 +482,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                     {/* Target Business Tag */}
                     <div className="mb-2.5">
                       <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#f9f3ea] text-[#166534] text-[11px] font-bold border border-[#e8e2d9]">
-                        <span className="material-symbols-outlined text-[13px] text-[#c2410c]">storefront</span>
+                        <LucideIcon name="storefront" className="text-[13px] text-[#c2410c]" />
                         <span>{rev.businessName}</span>
                       </span>
                     </div>
@@ -506,7 +496,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                   {/* Footer Action */}
                   <div className="pt-3 mt-3 border-t border-[#f3ede4] flex items-center justify-between text-[11px] text-[#707974]">
                     <span className="flex items-center gap-1 text-[#006a4e] font-semibold">
-                      <span className="material-symbols-outlined text-[14px]">thumb_up</span>
+                      <LucideIcon name="thumb_up" className="text-[14px]" />
                       <span>{isMr ? 'उपयुक्त अभिप्राय' : 'Helpful Review'}</span>
                     </span>
 
@@ -522,7 +512,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                       className="text-[#166534] font-bold hover:underline flex items-center gap-0.5 cursor-pointer"
                     >
                       <span>{isMr ? 'दुकान पहा' : 'View Shop'}</span>
-                      <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
+                      <LucideIcon name="arrow_forward" className="text-[13px]" />
                     </button>
                   </div>
                 </div>
@@ -540,11 +530,11 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
               onClick={() => setIsModalOpen(false)}
               className="absolute top-4 right-4 text-[#707974] hover:text-[#1d1b16] p-1 rounded-full hover:bg-[#f3ede4] cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <LucideIcon name="close" className="text-[20px]" />
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#006a4e] text-[24px]">rate_review</span>
+              <LucideIcon name="rate_review" className="text-[#006a4e] text-[24px]" />
               <div>
                 <h3 className="font-heading font-extrabold text-[16px] text-[#166534]">
                   {isMr ? 'नवीन नागरी अभिप्राय नोंदवा' : 'Submit Citizen Review'}
@@ -556,10 +546,8 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
             </div>
 
             {submitSuccess ? (
-              <div className="p-6 text-center bg-[#bbf7d0]/20 rounded-xl border border-[#bbf7d0] my-4">
-                <span className="material-symbols-outlined text-[#006a4e] text-[36px] mb-2 block">
-                  check_circle
-                </span>
+              <div className="p-6 text-center bg-[#e8f1ec]/60 rounded-xl border border-[#cadbcf] my-4">
+                <LucideIcon name="check_circle" className=" text-[#006a4e] text-[36px] mb-2 block" />
                 <strong className="text-sm text-[#166534] block">
                   {isMr ? 'अभिप्राय यशस्वीरीत्या नोंदवला गेला!' : 'Review Submitted Successfully!'}
                 </strong>
@@ -591,7 +579,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                       </option>
                     ))}
                     {businesses.length === 0 && (
-                      <option value="1">खडके किराणा आणि जनरल स्टोअर्स (Khadke Kirana)</option>
+                      <option value="1">खडके किराणा आणि जनरल स्टोअर्स</option>
                     )}
                   </select>
                 </div>
@@ -599,7 +587,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                 {/* Rating Stars Picker */}
                 <div>
                   <label className="font-bold text-[#166534] block mb-1">
-                    {isMr ? 'मानांकन द्या (Star Rating) *' : 'Your Rating *'}
+                    {isMr ? 'मानांकन द्या *' : 'Your Rating *'}
                   </label>
                   <div className="flex items-center gap-2 p-2 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9]">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -609,21 +597,15 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                         onClick={() => setFormRating(star)}
                         className="cursor-pointer focus:outline-none p-1 hover:scale-110 transition-transform"
                       >
-                        <span
-                          className={`material-symbols-outlined text-[26px] ${
-                            star <= formRating ? 'font-fill text-[#ef9f27]' : 'text-[#d6d0c4]'
-                          }`}
-                        >
-                          star
-                        </span>
+                        <LucideIcon name="star" className={` text-[26px] ${ star <= formRating ? 'font-fill text-[#ef9f27]' : 'text-[#d6d0c4]' }`} />
                       </button>
                     ))}
                     <span className="ml-auto text-[11px] font-bold text-[#166534]">
-                      {formRating === 5 && (isMr ? 'उत्कृष्ट (5 Star)' : 'Excellent')}
-                      {formRating === 4 && (isMr ? 'खूप छान (4 Star)' : 'Very Good')}
-                      {formRating === 3 && (isMr ? 'चांगले (3 Star)' : 'Average')}
-                      {formRating === 2 && (isMr ? 'साधारण (2 Star)' : 'Fair')}
-                      {formRating === 1 && (isMr ? 'असमाधानकारक (1 Star)' : 'Poor')}
+                      {formRating === 5 && (isMr ? 'उत्कृष्ट (५ स्टार)' : 'Excellent')}
+                      {formRating === 4 && (isMr ? 'खूप छान (४ स्टार)' : 'Very Good')}
+                      {formRating === 3 && (isMr ? 'चांगले (३ स्टार)' : 'Average')}
+                      {formRating === 2 && (isMr ? 'साधारण (२ स्टार)' : 'Fair')}
+                      {formRating === 1 && (isMr ? 'असमाधानकारक (१ स्टार)' : 'Poor')}
                     </span>
                   </div>
                 </div>

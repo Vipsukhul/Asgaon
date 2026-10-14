@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React from 'react';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { useLanguage } from '../context/LanguageContext';
@@ -56,7 +57,7 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
       badge: lang === 'MR' ? 'ग्रामपंचायत प्रशासन' : 'Panchayat Administration',
       category: lang === 'MR' ? 'नागरी अडचणी' : 'Civic Grievances',
       icon: 'shield_person',
-      bg: 'bg-[#bbf7d0] text-[#002117]'
+      bg: 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]'
     },
     {
       id: 6,
@@ -65,7 +66,7 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
       badge: lang === 'MR' ? 'टोल-फ्री शेतकरी मदत' : 'Toll-Free Kisan Desk',
       category: lang === 'MR' ? 'कृषी सल्ला' : 'Pest & Livestock Alert',
       icon: 'phone_in_talk',
-      bg: 'bg-[#bbf7d0] text-[#002117]'
+      bg: 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]'
     }
   ];
 
@@ -74,11 +75,11 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
       <Breadcrumb
         items={[
           { label: t('nav_home'), onClick: onNavigateHome },
-          { label: lang === 'MR' ? 'आपत्कालीन थेट संपर्क क्रमांक' : 'Emergency Speed-Dial Directory', active: true }
+          { label: t('nav_emergency'), active: true }
         ]}
         rightBadge={
           <div className="flex items-center gap-1.5 bg-[#fef3c7] text-[#93000a] px-3 py-1 rounded-full text-[11px] font-bold">
-            <span className="material-symbols-outlined text-[15px] text-[#ba1a1a]">e911_emergency</span>
+            <LucideIcon name="e911_emergency" className="text-[15px] text-[#ba1a1a]" />
             <span>{lang === 'MR' ? '२४x७ नागरिकांसाठी थेट मदत' : '24x7 Immediate Citizen Hotline'}</span>
           </div>
         }
@@ -87,7 +88,7 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
       <div className="bg-[#fef3c7] text-[#93000a] rounded-2xl p-6 border border-[#fde68a] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="material-symbols-outlined text-[28px] text-[#ba1a1a]">e911_emergency</span>
+            <LucideIcon name="e911_emergency" className="text-[28px] text-[#ba1a1a]" />
             <h1 className="font-heading font-extrabold text-[24px] text-[#ba1a1a]">
               {lang === 'MR' ? 'आसगाव २४/७ आपत्कालीन थेट संपर्क' : 'Asgaon 24/7 Emergency Speed-Dial Directory'}
             </h1>
@@ -103,7 +104,7 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
           href="tel:112"
           className="px-5 py-3 rounded-xl bg-[#ba1a1a] text-white hover:bg-[#93000a] text-[14px] font-bold flex items-center gap-2 shadow-sm transition-colors shrink-0"
         >
-          <span className="material-symbols-outlined text-[20px]">call</span>
+          <LucideIcon name="call" className="text-[20px]" />
           <span>{lang === 'MR' ? 'डायल ११२ (पोलीस मदत)' : 'Dial 112 National Police'}</span>
         </a>
       </div>
@@ -127,7 +128,7 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
 
               {h.name && (
                 <p className="text-[12px] font-bold text-emerald-800 mb-2 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[15px]">person</span>
+                  <LucideIcon name="person" className="text-[15px]" />
                   <span>{h.name}</span>
                 </p>
               )}
@@ -139,7 +140,7 @@ export const EmergencyPage: React.FC<EmergencyPageProps> = ({ onNavigateHome }) 
                 href={`tel:${h.phone}`}
                 className="px-4 py-2 rounded-xl bg-emerald-800 text-white hover:bg-emerald-900 text-[13px] font-extrabold flex items-center gap-1.5 shadow-sm transition-all active:scale-95 cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[16px]">call</span>
+                <LucideIcon name="call" className="text-[16px]" />
                 <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
               </a>
             </div>

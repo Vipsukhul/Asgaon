@@ -1,17 +1,12 @@
 package com.digitalgaon.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class BusinessRequest {
     @NotBlank(message = "Business name is required")
     private String name;
@@ -27,6 +22,26 @@ public class BusinessRequest {
     private String verificationBadge;
     private BigDecimal latitude;
     private BigDecimal longitude;
-    @Builder.Default
     private BigDecimal rating = new BigDecimal("5.0");
+
+    public BusinessRequest() {}
+
+    @Builder
+    public BusinessRequest(String name, String category, String description, String address, String landmark,
+                           String phone, String whatsapp, String openingHours, String imageUrl,
+                           String verificationBadge, BigDecimal latitude, BigDecimal longitude, BigDecimal rating) {
+        this.name = name;
+        this.category = category;
+        this.description = description;
+        this.address = address;
+        this.landmark = landmark;
+        this.phone = phone;
+        this.whatsapp = whatsapp;
+        this.openingHours = openingHours;
+        this.imageUrl = imageUrl;
+        this.verificationBadge = verificationBadge;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.rating = rating != null ? rating : new BigDecimal("5.0");
+    }
 }

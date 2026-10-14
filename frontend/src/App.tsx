@@ -1,3 +1,4 @@
+import { LucideIcon } from './components/LucideIcon';
 import { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { OfficialAlertTicker } from './components/OfficialAlertTicker';
@@ -10,6 +11,7 @@ import { GovtSchemesSection } from './components/GovtSchemesSection';
 import { GrievanceDeskSection } from './components/GrievanceDeskSection';
 import { PanchayatNoticeStrip } from './components/PanchayatNoticeStrip';
 import { Footer } from './components/Footer';
+import { VillageGraffitiBackdrop } from './components/WarliWallGraffiti';
 
 // Independent Pages
 import { ProfilePage, type UserProfileData } from './pages/ProfilePage';
@@ -107,73 +109,73 @@ export function App() {
         };
       case 'krishi':
         return {
-          title: 'कृषी केंद्र व थेट बाजारभाव (Pauni APMC Mandi)',
+          title: 'कृषी व बाजारभाव — आसगाव',
           description: 'पवनी कृषी उत्पन्न बाजार समिती धान, सोयाबीन, कापूस व तूर आजचे थेट बाजारभाव व कृषी सल्ला.',
           canonicalPath: '/krishi'
         };
       case 'transport':
         return {
-          title: 'एसटी बस वेळापत्रक व वाहतूक (Asgaon MSRTC)',
+          title: 'वाहतूक व बस — आसगाव',
           description: 'आसगाव बस थांबा — पवनी, भंडारा व नागपूर एसटी बसेस, ५०% महिला सवलत पास व स्थानिक वाहतूक.',
           canonicalPath: '/transport'
         };
       case 'businesses':
         return {
-          title: 'स्थानिक दुकाने व सेवा डिरेक्टरी',
+          title: 'स्थानिक दुकाने — आसगाव',
           description: 'आसगाव परिसरातील सर्व प्रमाणित स्थानिक दुकाने, कृषी केंद्र, किराणा, दवाखाने व व्यापारी संपर्क.',
           canonicalPath: '/businesses'
         };
       case 'reviews':
         return {
-          title: 'स्थानिक नागरिक व ग्राहक अभिप्राय मंच (Community Reviews & Ratings)',
+          title: 'नागरिक अभिप्राय — आसगाव',
           description: 'आसगाव परिसरातील दुकाने, कृषी केंद्र, दवाखाने व सेवांचे गावकऱ्यांनी दिलेले थेट अभिप्राय व मानांकन.',
           canonicalPath: '/reviews'
         };
       case 'jobs':
         return {
-          title: 'ग्राम रोजगार व कामगार मंच (Jobs & Wages)',
+          title: 'रोजगार मंच — आसगाव',
           description: 'आसगाव रोजगार मंच — शेती मजूर, ट्रॅक्टर चालक, कारागीर व स्थानिक रोजगाराच्या संधी.',
           canonicalPath: '/jobs'
         };
       case 'shiksha':
         return {
-          title: 'शिक्षण, शाळा व ग्राम वाचनालय',
+          title: 'शिक्षण व शाळा — आसगाव',
           description: 'आसगाव जिल्हा परिषद शाळा, शिष्यवृत्ती, स्पर्धा परीक्षा वाचनालय व उच्च शिक्षण मार्गदर्शन.',
           canonicalPath: '/shiksha'
         };
       case 'announcements':
         return {
-          title: 'ग्रामपंचायत अधिकृत सूचना व परिपत्रके',
+          title: 'ग्राम सूचना — आसगाव',
           description: 'आसगाव ग्रामपंचायत अधिकृत सूचना फलक — ग्रामसभा ठराव, कर पावती व विकासकामे.',
           canonicalPath: '/announcements'
         };
       case 'events':
         return {
-          title: 'गावातील कार्यक्रम व वार्षिक जत्रा',
+          title: 'गावातील कार्यक्रम — आसगाव',
           description: 'आसगाव खंडोबा जत्रा, सार्वजनिक उत्सव, पोळा व सांस्कृतिक कार्यक्रम दिनदर्शिका.',
           canonicalPath: '/events'
         };
       case 'marketplace':
         return {
-          title: 'ग्राम बाजार (खरेदी-विक्री मंच)',
+          title: 'ग्राम बाजार — आसगाव',
           description: 'आसगाव शेतीमाल, दुभती जनावरे, ट्रॅक्टर व स्थानिक उत्पादनांची थेट खरेदी-विक्री.',
           canonicalPath: '/marketplace'
         };
       case 'blogs':
         return {
-          title: 'ग्राम वार्ता व माहिती लेख',
+          title: 'माहिती लेख व ब्लॉग — आसगाव',
           description: 'आसगाव गावकऱ्यांचे अनुभव, कृषी यशोगाथा, शासकीय मार्गदर्शन व लोकवार्ता.',
           canonicalPath: '/blogs'
         };
       case 'emergency':
         return {
-          title: 'आपत्कालीन थेट संपर्क (१०८, ११२)',
+          title: 'आपत्कालीन सेवा — आसगाव',
           description: 'आसगाव आपत्कालीन सेवा — रुग्णवाहिका, पोलीस, अग्निशामक, सर्पमित्र व महावितरण २४/७ थेट संपर्क.',
           canonicalPath: '/emergency'
         };
       case 'admin':
         return {
-          title: 'प्रशासन पॅनेल (Admin Portal)',
+          title: 'प्रशासन पॅनेल — आसगाव',
           description: 'आसगाव ग्राम माहिती मंच प्रशासकीय व्यवस्थापन कक्ष.',
           canonicalPath: '/admin'
         };
@@ -605,7 +607,9 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fdfbf7] text-[#1d1b16] flex flex-col font-sans">
+    <div className="min-h-screen bg-[#fdfbf7] text-[#1d1b16] flex flex-col font-sans relative">
+      {/* Authentic Village Folk Art Graffiti Backdrop */}
+      <VillageGraffitiBackdrop />
 
       {/* 1. Header with dynamic navigation */}
       <Header
@@ -622,7 +626,7 @@ export function App() {
       {/* Floating Server Wake-up notification */}
       {isServerWaking && (
         <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-amber-500 text-stone-950 text-xs sm:text-sm font-semibold px-4 py-1.5 rounded-full shadow-lg flex items-center gap-2 border border-amber-300">
-          <span className="material-symbols-outlined text-base animate-spin">sync</span>
+          <LucideIcon name="sync" className="text-base animate-spin" />
           <span>कृपया क्षणभर प्रतीक्षा करा..</span>
         </div>
       )}
@@ -887,17 +891,17 @@ export function App() {
               grievances={grievances}
               onOpenReportModal={() => setGrievanceModalOpen(true)}
               onTrackComplaint={async () => {
-                const token = prompt('Enter your Grievance Token (e.g. ASG-2026-XXXXX or KS-9502):');
+                const token = prompt('Enter Grievance Ref (उदा. ASG-2026-XXXXX):');
                 if (token && token.trim()) {
                   try {
                     const comp = await api.trackComplaint(token.trim());
                     if (comp) {
                       alert(`Grievance [${comp.trackingNumber}]:\n• Title: ${comp.title}\n• Status: ${comp.status}\n• Category: ${comp.category}\n• Ward: ${comp.wardOrArea}\n• Lodged on: ${new Date(comp.createdAt).toLocaleDateString()}`);
                     } else {
-                      alert(`Tracking Token [${token.trim()}]: Status is Active / Pending review with Ward Officer.`);
+                      alert(`Grievance Ref [${token.trim()}]: Status is Active / Under review by Village Office.`);
                     }
                   } catch (err: any) {
-                    alert(`Tracking Token [${token.trim()}]: Status is Active / Pending review with Ward Officer (${err.message}).`);
+                    alert(`Grievance Ref [${token.trim()}]: Status is Active / Under review by Village Office.`);
                   }
                 }
               }}
@@ -965,16 +969,14 @@ export function App() {
         <button
           type="button"
           onClick={() => setVillageMapModalOpen(true)}
-          className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-[#166534] via-[#14532d] to-[#166534] hover:from-[#052e16] hover:to-[#166534] text-white px-4 sm:px-5 py-3 rounded-full shadow-2xl hover:shadow-[#166534]/50 flex items-center gap-2.5 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-[#bbf7d0]/50 group cursor-pointer"
-          title="गाव नकाशा पहा (Open Complete Village GIS Map)"
+          className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-[#166534] via-[#14532d] to-[#166534] hover:from-[#052e16] hover:to-[#166534] text-white px-4 sm:px-5 py-3 rounded-full shadow-2xl hover:shadow-[#166534]/50 flex items-center gap-2.5 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-[#cadbcf]/50 group cursor-pointer"
+          title="गाव नकाशा पहा"
           aria-label="Open village GIS map"
         >
           {/* Pulsing Beacon Indicator */}
          
 
-          <span className="material-symbols-outlined text-[22px] text-[#bbf7d0] group-hover:rotate-12 transition-transform">
-            explore
-          </span>
+          <LucideIcon name="explore" className=" text-[22px] text-[#a7f3d0] group-hover:rotate-12 transition-transform" />
           <span className="font-heading font-extrabold text-[13px] sm:text-[14px] tracking-wide whitespace-nowrap drop-shadow-xs">
             नकाशा
           </span>

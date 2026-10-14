@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -166,14 +167,14 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
             height: 28px;
             border-radius: 50%;
             background: #166534;
-            color: #bbf7d0;
+            color: #a7f3d0;
             border: 2px solid #ffffff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
           ">
-            <span class="material-symbols-outlined" style="font-size: 16px;">account_balance</span>
+            <LucideIcon name="account_balance" class="" style="font-size: 16px;" />
           </div>
           <div style="
             width: 0;
@@ -191,7 +192,7 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
     });
 
     L.marker(ASGAON_PANCHAYAT, { icon: gpIcon })
-      .bindPopup('<b>ग्रामपंचायत आसगाव (Gram Panchayat HQ)</b><br/>मध्यवर्ती चौक व प्रशासकीय कार्यालय')
+      .bindPopup('<b>ग्रामपंचायत कार्यालय, आसगाव</b><br/>मध्यवर्ती चौक व प्रशासकीय कार्यालय')
       .addTo(map);
 
     // Dotted line connecting Gram Panchayat to Shop
@@ -258,10 +259,10 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
           <button
             onClick={onClose}
             className="p-1.5 rounded-full text-[#707974] hover:text-[#1d1b16] hover:bg-[#e8e2d9] transition-colors"
-            title="बंद करा (Close)"
+            title="बंद करा"
             aria-label="Close modal"
           >
-            <span className="material-symbols-outlined text-[24px]">close</span>
+            <LucideIcon name="close" className="text-[24px]" />
           </button>
         </div>
 
@@ -273,7 +274,7 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
 
           {/* Gram Panchayat reference indicator */}
           <div className="absolute top-3 right-3 z-20 bg-[#166534]/95 backdrop-blur-xs text-white px-2.5 py-1 rounded-lg shadow-md flex items-center gap-1.5 text-[10px] font-bold">
-            <span className="material-symbols-outlined text-[13px] text-[#bbf7d0]">account_balance</span>
+            <LucideIcon name="account_balance" className="text-[13px] text-[#a7f3d0]" />
             <span>ग्रामपंचायतपासून: {business.distance || business.landmark || '0.3 km'}</span>
           </div>
         </div>
@@ -283,7 +284,7 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
           {/* Address & Timings */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 bg-[#f9f3ea] p-3 sm:p-3.5 rounded-xl border border-[#e8e2d9] text-[12px]">
             <div className="flex items-start gap-2">
-              <span className="material-symbols-outlined text-[18px] text-[#c2410c] shrink-0 mt-0.5">storefront</span>
+              <LucideIcon name="storefront" className="text-[18px] text-[#c2410c] shrink-0 mt-0.5" />
               <div>
                 <span className="text-[#707974] font-medium block">पत्ता व परिसर</span>
                 <span className="text-[#1d1b16] font-bold">{business.address || 'Asgaon Market Road, Asgaon'}</span>
@@ -294,7 +295,7 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
             </div>
 
             <div className="flex items-start gap-2">
-              <span className="material-symbols-outlined text-[18px] text-[#166534] shrink-0 mt-0.5">schedule</span>
+              <LucideIcon name="schedule" className="text-[18px] text-[#166534] shrink-0 mt-0.5" />
               <div>
                 <span className="text-[#707974] font-medium block">वेळ:</span>
                 <span className="text-[#1d1b16] font-bold">{hours}</span>
@@ -316,7 +317,7 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
                 rel="noopener noreferrer"
                 className="px-4 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[12px] sm:text-[13px] font-bold flex items-center gap-1.5 shadow-xs transition-all hover:shadow-md"
               >
-                <span className="material-symbols-outlined text-[18px] text-[#bbf7d0]">navigation</span>
+                <LucideIcon name="navigation" className="text-[18px] text-[#a7f3d0]" />
                 <span>Google Maps</span>
               </a>
 
@@ -331,7 +332,7 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
                   className="p-2.5 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#166534] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9] transition-colors"
                   title="थेट कॉल करा"
                 >
-                  <span className="material-symbols-outlined text-[18px]">call</span>
+                  <LucideIcon name="call" className="text-[18px]" />
                   <span className="hidden sm:inline">कॉल</span>
                 </a>
               )}
@@ -344,7 +345,7 @@ export const ShopLocationModal: React.FC<ShopLocationModalProps> = ({
                   className="p-2.5 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#25D366] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9] transition-colors"
                   title="WhatsApp वर मेसेज करा"
                 >
-                  <span className="material-symbols-outlined text-[18px]">chat</span>
+                  <LucideIcon name="chat" className="text-[18px]" />
                   <span className="hidden sm:inline text-[#166534]">WhatsApp</span>
                 </a>
               )}

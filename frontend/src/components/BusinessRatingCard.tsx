@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React, { useState, useEffect } from 'react';
 import type { Business } from '../types';
 
@@ -154,7 +155,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
       {/* 1. Header with Trust Badge */}
       <div className="bg-[#f9f3ea] px-4 py-3 border-b border-[#e8e2d9] flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-[#c2410c] text-[20px]">hotel_class</span>
+          <LucideIcon name="hotel_class" className="text-[#c2410c] text-[20px]" />
           <div>
             <h4 className="font-heading font-extrabold text-[14px] text-[#166534]">
               ग्राहक रेटिंग व नागरिक अभिप्राय (Rating &amp; Reviews)
@@ -170,7 +171,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
           onClick={() => setIsFormOpen(!isFormOpen)}
           className="px-3 py-1.5 rounded-xl bg-[#166534] text-white hover:bg-[#052e16] text-[11px] font-bold flex items-center gap-1 transition-all shadow-xs"
         >
-          <span className="material-symbols-outlined text-[14px] text-[#bbf7d0]">edit</span>
+          <LucideIcon name="edit" className="text-[14px] text-[#a7f3d0]" />
           <span>{isFormOpen ? 'फॉर्म बंद करा' : 'आपला अभिप्राय द्या'}</span>
         </button>
       </div>
@@ -184,16 +185,14 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
           </div>
           <div className="flex items-center gap-0.5 text-[#d97706] mb-1">
             {[1, 2, 3, 4, 5].map((star) => (
-              <span key={star} className="material-symbols-outlined text-[20px] fill-current">
-                {star <= Math.round(currentRating) ? 'star' : 'star_outline'}
-              </span>
+              <LucideIcon name={star <= Math.round(currentRating) ? 'star' : 'star_outline'} key={star} className=" text-[20px] fill-current" />
             ))}
           </div>
           <div className="text-[12px] font-bold text-[#1d1b16]">
             {reviewCount} गावकऱ्यांचे अभिप्राय
           </div>
-          <div className="inline-flex items-center gap-1 text-[10px] font-extrabold text-[#006a4e] bg-[#bbf7d0] px-2 py-0.5 rounded-full mt-1.5">
-            <span className="material-symbols-outlined text-[12px]">verified</span>
+          <div className="inline-flex items-center gap-1 text-[10px] font-extrabold text-[#006a4e] bg-[#a7f3d0] px-2 py-0.5 rounded-full mt-1.5">
+            <LucideIcon name="verified" className="text-[12px]" />
             <span>पडताळणीकृत स्थानिक व्यापारी</span>
           </div>
         </div>
@@ -226,7 +225,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
         <form onSubmit={handleSubmitReview} className="p-4 bg-[#f9f3ea] border-b border-[#e8e2d9] animate-fadeIn flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <h5 className="font-heading font-bold text-[13px] text-[#166534] flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#d97706]">rate_review</span>
+              <LucideIcon name="rate_review" className="text-[16px] text-[#d97706]" />
               <span>या दुकानासाठी आपला प्रामाणिक अभिप्राय नोंदवा</span>
             </h5>
             <span className="text-[10px] text-[#707974]">आसगाव ग्राहक मंच</span>
@@ -243,9 +242,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
                   onClick={() => setInputRating(s)}
                   className="p-0.5 text-[#d97706] hover:scale-125 transition-transform"
                 >
-                  <span className="material-symbols-outlined text-[24px]">
-                    {s <= inputRating ? 'star' : 'star_border'}
-                  </span>
+                  <LucideIcon name={s <= inputRating ? 'star' : 'star_border'} className=" text-[24px]" />
                 </button>
               ))}
             </div>
@@ -257,7 +254,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div>
               <label className="block text-[11px] font-bold text-[#1d1b16] mb-1">
-                आपले नाव (Your Name) *
+                आपले नाव *
               </label>
               <input
                 type="text"
@@ -270,16 +267,16 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
             </div>
             <div>
               <label className="block text-[11px] font-bold text-[#1d1b16] mb-1">
-                आपला वॉर्ड / परिसर (Ward / Area)
+                आपला प्रभाग / परिसर
               </label>
               <select
                 value={inputWard}
                 onChange={(e) => setInputWard(e.target.value)}
                 className="w-full bg-white text-[#1d1b16] p-2 rounded-xl text-[12px] border border-[#e8e2d9] focus:outline-none focus:ring-1 focus:ring-[#166534]"
               >
-                <option>वॉर्ड १ (आंबेडकर वॉर्ड)</option>
-                <option>वॉर्ड २ (गावठाण व बाजार चौक)</option>
-                <option>वॉर्ड ३ (विठ्ठल मंदिर परिसर)</option>
+                <option>प्रभाग १ (आंबेडकर वॉर्ड)</option>
+                <option>प्रभाग २ (गावठाण व बाजार चौक)</option>
+                <option>प्रभाग ३ (विठ्ठल मंदिर परिसर)</option>
                 <option>हायवे बायपास वस्ती</option>
                 <option>तलाव रोड</option>
               </select>
@@ -288,7 +285,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
 
           <div>
             <label className="block text-[11px] font-bold text-[#1d1b16] mb-1">
-              आपला अनुभव व अभिप्राय (Review Comment) *
+              आपला अनुभव व अभिप्राय *
             </label>
             <textarea
               required
@@ -301,8 +298,8 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
           </div>
 
           {successMsg && (
-            <div className="p-2 bg-[#bbf7d0] text-[#002117] rounded-lg text-[11px] font-bold flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px]">check_circle</span>
+            <div className="p-2 bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] rounded-lg text-[11px] font-bold flex items-center gap-1.5">
+              <LucideIcon name="check_circle" className="text-[16px]" />
               <span>{successMsg}</span>
             </div>
           )}
@@ -336,7 +333,7 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
           <div key={rev.id} className="p-3 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-[#166534] text-[#bbf7d0] font-black text-[10px] flex items-center justify-center">
+                <div className="w-6 h-6 rounded-full bg-[#166534] text-[#a7f3d0] font-black text-[10px] flex items-center justify-center">
                   {rev.userName.charAt(0)}
                 </div>
                 <div>
@@ -366,8 +363,8 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
             href="/reviews"
             className="inline-flex items-center gap-1.5 text-xs font-bold text-[#166534] hover:underline cursor-pointer"
           >
-            <span>सर्व गावातील नागरी अभिप्राय पृष्ठ पहा (All Community Reviews)</span>
-            <span className="material-symbols-outlined text-[15px]">arrow_forward</span>
+            <span>सर्व गावातील नागरी अभिप्राय पहा</span>
+            <LucideIcon name="arrow_forward" className="text-[15px]" />
           </a>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React, { useState } from 'react';
 import type { UserProfileData } from '../pages/ProfilePage';
 
@@ -41,7 +42,7 @@ export const ADMIN_MODULES_LIST: AdminModuleDefinition[] = [
   },
   {
     id: 'broadcast',
-    labelMarathi: 'तातडीची दवंडी (Push Alert)',
+    labelMarathi: 'तातडीची दवंडी ',
     labelEnglish: 'Emergency Push Alerts',
     icon: 'cell_tower',
     category: 'GOVERNANCE',
@@ -57,7 +58,7 @@ export const ADMIN_MODULES_LIST: AdminModuleDefinition[] = [
   },
   {
     id: 'logs',
-    labelMarathi: 'ऑडिट नोंदी (Audit Logs)',
+    labelMarathi: 'ऑडिट नोंदी ',
     labelEnglish: 'Audit Logs & Security',
     icon: 'manage_history',
     category: 'GOVERNANCE',
@@ -165,7 +166,7 @@ export const ADMIN_MODULES_LIST: AdminModuleDefinition[] = [
   },
   {
     id: 'notices',
-    labelMarathi: 'सूचना फलक (Notices)',
+    labelMarathi: 'सूचना फलक ',
     labelEnglish: 'Public Announcements',
     icon: 'campaign',
     category: 'CONTENT',
@@ -201,9 +202,9 @@ export const DEFAULT_MANAGED_ADMINS: ManagedAdminUser[] = [
     isActive: true,
     isRoot: true,
     allowedModules: ADMIN_MODULES_LIST.map((m) => m.id),
-    lastLogin: 'आत्ताच सक्रिय (Active Now)',
+    lastLogin: 'आत्ताच सक्रिय ',
     createdDate: '०१ ऑक्टोबर २०२६',
-    notes: 'सर्वोच्च तांत्रिक व प्रशासकीय नियंत्रण अधिकार (Full Root Access)'
+    notes: 'सर्वोच्च तांत्रिक व प्रशासकीय नियंत्रण अधिकार '
   },
   {
     id: 'adm-sevak-2',
@@ -428,7 +429,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
     );
     updateAdminsList(
       updated,
-      'अधिकार बदलले (Permissions Updated)',
+      'अधिकार बदलले ',
       `${selectedAdmin.fullName} (${selectedAdmin.phone}) यांचे पृष्ठ अधिकार (${selectedAdmin.allowedModules.length} मॉड्यूल्स) अद्ययावत केले.`
     );
     setIsEditingPermissions(false);
@@ -448,7 +449,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
     updateAdminsList(
       updated,
       `खाते ${updatedStatus ? 'सक्रिय' : 'निष्क्रिय'} केले`,
-      `${admin.fullName} यांचे अॅडमिन खाते ${updatedStatus ? 'सक्रिय (Active)' : 'निष्क्रिय (Disabled)'} केले.`
+      `${admin.fullName} यांचे अॅडमिन खाते ${updatedStatus ? 'सक्रिय ' : 'निष्क्रिय '} केले.`
     );
     showFeedback(`खाते ${updatedStatus ? 'सक्रिय' : 'निष्क्रिय'} करण्यात आले.`);
   };
@@ -570,7 +571,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
       <div className="bg-white p-5 sm:p-6 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#bbf7d0] text-[10px] font-black uppercase tracking-wider">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#a7f3d0] text-[10px] font-black uppercase tracking-wider">
               Super Admin
             </span>
             <span className="text-xs text-[#707974] font-medium">
@@ -589,16 +590,16 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
           onClick={() => setIsAddModalOpen(true)}
           className="px-4 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer shrink-0"
         >
-          <span className="material-symbols-outlined text-[18px]">person_add</span>
+          <LucideIcon name="person_add" className="text-[18px]" />
           <span>नवा अॅडमिन जोडा</span>
         </button>
       </div>
 
       {/* Feedback Toast */}
       {feedbackMsg && (
-        <div className="bg-[#bbf7d0] border border-[#006a4e] text-[#002117] p-3 rounded-xl text-xs font-bold flex items-center justify-between shadow-xs transition-all animate-fade-in">
+        <div className="bg-[#a7f3d0] border border-[#006a4e] text-[#002117] p-3 rounded-xl text-xs font-bold flex items-center justify-between shadow-xs transition-all animate-fade-in">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px] text-[#006a4e]">check_circle</span>
+            <LucideIcon name="check_circle" className="text-[18px] text-[#006a4e]" />
             <span>{feedbackMsg}</span>
           </div>
           <button onClick={() => setFeedbackMsg(null)} className="text-[#002117]/60 hover:text-[#002117] cursor-pointer">
@@ -611,7 +612,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#166534]/10 text-[#166534] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px]">groups</span>
+            <LucideIcon name="groups" className="text-[20px]" />
           </div>
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#707974] block">एकूण अॅडमिन</span>
@@ -621,7 +622,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
 
         <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#ef9f27]/15 text-[#c2410c] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px]">shield_person</span>
+            <LucideIcon name="shield_person" className="text-[20px]" />
           </div>
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#707974] block">सुपर अॅडमिन</span>
@@ -630,8 +631,8 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
         </div>
 
         <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#bbf7d0]/40 text-[#006a4e] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px]">check_circle</span>
+          <div className="w-10 h-10 rounded-xl bg-[#e8f1ec] text-[#006a4e] flex items-center justify-center shrink-0">
+            <LucideIcon name="check_circle" className="text-[20px]" />
           </div>
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#707974] block">सक्रिय खाती</span>
@@ -641,7 +642,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
 
         <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#002873]/10 text-[#002873] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px]">grid_view</span>
+            <LucideIcon name="grid_view" className="text-[20px]" />
           </div>
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#707974] block">एकूण मॉड्यूल्स</span>
@@ -654,9 +655,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
       <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         {/* Search */}
         <div className="relative flex-1">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]">
-            search
-          </span>
+          <LucideIcon name="search" className=" absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
           <input
             type="text"
             value={searchQuery}
@@ -713,11 +712,11 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                       className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 font-black text-sm ${
                         isSuper
                           ? 'bg-gradient-to-br from-[#ef9f27] to-[#ba7200] text-white shadow-sm'
-                          : 'bg-[#166534] text-[#bbf7d0]'
+                          : 'bg-[#166534] text-[#a7f3d0]'
                       }`}
                     >
                       {isSuper ? (
-                        <span className="material-symbols-outlined text-[22px]">shield_person</span>
+                        <LucideIcon name="shield_person" className="text-[22px]" />
                       ) : (
                         admin.fullName.charAt(0) || 'A'
                       )}
@@ -729,13 +728,13 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                         </h3>
                         {isSuper && (
                           <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-[#ffecb3] text-[#7c4d00] flex items-center gap-0.5 shrink-0">
-                            <span className="material-symbols-outlined text-[11px]">star</span>
+                            <LucideIcon name="star" className="text-[11px]" />
                             SUPER
                           </span>
                         )}
                       </div>
                       <p className="text-[11px] text-[#707974] flex items-center gap-1.5 mt-0.5 truncate">
-                        <span className="material-symbols-outlined text-[13px] text-[#006a4e]">call</span>
+                        <LucideIcon name="call" className="text-[13px] text-[#006a4e]" />
                         <strong className="text-[#166534] font-mono">{admin.phone}</strong>
                         {admin.email && <span>• {admin.email}</span>}
                       </p>
@@ -746,7 +745,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                   <span
                     className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase shrink-0 ${
                       admin.isActive
-                        ? 'bg-[#bbf7d0] text-[#002117]'
+                        ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]'
                         : 'bg-[#fef3c7] text-[#ba1a1a]'
                     }`}
                   >
@@ -771,7 +770,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                 <div className="mt-3">
                   <div className="flex items-center justify-between text-[11px] font-bold mb-1.5">
                     <span className="text-[#166534] flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[14px] text-[#006a4e]">vpn_key</span>
+                      <LucideIcon name="vpn_key" className="text-[14px] text-[#006a4e]" />
                       <span>पानांचे अधिकार:</span>
                     </span>
                     <span className="px-2 py-0.5 rounded-md bg-[#e8f5e9] text-[#006a4e] text-[10px] font-black">
@@ -783,7 +782,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                   <div className="flex flex-wrap gap-1 max-h-16 overflow-y-auto no-scrollbar">
                     {isSuper ? (
                       <span className="px-2 py-0.5 rounded-md bg-[#fff8e1] text-[#7c4d00] text-[10px] font-bold border border-[#ffe082]">
-                        सर्व पानांचा अधिकार (Full Access)
+                        सर्व पानांचा अधिकार 
                       </span>
                     ) : (
                       admin.allowedModules.map((modId) => {
@@ -793,7 +792,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                             key={modId}
                             className="px-2 py-0.5 rounded-md bg-[#f3ede4] text-[#166534] text-[10px] font-medium flex items-center gap-1"
                           >
-                            <span className="material-symbols-outlined text-[11px] text-[#006a4e]">{m?.icon || 'tag'}</span>
+                            <LucideIcon name={m?.icon || 'tag'} className="text-[11px] text-[#006a4e]" />
                             <span>{m?.labelMarathi || modId}</span>
                           </span>
                         );
@@ -812,7 +811,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                     onClick={() => handleOpenPermissionModal(admin)}
                     className="px-3 py-1.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer shadow-xs active:scale-98"
                   >
-                    <span className="material-symbols-outlined text-[14px]">tune</span>
+                    <LucideIcon name="tune" className="text-[14px]" />
                     <span>अधिकार बदला</span>
                   </button>
 
@@ -823,9 +822,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                     title="भूमिका बदला"
                     className="px-2.5 py-1.5 rounded-xl bg-[#f5ede3] hover:bg-[#e8ded3] text-[#166534] text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer"
                   >
-                    <span className="material-symbols-outlined text-[14px]">
-                      {isSuper ? 'arrow_downward' : 'arrow_upward'}
-                    </span>
+                    <LucideIcon name={isSuper ? 'arrow_downward' : 'arrow_upward'} className=" text-[14px]" />
                     <span>{isSuper ? 'अॅडमिन करा' : 'सुपर अॅडमिन करा'}</span>
                   </button>
                 </div>
@@ -839,12 +836,10 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                     className={`p-1.5 rounded-xl transition-all cursor-pointer ${
                       admin.isActive
                         ? 'text-[#55605a] hover:bg-[#f3ede4] hover:text-[#c2410c]'
-                        : 'text-[#006a4e] bg-[#bbf7d0]/40 hover:bg-[#bbf7d0]'
+                        : 'text-[#006a4e] bg-[#e8f1ec] hover:bg-[#a7f3d0]'
                     }`}
                   >
-                    <span className="material-symbols-outlined text-[17px]">
-                      {admin.isActive ? 'block' : 'check_circle'}
-                    </span>
+                    <LucideIcon name={admin.isActive ? 'block' : 'check_circle'} className=" text-[17px]" />
                   </button>
 
                   {/* Delete Admin */}
@@ -854,7 +849,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                     title="खाते काढून टाका"
                     className="p-1.5 rounded-xl text-[#ba1a1a] hover:bg-[#fef3c7]/40 transition-all cursor-pointer"
                   >
-                    <span className="material-symbols-outlined text-[17px]">delete</span>
+                    <LucideIcon name="delete" className="text-[17px]" />
                   </button>
                 </div>
               </div>
@@ -870,7 +865,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
             {/* Modal Header */}
             <div className="flex items-start justify-between gap-3 border-b border-[#f0eee8] pb-4">
               <div>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#bbf7d0] text-[10px] font-black uppercase">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#a7f3d0] text-[10px] font-black uppercase">
                   पृष्ठ अधिकार
                 </span>
                 <h3 className="font-heading font-black text-lg sm:text-xl text-[#166534] mt-1">
@@ -893,7 +888,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
             {/* Presets */}
             <div className="bg-[#fcfbf9] p-3 rounded-2xl border border-[#e8e2d9] flex flex-col gap-2">
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#707974] block">
-                साचे (Presets):
+                साचे :
               </span>
               <div className="flex flex-wrap gap-1.5">
                 <button
@@ -938,7 +933,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
             <div className="flex flex-col gap-3">
               <div className="flex items-center justify-between text-xs font-bold text-[#166534]">
                 <span>उपलब्ध मॉड्यूल्स ({ADMIN_MODULES_LIST.length}):</span>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117] font-black text-[11px]">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] font-black text-[11px]">
                   {selectedAdmin.allowedModules.length} निवडले
                 </span>
               </div>
@@ -970,9 +965,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1.5">
-                          <span className={`material-symbols-outlined text-[17px] ${isChecked ? 'text-[#006a4e]' : 'text-[#707974]'}`}>
-                            {mod.icon}
-                          </span>
+                          <LucideIcon name={mod.icon} className={` text-[17px] ${isChecked ? 'text-[#006a4e]' : 'text-[#707974]'}`} />
                           <span className="font-bold text-[12px] text-[#1d1b16]">
                             {mod.labelMarathi}
                           </span>
@@ -1006,7 +999,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                   onClick={handleSavePermissions}
                   className="px-5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-98 cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-[16px]">save</span>
+                  <LucideIcon name="save" className="text-[16px]" />
                   <span>अधिकार जतन करा</span>
                 </button>
               </div>
@@ -1022,7 +1015,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
             {/* Header */}
             <div className="flex items-start justify-between gap-3 border-b border-[#f0eee8] pb-3">
               <div>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117] text-[10px] font-black uppercase">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[10px] font-black uppercase">
                   नवीन अॅडमिन
                 </span>
                 <h3 className="font-heading font-black text-lg text-[#166534] mt-1">
@@ -1085,8 +1078,8 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                     onChange={(e) => setNewAdminForm({ ...newAdminForm, role: e.target.value as any })}
                     className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs font-bold text-[#166534] border border-[#e8e2d9] focus:border-[#166534] outline-none"
                   >
-                    <option value="ADMIN">नियमित अॅडमिन (ADMIN)</option>
-                    <option value="SUPER_ADMIN">सुपर अॅडमिन (SUPER ADMIN)</option>
+                    <option value="ADMIN">नियमित अॅडमिन </option>
+                    <option value="SUPER_ADMIN">सुपर अॅडमिन </option>
                   </select>
                 </div>
               </div>
@@ -1114,7 +1107,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
               </div>
 
               {/* Initial Permissions Info */}
-              <div className="p-3 rounded-xl bg-[#f0fdf4] border border-[#bbf7d0] text-[11px] text-[#166534]">
+              <div className="p-3 rounded-xl bg-[#f0fdf4] border border-[#cadbcf] text-[11px] text-[#166534]">
                 {newAdminForm.role === 'SUPER_ADMIN'
                   ? 'सुपर अॅडमिनला सर्व पानांचे अधिकार मिळतील.'
                   : 'नियमित अॅडमिनचे अधिकार खाते तयार झाल्यानंतर कधीही बदलता येतील.'}
@@ -1133,7 +1126,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-98 cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-[16px]">check</span>
+                  <LucideIcon name="check" className="text-[16px]" />
                   <span>अॅडमिन जोडा</span>
                 </button>
               </div>

@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -304,8 +305,8 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
         {/* 1. Modal Top Bar */}
         <div className="px-4 sm:px-6 py-3.5 bg-gradient-to-r from-[#166534] via-[#14532d] to-[#052e16] text-white flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#bbf7d0] shadow-inner shrink-0">
-              <span className="material-symbols-outlined text-[24px]">explore</span>
+            <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#a7f3d0] shadow-inner shrink-0">
+              <LucideIcon name="explore" className="text-[24px]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -313,7 +314,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                   आसगाव समग्र ग्राम नकाशा
                 </h3>
               </div>
-              <p className="text-[11px] sm:text-[12px] text-[#bbf7d0]/90 font-medium">
+              <p className="text-[11px] sm:text-[12px] text-[#a7f3d0]/90 font-medium">
                 • {allPins.length} नोंदणीकृत ठिकाणे
               </p>
             </div>
@@ -322,9 +323,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
           {/* Controls: Search, Center & Close */}
           <div className="flex items-center gap-2">
             <div className="relative flex-1 md:w-56">
-              <span className="material-symbols-outlined absolute left-2.5 top-2 text-[16px] text-white/60">
-                search
-              </span>
+              <LucideIcon name="search" className=" absolute left-2.5 top-2 text-[16px] text-white/60" />
               <input
                 type="text"
                 value={searchQuery}
@@ -359,10 +358,10 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
             <button
               type="button"
               onClick={handleFlyToCenter}
-              className="px-3 py-1.5 rounded-lg bg-[#bbf7d0] hover:bg-[#a3e5cd] text-[#002117] text-[11px] font-bold flex items-center gap-1 shadow-xs transition-all shrink-0"
-              title="ग्रामपंचायत केंद्रस्थानी जा (Center GP)"
+              className="px-3 py-1.5 rounded-lg bg-[#a7f3d0] hover:bg-[#a3e5cd] text-[#002117] text-[11px] font-bold flex items-center gap-1 shadow-xs transition-all shrink-0"
+              title="ग्रामपंचायत केंद्रस्थानी जा"
             >
-              <span className="material-symbols-outlined text-[16px]">my_location</span>
+              <LucideIcon name="my_location" className="text-[16px]" />
               <span className="hidden sm:inline">गाव केंद्र</span>
             </button>
 
@@ -373,7 +372,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
               title="नकाशा बंद करा"
               aria-label="Close map"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <LucideIcon name="close" className="text-[20px]" />
             </button>
           </div>
         </div>
@@ -398,7 +397,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                   : 'bg-white text-[#404945] hover:bg-[#e8e2d9] border border-[#d0dcd5]'
                 }`}
             >
-              <span className="material-symbols-outlined text-[14px]">{cat.icon}</span>
+              <LucideIcon name={cat.icon} className="text-[14px]" />
               <span>{cat.label}</span>
             </button>
           ))}
@@ -424,7 +423,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                       className="w-14 h-14 rounded-xl flex items-center justify-center text-white shrink-0 shadow-xs"
                       style={{ backgroundColor: activePin.color }}
                     >
-                      <span className="material-symbols-outlined text-[26px]">{activePin.icon}</span>
+                      <LucideIcon name={activePin.icon} className="text-[26px]" />
                     </div>
                   )}
                   <div>
@@ -436,10 +435,10 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                     </p>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-[11px] text-[#c2410c] font-bold flex items-center gap-0.5">
-                        <span className="material-symbols-outlined text-[14px]">star</span>
+                        <LucideIcon name="star" className="text-[14px]" />
                         <span>{activePin.rating || 4.8}</span>
                       </span>
-                      <span className="text-[10px] bg-[#bbf7d0]/60 text-[#002117] font-semibold px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] bg-[#e8f1ec] text-[#002117] font-semibold px-2 py-0.5 rounded-full">
                         {lang === 'MR' ? activePin.categoryLabelMr : activePin.categoryLabel}
                       </span>
                     </div>
@@ -452,7 +451,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                   className="p-1 rounded-full text-[#707974] hover:text-[#1d1b16] hover:bg-[#f3ede4] transition-colors"
                   title="कार्ड बंद करा"
                 >
-                  <span className="material-symbols-outlined text-[18px]">close</span>
+                  <LucideIcon name="close" className="text-[18px]" />
                 </button>
               </div>
 
@@ -463,7 +462,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                     href={`tel:${activePin.phone}`}
                     className="py-2 px-2 bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold rounded-xl flex items-center justify-center gap-1 transition-colors text-center shadow-xs"
                   >
-                    <span className="material-symbols-outlined text-[15px]">call</span>
+                    <LucideIcon name="call" className="text-[15px]" />
                     <span>कॉल करा</span>
                   </a>
                 ) : (
@@ -479,7 +478,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                     rel="noreferrer"
                     className="py-2 px-2 bg-[#25d366] hover:bg-[#1faa54] text-white text-[11px] font-bold rounded-xl flex items-center justify-center gap-1 transition-colors text-center shadow-xs"
                   >
-                    <span className="material-symbols-outlined text-[15px]">chat</span>
+                    <LucideIcon name="chat" className="text-[15px]" />
                     <span>व्हॉट्सअॅप</span>
                   </a>
                 ) : (
@@ -489,7 +488,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                     rel="noreferrer"
                     className="py-2 px-2 bg-[#25d366] hover:bg-[#1faa54] text-white text-[11px] font-bold rounded-xl flex items-center justify-center gap-1 transition-colors text-center shadow-xs"
                   >
-                    <span className="material-symbols-outlined text-[15px]">chat</span>
+                    <LucideIcon name="chat" className="text-[15px]" />
                     <span>व्हॉट्सअॅप</span>
                   </a>
                 )}
@@ -500,7 +499,7 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                   rel="noreferrer"
                   className="py-2 px-2 bg-[#fef9ee] hover:bg-[#f9f3ea] text-[#c2410c] border border-[#fde68a] text-[11px] font-bold rounded-xl flex items-center justify-center gap-1 transition-colors text-center"
                 >
-                  <span className="material-symbols-outlined text-[15px]">navigation</span>
+                  <LucideIcon name="navigation" className="text-[15px]" />
                   <span>रस्ता पहा</span>
                 </a>
               </div>
@@ -518,8 +517,8 @@ export const VillageMasterMapModal: React.FC<VillageMasterMapModalProps> = ({
                   }}
                   className="w-full mt-2 text-center text-[11px] font-bold text-[#006a4e] hover:underline flex items-center justify-center gap-1 py-1"
                 >
-                  <span>सविस्तर माहिती पहा (View Full Details)</span>
-                  <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
+                  <span>सविस्तर माहिती पहा</span>
+                  <LucideIcon name="arrow_forward" className="text-[13px]" />
                 </button>
               )}
             </div>

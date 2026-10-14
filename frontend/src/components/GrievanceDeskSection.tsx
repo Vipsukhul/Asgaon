@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React from 'react';
 import type { Grievance } from '../types';
 import { useLanguage } from '../context/LanguageContext';
@@ -21,7 +22,7 @@ export const GrievanceDeskSection: React.FC<GrievanceDeskSectionProps> = ({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-5 gap-3">
         <div>
           <h2 className="font-heading font-extrabold text-[24px] text-emerald-950 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#c2410c] text-[28px]">report_problem</span>
+            <LucideIcon name="report_problem" className="text-[#c2410c] text-[28px]" />
             <span>{lang === 'MR' ? 'नागरी तक्रार निवारण व प्रभाग मंच' : 'Public Grievance & Ward Resolution Desk'}</span>
           </h2>
           <p className="text-[13px] text-stone-600">
@@ -44,7 +45,7 @@ export const GrievanceDeskSection: React.FC<GrievanceDeskSectionProps> = ({
             onClick={onOpenReportModal}
             className="px-4 py-2 rounded-xl bg-[#c2410c] hover:bg-[#ea580c] text-white text-[13px] font-extrabold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
-            <span className="material-symbols-outlined text-[18px]">campaign</span>
+            <LucideIcon name="campaign" className="text-[18px]" />
             <span>{lang === 'MR' ? 'समस्या / तक्रार नोंदवा' : 'Report a Village Issue'}</span>
           </button>
         </div>
@@ -70,7 +71,7 @@ export const GrievanceDeskSection: React.FC<GrievanceDeskSectionProps> = ({
                   {item.status === 'RESOLVED' && lang === 'MR' ? 'निवारण झाले' : item.statusBadge}
                 </span>
                 <span className="text-[11px] font-mono font-bold text-stone-600 bg-[#faf6ee] px-2 py-0.5 rounded border border-[#efe7dc]">
-                  {lang === 'MR' ? 'टोकन:' : 'Token:'} {item.trackingNumber}
+                  {lang === 'MR' ? 'तक्रार क्र.:' : 'Ref:'} {item.trackingNumber}
                 </span>
               </div>
 

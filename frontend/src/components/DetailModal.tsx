@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import type { Business, Job, Scheme } from '../types';
 import { BusinessRatingCard } from './BusinessRatingCard';
 
@@ -26,7 +27,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             {type?.toUpperCase()} DETAILS
           </span>
           <button onClick={onClose} className="text-[#707974] hover:text-[#1d1b16] p-1">
-            <span className="material-symbols-outlined text-[22px]">close</span>
+            <LucideIcon name="close" className="text-[22px]" />
           </button>
         </div>
 
@@ -38,7 +39,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               <div className="h-52 w-full rounded-xl overflow-hidden mb-4 relative bg-[#f3ede4]">
                 <img src={b.imageUrl} alt={b.name} className="w-full h-full object-cover" />
                 {b.isVerified && (
-                  <span className="absolute top-3 right-3 bg-[#bbf7d0] text-[#002117] text-[11px] font-bold px-2.5 py-1 rounded-full shadow-xs">
+                  <span className="absolute top-3 right-3 bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[11px] font-bold px-2.5 py-1 rounded-full shadow-xs">
                     {b.verificationBadge}
                   </span>
                 )}
@@ -52,7 +53,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               <div className="bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9] space-y-2.5 mb-6 text-[13px]">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[18px] text-[#c2410c]">location_on</span>
+                    <LucideIcon name="location_on" className="text-[18px] text-[#c2410c]" />
                     <span>{b.address} {b.landmark ? `• ${b.landmark}` : ''}</span>
                   </div>
                   <a
@@ -60,14 +61,14 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-2.5 py-1 rounded-lg bg-[#fef9ee] text-[#c2410c] hover:bg-[#c2410c] hover:text-white transition-colors text-[11px] font-bold border border-[#fed7aa] shrink-0 flex items-center gap-1 shadow-2xs"
-                    title="Google Maps दिशानिर्देश (Get Directions)"
+                    title="Google Maps मार्ग पहा"
                   >
-                    <span className="material-symbols-outlined text-[14px]">navigation</span>
+                    <LucideIcon name="navigation" className="text-[14px]" />
                     <span>नकाशावर पहा</span>
                   </a>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px] text-[#166534]">schedule</span>
+                  <LucideIcon name="schedule" className="text-[18px] text-[#166534]" />
                   <span>{b.openingHours}</span>
                 </div>
               </div>
@@ -81,7 +82,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                   onClick={() => onBookmark(b)}
                   className="px-4 py-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[13px] font-bold flex items-center gap-1.5"
                 >
-                  <span className="material-symbols-outlined text-[18px] text-[#166534]">bookmark_border</span>
+                  <LucideIcon name="bookmark_border" className="text-[18px] text-[#166534]" />
                   <span>Save</span>
                 </button>
                 <div className="flex items-center gap-2">
@@ -91,14 +92,14 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                     rel="noopener noreferrer"
                     className="px-3 py-2 rounded-xl bg-[#fef9ee] text-[#c2410c] hover:bg-[#c2410c] hover:text-white text-[13px] font-bold flex items-center gap-1.5 border border-[#fed7aa] transition-colors"
                   >
-                    <span className="material-symbols-outlined text-[17px]">place</span>
+                    <LucideIcon name="place" className="text-[17px]" />
                     <span>दुकान स्थान</span>
                   </a>
                   <a
                     href={`tel:${b.phone}`}
                     className="px-4 py-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[13px] font-bold flex items-center gap-1.5 border border-[#e8e2d9]"
                   >
-                    <span className="material-symbols-outlined text-[18px] text-[#166534]">call</span>
+                    <LucideIcon name="call" className="text-[18px] text-[#166534]" />
                     <span>Call Shop</span>
                   </a>
                   <a
@@ -107,7 +108,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                     rel="noopener noreferrer"
                     className="px-4 py-2 rounded-xl bg-[#166534] text-white text-[13px] font-bold hover:bg-[#052e16] flex items-center gap-1.5 shadow-xs"
                   >
-                    <span className="material-symbols-outlined text-[18px] text-[#bbf7d0]">chat</span>
+                    <LucideIcon name="chat" className="text-[18px] text-[#a7f3d0]" />
                     <span>WhatsApp</span>
                   </a>
                 </div>
@@ -122,7 +123,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           return (
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="bg-[#bbf7d0] text-[#002117] text-[11px] font-bold px-2.5 py-0.5 rounded-full">
+                <span className="bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[11px] font-bold px-2.5 py-0.5 rounded-full">
                   {j.employmentType}
                 </span>
                 <span className="text-[12px] text-[#707974]">{j.postedAgo}</span>
@@ -154,14 +155,14 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                   onClick={() => onBookmark(j)}
                   className="px-4 py-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[13px] font-bold flex items-center gap-1.5"
                 >
-                  <span className="material-symbols-outlined text-[18px] text-[#166534]">bookmark_border</span>
+                  <LucideIcon name="bookmark_border" className="text-[18px] text-[#166534]" />
                   <span>Save Job</span>
                 </button>
                 <a
                   href={`tel:${j.contactPhone}`}
                   className="px-6 py-2 rounded-xl bg-[#166534] text-white text-[13px] font-bold hover:bg-[#052e16] flex items-center gap-1.5 shadow-xs"
                 >
-                  <span className="material-symbols-outlined text-[18px]">call</span>
+                  <LucideIcon name="call" className="text-[18px]" />
                   <span>Contact Employer ({j.contactPhone})</span>
                 </a>
               </div>
@@ -192,7 +193,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 <ul className="space-y-1.5">
                   {s.documentsRequired.map((doc, idx) => (
                     <li key={idx} className="text-[13px] text-[#1d1b16] flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[16px] text-[#376757]">check_circle</span>
+                      <LucideIcon name="check_circle" className="text-[16px] text-[#376757]" />
                       <span>{doc}</span>
                     </li>
                   ))}
@@ -205,7 +206,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                   onClick={() => onBookmark(s)}
                   className="px-4 py-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[13px] font-bold flex items-center gap-1.5"
                 >
-                  <span className="material-symbols-outlined text-[18px] text-[#166534]">bookmark_border</span>
+                  <LucideIcon name="bookmark_border" className="text-[18px] text-[#166534]" />
                   <span>Save Scheme</span>
                 </button>
                 <a
@@ -215,7 +216,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                   className="px-6 py-2 rounded-xl bg-[#002873] text-white text-[13px] font-bold hover:bg-[#00174b] flex items-center gap-1.5 shadow-xs"
                 >
                   <span>Open Official Govt Portal</span>
-                  <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                  <LucideIcon name="open_in_new" className="text-[18px]" />
                 </a>
               </div>
             </div>

@@ -9,6 +9,7 @@ import {
   type DepotContact
 } from '../data/transportData';
 import { SEOHead } from '../components/SEOHead';
+import { Breadcrumb } from '../components/Breadcrumb';
 import { useLanguage } from '../context/LanguageContext';
 import {
   Clock,
@@ -152,7 +153,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
   }, [buses, selectedRouteFilter, timeFilter, searchQuery]);
 
   const handleShareBus = (bus: BusSchedule) => {
-    const text = `🚌 *आसगाव एसटी बस वेळापत्रक (Asgaon ST Bus Schedule)*\n\n` +
+    const text = `🚌 *आसगाव एसटी बस वेळापत्रक*\n\n` +
       `📍 *मार्ग:* ${bus.sourceMarathi} ➜ ${bus.destinationMarathi}\n` +
       `⏰ *वेळ:* ${bus.departureTime} (पोहोच: ${bus.approxArrivalTime})\n` +
       `🚍 *बस प्रकार:* ${bus.busTypeMarathi} (${bus.depotMarathi})\n` +
@@ -216,11 +217,20 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
     <div className="min-h-screen bg-[#fcfaf7] text-[#1d1b16] pb-20">
       <SEOHead
         title="Asgaon ST Bus Time Table & Transport Schedule | आसगाव एसटी बस वेळापत्रक - पवनी, भंडारा, नागपूर"
-        description="आसगाव एसटी बस वेळापत्रक (MSRTC Bus Time Table) - आसगाव ते पवनी, भंडारा, नागपूर, साकोली बसेसची वेळ, भाडे, महिला सन्मान योजना ५०% सवलत, गावातील रिक्षा चालक संपर्क."
+        description="आसगाव एसटी बस वेळापत्रक - आसगाव ते पवनी, भंडारा, नागपूर, साकोली बसेसची वेळ, भाडे, महिला सन्मान योजना ५०% सवलत, गावातील रिक्षा चालक संपर्क."
         keywords="Asgaon ST bus time table, Asgaon to Pauni bus timings, Asgaon to Bhandara bus schedule, Pauni depot inquiry, MSRTC Pauni, Asgaon auto rickshaw contact, आसगाव एसटी वेळापत्रक, पवनी आगार संपर्क"
         canonicalUrl="https://asgaon.digital/transport"
         structuredData={structuredData}
       />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-3 pb-2">
+        <Breadcrumb
+          items={[
+            { label: t('nav_home'), onClick: onNavigateHome },
+            { label: t('nav_transport'), active: true }
+          ]}
+        />
+      </div>
 
       {/* Hero Header - Unified Village Deep Green Theme (#166534 / #14532d) */}
       <div className="bg-gradient-to-r from-[#166534] via-[#14532d] to-[#052e16] text-white relative overflow-hidden border-b border-[#052e16]">
@@ -241,23 +251,23 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
               {onNavigateToAdmin && (
                 <button
                   onClick={onNavigateToAdmin}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-[#bbf7d0] border border-white/20 text-xs font-bold transition-all"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-[#a7f3d0] border border-white/20 text-xs font-bold transition-all"
                   title="ॲडमिन पॅनेलमधून बसेस व्यवस्थापित करा"
                 >
                   <Settings className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">{lang === 'MR' ? 'प्रशासक संपादन' : 'Admin'}</span>
                 </button>
               )}
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#bbf7d0]/20 text-[#bbf7d0] border border-[#bbf7d0]/30 text-xs font-semibold">
-                <span className="w-2 h-2 rounded-full bg-[#bbf7d0] animate-pulse" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#e8f1ec]/60 text-[#a7f3d0] border border-[#cadbcf]/30 text-xs font-semibold">
+                <span className="w-2 h-2 rounded-full bg-[#a7f3d0] animate-pulse" />
                 {lang === 'MR' ? 'दैनिक अद्ययावत' : 'Daily Updated'}
               </span>
             </div>
           </div>
 
           <div className="max-w-3xl">
-            <div className="flex items-center gap-2 text-[#bbf7d0] text-xs font-bold uppercase tracking-wider mb-2">
-              <Compass className="w-4 h-4 text-[#bbf7d0]" />
+            <div className="flex items-center gap-2 text-[#a7f3d0] text-xs font-bold uppercase tracking-wider mb-2">
+              <Compass className="w-4 h-4 text-[#a7f3d0]" />
               <span>{lang === 'MR' ? 'MSRTC व स्थानिक वाहतूक केंद्र • आसगाव (पवनी)' : 'MSRTC & Local Transit Hub • Asgaon (Pauni)'}</span>
             </div>
 
@@ -275,15 +285,15 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
           {nextBus && (
             <div className="mt-6 p-4 sm:p-5 rounded-2xl bg-black/20 backdrop-blur-md border border-white/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
               <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 rounded-xl bg-white/10 border border-[#bbf7d0]/30 flex items-center justify-center text-[#bbf7d0] shrink-0">
+                <div className="w-12 h-12 rounded-xl bg-white/10 border border-[#cadbcf]/30 flex items-center justify-center text-[#a7f3d0] shrink-0">
                   <Clock className="w-6 h-6" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded text-[11px] font-black bg-[#bbf7d0] text-[#002117] uppercase tracking-wide">
+                    <span className="px-2.5 py-0.5 rounded text-[11px] font-black bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] uppercase tracking-wide">
                       {lang === 'MR' ? 'पुढील बस' : 'NEXT BUS'}
                     </span>
-                    <span className="text-xs text-[#bbf7d0] font-medium">
+                    <span className="text-xs text-[#a7f3d0] font-medium">
                       {lang === 'MR'
                         ? `निघण्यास अंदाजे ${getMinutesDifferenceText(nextBus.departureTime24)}`
                         : `Departs in approx ${getMinutesDifferenceText(nextBus.departureTime24)}`}
@@ -291,9 +301,9 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
                   </div>
                   <div className="text-lg sm:text-xl font-bold text-white mt-1 flex items-center gap-2">
                     <span>{lang === 'MR' ? nextBus.sourceMarathi : nextBus.source}</span>
-                    <ArrowRight className="w-4 h-4 text-[#bbf7d0]" />
+                    <ArrowRight className="w-4 h-4 text-[#a7f3d0]" />
                     <span>{lang === 'MR' ? nextBus.destinationMarathi : nextBus.destination}</span>
-                    <span className="text-xs font-normal text-[#bbf7d0]/90">
+                    <span className="text-xs font-normal text-[#a7f3d0]/90">
                       ({lang === 'MR' ? nextBus.busTypeMarathi : nextBus.busType})
                     </span>
                   </div>
@@ -306,7 +316,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
               <div className="flex items-center gap-2.5 w-full sm:w-auto">
                 <button
                   onClick={() => handleShareBus(nextBus)}
-                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#006a4e] hover:bg-[#00523e] text-white text-xs font-bold transition-all shadow-md border border-[#bbf7d0]/30"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#006a4e] hover:bg-[#00523e] text-white text-xs font-bold transition-all shadow-md border border-[#cadbcf]/30"
                 >
                   <Share2 className="w-3.5 h-3.5" />
                   <span>{lang === 'MR' ? 'वेळ शेअर करा' : 'Share Timing'}</span>
@@ -331,7 +341,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
           <button
             onClick={() => setSelectedTab('buses')}
             className={`flex-1 min-w-[140px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all ${selectedTab === 'buses'
-                ? 'bg-[#166534] text-[#bbf7d0] shadow-xs'
+                ? 'bg-[#166534] text-[#a7f3d0] shadow-xs'
                 : 'text-[#55605a] hover:bg-[#f3ede4]'
               }`}
           >
@@ -342,7 +352,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
           <button
             onClick={() => setSelectedTab('autos')}
             className={`flex-1 min-w-[140px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all ${selectedTab === 'autos'
-                ? 'bg-[#166534] text-[#bbf7d0] shadow-xs'
+                ? 'bg-[#166534] text-[#a7f3d0] shadow-xs'
                 : 'text-[#55605a] hover:bg-[#f3ede4]'
               }`}
           >
@@ -353,7 +363,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
           <button
             onClick={() => setSelectedTab('depots')}
             className={`flex-1 min-w-[140px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all ${selectedTab === 'depots'
-                ? 'bg-[#166534] text-[#bbf7d0] shadow-xs'
+                ? 'bg-[#166534] text-[#a7f3d0] shadow-xs'
                 : 'text-[#55605a] hover:bg-[#f3ede4]'
               }`}
           >
@@ -364,7 +374,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
           <button
             onClick={() => setSelectedTab('concessions')}
             className={`flex-1 min-w-[140px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all ${selectedTab === 'concessions'
-                ? 'bg-[#166534] text-[#bbf7d0] shadow-xs'
+                ? 'bg-[#166534] text-[#a7f3d0] shadow-xs'
                 : 'text-[#55605a] hover:bg-[#f3ede4]'
               }`}
           >
@@ -417,7 +427,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
                       key={t.id}
                       onClick={() => setTimeFilter(t.id)}
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${timeFilter === t.id
-                          ? 'bg-[#bbf7d0] text-[#002117] border border-[#006a4e]'
+                          ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] border border-[#006a4e]'
                           : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                         }`}
                     >
@@ -446,7 +456,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
                     key={r.id}
                     onClick={() => setSelectedRouteFilter(r.id)}
                     className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${selectedRouteFilter === r.id
-                        ? 'bg-[#166534] text-[#bbf7d0] shadow-xs'
+                        ? 'bg-[#166534] text-[#a7f3d0] shadow-xs'
                         : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                       }`}
                   >
@@ -461,7 +471,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
               <div className="text-xs sm:text-sm font-bold text-[#166534]">
                 एकूण <span className="text-[#c2410c] font-black">{filteredBuses.length}</span> बसेस उपलब्ध
               </div>
-              <div className="inline-flex items-center gap-1.5 text-[11px] text-[#166534] bg-[#bbf7d0]/25 px-2.5 py-1 rounded-lg border border-[#bbf7d0]/50">
+              <div className="inline-flex items-center gap-1.5 text-[11px] text-[#166534] bg-[#a7f3d0]/25 px-2.5 py-1 rounded-lg border border-[#cadbcf]/50">
                 <AlertCircle className="w-3.5 h-3.5 text-[#006a4e] shrink-0" />
                 <span>एसटी फेऱ्यांमध्ये शासकीय किंवा सणासुदीच्या बदलानुसार वेळ बदलू शकते.</span>
               </div>
@@ -520,7 +530,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
                           </div>
 
                           {isNext && (
-                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-[#166534] text-[#bbf7d0] animate-pulse">
+                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-[#166534] text-[#a7f3d0] animate-pulse">
                               पुढील फेरी
                             </span>
                           )}
@@ -634,12 +644,12 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
           <div className="mt-6 space-y-6">
             <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-lg font-bold text-[#166534]">गावातील रिक्षा व टॅक्सी चालक (Local Auto Stand)</h2>
+                <h2 className="text-lg font-bold text-[#166534]">गावातील रिक्षा व टॅक्सी चालक</h2>
                 <p className="text-xs text-[#707974] mt-1">
                   आसगाव चौकातील स्थानिक चालक; इमर्जन्सी, रुग्णालय, पवनी कोर्ट किंवा शेतीच्या कामानिमित्त थेट संपर्क करा.
                 </p>
               </div>
-              <div className="text-xs bg-[#bbf7d0]/30 text-[#166534] border border-[#bbf7d0] px-3 py-1.5 rounded-xl font-bold">
+              <div className="text-xs bg-[#a7f3d0]/30 text-[#166534] border border-[#cadbcf] px-3 py-1.5 rounded-xl font-bold">
                 शेअरिंग भाडे: ₹३० प्रति सीट (आसगाव ⇄ पवनी)
               </div>
             </div>
@@ -653,7 +663,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
                   <div>
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-[#166534] text-[#bbf7d0] flex items-center justify-center font-bold text-sm">
+                        <div className="w-11 h-11 rounded-xl bg-[#166534] text-[#a7f3d0] flex items-center justify-center font-bold text-sm">
                           {driver.name.substring(0, 2).toUpperCase()}
                         </div>
                         <div>
@@ -710,7 +720,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
         {selectedTab === 'depots' && (
           <div className="mt-6 space-y-6">
             <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-              <h2 className="text-lg font-bold text-[#166534]">एसटी आगार दूरध्वनी व नियंत्रण कक्ष (MSRTC Inquiry)</h2>
+              <h2 className="text-lg font-bold text-[#166534]">एसटी आगार एसटी नियंत्रण व चौकशी कक्ष</h2>
               <p className="text-xs text-[#707974] mt-1">
                 बस सुटण्याची अचूक वेळ, रखडलेली फेरी किंवा तक्रारीसाठी आगार व्यवस्थापक व वाहतूक नियंत्रक यांना थेट संपर्क करा.
               </p>
@@ -766,7 +776,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
         {selectedTab === 'concessions' && (
           <div className="mt-6 space-y-6">
             <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-              <h2 className="text-lg font-bold text-[#166534]">एसटी प्रवास सवलती व पास योजना (MSRTC Concession Schemes)</h2>
+              <h2 className="text-lg font-bold text-[#166534]">एसटी प्रवास सवलती व पास योजना</h2>
               <p className="text-xs text-[#707974] mt-1">
                 महाराष्ट्र शासनाने महिला, ज्येष्ठ नागरिक आणि शालेय विद्यार्थ्यांसाठी लागू केलेल्या सवलतींचे नियम व अटी.
               </p>
@@ -777,7 +787,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
                 <div key={i} className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs space-y-3">
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="text-base font-bold text-[#166534]">{c.title}</h3>
-                    <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#bbf7d0] text-[#002117] shrink-0">
+                    <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] shrink-0">
                       {c.benefit}
                     </span>
                   </div>
@@ -806,7 +816,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
         {/* Bottom Village Assistance Card - Unified Deep Green Accent */}
         <div className="mt-10 bg-gradient-to-r from-[#166534] to-[#0f533f] rounded-3xl p-6 sm:p-8 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xl border border-[#052e16]">
           <div className="max-w-xl">
-            <span className="px-3 py-1 rounded-full bg-[#bbf7d0]/20 text-[#bbf7d0] text-xs font-bold border border-[#bbf7d0]/30">
+            <span className="px-3 py-1 rounded-full bg-[#e8f1ec]/60 text-[#a7f3d0] text-xs font-bold border border-[#cadbcf]/30">
               ग्रामपंचायत सहकार्य केंद्र
             </span>
             <h3 className="text-xl sm:text-2xl font-bold mt-2">नवीन बस फेरी किंवा थांबा मागणी आहे?</h3>

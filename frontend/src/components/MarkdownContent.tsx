@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React from 'react';
 
 /**
@@ -338,9 +339,7 @@ export const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => 
                 key={idx}
                 className="bg-gradient-to-r from-[#fef9ee] to-[#fdf4e9] border-l-4 border-[#c2410c] p-4 sm:p-5 rounded-r-2xl text-[13px] sm:text-[14px] text-[#7a2b00] my-4 leading-relaxed font-semibold shadow-xs flex items-start gap-3"
               >
-                <span className="material-symbols-outlined text-[#c2410c] text-[22px] shrink-0 mt-0.5">
-                  info
-                </span>
+                <LucideIcon name="info" className=" text-[#c2410c] text-[22px] shrink-0 mt-0.5" />
                 <div className="flex-1">{renderInlineMarkdown(block.text)}</div>
               </div>
             );
@@ -353,7 +352,7 @@ export const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => 
                     key={itemIdx}
                     className="p-3.5 sm:p-4 rounded-xl bg-[#fdfbf7] border border-[#e8e2d9] hover:border-[#052e16] transition-all flex items-start gap-3.5 shadow-2xs"
                   >
-                    <div className="w-7 h-7 rounded-lg bg-[#166534] text-[#bbf7d0] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 shadow-2xs">
+                    <div className="w-7 h-7 rounded-lg bg-[#166534] text-[#a7f3d0] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 shadow-2xs">
                       {item.num}
                     </div>
                     <div className="flex-1 space-y-1.5 text-xs sm:text-[13.5px]">
@@ -364,9 +363,7 @@ export const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => 
                         <ul className="mt-2 pl-2 space-y-1.5 border-l-2 border-[#006a4e]/20 text-[#4b5563]">
                           {item.subItems.map((sub, sIdx) => (
                             <li key={sIdx} className="flex items-start gap-2 pl-2 text-xs">
-                              <span className="material-symbols-outlined text-[#006a4e] text-[15px] shrink-0 mt-0.5">
-                                arrow_right
-                              </span>
+                              <LucideIcon name="arrow_right" className=" text-[#006a4e] text-[15px] shrink-0 mt-0.5" />
                               <span>{renderInlineMarkdown(sub)}</span>
                             </li>
                           ))}
@@ -386,9 +383,7 @@ export const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => 
                     key={itemIdx}
                     className="flex items-start gap-2.5 text-xs sm:text-[13.5px] leading-relaxed text-[#374151]"
                   >
-                    <span className="material-symbols-outlined text-[#006a4e] text-[17px] shrink-0 mt-0.5">
-                      check_circle
-                    </span>
+                    <LucideIcon name="check_circle" className=" text-[#006a4e] text-[17px] shrink-0 mt-0.5" />
                     <div className="flex-1">
                       <span>{renderInlineMarkdown(item.text)}</span>
                       {item.subItems.length > 0 && (

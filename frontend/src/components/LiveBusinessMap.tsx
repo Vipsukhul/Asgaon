@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -31,7 +32,7 @@ interface LiveBusinessMapProps {
 const ASGAON_CENTER: [number, number] = [20.8084579, 79.7242461];
 
 export const CATEGORY_COLORS: Record<string, { bg: string; border: string; icon: string }> = {
-  seeds: { bg: '#006a4e', border: '#bbf7d0', icon: 'agriculture' },
+  seeds: { bg: '#006a4e', border: '#a7f3d0', icon: 'agriculture' },
   clinic: { bg: '#ba1a1a', border: '#fef3c7', icon: 'local_hospital' },
   machinery: { bg: '#c2410c', border: '#fed7aa', icon: 'precision_manufacturing' },
   dairy: { bg: '#002873', border: '#dbe1ff', icon: 'egg' },
@@ -195,17 +196,17 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
       {/* 1. Map Top Control Header */}
       <div className="p-3 sm:p-4 bg-gradient-to-r from-[#166534] to-[#14532d] text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 z-10">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-[#bbf7d0]">
-            <span className="material-symbols-outlined text-[22px]">map</span>
+          <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-[#a7f3d0]">
+            <LucideIcon name="map" className="text-[22px]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h3 className="font-heading font-extrabold text-[15px] sm:text-[16px] text-white">
-                आसगाव थेट व्यवसाय नकाशा (Live Village Map)
+                आसगाव थेट व्यवसाय नकाशा
               </h3>
             </div>
-            <p className="text-[11px] text-[#bbf7d0]">
-              गावातील दुकाने, कृषी केंद्र, दवाखाने व सेवा थेट नकाशावर पहा व दिशा मिळवा (Turn-by-turn navigation)
+            <p className="text-[11px] text-[#a7f3d0]">
+              गावातील दुकाने, कृषी केंद्र, दवाखाने व सेवा थेट नकाशावर पहा व मार्ग मिळवा
             </p>
           </div>
         </div>
@@ -213,9 +214,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
         <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
           {/* Quick search input on map */}
           <div className="relative flex-1 sm:w-60">
-            <span className="material-symbols-outlined absolute left-2.5 top-2 text-[17px] text-white/60">
-              search
-            </span>
+            <LucideIcon name="search" className=" absolute left-2.5 top-2 text-[17px] text-white/60" />
             <input
               type="text"
               value={mapSearch}
@@ -251,9 +250,9 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
             type="button"
             onClick={handleResetCenter}
             className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/20"
-            title="आसगाव केंद्रस्थानी जा (Center Map)"
+            title="आसगाव केंद्रस्थानी जा"
           >
-            <span className="material-symbols-outlined text-[19px]">my_location</span>
+            <LucideIcon name="my_location" className="text-[19px]" />
           </button>
 
           {onClose && (
@@ -263,7 +262,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
               className="p-1.5 rounded-lg bg-white/10 hover:bg-[#ba1a1a] text-white transition-colors"
               title="नकाशा बंद करा"
             >
-              <span className="material-symbols-outlined text-[19px]">close</span>
+              <LucideIcon name="close" className="text-[19px]" />
             </button>
           )}
         </div>
@@ -285,8 +284,8 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
                     className="w-14 h-14 rounded-xl object-cover border border-[#e8e2d9] shrink-0"
                   />
                 ) : (
-                  <div className="w-14 h-14 rounded-xl bg-[#166534] text-[#bbf7d0] flex items-center justify-center shrink-0">
-                    <span className="material-symbols-outlined text-[26px]">storefront</span>
+                  <div className="w-14 h-14 rounded-xl bg-[#166534] text-[#a7f3d0] flex items-center justify-center shrink-0">
+                    <LucideIcon name="storefront" className="text-[26px]" />
                   </div>
                 )}
                 <div>
@@ -300,7 +299,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
                     <span className="inline-flex items-center text-[11px] font-bold text-[#c2410c]">
                       ★ {activeItem.rating || '4.8'}
                     </span>
-                    <span className="text-[10px] text-[#006a4e] font-semibold bg-[#bbf7d0]/50 px-1.5 py-0.2 rounded">
+                    <span className="text-[10px] text-[#006a4e] font-semibold bg-[#a7f3d0]/50 px-1.5 py-0.2 rounded">
                       {activeItem.distance || '0.4 km'}
                     </span>
                   </div>
@@ -312,7 +311,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
                 onClick={() => setActiveItem(null)}
                 className="text-[#707974] hover:text-[#1d1b16] p-1"
               >
-                <span className="material-symbols-outlined text-[18px]">close</span>
+                <LucideIcon name="close" className="text-[18px]" />
               </button>
             </div>
 
@@ -323,7 +322,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
                   href={`tel:${activeItem.phone}`}
                   className="py-2 px-2 rounded-xl bg-[#166534] text-white hover:bg-[#052e16] text-[11px] font-bold flex items-center justify-center gap-1 transition-colors shadow-xs"
                 >
-                  <span className="material-symbols-outlined text-[15px]">call</span>
+                  <LucideIcon name="call" className="text-[15px]" />
                   <span>कॉल करा</span>
                 </a>
               )}
@@ -335,7 +334,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
                   rel="noopener noreferrer"
                   className="py-2 px-2 rounded-xl bg-[#25d366] text-white hover:bg-[#1ebc59] text-[11px] font-bold flex items-center justify-center gap-1 transition-colors shadow-xs"
                 >
-                  <span className="material-symbols-outlined text-[15px]">chat</span>
+                  <LucideIcon name="chat" className="text-[15px]" />
                   <span>व्हॉट्सॲप</span>
                 </a>
               )}
@@ -347,7 +346,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
                 className="py-2 px-2 rounded-xl bg-[#f9f3ea] hover:bg-[#e8e2d9] text-[#166534] text-[11px] font-bold flex items-center justify-center gap-1 transition-colors border border-[#e8e2d9]"
                 title="Google Maps दिशानिर्देश उघडा"
               >
-                <span className="material-symbols-outlined text-[15px] text-[#c2410c]">navigation</span>
+                <LucideIcon name="navigation" className="text-[15px] text-[#c2410c]" />
                 <span>रस्ता पहा</span>
               </a>
             </div>
@@ -358,7 +357,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
                 onClick={() => onSelectBusiness(activeItem)}
                 className="w-full mt-2 py-1.5 text-center text-[11px] text-[#166534] font-bold hover:underline"
               >
-                सविस्तर माहिती पहा (View Full Details) &rarr;
+                सविस्तर माहिती पहा &rarr;
               </button>
             )}
           </div>
@@ -368,7 +367,7 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
       {/* 3. Bottom Quick Legend */}
       <div className="px-4 py-2.5 bg-[#f9f3ea] border-t border-[#e8e2d9] flex flex-wrap items-center justify-between text-[11px] text-[#55605a] gap-2">
         <div className="flex items-center gap-4 flex-wrap">
-          <span className="font-bold text-[#1d1b16]">नकाशा संकेत (Legend):</span>
+          <span className="font-bold text-[#1d1b16]">नकाशा संकेत:</span>
           <span className="flex items-center gap-1">
             <span className="w-2.5 h-2.5 rounded-full bg-[#006a4e]"></span> कृषी व बी-बियाणे
           </span>

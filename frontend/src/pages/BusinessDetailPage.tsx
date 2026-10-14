@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useMemo, useState } from 'react';
 import type { Business } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
@@ -149,7 +150,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
         <Breadcrumb
           items={[
             { label: t('nav_home'), onClick: onNavigateHome },
-            { label: lang === 'MR' ? 'स्थानिक व्यवसाय निर्देशिका' : 'Local Businesses Directory', onClick: onNavigateBack },
+            { label: t('nav_businesses'), onClick: onNavigateBack },
             { label: business.name, active: true }
           ]}
         />
@@ -158,7 +159,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
           onClick={onNavigateBack}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[12px] font-bold transition-colors border border-[#e8e2d9]"
         >
-          <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+          <LucideIcon name="arrow_back" className="text-[16px]" />
           <span>{lang === 'MR' ? 'निर्देशिकेकडे परत जा' : 'Back to Directory'}</span>
         </button>
       </div>
@@ -174,12 +175,12 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
           <div className="absolute top-4 left-4 flex flex-wrap items-center gap-2">
-            <span className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#bbf7d0] text-[#002117]">
+            <span className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]">
               {category}
             </span>
             {business.isVerified && (
               <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-[#002873] text-white flex items-center gap-1">
-                <span className="material-symbols-outlined text-[14px]">verified</span>
+                <LucideIcon name="verified" className="text-[14px]" />
                 <span>{lang === 'MR' ? 'सत्यापित स्थानिक व्यापारी' : (business.verificationBadge || 'Verified Merchant')}</span>
               </span>
             )}
@@ -191,7 +192,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
                 {business.name}
               </h1>
               <div className="flex items-center gap-2 text-[13px] text-white/90 mt-1">
-                <span className="material-symbols-outlined text-[16px] text-[#bbf7d0]">location_on</span>
+                <LucideIcon name="location_on" className="text-[16px] text-[#a7f3d0]" />
                 <span>{business.address} ({business.landmark})</span>
               </div>
             </div>
@@ -210,7 +211,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
               href={`tel:${business.phone}`}
               className="px-4 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center gap-1.5 shadow-xs transition-colors"
             >
-              <span className="material-symbols-outlined text-[18px]">call</span>
+              <LucideIcon name="call" className="text-[18px]" />
               <span>{lang === 'MR' ? 'थेट फोन करा' : `Call: +91 ${business.phone}`}</span>
             </a>
 
@@ -220,7 +221,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
               rel="noopener noreferrer"
               className="px-4 py-2.5 rounded-xl bg-[#25d366] hover:bg-[#20ba5a] text-white text-[13px] font-bold flex items-center gap-1.5 transition-colors shadow-xs"
             >
-              <span className="material-symbols-outlined text-[18px]">chat</span>
+              <LucideIcon name="chat" className="text-[18px]" />
               <span>{lang === 'MR' ? 'व्हॉट्सॲप मेसेज' : 'WhatsApp Message'}</span>
             </a>
 
@@ -228,13 +229,13 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
               onClick={handleShareWhatsApp}
               className="px-3.5 py-2.5 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[13px] font-bold flex items-center gap-1.5 transition-colors border border-[#e8e2d9]"
             >
-              <span className="material-symbols-outlined text-[18px]">share</span>
+              <LucideIcon name="share" className="text-[18px]" />
               <span>{lang === 'MR' ? 'दुकान शेअर करा' : 'Share Store'}</span>
             </button>
           </div>
 
           <div className="flex items-center gap-2 text-[12px] text-[#707974]">
-            <span className="material-symbols-outlined text-[16px] text-[#376757]">schedule</span>
+            <LucideIcon name="schedule" className="text-[16px] text-[#376757]" />
             <span><strong>{lang === 'MR' ? 'वेळ:' : 'Hours:'}</strong> {business.openingHours}</span>
           </div>
         </div>
@@ -247,7 +248,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
           {/* About / Description */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[18px] text-[#166534] mb-3 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#376757]">storefront</span>
+              <LucideIcon name="storefront" className="text-[#376757]" />
               <span>{lang === 'MR' ? `${business.name} विषयी माहिती` : `About ${business.name}`}</span>
             </h2>
             <p className="text-[14px] text-[#404945] leading-relaxed">
@@ -273,7 +274,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
           {/* Interactive Shop Location Map */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[18px] text-[#166534] mb-2 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#c2410c]">pin_drop</span>
+              <LucideIcon name="pin_drop" className="text-[#c2410c]" />
               <span>{lang === 'MR' ? 'स्थान व दिशा (नकाशा)' : 'Location & Directions'}</span>
             </h2>
             <p className="text-[12px] text-[#707974] mb-4">
@@ -327,7 +328,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
                     </div>
                     <div className="mt-3 text-[11px] font-bold text-[#c2410c] flex items-center gap-1">
                       <span>{lang === 'MR' ? 'दुकान पहा' : 'View Store'}</span>
-                      <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
+                      <LucideIcon name="arrow_forward" className="text-[13px]" />
                     </div>
                   </button>
                 ))}
@@ -346,7 +347,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
 
             <div className="space-y-3 text-[13px]">
               <div className="flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-[18px] text-[#166534] shrink-0 mt-0.5">call</span>
+                <LucideIcon name="call" className="text-[18px] text-[#166534] shrink-0 mt-0.5" />
                 <div>
                   <div className="text-[11px] text-[#707974] font-medium">{lang === 'MR' ? 'मुख्य फोन' : 'Primary Phone'}</div>
                   <a href={`tel:${business.phone}`} className="font-bold text-[#1d1b16] hover:underline">
@@ -356,7 +357,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
               </div>
 
               <div className="flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-[18px] text-[#25d366] shrink-0 mt-0.5">chat</span>
+                <LucideIcon name="chat" className="text-[18px] text-[#25d366] shrink-0 mt-0.5" />
                 <div>
                   <div className="text-[11px] text-[#707974] font-medium">{lang === 'MR' ? 'व्हॉट्सॲप ऑर्डर' : 'WhatsApp Orders'}</div>
                   <a
@@ -371,7 +372,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
               </div>
 
               <div className="flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-[18px] text-[#c2410c] shrink-0 mt-0.5">schedule</span>
+                <LucideIcon name="schedule" className="text-[18px] text-[#c2410c] shrink-0 mt-0.5" />
                 <div>
                   <div className="text-[11px] text-[#707974] font-medium">{lang === 'MR' ? 'दुकान वेळ' : 'Working Hours'}</div>
                   <div className="font-bold text-[#1d1b16]">{business.openingHours}</div>
@@ -379,7 +380,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
               </div>
 
               <div className="flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-[18px] text-[#002873] shrink-0 mt-0.5">store</span>
+                <LucideIcon name="store" className="text-[18px] text-[#002873] shrink-0 mt-0.5" />
                 <div>
                   <div className="text-[11px] text-[#707974] font-medium">{lang === 'MR' ? 'पत्ता' : 'Address'}</div>
                   <div className="font-bold text-[#1d1b16]">{business.address}</div>
@@ -391,7 +392,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
               href={`tel:${business.phone}`}
               className="mt-2 w-full py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
             >
-              <span className="material-symbols-outlined text-[16px]">call</span>
+              <LucideIcon name="call" className="text-[16px]" />
               <span>{lang === 'MR' ? 'व्यापाऱ्याशी संपर्क साधा' : 'Call Merchant Now'}</span>
             </a>
           </div>
@@ -399,7 +400,7 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
           {/* Local Merchant Registry Card */}
           <div className="bg-[#f9f3ea] rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
             <div className="flex items-center gap-2 text-[#166534] font-bold text-[13px] mb-1">
-              <span className="material-symbols-outlined text-[18px]">verified_user</span>
+              <LucideIcon name="verified_user" className="text-[18px]" />
               <span>{lang === 'MR' ? 'स्थानिक व्यवसाय नोंदणी' : 'Civic Business Registry'}</span>
             </div>
             <p className="text-[12px] text-[#404945] leading-relaxed mb-3">

@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { AsgaonLogo } from './AsgaonLogo';
@@ -91,17 +92,17 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   const navItems = [
-    { id: 'businesses', label: lang === 'MR' ? 'स्थानिक दुकाने' : 'Businesses', icon: 'storefront' },
-    { id: 'jobs', label: lang === 'MR' ? 'रोजगार / नोकऱ्या' : 'Jobs', icon: 'work' },
-    { id: 'schemes', label: lang === 'MR' ? 'शासकीय योजना' : 'Govt Schemes', icon: 'assured_workload' },
-    { id: 'krishi', label: lang === 'MR' ? 'कृषी व बाजारभाव' : 'Krishi / Mandi', icon: 'agriculture' },
-    { id: 'shiksha', label: lang === 'MR' ? 'शिक्षण व शाळा' : 'Education', icon: 'school' },
-    { id: 'transport', label: lang === 'MR' ? 'वाहतूक व बस' : 'ST Bus / Transport', icon: 'directions_bus' },
-    { id: 'marketplace', label: lang === 'MR' ? 'ग्राम बाजार' : 'Marketplace', icon: 'local_mall' },
-    { id: 'announcements', label: lang === 'MR' ? 'सूचना व परिपत्रके' : 'Announcements', icon: 'campaign' },
-    { id: 'events', label: lang === 'MR' ? 'गावातील कार्यक्रम' : 'Events', icon: 'event' },
-    { id: 'blogs', label: lang === 'MR' ? 'ग्राम वार्ता' : 'Stories', icon: 'article' },
-    { id: 'emergency', label: lang === 'MR' ? 'आपत्कालीन सेवा' : 'Emergency', icon: 'emergency' }
+    { id: 'businesses', label: t('nav_businesses'), icon: 'storefront' },
+    { id: 'jobs', label: t('nav_jobs'), icon: 'work' },
+    { id: 'schemes', label: t('nav_schemes'), icon: 'assured_workload' },
+    { id: 'krishi', label: t('nav_krishi'), icon: 'agriculture' },
+    { id: 'shiksha', label: t('nav_education'), icon: 'school' },
+    { id: 'transport', label: t('nav_transport'), icon: 'directions_bus' },
+    { id: 'marketplace', label: t('nav_marketplace'), icon: 'local_mall' },
+    { id: 'announcements', label: t('nav_announcements'), icon: 'campaign' },
+    { id: 'events', label: t('nav_events'), icon: 'event' },
+    { id: 'blogs', label: t('nav_blogs'), icon: 'article' },
+    { id: 'emergency', label: t('nav_emergency'), icon: 'emergency' }
   ];
 
   return (
@@ -128,11 +129,9 @@ export const Header: React.FC<HeaderProps> = ({
                       ? 'bg-emerald-100 text-emerald-900 border-emerald-300 shadow-xs ring-1 ring-emerald-600/30'
                       : 'bg-white hover:bg-[#f7f2e7] text-stone-600 hover:text-emerald-800 border-[#e7dece] shadow-2xs'
                     }`}
-                  title="गाव पातळीवरील सूचना व थेट अलर्ट (Civic Notifications & Push Alerts)"
+                  title="गाव ग्राम सूचना व थेट अलर्ट"
                 >
-                  <span className={`material-symbols-outlined text-[19px] ${pushActive ? 'text-emerald-800' : ''}`}>
-                    {pushActive ? 'notifications_active' : 'notifications'}
-                  </span>
+                  <LucideIcon name={pushActive ? 'notifications_active' : 'notifications'} className={` text-[19px] ${pushActive ? 'text-emerald-800' : ''}`} />
                   {hasUrgent && (
                     <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#d9381e] rounded-full ring-2 ring-white animate-pulse" />
                   )}
@@ -144,7 +143,7 @@ export const Header: React.FC<HeaderProps> = ({
                     {/* Header */}
                     <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#efe7dc]">
                       <div className="flex items-center gap-1.5 font-extrabold text-emerald-900">
-                        <span className="material-symbols-outlined text-[18px] text-emerald-700">campaign</span>
+                        <LucideIcon name="campaign" className="text-[18px] text-emerald-700" />
                         <span>गाव सूचना व थेट अलर्ट</span>
                       </div>
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-900">
@@ -156,9 +155,7 @@ export const Header: React.FC<HeaderProps> = ({
                     <div className={`p-2.5 rounded-xl border mb-3 flex items-center justify-between gap-2 ${pushActive ? 'bg-emerald-50 border-emerald-200' : 'bg-[#faf6ee] border-[#efe7dc]'
                       }`}>
                       <div className="flex items-center gap-2">
-                        <span className={`material-symbols-outlined text-[20px] ${pushActive ? 'text-emerald-700' : 'text-[#c2410c]'}`}>
-                          {pushActive ? 'check_circle' : 'notifications_paused'}
-                        </span>
+                        <LucideIcon name={pushActive ? 'check_circle' : 'notifications_paused'} className={` text-[20px] ${pushActive ? 'text-emerald-700' : 'text-[#c2410c]'}`} />
                         <div>
                           <div className="font-bold text-stone-900 text-[11px] leading-tight">
                             {pushActive ? 'मोबाईल सूचना चालू आहेत' : 'थेट सूचना सुरू करा'}
@@ -210,7 +207,7 @@ export const Header: React.FC<HeaderProps> = ({
                               <span>{a.category || 'गाव सूचना'}</span>
                               <span className="text-emerald-800 font-bold flex items-center gap-0.5">
                                 <span>सविस्तर पहा</span>
-                                <span className="material-symbols-outlined text-[12px]">chevron_right</span>
+                                <LucideIcon name="chevron_right" className="text-[12px]" />
                               </span>
                             </div>
                           </div>
@@ -233,7 +230,7 @@ export const Header: React.FC<HeaderProps> = ({
                         className="text-emerald-800 hover:underline font-bold text-[11px] flex items-center gap-1"
                       >
                         <span>सर्व सूचना व परिपत्रके पहा</span>
-                        <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                        <LucideIcon name="arrow_forward" className="text-[14px]" />
                       </button>
                       <button
                         type="button"
@@ -281,7 +278,7 @@ export const Header: React.FC<HeaderProps> = ({
                     <span className="hidden sm:inline font-bold">
                       {currentUser?.fullName || (userRole ? `${userRole} Portal` : 'Asgaon Citizen')}
                     </span>
-                    <span className="material-symbols-outlined text-[16px] text-stone-400">expand_more</span>
+                    <LucideIcon name="expand_more" className="text-[16px] text-stone-400" />
                   </button>
 
                   {/* Dropdown Menu */}
@@ -306,7 +303,7 @@ export const Header: React.FC<HeaderProps> = ({
                       {/* Language Switcher in Dropdown */}
                       <div className="p-2 bg-[#faf6ee] rounded-lg border border-[#efe7dc] mb-1.5 flex items-center justify-between">
                         <div className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-900">
-                          <span className="material-symbols-outlined text-[15px] text-emerald-700">translate</span>
+                          <LucideIcon name="translate" className="text-[15px] text-emerald-700" />
                           <span>भाषा / Lang:</span>
                         </div>
                         <div className="flex items-center rounded-md bg-white p-0.5 border border-[#e7dece]">
@@ -329,8 +326,8 @@ export const Header: React.FC<HeaderProps> = ({
                         onClick={() => { setActiveNav('profile'); setUserDropdownOpen(false); }}
                         className="w-full flex items-center gap-2 px-2.5 py-2 hover:bg-[#faf6ee] rounded-lg text-emerald-900 font-bold transition-colors text-left"
                       >
-                        <span className="material-symbols-outlined text-[18px] text-[#c2410c]">badge</span>
-                        <span>My Citizen Profile</span>
+                        <LucideIcon name="badge" className="text-[18px] text-[#c2410c]" />
+                        <span>{t('nav_profile')}</span>
                       </button>
 
                       <button
@@ -338,8 +335,8 @@ export const Header: React.FC<HeaderProps> = ({
                         onClick={() => { setActiveNav('profile'); setUserDropdownOpen(false); }}
                         className="w-full flex items-center gap-2 px-2.5 py-2 hover:bg-[#faf6ee] rounded-lg text-stone-600 font-medium transition-colors text-left"
                       >
-                        <span className="material-symbols-outlined text-[18px] text-emerald-700">support_agent</span>
-                        <span>My Grievances &amp; Tracking</span>
+                        <LucideIcon name="support_agent" className="text-[18px] text-emerald-700" />
+                        <span>{t('nav_grievances')}</span>
                       </button>
 
                       <div className="h-px bg-[#efe7dc] my-1" />
@@ -349,8 +346,8 @@ export const Header: React.FC<HeaderProps> = ({
                         onClick={() => { onLogout?.(); setUserDropdownOpen(false); }}
                         className="w-full flex items-center gap-2 px-2.5 py-2 hover:bg-red-50 text-red-700 rounded-lg font-bold transition-colors text-left"
                       >
-                        <span className="material-symbols-outlined text-[18px]">logout</span>
-                        <span>Logout / Exit Session</span>
+                        <LucideIcon name="logout" className="text-[18px]" />
+                        <span>{lang === 'MR' ? 'बाहेर पडा' : 'Logout'}</span>
                       </button>
                     </div>
                   )}
@@ -362,7 +359,7 @@ export const Header: React.FC<HeaderProps> = ({
                   className="flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-emerald-800 text-white hover:bg-emerald-900 active:scale-95 transition-all text-[12px] sm:text-[13px] font-extrabold shadow-sm whitespace-nowrap cursor-pointer"
                   title={t('header_login')}
                 >
-                  <span className="material-symbols-outlined text-[18px]">login</span>
+                  <LucideIcon name="login" className="text-[18px]" />
                   <span>{t('header_login')}</span>
                 </button>
               )}
@@ -376,9 +373,7 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label={mobileMenuOpen ? 'मेनू बंद करा' : 'मेनू उघडा'}
               title={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
             >
-              <span className="material-symbols-outlined text-[22px]">
-                {mobileMenuOpen ? 'close' : 'menu'}
-              </span>
+              <LucideIcon name={mobileMenuOpen ? 'close' : 'menu'} className=" text-[22px]" />
             </button>
           </div>
         </div>
@@ -394,7 +389,7 @@ export const Header: React.FC<HeaderProps> = ({
                   : 'text-stone-700 hover:text-emerald-950 hover:bg-[#faf6ee]'
                   }`}
               >
-                {lang === 'MR' ? 'सर्व विभाग' : 'All Hub'}
+                {t('nav_home')}
               </button>
               {navItems.map((item) => (
                 <button
@@ -445,7 +440,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="w-8 h-8 rounded-lg flex items-center justify-center text-stone-500 hover:text-stone-900 hover:bg-[#faf6ee] transition-colors cursor-pointer"
                 aria-label="Close Menu"
               >
-                <span className="material-symbols-outlined text-[20px]">close</span>
+                <LucideIcon name="close" className="text-[20px]" />
               </button>
             </div>
 
@@ -476,8 +471,8 @@ export const Header: React.FC<HeaderProps> = ({
                       }}
                       className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-[#faf6ee] text-emerald-950 font-bold text-xs hover:bg-[#f3ede4] transition-colors"
                     >
-                      <span className="material-symbols-outlined text-[16px] text-emerald-700">badge</span>
-                      <span>{lang === 'MR' ? 'माझे प्रोफाइल' : 'Profile'}</span>
+                      <LucideIcon name="badge" className="text-[16px] text-emerald-700" />
+                      <span>{t('nav_profile')}</span>
                     </button>
                     <button
                       type="button"
@@ -487,7 +482,7 @@ export const Header: React.FC<HeaderProps> = ({
                       }}
                       className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-red-50 text-red-700 font-bold text-xs hover:bg-red-100 transition-colors"
                     >
-                      <span className="material-symbols-outlined text-[16px]">logout</span>
+                      <LucideIcon name="logout" className="text-[16px]" />
                       <span>{lang === 'MR' ? 'बाहेर पडा' : 'Logout'}</span>
                     </button>
                   </div>
@@ -502,7 +497,7 @@ export const Header: React.FC<HeaderProps> = ({
                     }}
                     className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-800 text-white hover:bg-emerald-900 font-bold text-[13px] shadow-xs active:scale-95 transition-all cursor-pointer"
                   >
-                    <span className="material-symbols-outlined text-[18px]">login</span>
+                    <LucideIcon name="login" className="text-[18px]" />
                     <span>{lang === 'MR' ? 'लॉगिन / नोंदणी करा' : 'Login / Register'}</span>
                   </button>
                 </div>
@@ -545,7 +540,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }}
                 className="relative flex items-center w-full h-10 rounded-xl bg-white border border-[#efe7dc] focus-within:border-emerald-600 px-3 shadow-inner"
               >
-                <span className="material-symbols-outlined text-[19px] text-stone-400 mr-2">search</span>
+                <LucideIcon name="search" className="text-[19px] text-stone-400 mr-2" />
                 <input
                   type="text"
                   value={searchVal}
@@ -559,7 +554,7 @@ export const Header: React.FC<HeaderProps> = ({
                     onClick={() => setSearchVal('')}
                     className="text-stone-400 hover:text-stone-700 p-0.5 cursor-pointer"
                   >
-                    <span className="material-symbols-outlined text-[16px]">close</span>
+                    <LucideIcon name="close" className="text-[16px]" />
                   </button>
                 )}
               </form>
@@ -582,12 +577,9 @@ export const Header: React.FC<HeaderProps> = ({
                       : 'text-stone-800 hover:bg-white hover:text-emerald-950'
                     }`}
                 >
-                  <span className={`material-symbols-outlined text-[20px] ${activeNav === 'home' || activeNav === 'all' ? 'text-white' : 'text-emerald-700'
-                    }`}>
-                    home
-                  </span>
-                  <span className="flex-1 truncate">{lang === 'MR' ? 'सर्व विभाग (मुख्य दालन)' : 'All Hub (Home)'}</span>
-                  <span className="material-symbols-outlined text-[16px] opacity-40">chevron_right</span>
+                  <LucideIcon name="home" className={` text-[20px] ${activeNav === 'home' || activeNav === 'all' ? 'text-white' : 'text-emerald-700' }`} />
+                  <span className="flex-1 truncate">{t('nav_home')}</span>
+                  <LucideIcon name="chevron_right" className="text-[16px] opacity-40" />
                 </button>
 
                 {navItems.map((item) => {
@@ -605,11 +597,9 @@ export const Header: React.FC<HeaderProps> = ({
                           : 'text-stone-800 hover:bg-white hover:text-emerald-950'
                         }`}
                     >
-                      <span className={`material-symbols-outlined text-[20px] ${isActive ? 'text-white' : 'text-emerald-700'}`}>
-                        {item.icon}
-                      </span>
+                      <LucideIcon name={item.icon} className={` text-[20px] ${isActive ? 'text-white' : 'text-emerald-700'}`} />
                       <span className="flex-1 truncate">{item.label}</span>
-                      <span className="material-symbols-outlined text-[16px] opacity-40">chevron_right</span>
+                      <LucideIcon name="chevron_right" className="text-[16px] opacity-40" />
                     </button>
                   );
                 })}
@@ -621,7 +611,7 @@ export const Header: React.FC<HeaderProps> = ({
               <div className="flex items-center justify-between text-[11px] text-stone-500 px-1">
                 <span>{lang === 'MR' ? 'आपत्कालीन मदत:' : 'Emergency Help:'}</span>
                 <a href="tel:108" className="text-red-700 font-bold hover:underline flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">phone_in_talk</span>
+                  <LucideIcon name="phone_in_talk" className="text-[14px]" />
                   <span>१०८ रुग्णवाहिका</span>
                 </a>
               </div>

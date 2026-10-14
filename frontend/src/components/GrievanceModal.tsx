@@ -1,6 +1,8 @@
+import { LucideIcon } from './LucideIcon';
 import { useState } from 'react';
 import type { Grievance } from '../types';
 import { api } from '../services/api';
+import { useLanguage } from '../context/LanguageContext';
 
 interface GrievanceModalProps {
   isOpen: boolean;
@@ -13,6 +15,8 @@ export const GrievanceModal: React.FC<GrievanceModalProps> = ({
   onClose,
   onSubmitGrievance
 }) => {
+  const { lang } = useLanguage();
+  const isMr = lang === 'MR';
   const [category, setCategory] = useState('Drinking Water / Pipeline Leakage');
   const [ward, setWard] = useState('');
   const [desc, setDesc] = useState('');
@@ -89,97 +93,113 @@ export const GrievanceModal: React.FC<GrievanceModalProps> = ({
       <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-[#e8e2d9] overflow-hidden p-6">
         {submittedToken ? (
           <div className="text-center py-6">
-            <div className="w-16 h-16 rounded-full bg-[#bbf7d0] text-[#166534] flex items-center justify-center mx-auto mb-4">
-              <span className="material-symbols-outlined text-[36px]">check_circle</span>
+            <div className="w-16 h-16 rounded-full bg-[#a7f3d0] text-[#166534] flex items-center justify-center mx-auto mb-4">
+              <LucideIcon name="check_circle" className="text-[36px]" />
             </div>
             <h3 className="font-heading font-extrabold text-[22px] text-[#166534] mb-2">
-              Grievance Registered Successfully!
+              {isMr ? 'तक्रार यशस्वीरीत्या नोंदवली गेली!' : 'Grievance Registered Successfully!'}
             </h3>
             <p className="text-[13px] text-[#404945] mb-4">
-              Your complaint has been forwarded to the Gram Sevak Office and ward officer.
+              {isMr
+                ? 'आपली तक्रार ग्रामपंचायत कार्यालय आणि संबंधित प्रभाग प्रतिनिधींकडे पाठवण्यात आली आहे.'
+                : 'Your complaint has been forwarded to the Gram Sevak Office and ward officer.'}
             </p>
             <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9] mb-6">
-              <div className="text-[11px] font-bold text-[#707974] uppercase">Your SMS Tracking Token</div>
+              <div className="text-[11px] font-bold text-[#707974] uppercase">
+                {isMr ? 'तक्रार संदर्भ क्रमांक' : 'Grievance Reference Number'}
+              </div>
               <div className="font-heading font-extrabold text-[24px] text-[#c2410c] tracking-widest mt-1">
                 {submittedToken}
               </div>
               <div className="text-[11px] text-[#404945] mt-1">
-                SMS alert sent to +91 {phone}. Status updates will reflect on the live ward desk.
+                {isMr
+                  ? `+91 ${phone} वर एसएमएस पाठवला आहे. प्रभागातील कामाच्या प्रगतीनुसार स्थिती अद्यतनित होईल.`
+                  : `SMS alert sent to +91 ${phone}. Status updates will reflect on the live ward desk.`}
               </div>
             </div>
             <button
               onClick={handleReset}
               className="w-full py-3 rounded-xl bg-[#166534] text-white text-[14px] font-bold hover:bg-[#052e16] transition-colors"
             >
-              Done &amp; Return to Portal
+              {isMr ? 'पूर्ण झाले / परत जा' : 'Done & Return to Portal'}
             </button>
           </div>
         ) : (
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-[#f3ede4] mb-4">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#c2410c] text-[24px]">campaign</span>
+                <LucideIcon name="campaign" className="text-[#c2410c] text-[24px]" />
                 <h3 className="font-heading font-bold text-[18px] text-[#1d1b16]">
-                  Report a Village Issue (समस्या नोंदणी)
+                  {isMr ? 'गावातील समस्या नोंदणी' : 'Report a Village Issue'}
                 </h3>
               </div>
               <button
                 onClick={onClose}
                 className="text-[#707974] hover:text-[#1d1b16] p-1 rounded-lg"
               >
-                <span className="material-symbols-outlined text-[20px]">close</span>
+                <LucideIcon name="close" className="text-[20px]" />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
               <div>
                 <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-                  Issue Category (समस्या प्रकार)
+                  {isMr ? 'समस्या प्रकार *' : 'Issue Category *'}
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
                 >
-                  <option>Drinking Water / Pipeline Leakage</option>
-                  <option>Street Light / Electrical Breakdown</option>
-                  <option>Road Potholes &amp; Drainage Block</option>
-                  <option>Garbage Collection &amp; Cleanliness</option>
-                  <option>Anganwadi / ZP School Facility</option>
+                  <option value="Drinking Water / Pipeline Leakage">
+                    {isMr ? 'पिण्याचे पाणी / पाईपलाईन गळती' : 'Drinking Water / Pipeline Leakage'}
+                  </option>
+                  <option value="Street Light / Electrical Breakdown">
+                    {isMr ? 'रस्त्यावरील दिवे / वीज पुरवठा' : 'Street Light / Electrical Breakdown'}
+                  </option>
+                  <option value="Road Potholes & Drainage Block">
+                    {isMr ? 'रस्ते खड्डे व सांडपाणी नाली' : 'Road Potholes & Drainage Block'}
+                  </option>
+                  <option value="Garbage Collection & Cleanliness">
+                    {isMr ? 'कचरा व्यवस्थापन व स्वच्छता' : 'Garbage Collection & Cleanliness'}
+                  </option>
+                  <option value="Anganwadi / ZP School Facility">
+                    {isMr ? 'अंगणवाडी / शाळा सुविधा' : 'Anganwadi / School Facility'}
+                  </option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-                  Ward Number &amp; Landmark (वॉर्ड व ठिकाण)
+                  {isMr ? 'प्रभाग क्रमांक व ठिकाण *' : 'Ward Number & Landmark *'}
                 </label>
                 <input
                   type="text"
                   required
                   value={ward}
                   onChange={(e) => setWard(e.target.value)}
-                  placeholder="e.g. Ward No. 2, Behind Hanuman Temple"
+                  placeholder={isMr ? 'उदा. प्रभाग क्र. २, हनुमान मंदिराजवळ' : 'e.g. Ward No. 2, Near Hanuman Temple'}
                   className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
                 />
               </div>
 
               <div>
                 <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-                  Brief Description (समस्येचे थोडक्यात वर्णन)
+                  {isMr ? 'समस्येचे थोडक्यात वर्णन *' : 'Brief Description *'}
                 </label>
                 <textarea
                   required
                   rows={3}
                   value={desc}
                   onChange={(e) => setDesc(e.target.value)}
-                  placeholder="Describe what is broken or needed..."
+                  placeholder={isMr ? 'समस्येबद्दल सविस्तर माहिती लिहा...' : 'Describe what is broken or needed...'}
                   className="w-full bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
                 />
               </div>
 
               <div>
                 <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-                  Your Mobile Number (मोबाईल क्र. - SMS ट्रॅकिंगसाठी)
+                  {isMr ? 'मोबाईल क्रमांक (SMS माहितीसाठी) *' : 'Your Mobile Number (for SMS updates) *'}
                 </label>
                 <div className="flex gap-2">
                   <span className="p-2.5 bg-[#f3ede4] text-[#1d1b16] rounded-xl text-[13px] font-bold border border-[#e8e2d9]">
@@ -191,7 +211,7 @@ export const GrievanceModal: React.FC<GrievanceModalProps> = ({
                     pattern="[0-9]{10}"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="10-digit mobile number"
+                    placeholder={isMr ? '१० अंकी मोबाईल क्रमांक' : '10-digit mobile number'}
                     className="flex-1 bg-[#f9f3ea] text-[#1d1b16] p-2.5 rounded-xl text-[13px] border border-[#e8e2d9] focus:outline-none focus:ring-2 focus:ring-[#166534]"
                   />
                 </div>
@@ -203,14 +223,16 @@ export const GrievanceModal: React.FC<GrievanceModalProps> = ({
                   onClick={onClose}
                   className="px-4 py-2 rounded-xl bg-[#f3ede4] text-[#1d1b16] text-[13px] font-bold hover:bg-[#e8e2d9] transition-colors"
                 >
-                  Cancel
+                  {isMr ? 'रद्द करा' : 'Cancel'}
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
                   className="px-5 py-2 rounded-xl bg-[#c2410c] text-white text-[13px] font-bold hover:bg-[#852f00] transition-colors shadow-xs disabled:opacity-50"
                 >
-                  {loading ? 'Submitting to Panchayat...' : 'Submit Grievance'}
+                  {loading
+                    ? (isMr ? 'नोंदणी होत आहे...' : 'Submitting to Panchayat...')
+                    : (isMr ? 'तक्रार नोंदवा' : 'Submit Grievance')}
                 </button>
               </div>
             </form>

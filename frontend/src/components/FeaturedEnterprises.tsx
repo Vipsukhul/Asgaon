@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React from 'react';
 import type { Business } from '../types';
 import { useLanguage } from '../context/LanguageContext';
@@ -21,7 +22,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-5 gap-3">
         <div>
           <h2 className="font-heading font-extrabold text-[24px] text-emerald-950 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#c2410c] text-[28px]">storefront</span>
+            <LucideIcon name="storefront" className="text-[#c2410c] text-[28px]" />
             <span>{lang === 'MR' ? 'स्थानिक वैशिष्ट्यपूर्ण दुकाने व व्यवसाय' : 'Featured Village Enterprises'}</span>
           </h2>
           <p className="text-[13px] text-stone-600">
@@ -36,7 +37,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
           onClick={onRegisterShop}
           className="px-4 py-2 rounded-xl bg-[#c2410c] hover:bg-[#ea580c] text-white text-[13px] font-extrabold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
         >
-          <span className="material-symbols-outlined text-[18px]">add_business</span>
+          <LucideIcon name="add_business" className="text-[18px]" />
           <span>{lang === 'MR' ? 'मोफत दुकान नोंदवा (आपला व्यापार)' : 'List Your Shop Free'}</span>
         </button>
       </div>
@@ -66,14 +67,14 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
                 className="absolute bottom-2.5 left-2.5 bg-black/75 hover:bg-emerald-800 backdrop-blur-xs text-white text-[11px] font-medium px-2.5 py-1 rounded-md flex items-center gap-1 transition-colors border border-white/20"
                 title={lang === 'MR' ? 'नकाशावर ठिकाण पहा' : 'View on Map / Directions'}
               >
-                <span className="material-symbols-outlined text-[13px] text-amber-400">location_on</span>
+                <LucideIcon name="location_on" className="text-[13px] text-amber-400" />
                 <span>{biz.landmark} • {lang === 'MR' ? 'नकाशा ↗' : 'Map ↗'}</span>
               </a>
 
               {/* Verification badge pill */}
               {biz.isVerified && (
                 <div className="absolute top-2.5 right-2.5 bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs">
-                  <span className="material-symbols-outlined text-[12px] text-emerald-700">verified</span>
+                  <LucideIcon name="verified" className="text-[12px] text-emerald-700" />
                   <span>{lang === 'MR' && biz.verificationBadge === 'VERIFIED MERCHANT' ? 'प्रमाणित व्यावसायिक' : (biz.verificationBadge || 'VERIFIED')}</span>
                 </div>
               )}
@@ -96,7 +97,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
 
               {/* Timing */}
               <div className="mt-3 flex items-center gap-1.5 text-[11px] text-stone-600 bg-[#faf6ee] px-2 py-1 rounded-lg border border-[#efe7dc]">
-                <span className="material-symbols-outlined text-[14px] text-emerald-700">schedule</span>
+                <LucideIcon name="schedule" className="text-[14px] text-emerald-700" />
                 <span className="truncate">{biz.openingHours}</span>
               </div>
 
@@ -106,7 +107,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
                   href={`tel:${biz.phone}`}
                   className="flex-1 flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-[#faf6ee] text-stone-800 hover:bg-[#f3ede4] transition-colors text-[12px] font-bold border border-[#efe7dc]"
                 >
-                  <span className="material-symbols-outlined text-[15px] text-emerald-800">call</span>
+                  <LucideIcon name="call" className="text-[15px] text-emerald-800" />
                   <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
                 </a>
                 <a
@@ -115,7 +116,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
                   rel="noopener noreferrer"
                   className="flex-1 flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-emerald-800 text-white hover:bg-emerald-900 transition-colors text-[12px] font-extrabold shadow-2xs"
                 >
-                  <span className="material-symbols-outlined text-[15px] text-emerald-200">chat</span>
+                  <LucideIcon name="chat" className="text-[15px] text-emerald-200" />
                   <span>{lang === 'MR' ? 'व्हॉट्सॲप' : 'WhatsApp'}</span>
                 </a>
                 <a
@@ -125,7 +126,7 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
                   className="p-2 rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors border border-amber-200"
                   title={lang === 'MR' ? 'Google Maps वर ठिकाण पहा' : 'View on Map'}
                 >
-                  <span className="material-symbols-outlined text-[17px]">location_on</span>
+                  <LucideIcon name="location_on" className="text-[17px]" />
                 </a>
               </div>
             </div>

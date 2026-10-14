@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React, { useState, useEffect } from 'react';
 import type { UserProfileData } from '../pages/ProfilePage';
 
@@ -20,11 +21,11 @@ export const INITIAL_AUDIT_LOGS: AuditLogItem[] = [
   {
     id: 'log-101',
     timestamp: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
-    actorName: 'सरपंच (Sarpanch Asgaon)',
+    actorName: 'सरपंच ',
     actorRole: 'SARPANCH',
     actorPhone: '9822081100',
     category: 'BROADCAST',
-    action: 'तातडीची दवंडी (Emergency Push Broadcast) पाठवली',
+    action: 'तातडीची दवंडी  पाठवली',
     details: 'हवामान इशारा व वादळी पावसाबाबत सर्व १,४२० गावकऱ्यांच्या मोबाईलवर थेट अलर्ट प्रसारित केला.',
     severity: 'CRITICAL',
     ipAddress: '192.168.1.104 (GP Office)'
@@ -32,11 +33,11 @@ export const INITIAL_AUDIT_LOGS: AuditLogItem[] = [
   {
     id: 'log-102',
     timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
-    actorName: 'ग्रामसेवक (Gram Sevak)',
+    actorName: 'ग्रामसेवक ',
     actorRole: 'GRAM_SEVAK',
     actorPhone: '9421890123',
     category: 'COMPLAINTS',
-    action: 'तक्रार #GP-2026-44 निकाली काढली (Resolved)',
+    action: 'तक्रार #GP-2026-44 निकाली काढली ',
     details: 'वॉर्ड क्र. ३ मधील पिण्याच्या पाण्याच्या पाईपलाईनची गळती दुरुस्त करून तक्रार बंद केली.',
     severity: 'INFO',
     ipAddress: '192.168.1.108 (GP Office)'
@@ -44,7 +45,7 @@ export const INITIAL_AUDIT_LOGS: AuditLogItem[] = [
   {
     id: 'log-103',
     timestamp: new Date(Date.now() - 1000 * 60 * 180).toISOString(),
-    actorName: 'संगणक परिचालक (CSC Operator)',
+    actorName: 'संगणक परिचालक ',
     actorRole: 'CSC_VLE',
     actorPhone: '9850123456',
     category: 'SCHEMES',
@@ -56,7 +57,7 @@ export const INITIAL_AUDIT_LOGS: AuditLogItem[] = [
   {
     id: 'log-104',
     timestamp: new Date(Date.now() - 1000 * 60 * 360).toISOString(),
-    actorName: 'जल मित्र (Water Supply Operator)',
+    actorName: 'जल मित्र ',
     actorRole: 'WATER_ADMIN',
     actorPhone: '9822081102',
     category: 'CONTENT',
@@ -68,10 +69,10 @@ export const INITIAL_AUDIT_LOGS: AuditLogItem[] = [
   {
     id: 'log-105',
     timestamp: new Date(Date.now() - 1000 * 60 * 720).toISOString(),
-    actorName: 'सिस्टम प्रशासक (Super Admin)',
+    actorName: 'सिस्टम प्रशासक ',
     actorRole: 'SUPER_ADMIN',
     category: 'SECURITY',
-    action: 'प्रशासक लॉगिन यशस्वी (Admin Session Started)',
+    action: 'प्रशासक लॉगिन यशस्वी ',
     details: 'आसगाव ग्राम माहिती व जनजागृती मंच प्रशासन पॅनेलमध्ये सुरक्षित दोन-टप्प्यांच्या पडताळणीसह प्रवेश.',
     severity: 'INFO',
     ipAddress: 'Admin Web Portal'
@@ -79,12 +80,12 @@ export const INITIAL_AUDIT_LOGS: AuditLogItem[] = [
   {
     id: 'log-106',
     timestamp: new Date(Date.now() - 1000 * 60 * 1440).toISOString(),
-    actorName: 'ग्रामसेवक (Gram Sevak)',
+    actorName: 'ग्रामसेवक ',
     actorRole: 'GRAM_SEVAK',
     actorPhone: '9421890123',
     category: 'USERS',
     action: 'नागरिक पडताळणी मंजूर: राहुल मेश्राम (वॉर्ड २)',
-    details: 'मतदार यादी व आधार पडताळणीनुसार नागरिक खात्यास "प्रमाणित ग्रामस्थ" (Verified Resident) दर्जा मंजूर केला.',
+    details: 'मतदार यादी व आधार पडताळणीनुसार नागरिक खात्यास "प्रमाणित ग्रामस्थ"  दर्जा मंजूर केला.',
     severity: 'INFO',
     ipAddress: '192.168.1.108 (GP Office)'
   }
@@ -206,7 +207,7 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
         return <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#ffeed2] text-[#8c5000] border border-[#ffdcb2]">WARNING</span>;
       case 'INFO':
       default:
-        return <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#bbf7d0] text-[#002117] border border-[#83d4b4]">INFO (माहिती)</span>;
+        return <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] border border-[#83d4b4]">INFO (माहिती)</span>;
     }
   };
 
@@ -237,9 +238,9 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
       <div className="bg-white rounded-2xl border border-[#e8e2d9] p-5 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[24px] text-[#006a4e]">manage_history</span>
+            <LucideIcon name="manage_history" className="text-[24px] text-[#006a4e]" />
             <h2 className="text-xl font-black text-[#166534]">
-              {lang === 'MR' ? 'ग्रामपंचायत ऑडिट व कृती नोंदी (Audit Logs)' : 'Gram Panchayat System Audit & Activity Logs'}
+              {lang === 'MR' ? 'ग्रामपंचायत ऑडिट व कृती नोंदी ' : 'Gram Panchayat System Audit & Activity Logs'}
             </h2>
           </div>
           <p className="text-xs text-[#707974] mt-1">
@@ -255,8 +256,8 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
             onClick={handleExportCSV}
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#166534] text-white hover:bg-[#052e16] text-[12px] font-bold transition-all shadow-xs"
           >
-            <span className="material-symbols-outlined text-[16px]">download</span>
-            <span>{lang === 'MR' ? 'नोंदवही डाऊनलोड करा (CSV)' : 'Export Logs (CSV)'}</span>
+            <LucideIcon name="download" className="text-[16px]" />
+            <span>{lang === 'MR' ? 'नोंदवही डाऊनलोड करा ' : 'Export Logs '}</span>
           </button>
           <button
             type="button"
@@ -271,23 +272,23 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
       {/* Metrics Row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="bg-white p-3.5 rounded-xl border border-[#e8e2d9]">
-          <span className="text-[11px] font-bold text-[#707974] uppercase block">एकूण नोंदी (Total Logs)</span>
+          <span className="text-[11px] font-bold text-[#707974] uppercase block">एकूण नोंदी </span>
           <span className="text-2xl font-black text-[#166534] mt-0.5 block">{logs.length}</span>
         </div>
         <div className="bg-white p-3.5 rounded-xl border border-[#e8e2d9]">
-          <span className="text-[11px] font-bold text-[#ba1a1a] uppercase block">तातडीच्या कृती (Critical)</span>
+          <span className="text-[11px] font-bold text-[#ba1a1a] uppercase block">तातडीच्या कृती </span>
           <span className="text-2xl font-black text-[#ba1a1a] mt-0.5 block">
             {logs.filter((l) => l.severity === 'CRITICAL').length}
           </span>
         </div>
         <div className="bg-white p-3.5 rounded-xl border border-[#e8e2d9]">
-          <span className="text-[11px] font-bold text-[#006a4e] uppercase block">तक्रार सोडवणूक (Grievances)</span>
+          <span className="text-[11px] font-bold text-[#006a4e] uppercase block">तक्रार सोडवणूक </span>
           <span className="text-2xl font-black text-[#006a4e] mt-0.5 block">
             {logs.filter((l) => l.category === 'COMPLAINTS').length}
           </span>
         </div>
         <div className="bg-white p-3.5 rounded-xl border border-[#e8e2d9]">
-          <span className="text-[11px] font-bold text-[#c2410c] uppercase block">प्रसारित दवंडी (Broadcasts)</span>
+          <span className="text-[11px] font-bold text-[#c2410c] uppercase block">प्रसारित दवंडी </span>
           <span className="text-2xl font-black text-[#c2410c] mt-0.5 block">
             {logs.filter((l) => l.category === 'BROADCAST').length}
           </span>
@@ -297,7 +298,7 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
       {/* Filter & Search Bar */}
       <div className="bg-white rounded-2xl border border-[#e8e2d9] p-4 flex flex-col md:flex-row items-center gap-3">
         <div className="relative flex-1 w-full">
-          <span className="material-symbols-outlined text-[18px] text-[#707974] absolute left-3 top-2.5">search</span>
+          <LucideIcon name="search" className="text-[18px] text-[#707974] absolute left-3 top-2.5" />
           <input
             type="text"
             value={search}
@@ -313,7 +314,7 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
             onChange={(e) => setCategoryFilter(e.target.value)}
             className="bg-[#f9f3ea] text-[12px] font-medium text-[#1d1b16] py-2 px-3 rounded-xl border border-[#e8e2d9] focus:outline-none"
           >
-            <option value="ALL">{lang === 'MR' ? 'सर्व विभाग (All Modules)' : 'All Modules'}</option>
+            <option value="ALL">{lang === 'MR' ? 'सर्व विभाग ' : 'All Modules'}</option>
             <option value="BROADCAST">{lang === 'MR' ? 'दवंडी / अलर्ट' : 'Broadcasts'}</option>
             <option value="COMPLAINTS">{lang === 'MR' ? 'तक्रार निवारण' : 'Complaints'}</option>
             <option value="SCHEMES">{lang === 'MR' ? 'योजना व्यवस्थापन' : 'Schemes'}</option>
@@ -327,7 +328,7 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
             onChange={(e) => setSeverityFilter(e.target.value)}
             className="bg-[#f9f3ea] text-[12px] font-medium text-[#1d1b16] py-2 px-3 rounded-xl border border-[#e8e2d9] focus:outline-none"
           >
-            <option value="ALL">{lang === 'MR' ? 'सर्व दर्जा (All Severity)' : 'All Severity'}</option>
+            <option value="ALL">{lang === 'MR' ? 'सर्व दर्जा ' : 'All Severity'}</option>
             <option value="INFO">INFO (सर्वसाधारण)</option>
             <option value="WARN">WARNING (दक्षता)</option>
             <option value="CRITICAL">CRITICAL (तातडीची)</option>
@@ -388,7 +389,7 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
                       <button
                         type="button"
                         onClick={() => setSelectedLog(l)}
-                        className="px-2.5 py-1 rounded-lg text-[11px] font-bold text-[#006a4e] hover:bg-[#bbf7d0]/40 border border-[#006a4e]/20 transition-colors"
+                        className="px-2.5 py-1 rounded-lg text-[11px] font-bold text-[#006a4e] hover:bg-[#e8f1ec] border border-[#006a4e]/20 transition-colors"
                       >
                         तपशील
                       </button>
@@ -398,7 +399,7 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
               ) : (
                 <tr>
                   <td colSpan={6} className="p-8 text-center text-[#707974]">
-                    कोणतीही नोंद सापडली नाही (No audit log records match this filter).
+                    कोणतीही नोंद सापडली नाही .
                   </td>
                 </tr>
               )}
@@ -413,8 +414,8 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
           <div className="bg-white rounded-2xl max-w-lg w-full border border-[#e8e2d9] shadow-2xl p-6 flex flex-col gap-4">
             <div className="flex items-center justify-between border-b border-[#e8e2d9] pb-3">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[20px] text-[#006a4e]">verified_user</span>
-                <h3 className="font-black text-[#166534] text-base">ऑडिट नोंद तपशील (Audit Entry Detail)</h3>
+                <LucideIcon name="verified_user" className="text-[20px] text-[#006a4e]" />
+                <h3 className="font-black text-[#166534] text-base">ऑडिट नोंद तपशील </h3>
               </div>
               <button
                 type="button"
@@ -427,12 +428,12 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
 
             <div className="flex flex-col gap-3 text-[12px]">
               <div>
-                <span className="text-[#707974] font-bold uppercase text-[10px] block">कृती (Action)</span>
+                <span className="text-[#707974] font-bold uppercase text-[10px] block">कृती </span>
                 <p className="font-black text-[#166534] text-sm mt-0.5">{selectedLog.action}</p>
               </div>
 
               <div>
-                <span className="text-[#707974] font-bold uppercase text-[10px] block">सविस्तर माहिती (Details)</span>
+                <span className="text-[#707974] font-bold uppercase text-[10px] block">सविस्तर माहिती </span>
                 <p className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] text-[#1d1b16] leading-relaxed mt-0.5">
                   {selectedLog.details}
                 </p>
@@ -440,12 +441,12 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                 <div>
-                  <span className="text-[#707974] font-bold uppercase text-[10px] block">अधिकारी (Actor)</span>
+                  <span className="text-[#707974] font-bold uppercase text-[10px] block">अधिकारी </span>
                   <p className="font-bold text-[#1d1b16] mt-0.5">{selectedLog.actorName}</p>
                   <p className="text-[10px] text-[#707974]">{selectedLog.actorRole}</p>
                 </div>
                 <div>
-                  <span className="text-[#707974] font-bold uppercase text-[10px] block">वेळ व दिनांक (Timestamp)</span>
+                  <span className="text-[#707974] font-bold uppercase text-[10px] block">वेळ व दिनांक </span>
                   <p className="font-semibold text-[#1d1b16] mt-0.5">
                     {new Date(selectedLog.timestamp).toLocaleString()}
                   </p>
@@ -454,11 +455,11 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 border-t border-[#f3ede4]">
                 <div>
-                  <span className="text-[#707974] font-bold uppercase text-[10px] block">विभाग (Module)</span>
+                  <span className="text-[#707974] font-bold uppercase text-[10px] block">विभाग </span>
                   <span className="font-bold text-[#006a4e]">{selectedLog.category}</span>
                 </div>
                 <div>
-                  <span className="text-[#707974] font-bold uppercase text-[10px] block">प्रणाली स्रोत (Source IP)</span>
+                  <span className="text-[#707974] font-bold uppercase text-[10px] block">प्रणाली स्रोत </span>
                   <span className="text-[#55605a]">{selectedLog.ipAddress || 'Web Session'}</span>
                 </div>
               </div>
@@ -470,7 +471,7 @@ export const AdminLogsSection: React.FC<AdminLogsSectionProps> = ({ currentUser:
                 onClick={() => setSelectedLog(null)}
                 className="px-4 py-2 rounded-xl bg-[#166534] text-white text-[12px] font-bold hover:bg-[#052e16] transition-colors"
               >
-                बंद करा (Close)
+                बंद करा 
               </button>
             </div>
           </div>

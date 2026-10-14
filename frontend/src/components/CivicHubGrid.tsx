@@ -1,4 +1,5 @@
 import React from 'react';
+import { LucideIcon } from './LucideIcon';
 import { useLanguage } from '../context/LanguageContext';
 
 interface CivicHubGridProps {
@@ -63,7 +64,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
 
         <div className="flex items-center gap-2">
           <span className="text-[12px] font-bold text-amber-900 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-300 shadow-2xs flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[17px] text-amber-700">schedule</span>
+            <LucideIcon name="schedule" className="text-[17px] text-amber-700" />
             <span>{lang === 'MR' ? 'आजचे ताजे अद्यतन' : 'Updated: Today'}</span>
           </span>
         </div>
@@ -78,7 +79,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
           className="group relative bg-white hover:bg-emerald-50/80 p-3.5 sm:p-4 rounded-2xl border-2 border-emerald-600/30 hover:border-emerald-700 shadow-xs hover:shadow-md transition-all flex flex-col items-center text-center cursor-pointer select-none"
         >
           <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center mb-2.5 group-hover:scale-105 group-hover:bg-emerald-700 group-hover:text-white transition-all shadow-xs">
-            <span className="material-symbols-outlined text-[30px] sm:text-[32px]">agriculture</span>
+            <LucideIcon name="agriculture" className="text-[30px] sm:text-[32px]" />
           </div>
           <span className="font-heading font-extrabold text-[15px] sm:text-[16px] text-emerald-950 leading-tight mb-1">
             {lang === 'MR' ? 'कृषी व बाजारभाव' : 'Krishi & Mandi'}
@@ -98,7 +99,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
           className="group relative bg-white hover:bg-amber-50/80 p-3.5 sm:p-4 rounded-2xl border-2 border-amber-600/30 hover:border-amber-700 shadow-xs hover:shadow-md transition-all flex flex-col items-center text-center cursor-pointer select-none"
         >
           <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center mb-2.5 group-hover:scale-105 group-hover:bg-amber-700 group-hover:text-white transition-all shadow-xs">
-            <span className="material-symbols-outlined text-[30px] sm:text-[32px]">directions_bus</span>
+            <LucideIcon name="directions_bus" className="text-[30px] sm:text-[32px]" />
           </div>
           <span className="font-heading font-extrabold text-[15px] sm:text-[16px] text-amber-950 leading-tight mb-1">
             {lang === 'MR' ? 'एसटी बस वेळा' : 'ST Bus Schedule'}
@@ -118,7 +119,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
           className="group relative bg-white hover:bg-orange-50/80 p-3.5 sm:p-4 rounded-2xl border-2 border-orange-600/30 hover:border-orange-700 shadow-xs hover:shadow-md transition-all flex flex-col items-center text-center cursor-pointer select-none"
         >
           <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-orange-100 text-orange-900 flex items-center justify-center mb-2.5 group-hover:scale-105 group-hover:bg-orange-700 group-hover:text-white transition-all shadow-xs">
-            <span className="material-symbols-outlined text-[30px] sm:text-[32px]">account_balance</span>
+            <LucideIcon name="account_balance" className="text-[30px] sm:text-[32px]" />
           </div>
           <span className="font-heading font-extrabold text-[15px] sm:text-[16px] text-orange-950 leading-tight mb-1">
             {lang === 'MR' ? 'ग्रामपंचायत' : 'Panchayat'}
@@ -138,7 +139,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
           className="group relative bg-white hover:bg-red-50/80 p-3.5 sm:p-4 rounded-2xl border-2 border-red-600/30 hover:border-red-700 shadow-xs hover:shadow-md transition-all flex flex-col items-center text-center cursor-pointer select-none"
         >
           <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-red-100 text-red-800 flex items-center justify-center mb-2.5 group-hover:scale-105 group-hover:bg-red-700 group-hover:text-white transition-all shadow-xs">
-            <span className="material-symbols-outlined text-[30px] sm:text-[32px]">medical_services</span>
+            <LucideIcon name="medical_services" className="text-[30px] sm:text-[32px]" />
           </div>
           <span className="font-heading font-extrabold text-[15px] sm:text-[16px] text-red-950 leading-tight mb-1">
             {lang === 'MR' ? 'दवाखाना व आरोग्य' : 'Health & Doctor'}
@@ -158,7 +159,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
           className="group relative bg-white hover:bg-indigo-50/80 p-3.5 sm:p-4 rounded-2xl border-2 border-indigo-600/30 hover:border-indigo-700 shadow-xs hover:shadow-md transition-all flex flex-col items-center text-center cursor-pointer select-none"
         >
           <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-indigo-100 text-indigo-900 flex items-center justify-center mb-2.5 group-hover:scale-105 group-hover:bg-indigo-700 group-hover:text-white transition-all shadow-xs">
-            <span className="material-symbols-outlined text-[30px] sm:text-[32px]">assured_workload</span>
+            <LucideIcon name="assured_workload" className="text-[30px] sm:text-[32px]" />
           </div>
           <span className="font-heading font-extrabold text-[15px] sm:text-[16px] text-indigo-950 leading-tight mb-1">
             {lang === 'MR' ? 'शासकीय योजना' : 'Govt Schemes'}
@@ -178,7 +179,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
           className="group relative bg-white hover:bg-teal-50/80 p-3.5 sm:p-4 rounded-2xl border-2 border-teal-600/30 hover:border-teal-700 shadow-xs hover:shadow-md transition-all flex flex-col items-center text-center cursor-pointer select-none"
         >
           <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-teal-100 text-teal-900 flex items-center justify-center mb-2.5 group-hover:scale-105 group-hover:bg-teal-700 group-hover:text-white transition-all shadow-xs">
-            <span className="material-symbols-outlined text-[30px] sm:text-[32px]">storefront</span>
+            <LucideIcon name="storefront" className="text-[30px] sm:text-[32px]" />
           </div>
           <span className="font-heading font-extrabold text-[15px] sm:text-[16px] text-teal-950 leading-tight mb-1">
             {lang === 'MR' ? 'स्थानिक दुकाने' : 'Village Shops'}
@@ -202,7 +203,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center border border-emerald-300 group-hover:scale-105 transition-transform">
-                <span className="material-symbols-outlined text-[24px]">agriculture</span>
+                <LucideIcon name="agriculture" className="text-[24px]" />
               </div>
               <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-900 bg-emerald-100 px-2.5 py-0.5 rounded-md border border-emerald-300">
                 {lang === 'MR' ? 'थेट बाजारभाव' : 'Live Mandi'}
@@ -233,7 +234,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
 
           <div className="mt-4 pt-3 border-t border-[#f3ede4] text-emerald-800 text-xs font-bold flex items-center justify-between group-hover:text-emerald-900 transition-colors">
             <span>{lang === 'MR' ? 'सर्व दर तपासा' : 'View All Crops'}</span>
-            <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            <LucideIcon name="arrow_forward" className="text-[16px] group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
 
@@ -245,7 +246,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="w-11 h-11 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center border border-amber-300 group-hover:scale-105 transition-transform">
-                <span className="material-symbols-outlined text-[24px]">directions_bus</span>
+                <LucideIcon name="directions_bus" className="text-[24px]" />
               </div>
               <span className="text-[11px] font-extrabold uppercase tracking-wider text-amber-900 bg-amber-100 px-2.5 py-0.5 rounded-md border border-amber-300">
                 {lang === 'MR' ? 'पुढील बसेस' : 'Next Departures'}
@@ -276,7 +277,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
 
           <div className="mt-4 pt-3 border-t border-[#f3ede4] text-amber-800 text-xs font-bold flex items-center justify-between group-hover:text-amber-900 transition-colors">
             <span>{lang === 'MR' ? 'पूर्ण बस वेळापत्रक पहा' : 'View Full Schedule'}</span>
-            <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            <LucideIcon name="arrow_forward" className="text-[16px] group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
 
@@ -288,7 +289,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="w-11 h-11 rounded-xl bg-sky-100 text-sky-800 flex items-center justify-center border border-sky-300 group-hover:scale-105 transition-transform">
-                <span className="material-symbols-outlined text-[24px]">bolt</span>
+                <LucideIcon name="bolt" className="text-[24px]" />
               </div>
               <span className="text-[11px] font-extrabold uppercase tracking-wider text-sky-900 bg-sky-100 px-2.5 py-0.5 rounded-md border border-sky-300">
                 {lang === 'MR' ? 'नागरी सुविधा' : 'Daily Utilities'}
@@ -305,7 +306,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
             <div className="flex flex-col gap-2 bg-[#faf6ee] p-3 rounded-xl border border-[#efe7d8] text-[13px]">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 text-stone-700">
-                  <span className="material-symbols-outlined text-[16px] text-amber-700">electric_meter</span>
+                  <LucideIcon name="electric_meter" className="text-[16px] text-amber-700" />
                   <span className="font-semibold">{lang === 'MR' ? 'वीज पुरवठा:' : 'Power:'}</span>
                 </div>
                 <span className="text-[11px] font-extrabold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-300">
@@ -315,7 +316,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 text-stone-700">
-                  <span className="material-symbols-outlined text-[16px] text-sky-700">water_drop</span>
+                  <LucideIcon name="water_drop" className="text-[16px] text-sky-700" />
                   <span className="font-semibold">{lang === 'MR' ? 'नळ पाणी:' : 'Water:'}</span>
                 </div>
                 <span className="text-[11px] font-bold text-sky-900 bg-sky-100/90 px-2 py-0.5 rounded-md border border-sky-200">
@@ -325,7 +326,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 text-stone-700">
-                  <span className="material-symbols-outlined text-[16px] text-stone-600">delete_sweep</span>
+                  <LucideIcon name="delete_sweep" className="text-[16px] text-stone-600" />
                   <span className="font-semibold">{lang === 'MR' ? 'घंटागाडी:' : 'Sanitation:'}</span>
                 </div>
                 <span className="text-[11px] font-bold text-stone-800">
@@ -337,7 +338,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
 
           <div className="mt-4 pt-3 border-t border-[#f3ede4] text-sky-800 text-xs font-bold flex items-center justify-between group-hover:text-sky-900 transition-colors">
             <span>{lang === 'MR' ? 'स्थानिक सेवा डिरेक्टरी' : 'Local Directory'}</span>
-            <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            <LucideIcon name="arrow_forward" className="text-[16px] group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
 
@@ -349,7 +350,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center border border-indigo-300 group-hover:scale-105 transition-transform">
-                <span className="material-symbols-outlined text-[24px]">verified_user</span>
+                <LucideIcon name="verified_user" className="text-[24px]" />
               </div>
               <span className="text-[11px] font-extrabold uppercase tracking-wider text-indigo-900 bg-indigo-100 px-2.5 py-0.5 rounded-md border border-indigo-300">
                 {lang === 'MR' ? 'थेट शासकीय लाभ' : 'Govt Benefits'}
@@ -389,7 +390,7 @@ export const CivicHubGrid: React.FC<CivicHubGridProps> = ({
 
           <div className="mt-4 pt-3 border-t border-[#f3ede4] text-indigo-800 text-xs font-bold flex items-center justify-between group-hover:text-indigo-900 transition-colors">
             <span>{lang === 'MR' ? 'पात्रता व अर्ज पहा' : 'Check Eligibility'}</span>
-            <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            <LucideIcon name="arrow_forward" className="text-[16px] group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
       </div>

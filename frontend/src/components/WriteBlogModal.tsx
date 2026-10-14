@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React, { useState, useEffect } from 'react';
 import type { BlogPost } from '../data/blogData';
 import { useLanguage } from '../context/LanguageContext';
@@ -15,12 +16,12 @@ interface WriteBlogModalProps {
 }
 
 const PRESET_COVERS = [
-  { labelMr: 'शेती व कृषी (Farming)', labelEn: 'Farming & Agriculture', url: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'शासकीय योजना (Schemes)', labelEn: 'Govt Schemes & Subsidies', url: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'गाव व ग्रामपंचायत (Village)', labelEn: 'Village Life & Panchayat', url: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'शिक्षण व शाळा (Education)', labelEn: 'Education & Youth', url: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'वाहतूक व बस (Transport)', labelEn: 'Transport & Travel', url: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1200&q=80' },
-  { labelMr: 'आरोग्य व पोषण (Health)', labelEn: 'Health & Nutrition', url: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1200&q=80' }
+  { labelMr: 'शेती व कृषी', labelEn: 'Farming & Agriculture', url: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80' },
+  { labelMr: 'शासकीय योजना', labelEn: 'Govt Schemes & Subsidies', url: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80' },
+  { labelMr: 'गाव व ग्रामपंचायत', labelEn: 'Village Life & Panchayat', url: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80' },
+  { labelMr: 'शिक्षण व शाळा', labelEn: 'Education & Youth', url: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80' },
+  { labelMr: 'वाहतूक व बस', labelEn: 'Transport & Travel', url: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1200&q=80' },
+  { labelMr: 'आरोग्य व पोषण', labelEn: 'Health & Nutrition', url: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1200&q=80' }
 ];
 
 export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
@@ -130,14 +131,14 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
         {/* Header */}
         <div className="bg-[#166534] text-white px-6 py-4 flex items-center justify-between border-b border-[#052e16]">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-[#bbf7d0] text-[#166534] flex items-center justify-center font-bold">
-              <span className="material-symbols-outlined text-[20px]">edit_note</span>
+            <div className="w-9 h-9 rounded-xl bg-[#a7f3d0] text-[#166534] flex items-center justify-center font-bold">
+              <LucideIcon name="edit_note" className="text-[20px]" />
             </div>
             <div>
               <h3 className="font-heading font-extrabold text-[16px] text-white">
-                {isMr ? 'नवीन माहिती लेख प्रसिद्ध करा (Publish Village Blog)' : 'Publish Community Knowledge Article'}
+                {isMr ? 'नवीन माहिती लेख प्रसिद्ध करा' : 'Publish Community Knowledge Article'}
               </h3>
-              <p className="text-[11px] text-[#bbf7d0]">
+              <p className="text-[11px] text-[#a7f3d0]">
                 {isMr
                   ? 'गावातील शेतकरी व नागरिकांच्या माहितीसाठी स्वतःचा अनुभव, पीक सल्ला किंवा मार्गदर्शन लिहा.'
                   : 'Share farming tips, scheme guidance, or village updates with fellow residents.'}
@@ -158,7 +159,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
           {currentUser?.isLoggedIn ? (
             <div className="p-3 bg-[#e6f7f0] rounded-xl border border-[#b8ebd5] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-[#006a4e] text-[20px]">verified_user</span>
+                <LucideIcon name="verified_user" className="text-[#006a4e] text-[20px]" />
                 <div>
                   <div className="text-xs font-bold text-[#166534]">
                     {isMr ? `प्रसिद्ध करणारे: ${currentUser.fullName}` : `Publishing as: ${currentUser.fullName}`}
@@ -170,13 +171,13 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
                   </div>
                 </div>
               </div>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117]">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]">
                 {isMr ? 'सत्यापित लेखक' : 'Verified Author'}
               </span>
             </div>
           ) : (
             <div className="p-3 bg-[#fef9ee] rounded-xl border border-[#ffeed4] flex items-center gap-2 text-xs text-[#c2410c]">
-              <span className="material-symbols-outlined text-[18px]">info</span>
+              <LucideIcon name="info" className="text-[18px]" />
               <span>
                 {isMr
                   ? 'तुम्ही अतिथी म्हणून लेख लिहीत आहात. कृपया खाली तुमचे नाव व प्रभाग अचूक भरा.'
@@ -188,7 +189,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
           {/* Marathi Title */}
           <div>
             <label className="block font-bold text-[#166534] mb-1">
-              {isMr ? 'लेखाचे मराठी शीर्षक (Marathi Title) *' : 'Marathi Title (लेखाचे शीर्षक) *'}
+              {isMr ? 'लेखाचे मराठी शीर्षक  *' : 'Marathi Title (लेखाचे शीर्षक) *'}
             </label>
             <input
               type="text"
@@ -204,7 +205,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block font-bold text-[#2d312e] mb-1">
-                {isMr ? 'इंग्रजी शीर्षक (English Title / Search Keywords)' : 'English Title / Search Keywords'}
+                {isMr ? 'इंग्रजी शीर्षक ' : 'English Title / Search Keywords'}
               </label>
               <input
                 type="text"
@@ -216,19 +217,19 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
             </div>
             <div>
               <label className="block font-bold text-[#2d312e] mb-1">
-                {isMr ? 'विभाग (Category) *' : 'Category *'}
+                {isMr ? 'विभाग  *' : 'Category *'}
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as any)}
                 className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#166534] outline-none font-bold text-xs"
               >
-                <option value="General">{isMr ? 'सामान्य / इतर (General)' : 'General / Other'}</option>
-                <option value="Agriculture">{isMr ? 'कृषी व शेती (Agriculture)' : 'Agriculture & Farming'}</option>
-                <option value="Schemes">{isMr ? 'शासकीय योजना (Govt Schemes)' : 'Government Schemes'}</option>
-                <option value="Governance">{isMr ? 'प्रशासन व गाव सेवा (Governance)' : 'Governance & Civic Services'}</option>
-                <option value="Education">{isMr ? 'शिक्षण व युवक (Education)' : 'Education & Youth'}</option>
-                <option value="Health">{isMr ? 'आरोग्य व पोषण (Health)' : 'Health & Nutrition'}</option>
+                <option value="General">{isMr ? 'सामान्य / इतर ' : 'General / Other'}</option>
+                <option value="Agriculture">{isMr ? 'कृषी व शेती ' : 'Agriculture & Farming'}</option>
+                <option value="Schemes">{isMr ? 'शासकीय योजना ' : 'Government Schemes'}</option>
+                <option value="Governance">{isMr ? 'प्रशासन व गाव सेवा ' : 'Governance & Civic Services'}</option>
+                <option value="Education">{isMr ? 'शिक्षण व युवक ' : 'Education & Youth'}</option>
+                <option value="Health">{isMr ? 'आरोग्य व पोषण' : 'Health & Nutrition'}</option>
               </select>
             </div>
           </div>
@@ -237,8 +238,8 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
           <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] flex items-center justify-between gap-2">
             <div className="space-y-0.5">
               <div className="text-[11px] font-bold text-[#166534] flex items-center gap-1">
-                <span className="material-symbols-outlined text-[15px] text-[#006a4e]">link</span>
-                <span>{isMr ? 'लेखाची कायमस्वरूपी वेब लिंक (Direct Post Link):' : 'Direct Permalink (Short ID):'}</span>
+                <LucideIcon name="link" className="text-[15px] text-[#006a4e]" />
+                <span>{isMr ? 'लेखाची कायमस्वरूपी वेब लिंक :' : 'Direct Permalink (Short ID):'}</span>
               </div>
               <div className="text-xs font-mono font-bold text-[#166534]">
                 https://asgaon.digital/blogs/<span className="text-[#c2410c]">{postId}</span>
@@ -254,7 +255,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-[#2d312e] mb-1">
-                  {isMr ? 'लेखकाचे नाव (Author Name) *' : 'Author Name *'}
+                  {isMr ? 'लेखकाचे नाव  *' : 'Author Name *'}
                 </label>
                 <input
                   type="text"
@@ -267,7 +268,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
               </div>
               <div>
                 <label className="block font-bold text-[#2d312e] mb-1">
-                  {isMr ? 'हुद्दा किंवा प्रभाग (Role / Ward)' : 'Role / Ward in Asgaon'}
+                  {isMr ? 'हुद्दा किंवा प्रभाग ' : 'Role / Ward in Asgaon'}
                 </label>
                 <input
                   type="text"
@@ -283,7 +284,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
           {/* Cover Photo Selection */}
           <div>
             <label className="block font-bold text-[#2d312e] mb-1.5">
-              {isMr ? 'कव्हर फोटो निवडा (Cover Image)' : 'Select Cover Image'}
+              {isMr ? 'कव्हर फोटो निवडा ' : 'Select Cover Image'}
             </label>
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-2">
               {PRESET_COVERS.map((preset, idx) => (
@@ -318,7 +319,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
           {/* Excerpt */}
           <div>
             <label className="block font-bold text-[#2d312e] mb-1">
-              {isMr ? 'थोडक्यात सारांश (Short Excerpt) *' : 'Short Excerpt *'}
+              {isMr ? 'थोडक्यात सारांश  *' : 'Short Excerpt *'}
             </label>
             <textarea
               rows={2}
@@ -334,7 +335,7 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="font-bold text-[#2d312e]">
-                {isMr ? 'सविस्तर मजकूर (Full Article Content) *' : 'Full Article Content (Markdown) *'}
+                {isMr ? 'सविस्तर मजकूर  *' : 'Full Article Content (Markdown) *'}
               </label>
               <span className="text-[10px] text-[#707974]">
                 {isMr ? 'मथळा:' : 'Heading:'} <code className="bg-stone-100 px-1 py-0.5 rounded">### H3</code> | {isMr ? 'यादी:' : 'List:'} <code className="bg-stone-100 px-1 py-0.5 rounded">- item</code>
@@ -375,14 +376,14 @@ export const WriteBlogModal: React.FC<WriteBlogModalProps> = ({
               onClick={onClose}
               className="px-4 py-2.5 rounded-xl border border-[#e8e2d9] text-[#707974] hover:bg-stone-50 text-xs font-bold transition-colors cursor-pointer"
             >
-              {isMr ? 'रद्द करा (Cancel)' : 'Cancel'}
+              {isMr ? 'रद्द करा' : 'Cancel'}
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-[#bbf7d0] text-xs font-bold transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+              className="px-6 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-[#a7f3d0] text-xs font-bold transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[18px]">publish</span>
-              <span>{isMr ? 'लेख प्रसिद्ध करा (Publish Post)' : 'Publish Article'}</span>
+              <LucideIcon name="publish" className="text-[18px]" />
+              <span>{isMr ? 'लेख प्रसिद्ध करा' : 'Publish Article'}</span>
             </button>
           </div>
         </form>

@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { Breadcrumb } from '../components/Breadcrumb';
@@ -37,7 +38,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
       id: 1,
       name: 'Soybean (सोयाबीन - JS 335)',
       badge: '+₹45',
-      badgeColor: 'bg-[#bbf7d0] text-[#002117]',
+      badgeColor: 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]',
       price: '₹4,820',
       unit: '/ Quintal (Mandi)',
       msp: 'Pauni Mandi MSP: ₹4,892',
@@ -49,7 +50,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
       id: 2,
       name: 'Cotton (कापूस - Med. Staple)',
       badge: '+₹120',
-      badgeColor: 'bg-[#bbf7d0] text-[#002117]',
+      badgeColor: 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]',
       price: '₹7,400',
       unit: '/ Quintal (Mandi)',
       msp: 'Govt MSP: ₹7,121',
@@ -73,7 +74,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
       id: 4,
       name: 'Cow Milk (गाय दूध - Gir A2)',
       badge: '+₹1.50',
-      badgeColor: 'bg-[#bbf7d0] text-[#002117]',
+      badgeColor: 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]',
       price: '₹41.50',
       unit: '/ Litre (Dairy)',
       msp: 'Asgaon Dairy Union MSP: ₹40.00',
@@ -88,7 +89,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
         id: p.id || idx + 1,
         name: p.commodityName || 'Produce',
         badge: (p.priceChange !== undefined && p.priceChange !== 0) ? `${p.priceChange > 0 ? '+' : ''}₹${p.priceChange}` : 'Official Rate',
-        badgeColor: (p.trend === 'up' || (p.priceChange && p.priceChange > 0)) ? 'bg-[#bbf7d0] text-[#002117]' : (p.trend === 'down' || (p.priceChange && p.priceChange < 0)) ? 'bg-[#fef3c7] text-[#93000a]' : 'bg-[#f3ede4] text-[#404945]',
+        badgeColor: (p.trend === 'up' || (p.priceChange && p.priceChange > 0)) ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]' : (p.trend === 'down' || (p.priceChange && p.priceChange < 0)) ? 'bg-[#fef3c7] text-[#93000a]' : 'bg-[#f3ede4] text-[#404945]',
         price: `₹${Number(p.modalPrice || p.price || 4500).toLocaleString('en-IN')}`,
         unit: `/ ${p.unit || 'Quintal'} (Mandi)`,
         msp: `${p.marketName || 'Pauni APMC'} • Variety: ${p.variety || 'Standard'}`,
@@ -115,7 +116,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
       badge: '48-Hr Advance Booking',
       price: '₹350 / Acre (Chemical + Pilot)',
       desc: 'Covers 1 Acre in just 7 mins with uniform micron droplet penetration. Saves 90% water & 50% chemical waste.',
-      owner: 'Operated by: Asgaon Youth Krishi DAK Hub (Certified DGCA Pilot)',
+      owner: 'Operated by: Asgaon Youth Krishi Hub (Trained Operator)',
       phone: '9765432100',
       image: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=600&q=80'
     },
@@ -146,7 +147,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
       {/* 1. Canal Irrigation Top Notice Banner */}
       <div className="w-full bg-amber-50 text-amber-950 py-2.5 px-4 rounded-xl shadow-xs border border-amber-300 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="material-symbols-outlined text-[20px] text-amber-700 shrink-0">water_drop</span>
+          <LucideIcon name="water_drop" className="text-[20px] text-amber-700 shrink-0" />
           <span className="text-[13px] font-semibold truncate">
             <strong>Canal Irrigation Alert:</strong> Rotational irrigation release commences tomorrow 06:00 AM for Sector 3 &amp; 4.
           </span>
@@ -163,11 +164,11 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
       <Breadcrumb
         items={[
           { label: t('nav_home'), onClick: onNavigateHome },
-          { label: lang === 'MR' ? 'कृषी व शेती केंद्र' : 'Krishi', active: true }
+          { label: t('nav_krishi'), active: true }
         ]}
         rightBadge={
           <div className="flex items-center gap-1.5 bg-emerald-100 text-emerald-900 border border-emerald-300 px-3 py-1 rounded-full text-[11px] font-bold">
-            <span className="material-symbols-outlined text-[15px] text-emerald-700">verified</span>
+            <LucideIcon name="verified" className="text-[15px] text-emerald-700" />
             <span>{lang === 'MR' ? 'जि. प. कृषी विभाग अधिकृत' : 'ZP Agriculture Directorate Accredited'}</span>
           </div>
         }
@@ -221,7 +222,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
               {lang === 'MR' ? 'मंडी बाजार भाव' : 'Mandi Bhaav'}
             </div>
           </div>
-          <span className="material-symbols-outlined text-[22px]">trending_up</span>
+          <LucideIcon name="trending_up" className="text-[22px]" />
         </button>
 
         <button
@@ -240,7 +241,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
               {lang === 'MR' ? 'ट्रॅक्टर व हार्वेस्टर' : 'Tractor & Pool'}
             </div>
           </div>
-          <span className="material-symbols-outlined text-[22px]">agriculture</span>
+          <LucideIcon name="agriculture" className="text-[22px]" />
         </button>
 
         <button
@@ -259,7 +260,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
               {lang === 'MR' ? 'मृदा आरोग्य कार्ड' : 'Soil Health'}
             </div>
           </div>
-          <span className="material-symbols-outlined text-[22px]">spa</span>
+          <LucideIcon name="spa" className="text-[22px]" />
         </button>
 
         <button
@@ -278,7 +279,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
               {lang === 'MR' ? 'रोग व कीड सल्ला' : 'Pest & Crops'}
             </div>
           </div>
-          <span className="material-symbols-outlined text-[22px]">pest_control</span>
+          <LucideIcon name="pest_control" className="text-[22px]" />
         </button>
       </div>
 
@@ -290,10 +291,10 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
           <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#166534] text-[22px]">trending_up</span>
+                <LucideIcon name="trending_up" className="text-[#166534] text-[22px]" />
                 <div>
                   <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
-                    Live APMC Mandi Rates <span className="text-[12px] font-bold text-[#bbf7d0] bg-[#166534] px-2 py-0.5 rounded ml-1">PAUNI &amp; HAVELI APMC</span>
+                    Live APMC Mandi Rates <span className="text-[12px] font-bold text-[#a7f3d0] bg-[#166534] px-2 py-0.5 rounded ml-1">PAUNI &amp; HAVELI APMC</span>
                   </h3>
                   <p className="text-[11px] text-[#707974]">Updated Today, 06:30 AM (Official Computer Type Mandi Weighbridge)</p>
                 </div>
@@ -364,7 +365,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                   Kisan Tractor, Drone &amp; Implement Rental Pool
                 </h3>
                 <p className="text-[12px] text-[#707974]">
-                  Direct village-level implements operating at Gram Panchayat agreed standardized rental rates. Zero middlemen fees.
+                  Zero middlemen fees.
                 </p>
               </div>
 
@@ -372,7 +373,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                 onClick={() => alert('List your tractor or farm implement modal opened.')}
                 className="px-3.5 py-1.5 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] text-[#166534] text-[12px] font-bold border border-[#e8e2d9] flex items-center gap-1 shrink-0"
               >
-                <span className="material-symbols-outlined text-[16px]">add_circle</span>
+                <LucideIcon name="add_circle" className="text-[16px]" />
                 <span>List Your Machinery</span>
               </button>
             </div>
@@ -401,7 +402,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                       href={`tel:${m.phone}`}
                       className="w-full py-2 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-lg flex items-center justify-center gap-1 transition-colors shadow-xs"
                     >
-                      <span className="material-symbols-outlined text-[14px]">call</span>
+                      <LucideIcon name="call" className="text-[14px]" />
                       <span>Call Owner ({m.phone})</span>
                     </a>
                   </div>
@@ -426,7 +427,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                 onClick={() => alert('Soil health card report downloaded.')}
                 className="px-3 py-1.5 rounded-xl bg-[#166534] text-white text-[12px] font-bold flex items-center gap-1 shrink-0"
               >
-                <span className="material-symbols-outlined text-[15px]">download</span>
+                <LucideIcon name="download" className="text-[15px]" />
                 <span>Download Soil Card</span>
               </button>
             </div>
@@ -449,7 +450,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
               <div className="bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
                 <div className="flex items-center justify-between text-[11px] font-bold mb-1">
                   <span className="text-[#707974]">PHOSPHORUS (P2O5)</span>
-                  <span className="text-[#002117] bg-[#bbf7d0] px-1.5 py-0.2 rounded">MEDIUM (Balanced)</span>
+                  <span className="text-[#002117] bg-[#a7f3d0] px-1.5 py-0.2 rounded">MEDIUM (Balanced)</span>
                 </div>
                 <div className="font-heading font-extrabold text-[22px] text-[#1d1b16]">
                   18.4 <span className="text-[11px] font-normal text-[#707974]">kg/ha (Ideal: 15-25)</span>
@@ -476,7 +477,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
             {/* Fertilizer Stock Availability */}
             <div className="bg-white p-3.5 rounded-xl border border-[#e8e2d9]">
               <div className="text-[11px] font-bold uppercase tracking-wider text-[#166534] mb-2 flex items-center gap-1">
-                <span className="material-symbols-outlined text-[16px]">inventory_2</span>
+                <LucideIcon name="inventory_2" className="text-[16px]" />
                 <span>Official Certified Fertilizer Stock Availability (खत साठा उपलब्धता)</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-[12px]">
@@ -502,7 +503,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
           {/* Critical Field Warning & Pest Diagnostics */}
           <div className="bg-[#fef3c7] text-[#93000a] p-4 rounded-2xl border border-[#fde68a] shadow-xs">
             <div className="flex items-start gap-2 mb-2">
-              <span className="material-symbols-outlined text-[22px] text-[#ba1a1a] shrink-0 mt-0.5">warning</span>
+              <LucideIcon name="warning" className="text-[22px] text-[#ba1a1a] shrink-0 mt-0.5" />
               <div>
                 <h4 className="font-heading font-extrabold text-[15px] text-[#ba1a1a]">
                   CRITICAL FIELD WARNING: Fall Armyworm &amp; Pod Borer Alert for Rabi Gram (Harbhara)
@@ -570,7 +571,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
           {/* Designated Agri Officer */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#166534] bg-[#bbf7d0] px-2 py-0.5 rounded">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#166534] bg-[#a7f3d0] px-2 py-0.5 rounded">
               DESIGNATED OFFICER • ON FIELD DUTY
             </span>
 
@@ -597,7 +598,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                 href="tel:9822104500"
                 className="py-2 bg-[#166534] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-1 hover:bg-[#052e16]"
               >
-                <span className="material-symbols-outlined text-[14px]">call</span>
+                <LucideIcon name="call" className="text-[14px]" />
                 <span>Call Desk</span>
               </a>
               <a
@@ -606,7 +607,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
                 rel="noopener noreferrer"
                 className="py-2 bg-[#f9f3ea] text-[#166534] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1 border border-[#e8e2d9]"
               >
-                <span className="material-symbols-outlined text-[14px] text-[#25D366]">chat</span>
+                <LucideIcon name="chat" className="text-[14px] text-[#25D366]" />
                 <span>WhatsApp</span>
               </a>
             </div>
@@ -644,7 +645,7 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
           <div className="bg-[#f9f3ea] rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
             <div className="flex items-center justify-between text-[13px] font-bold text-[#166534] mb-2">
               <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[16px]">forum</span>
+                <LucideIcon name="forum" className="text-[16px]" />
                 <span>Village Kisan Chawadi (शेतकरी मंच)</span>
               </span>
               <span className="text-[10px] text-[#c2410c]">14 Active Topics</span>

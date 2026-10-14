@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -124,14 +125,14 @@ export const InlineShopMap: React.FC<InlineShopMapProps> = ({
       <div className="relative h-44 w-full bg-[#f3ede4] z-0">
         <div ref={containerRef} className="w-full h-full z-0" />
         <div className="absolute top-2 left-2 z-20 bg-white/90 backdrop-blur-xs text-[#166534] text-[10px] font-bold px-2 py-0.5 rounded shadow-xs flex items-center gap-1">
-          <span className="material-symbols-outlined text-[12px] text-[#c2410c]">pin_drop</span>
+          <LucideIcon name="pin_drop" className="text-[12px] text-[#c2410c]" />
           <span>{latitude.toFixed(4)}° N, {longitude.toFixed(4)}° E</span>
         </div>
       </div>
 
       <div className="p-2.5 bg-white flex flex-wrap items-center justify-between gap-2 text-[11px]">
         <div className="flex items-center gap-1 text-[#707974]">
-          <span className="material-symbols-outlined text-[14px] text-[#c2410c]">location_on</span>
+          <LucideIcon name="location_on" className="text-[14px] text-[#c2410c]" />
           <span className="truncate max-w-[200px]">{address || shopName}</span>
         </div>
 
@@ -142,7 +143,7 @@ export const InlineShopMap: React.FC<InlineShopMapProps> = ({
               onClick={onOpenModal}
               className="px-2 py-1 rounded-md bg-[#fef9ee] text-[#c2410c] font-bold border border-[#fed7aa] hover:bg-[#fed7aa] transition-colors"
             >
-              मोठ्या आकारात (Enlarge)
+              मोठ्या आकारात
             </button>
           )}
 
@@ -152,7 +153,7 @@ export const InlineShopMap: React.FC<InlineShopMapProps> = ({
               onClick={onOpenFullMap}
               className="px-2 py-1 rounded-md bg-[#f3ede4] text-[#166534] font-bold hover:bg-[#e8e2d9] transition-colors"
             >
-              मुख्य नकाशा (Live Map)
+              मुख्य नकाशा
             </button>
           )}
 
@@ -162,7 +163,7 @@ export const InlineShopMap: React.FC<InlineShopMapProps> = ({
             rel="noopener noreferrer"
             className="px-2.5 py-1 rounded-md bg-[#166534] text-white font-bold hover:bg-[#052e16] transition-colors flex items-center gap-1"
           >
-            <span className="material-symbols-outlined text-[13px]">navigation</span>
+            <LucideIcon name="navigation" className="text-[13px]" />
             <span>Directions</span>
           </a>
         </div>

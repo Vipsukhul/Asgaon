@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useMemo } from 'react';
 import type { Scheme } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
@@ -34,7 +35,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
         <div className="w-full py-28 text-center flex flex-col items-center justify-center gap-3">
           <div className="w-9 h-9 border-3 border-[#166534] border-t-transparent rounded-full animate-spin" />
           <p className="text-[13px] font-bold text-[#166534]">
-            {lang === 'MR' ? 'माहिती लोड होत आहे, कृपया प्रतीक्षा करा...' : 'Loading scheme details from database...'}
+            {lang === 'MR' ? 'माहिती लोड होत आहे, कृपया प्रतीक्षा करा...' : 'Loading scheme details...'}
           </p>
         </div>
       );
@@ -75,44 +76,44 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
     ? [
         {
           step: 1,
-          title: 'नमुना ८-अ व जागेची कागदपत्रे गोळा करा (Gather Property Documents)',
+          title: 'नमुना ८-अ व जागेची आवश्यक कागदपत्रे गोळा करा',
           desc: 'ग्रामपंचायत कार्यालयातून नमुना ८-अ मालमत्ता पत्रक किंवा ७/१२ जमिनीचा उतारा मिळवा. जागा स्वतःच्या नावावर किंवा वडिलोपार्जित असणे आवश्यक आहे.'
         },
         {
           step: 2,
-          title: 'उत्पन्न व जात प्रमाणपत्र तयार ठेवा (Income & Caste Certificates)',
+          title: 'उत्पन्न व उत्पन्न व जात प्रमाणपत्र तयार ठेवा',
           desc: 'तहसीलदार कार्यालयाचा चालू आर्थिक वर्षाचा उत्पन्नाचा दाखला (वार्षिक उत्पन्न मर्यादा ₹१.२० लाखांपर्यंत) आणि सक्षम प्राधिकाऱ्याचा जातीचा दाखला जोडा.'
         },
         {
           step: 3,
-          title: 'ग्रामसेवक किंवा CSC केंद्रात अर्ज सादर करा (Submit at Gram Panchayat / CSC)',
+          title: 'ग्रामसेवक किंवा CSC ग्रामपंचायत किंवा आपले सरकार सेवा केंद्रात अर्ज सादर करा',
           desc: 'ग्रामपंचायतीच्या घरकुल कक्षात ग्रामसेवक यांच्याकडे किंवा अधिकृत महा-ई-सेवा केंद्रात ऑनलाइन Awaas+ पोर्टलवर नोंदणी करा.'
         },
         {
           step: 4,
-          title: 'जिओ-टॅगिंग व टप्प्याटप्प्याने बँक खात्यात अनुदान (Geo-tagging & DBT Milestones)',
-          desc: 'पाया (Plinth), भिंती (Lintel), छत (Slab) व पूर्ण बांधकाम झाल्यावर जिओ-टॅग फोटो तपासणीनंतर अनुदान थेट बँक खात्यात जमा होते.'
+          title: 'जिओ-टॅगिंग व टप्प्याटप्प्याने बँक खात्यात थेट अनुदान',
+          desc: 'पाया बांधकाम, भिंती बांधकाम, छत बांधकाम व पूर्ण बांधकाम झाल्यावर जिओ-टॅग फोटो तपासणीनंतर अनुदान थेट बँक खात्यात जमा होते.'
         }
       ]
     : [
         {
           step: 1,
-          title: 'कागदपत्रांची पडताळणी (Verify Eligibility & Documents)',
+          title: 'पात्रता व कागदपत्रांची पडताळणी',
           desc: 'आधार कार्ड, बँक पासबुक (NPCI आधार संलग्न) आणि जमिनीचा अद्ययावत ७/१२ उतारा किंवा शैक्षणिक कागदपत्रे तयार ठेवा.'
         },
         {
           step: 2,
-          title: 'अधिकृत पोर्टलवर ऑनलाइन नोंदणी (Online Portal Registration)',
+          title: 'अधिकृत शासकीय पोर्टलवर ऑनलाइन नोंदणी',
           desc: 'अधिकृत शासकीय पोर्टलवर (MahaDBT / PM-Kisan) नवीन वापरकर्ता म्हणून नोंदणी करून अर्ज भरा.'
         },
         {
           step: 3,
-          title: 'बायोमेट्रिक e-KYC किंवा कागदपत्र अपलोड (Biometric e-KYC Verification)',
+          title: 'बायोमेट्रिक e-KYC किंवा कागदपत्र पडताळणी',
           desc: 'जवळच्या आसगाव CSC डिजिटल सेवा केंद्रात जाऊन आधार बायोमेट्रिक e-KYC पूर्ण करा.'
         },
         {
           step: 4,
-          title: 'थेट बँक खात्यात DBT लाभ हस्तांतरण (Direct Benefit Transfer in Bank)',
+          title: 'थेट बँक खात्यात थेट लाभ हस्तांतरण',
           desc: 'अर्जाची पडताळणी पूर्ण झाल्यावर अनुदानाची रक्कम थेट तुमच्या आधार-लिंक्ड बँक खात्यात जमा केली जाते.'
         }
       ];
@@ -234,7 +235,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
         <Breadcrumb
           items={[
             { label: t('nav_home'), onClick: onNavigateHome },
-            { label: lang === 'MR' ? 'शासकीय योजना दालन' : 'Government Schemes Directory', onClick: onNavigateBack },
+            { label: t('nav_schemes'), onClick: onNavigateBack },
             { label: scheme.title, active: true }
           ]}
         />
@@ -243,7 +244,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           onClick={onNavigateBack}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[12px] font-bold transition-colors border border-[#e8e2d9]"
         >
-          <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+          <LucideIcon name="arrow_back" className="text-[16px]" />
           <span>{lang === 'MR' ? 'सर्व योजनांकडे परत जा' : 'Back to All Schemes'}</span>
         </button>
       </div>
@@ -265,7 +266,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
               onClick={handleShareWhatsApp}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#25d366] hover:bg-[#20ba5a] text-white text-[12px] font-bold transition-colors shadow-xs"
             >
-              <span className="material-symbols-outlined text-[16px]">share</span>
+              <LucideIcon name="share" className="text-[16px]" />
               <span>{lang === 'MR' ? 'व्हाट्सॲपवर शेअर करा' : 'WhatsApp Share'}</span>
             </button>
           </div>
@@ -276,7 +277,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
         </h1>
 
         <div className="flex items-center gap-2 text-[14px] font-bold text-[#c2410c] mb-4">
-          <span className="material-symbols-outlined text-[18px]">account_balance</span>
+          <LucideIcon name="account_balance" className="text-[18px]" />
           <span>{scheme.sponsoringAgency}</span>
         </div>
 
@@ -288,7 +289,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 pt-6 border-t border-[#f3ede4]">
           <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#c2410c]">payments</span>
+              <LucideIcon name="payments" className="text-[16px] text-[#c2410c]" />
               <span>{lang === 'MR' ? 'थेट लाभ / अनुदान' : 'Direct Benefit / Subsidy'}</span>
             </div>
             <div className="font-heading font-extrabold text-[17px] text-[#166534] mt-1">
@@ -298,7 +299,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
 
           <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#002873]">verified</span>
+              <LucideIcon name="verified" className="text-[16px] text-[#002873]" />
               <span>{lang === 'MR' ? 'अर्ज शुल्क' : 'Application Fee'}</span>
             </div>
             <div className="font-heading font-extrabold text-[17px] text-[#002873] mt-1">
@@ -308,7 +309,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
 
           <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#376757]">how_to_reg</span>
+              <LucideIcon name="how_to_reg" className="text-[16px] text-[#376757]" />
               <span>{lang === 'MR' ? 'नोंदणी व मदत कक्ष' : 'Approval Desk'}</span>
             </div>
             <div className="font-heading font-extrabold text-[16px] text-[#376757] mt-1">
@@ -318,11 +319,11 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
 
           <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
             <div className="text-[11px] uppercase font-bold text-[#707974] flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#c2410c]">timer</span>
+              <LucideIcon name="timer" className="text-[16px] text-[#c2410c]" />
               <span>{lang === 'MR' ? 'वितरण पद्धत' : 'Disbursement Mode'}</span>
             </div>
             <div className="font-heading font-extrabold text-[16px] text-[#c2410c] mt-1">
-              {lang === 'MR' ? 'थेट बँक खात्यात (DBT)' : 'Aadhaar DBT to Bank'}
+              {lang === 'MR' ? 'थेट बँक खात्यात' : 'Aadhaar DBT to Bank'}
             </div>
           </div>
         </div>
@@ -335,8 +336,8 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           {/* Eligibility Section */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2 mb-3">
-              <span className="material-symbols-outlined text-[#376757]">checklist_rtl</span>
-              <span>{lang === 'MR' ? 'सविस्तर पात्रता निकष' : 'Who is Eligible? (Eligibility Criteria)'}</span>
+              <LucideIcon name="checklist_rtl" className="text-[#376757]" />
+              <span>{lang === 'MR' ? 'सविस्तर पात्रता निकष' : 'Eligibility Criteria'}</span>
             </h2>
             <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9] text-[13px] text-[#1d1b16] leading-relaxed mb-4 font-medium">
               {scheme.eligibility}
@@ -369,7 +370,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           {/* Mandatory Documents Checklist */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2 mb-3">
-              <span className="material-symbols-outlined text-[#002873]">task_alt</span>
+              <LucideIcon name="task_alt" className="text-[#002873]" />
               <span>{lang === 'MR' ? 'आवश्यक कागदपत्रांची यादी' : 'Mandatory Documents Checklist'}</span>
             </h2>
             <p className="text-[12px] text-[#707974] mb-4">
@@ -385,9 +386,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
                     key={idx}
                     className="p-3 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9] flex items-start gap-2 text-[13px]"
                   >
-                    <span className="material-symbols-outlined text-[18px] text-[#376757] shrink-0 mt-0.5">
-                      check_circle
-                    </span>
+                    <LucideIcon name="check_circle" className=" text-[18px] text-[#376757] shrink-0 mt-0.5" />
                     <div>
                       <div className="font-bold text-[#1d1b16]">{doc}</div>
                       <div className="text-[11px] text-[#707974] mt-0.5">
@@ -403,7 +402,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           {/* How to Apply: Step-by-Step Roadmap */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#c2410c]">route</span>
+              <LucideIcon name="route" className="text-[#c2410c]" />
               <span>{lang === 'MR' ? 'अर्ज करण्याची सोपी पद्धत' : 'Step-by-Step Application Guide'}</span>
             </h2>
 
@@ -425,8 +424,8 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           {/* Scheme Specific FAQs */}
           <section className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#002873]">help_outline</span>
-              <span>{lang === 'MR' ? 'वारंवार विचारले जाणारे प्रश्न (FAQ)' : 'Frequently Asked Questions (FAQ)'}</span>
+              <LucideIcon name="help_outline" className="text-[#002873]" />
+              <span>{lang === 'MR' ? 'वारंवार विचारले जाणारे प्रश्न' : 'Frequently Asked Questions (FAQ)'}</span>
             </h2>
 
             <div className="space-y-3 text-[13px]">
@@ -434,9 +433,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
                 <details key={idx} className="group bg-[#f9f3ea] p-3.5 rounded-xl border border-[#e8e2d9]">
                   <summary className="font-bold text-[#166534] cursor-pointer flex items-center justify-between list-none">
                     <span>{faq.q}</span>
-                    <span className="material-symbols-outlined text-[20px] transition-transform group-open:rotate-180">
-                      expand_more
-                    </span>
+                    <LucideIcon name="expand_more" className=" text-[20px] transition-transform group-open:rotate-180" />
                   </summary>
                   <p className="mt-2 text-[#404945] leading-relaxed pt-2 border-t border-[#e8e2d9]/60">
                     {faq.a}
@@ -473,7 +470,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
                     </div>
                     <div className="mt-3 text-[11px] font-bold text-[#c2410c] flex items-center gap-1">
                       <span>{lang === 'MR' ? 'तपशील पहा' : 'View Details'}</span>
-                      <span className="material-symbols-outlined text-[13px]">arrow_forward</span>
+                      <LucideIcon name="arrow_forward" className="text-[13px]" />
                     </div>
                   </button>
                 ))}
@@ -502,14 +499,14 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
               className="w-full py-3 px-4 rounded-xl bg-[#002873] hover:bg-[#00174b] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
             >
               <span>{scheme.actionLabel || (lang === 'MR' ? 'अधिकृत पोर्टलवर अर्ज करा' : 'Apply on Official Portal')}</span>
-              <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+              <LucideIcon name="open_in_new" className="text-[16px]" />
             </a>
 
             <button
               onClick={handleShareWhatsApp}
               className="w-full py-2.5 px-4 rounded-xl bg-[#25d366] hover:bg-[#20ba5a] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors"
             >
-              <span className="material-symbols-outlined text-[16px]">share</span>
+              <LucideIcon name="share" className="text-[16px]" />
               <span>{lang === 'MR' ? 'व्हाट्सॲपवर शेअर करा' : 'Share on WhatsApp'}</span>
             </button>
           </div>
@@ -539,7 +536,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
               href="tel:9822104500"
               className="w-full py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold flex items-center justify-center gap-1 mb-2 transition-colors"
             >
-              <span className="material-symbols-outlined text-[15px]">call</span>
+              <LucideIcon name="call" className="text-[15px]" />
               <span>{lang === 'MR' ? 'ऑपरेटरशी संपर्क: ९८२२१०४५००' : 'Call Operator: +91 98221 04500'}</span>
             </a>
           </div>
@@ -547,7 +544,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           {/* Zero Bribery & Anti Corruption */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
             <div className="flex items-center gap-1.5 text-[#ba1a1a] font-bold text-[13px] mb-1">
-              <span className="material-symbols-outlined text-[18px]">verified_user</span>
+              <LucideIcon name="verified_user" className="text-[18px]" />
               <span>{lang === 'MR' ? 'शून्य दलाली हमी' : 'Zero Middlemen Guarantee'}</span>
             </div>
             <p className="text-[12px] text-[#404945] leading-relaxed mb-2">
@@ -556,7 +553,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
                 : 'Government schemes in Asgaon are 100% free of charge. If anyone demands a cut, report immediately.'}
             </p>
             <div className="text-[12px] font-bold text-[#ba1a1a]">
-              {lang === 'MR' ? 'लाचलुचपत प्रतिबंधक हेल्पलाईन (ACB): १०६४' : 'ACB Anti-Corruption Helpline: Toll-Free 1064'}
+              {lang === 'MR' ? 'लाचलुचपत प्रतिबंधक हेल्पलाईन: १०६४' : 'ACB Anti-Corruption Helpline: Toll-Free 1064'}
             </div>
           </div>
         </aside>

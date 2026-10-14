@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -250,7 +251,7 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
           <div className="flex items-center gap-2 mb-1">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse"></span>
             <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800">
-              {lang === 'MR' ? 'आसगाव शैक्षणिक नकाशा (GIS)' : 'Asgaon Education GIS Map'}
+              {lang === 'MR' ? 'आसगाव शैक्षणिक नकाशा' : 'Asgaon Education GIS Map'}
             </span>
             
           </div>
@@ -293,7 +294,7 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
             className="p-1.5 bg-white hover:bg-stone-100 text-[#166534] rounded-xl border border-stone-200 transition-all cursor-pointer"
             title={lang === 'MR' ? 'आसगाव केंद्रावर पुन्हा या' : 'Recenter to Asgaon'}
           >
-            <span className="material-symbols-outlined text-[18px]">my_location</span>
+            <LucideIcon name="my_location" className="text-[18px]" />
           </button>
         </div>
       </div>
@@ -332,7 +333,7 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
                 {lang === 'MR' ? selectedItem.name : selectedItem.nameEnglish}
               </h4>
               <p className="text-xs text-stone-500 mb-3 flex items-center gap-1">
-                <span className="material-symbols-outlined text-[15px] text-amber-700">pin_drop</span>
+                <LucideIcon name="pin_drop" className="text-[15px] text-amber-700" />
                 <span>{selectedItem.address}</span>
               </p>
 
@@ -349,7 +350,7 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
                 <div className="flex items-center justify-between">
                   <span className="text-stone-500">{lang === 'MR' ? 'संपर्क क्रमांक:' : 'Phone:'}</span>
                   <a href={`tel:${selectedItem.phone}`} className="font-bold text-[#166534] hover:underline flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]">call</span>
+                    <LucideIcon name="call" className="text-[14px]" />
                     <span>{selectedItem.phone}</span>
                   </a>
                 </div>
@@ -378,7 +379,7 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
                 rel="noopener noreferrer"
                 className="flex-1 py-2.5 px-4 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all"
               >
-                <span className="material-symbols-outlined text-[16px]">navigation</span>
+                <LucideIcon name="navigation" className="text-[16px]" />
                 <span>{lang === 'MR' ? 'गूगल मॅपवर दिशा पहा' : 'Get Directions'}</span>
               </a>
 
@@ -387,7 +388,7 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
                 className="p-2.5 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-xl border border-amber-200 transition-all"
                 title="कॉल करा"
               >
-                <span className="material-symbols-outlined text-[18px]">phone_enabled</span>
+                <LucideIcon name="phone_enabled" className="text-[18px]" />
               </a>
             </div>
           </div>

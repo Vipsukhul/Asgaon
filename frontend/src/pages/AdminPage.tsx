@@ -1,7 +1,9 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import type { UserProfileData } from './ProfilePage';
 import { Breadcrumb } from '../components/Breadcrumb';
+import { useLanguage } from '../context/LanguageContext';
 import { sendTestPushNotification } from '../services/pushNotifications';
 import { AdminLogsSection } from '../components/AdminLogsSection';
 import { AdminBannerManager } from '../components/AdminBannerManager';
@@ -52,6 +54,7 @@ interface AdminPageProps {
 }
 
 export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmin, onExit, onLogout }) => {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<
     'overview' | 'businesses' | 'reviews' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users' | 'logs' | 'banners' | 'admin_management'
   >('overview');
@@ -69,33 +72,33 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {
         id: 'rev-1',
         businessId: '1',
-        businessName: 'खडके किराणा आणि जनरल स्टोअर्स (Khadke Kirana)',
-        userName: 'रमेश पाटील (Rameshwar Patil)',
+        businessName: 'खडके किराणा आणि जनरल स्टोअर्स',
+        userName: 'रमेश पाटील',
         wardOrArea: 'वॉर्ड २ (गावठाण)',
         rating: 5,
-        date: 'काल (Yesterday)',
+        date: 'काल',
         comment: 'उत्कृष्ट सेवा आणि वाजवी दर. वेळेवर सर्व धान्य व किराणा माल उपलब्ध असतो.',
         verifiedCitizen: true
       },
       {
         id: 'rev-2',
         businessId: '2',
-        businessName: 'पाटील कृषी केंद्र (Patil Krishi Kendra)',
-        userName: 'सुनीता झाळके (Sunita Zalke)',
+        businessName: 'पाटील कृषी केंद्र',
+        userName: 'सुनीता झाळके',
         wardOrArea: 'आंबेडकर वॉर्ड १',
         rating: 5,
-        date: '३ दिवसांपूर्वी (3 days ago)',
+        date: '३ दिवसांपूर्वी',
         comment: 'अतिशय नम्र बोलणे आणि खात्रीशीर बियाणे. रासायनिक व सेंद्रिय खतांचा योग्य सल्ला देतात.',
         verifiedCitizen: true
       },
       {
         id: 'rev-3',
         businessId: '3',
-        businessName: 'सोनवणे मेडिकल व क्लिनिक (Sonone Medical)',
-        userName: 'विठ्ठल मेश्राम (Vitthal Meshram)',
+        businessName: 'सोनवणे मेडिकल व क्लिनिक',
+        userName: 'विठ्ठल मेश्राम',
         wardOrArea: 'विठ्ठल मंदिर परिसर वॉर्ड ३',
         rating: 5,
-        date: '१ आठवड्यापूर्वी (1 week ago)',
+        date: '१ आठवड्यापूर्वी',
         comment: 'तातडीच्या वेळी रात्रीही आवश्यक औषधे उपलब्ध करून दिली. बीपी व शुगर तपासणी मोफत केली जाते.',
         verifiedCitizen: true
       }
@@ -335,7 +338,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
     const busTypeMarathiMap: Record<string, string> = {
       Lalpari: 'साधी लालपरी',
       Asiad: 'निमआराम',
-      Shivshahi: 'शिवशाही (AC)',
+      Shivshahi: 'शिवशाही वातानुकूलित',
       Ordinary: 'स्थानिक लोकल फेरी'
     };
 
@@ -620,7 +623,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
     title: '',
     category: 'Farmer',
     sponsoringAgency: 'महाराष्ट्र शासन / केंद्र शासन',
-    deadlineText: 'चालू योजना (Active)',
+    deadlineText: 'चालू योजना',
     description: '',
     benefits: '',
     eligibility: '',
@@ -909,7 +912,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         setActiveTab('overview');
         return;
       }
-      throw new Error('अवैध क्रेडेन्शियल्स (Invalid credentials)');
+      throw new Error('अवैध माहिती (लॉगिन अयशस्वी)');
     } catch (err: any) {
       setLoginError(err.message || 'प्रवेश अयशस्वी: कृपया योग्य मोबाईल नंबर व पासवर्ड तपासा.');
     } finally {
@@ -1013,7 +1016,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         title: '',
         category: 'Farmer',
         sponsoringAgency: 'महाराष्ट्र शासन / केंद्र शासन',
-        deadlineText: 'चालू योजना (Active)',
+        deadlineText: 'चालू योजना',
         description: '',
         benefits: '',
         eligibility: '',
@@ -1363,34 +1366,30 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           <div className="bg-gradient-to-r from-[#166534] via-[#14532d] to-[#052e16] text-white p-6 sm:p-7 relative overflow-hidden">
             {/* Background Decorative Pattern */}
             <div className="absolute -right-6 -bottom-6 w-36 h-36 rounded-full bg-white/5 pointer-events-none" />
-            <div className="absolute right-12 -top-10 w-28 h-28 rounded-full bg-[#bbf7d0]/10 pointer-events-none" />
+            <div className="absolute right-12 -top-10 w-28 h-28 rounded-full bg-white/5 pointer-events-none" />
 
             <div className="flex items-start justify-between gap-4 relative z-10">
               <div className="flex items-center gap-3.5">
-                
                 <div>
-                  <span className="text-[11px] font-bold uppercase tracking-widest text-[#bbf7d0]/90 block">
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-[#a7f3d0] block">
                     आसगाव ग्राम माहिती मंच • स्वतंत्र नागरिक उपक्रम
                   </span>
                   <h1 className="font-heading font-extrabold text-[20px] sm:text-[23px] text-white leading-tight">
                     आसगाव ग्राम माहिती मंच
                   </h1>
-                  <p className="text-[12px] text-[#bbf7d0] font-medium">
-                    माहिती व्यवस्थापन व संपादन कक्ष (Admin Desk)
+                  <p className="text-[12px] text-[#a7f3d0] font-medium">
+                    माहिती व्यवस्थापन व संपादन कक्ष
                   </p>
                 </div>
               </div>
-
-             
             </div>
 
             {/* Security Pill */}
             <div className="mt-4 pt-3 border-t border-white/15 flex items-center justify-between text-[11px] text-white/80">
               <span className="flex items-center gap-1.5 font-medium">
-                <span className="material-symbols-outlined text-[15px] text-[#bbf7d0]">lock</span>
-                <span>सुरक्षित एनक्रिप्टेड प्रवेश (Secure Access)</span>
+                <LucideIcon name="lock" className="text-[15px] text-[#a7f3d0]" />
+                <span>सुरक्षित प्रवेश</span>
               </span>
-              
             </div>
           </div>
 
@@ -1398,7 +1397,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           <div className="p-6 sm:p-8 flex flex-col gap-5">
             <div>
               <h2 className="font-heading font-extrabold text-[19px] sm:text-[21px] text-[#166534]">
-                व्यवस्थापक लॉगिन (Admin Sign In)
+                प्रशासक लॉगिन
               </h2>
               <p className="text-[12px] text-[#55605a] mt-0.5 leading-relaxed">
                 आसगाव ग्राम माहिती मंच व्यवस्थापकांसाठी सुरक्षित प्रवेश.
@@ -1408,7 +1407,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             {/* Error Notification */}
             {loginError && (
               <div className="p-3.5 rounded-xl bg-[#fef3c7]/80 border border-[#fde68a] text-[#ba1a1a] flex items-start gap-2.5 text-[12px] font-medium animate-fadeIn">
-                <span className="material-symbols-outlined text-[18px] shrink-0 mt-0.5">error</span>
+                <LucideIcon name="error" className="text-[18px] shrink-0 mt-0.5" />
                 <div className="flex-1">
                   <strong>प्रवेश अयशस्वी: </strong>
                   <span>{loginError}</span>
@@ -1432,9 +1431,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   <span className="text-[10px] text-[#707974] font-normal">आवश्यक</span>
                 </label>
                 <div className="relative">
-                  <span className="material-symbols-outlined absolute left-3 top-3 text-[19px] text-[#707974]">
-                    phone_android
-                  </span>
+                  <LucideIcon name="phone_android" className=" absolute left-3 top-3 text-[19px] text-[#707974]" />
                   <input
                     type="text"
                     value={adminPhone}
@@ -1454,9 +1451,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   <span className="text-[10px] text-[#707974] font-normal">आवश्यक</span>
                 </label>
                 <div className="relative">
-                  <span className="material-symbols-outlined absolute left-3 top-3 text-[19px] text-[#707974]">
-                    lock
-                  </span>
+                  <LucideIcon name="lock" className=" absolute left-3 top-3 text-[19px] text-[#707974]" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={adminPassword}
@@ -1472,9 +1467,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     className="absolute right-3 top-2.5 p-1 text-[#707974] hover:text-[#166534] transition-colors"
                     title={showPassword ? 'पासवर्ड लपवा' : 'पासवर्ड दाखवा'}
                   >
-                    <span className="material-symbols-outlined text-[19px]">
-                      {showPassword ? 'visibility_off' : 'visibility'}
-                    </span>
+                    <LucideIcon name={showPassword ? 'visibility_off' : 'visibility'} className=" text-[19px]" />
                   </button>
                 </div>
               </div>
@@ -1488,12 +1481,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 {loginLoading ? (
                   <>
                     <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    <span>पडताळणी चालू आहे... (Verifying)</span>
+                    <span>पडताळणी चालू आहे...</span>
                   </>
                 ) : (
                   <>
-                    <span className="material-symbols-outlined text-[19px]">lock_open</span>
-                    <span>लॉगिन करा (Sign In to Dashboard)</span>
+                    <LucideIcon name="lock_open" className="text-[19px]" />
+                    <span>लॉगिन करा</span>
                   </>
                 )}
               </button>
@@ -1502,14 +1495,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             {/* Disclaimer & Info */}
             <div className="pt-4 border-t border-[#f3ede4] flex flex-col gap-2 text-[11px] text-[#707974]">
               <div className="flex items-start gap-1.5 leading-relaxed text-[#55605a]">
-                <span className="material-symbols-outlined text-[15px] text-[#c2410c] shrink-0 mt-0.5">info</span>
+                <LucideIcon name="info" className="text-[15px] text-[#c2410c] shrink-0 mt-0.5" />
                 <span>
                   <strong>टीप:</strong> हे व्यासपीठ आसगाव ग्रामस्थांसाठी चालवले जाणारे स्वतंत्र माहिती पोर्टल आहे. हा कक्ष केवळ अधिकृत पोर्टल व्यवस्थापकांसाठी आहे.
                 </span>
               </div>
               <div className="flex items-center justify-between text-[10px] text-[#707974] pt-1">
                 <span>आसगाव, ता. पवनी, जि. भंडारा (४४१९१०)</span>
-                <span>Admin Support Desk</span>
+                <span>व्यवस्थापक साहाय्य कक्ष</span>
               </div>
             </div>
           </div>
@@ -1522,36 +1515,36 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
     <div className="w-full flex flex-col gap-6">
       <Breadcrumb
         items={[
-          { label: 'मुख्य पृष्ठ (Home)', onClick: onExit },
-          { label: 'माहिती व डेटा व्यवस्थापन केंद्र (Admin Portal)', active: true }
+          { label: t('nav_home'), onClick: onExit },
+          { label: t('nav_admin'), active: true }
         ]}
       />
 
       {/* Top Banner with responsive mobile and role badge */}
-      <div className="bg-gradient-to-r from-[#166534] via-[#14532d] to-[#052e16] text-white rounded-2xl p-4 sm:p-6 shadow-sm border border-[#bbf7d0]/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-[#166534] via-[#14532d] to-[#052e16] text-white rounded-2xl p-4 sm:p-6 shadow-sm border border-[#cadbcf]/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5 w-full md:w-auto">
           <div className="w-full">
             <div className="flex items-center gap-2 flex-wrap mb-1">
               {isSuperAdmin ? (
                 <span className="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#ef9f27] to-[#ba7200] text-white font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
-                  <span className="material-symbols-outlined text-[13px]">military_tech</span>
-                  👑 चीफ सुपर अॅडमिन (Master Super Admin)
+                  <LucideIcon name="military_tech" className="text-[13px]" />
+                  👑 मुख्य प्रशासक
                 </span>
               ) : (
-                <span className="px-2.5 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117] font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
-                  <span className="material-symbols-outlined text-[13px]">verified_user</span>
+                <span className="px-2.5 py-0.5 rounded-full bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
+                  <LucideIcon name="verified_user" className="text-[13px]" />
                   🛡️ अधिकृत व्यवस्थापक ({allowedModules.length} मॉड्यूल्स अधिकार)
                 </span>
               )}
-              <span className="text-[11px] text-[#bbf7d0] font-medium hidden sm:inline">
-                {currentUser.fullName || (isSuperAdmin ? 'Chief Super Admin' : 'Admin')}
+              <span className="text-[11px] text-[#a7f3d0] font-medium hidden sm:inline">
+                {currentUser.fullName || (isSuperAdmin ? 'मुख्य प्रशासक' : 'व्यवस्थापक')}
               </span>
             </div>
 
             <h1 className="font-heading font-extrabold text-[19px] sm:text-[23px] text-white leading-tight">
               आसगाव ग्राम माहिती व डेटा व्यवस्थापन केंद्र
             </h1>
-            <p className="text-[11px] sm:text-[12px] text-[#bbf7d0] font-medium mt-0.5">
+            <p className="text-[11px] sm:text-[12px] text-[#a7f3d0] font-medium mt-0.5">
               ग्रामपंचायतीतून मिळणारी खरी माहिती गावकऱ्यांपर्यंत पोहोचवणारा स्वतंत्र मंच
             </p>
           </div>
@@ -1563,7 +1556,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               onClick={onExit}
               className="flex-1 md:flex-initial px-3.5 py-2.5 sm:py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-[12px] transition-all flex items-center justify-center gap-1.5 border border-white/20 cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[16px]">visibility</span>
+              <LucideIcon name="visibility" className="text-[16px]" />
               <span>सार्वजनिक दृश्य</span>
             </button>
           )}
@@ -1572,7 +1565,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               onClick={onLogout}
               className="flex-1 md:flex-initial px-3.5 py-2.5 sm:py-2 rounded-xl bg-[#fef3c7]/20 hover:bg-[#fef3c7]/30 text-[#fde68a] font-bold text-[12px] transition-all flex items-center justify-center gap-1.5 border border-[#fde68a]/30 cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[16px]">logout</span>
+              <LucideIcon name="logout" className="text-[16px]" />
               <span>बाहेर पडा</span>
             </button>
           )}
@@ -1583,10 +1576,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       <div className="block md:hidden">
         <div className="flex items-center justify-between mb-1.5">
           <label className="text-[11px] font-bold uppercase tracking-wider text-[#707974] flex items-center gap-1">
-            <span className="material-symbols-outlined text-[15px] text-[#006a4e]">tune</span>
+            <LucideIcon name="tune" className="text-[15px] text-[#006a4e]" />
             <span>व्यवस्थापन विभाग निवडा:</span>
           </label>
-          <span className="text-[10px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-2 py-0.5 rounded-full">
+          <span className="text-[10px] font-bold text-[#006a4e] bg-[#e8f1ec] px-2 py-0.5 rounded-full">
             {isSuperAdmin ? 'सर्व १६ मॉड्यूल्स' : `${allowedModules.length} मॉड्यूल्स अधिकार`}
           </span>
         </div>
@@ -1598,9 +1591,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             className="w-full p-3 pl-10 pr-9 bg-white border-2 border-[#166534] rounded-xl text-xs sm:text-sm font-bold text-[#166534] shadow-xs appearance-none cursor-pointer"
           >
             {[
-              { id: 'overview', label: '📊 आढावा (Overview)' },
+              { id: 'overview', label: '📊 आढावा ' },
               ...(isSuperAdmin
-                ? [{ id: 'admin_management', label: '🛡️ अॅडमिन अधिकार नियंत्रण (Super Admin Only)' }]
+                ? [{ id: 'admin_management', label: '🛡️ अॅडमिन अधिकार नियंत्रण ' }]
                 : []),
               { id: 'businesses', label: `🏪 दुकाने व पडताळणी (${adminBusinesses.length})` },
               { id: 'reviews', label: `⭐ नागरिक अभिप्राय (${adminReviews.length})` },
@@ -1615,9 +1608,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               { id: 'contacts', label: `📞 महत्त्वाचे संपर्क (${contacts.length})` },
               { id: 'projects', label: `🏗️ विकासकामे (${projects.length})` },
               { id: 'complaints', label: `📝 गावकऱ्यांच्या तक्रारी (${complaints.length})` },
-              { id: 'broadcast', label: '🚨 तातडीची दवंडी (Push Alert)' },
+              { id: 'broadcast', label: '🚨 तातडीची दवंडी ' },
               { id: 'users', label: '👥 गावकऱ्यांची यादी' },
-              { id: 'logs', label: '📜 ऑडिट नोंदी (Audit Logs)' }
+              { id: 'logs', label: '📜 ऑडिट नोंदी ' }
             ]
               .filter((t) => isTabAllowed(t.id))
               .map((t) => (
@@ -1626,19 +1619,15 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </option>
               ))}
           </select>
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#166534] text-[20px] pointer-events-none">
-            dashboard_customize
-          </span>
-          <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#166534] text-[20px] pointer-events-none">
-            expand_more
-          </span>
+          <LucideIcon name="dashboard_customize" className=" absolute left-3 top-1/2 -translate-y-1/2 text-[#166534] text-[20px] pointer-events-none" />
+          <LucideIcon name="expand_more" className=" absolute right-3 top-1/2 -translate-y-1/2 text-[#166534] text-[20px] pointer-events-none" />
         </div>
       </div>
 
       {/* Navigation Tabs (Scrollable pills on desktop & tablet) */}
       <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 border-b border-[#e8e2d9] no-scrollbar scroll-smooth -mx-2 px-2 sm:mx-0 sm:px-0">
         {[
-          { id: 'overview', icon: 'analytics', label: 'आढावा (Overview)' },
+          { id: 'overview', icon: 'analytics', label: 'आढावा ' },
           ...(isSuperAdmin
             ? [{
                 id: 'admin_management',
@@ -1660,9 +1649,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           { id: 'contacts', icon: 'contacts', label: `महत्त्वाचे संपर्क (${contacts.length})` },
           { id: 'projects', icon: 'construction', label: `विकासकामे (${projects.length})` },
           { id: 'complaints', icon: 'support_agent', label: `गावकऱ्यांच्या तक्रारी (${complaints.length})` },
-          { id: 'broadcast', icon: 'cell_tower', label: 'तातडीची दवंडी (Push Alert)' },
+          { id: 'broadcast', icon: 'cell_tower', label: 'तातडीची दवंडी ' },
           { id: 'users', icon: 'group', label: 'गावकऱ्यांची यादी' },
-          { id: 'logs', icon: 'manage_history', label: 'ऑडिट नोंदी (Audit Logs)' }
+          { id: 'logs', icon: 'manage_history', label: 'ऑडिट नोंदी ' }
         ]
           .filter((t) => isTabAllowed(t.id))
           .map((t) => (
@@ -1673,13 +1662,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 activeTab === t.id
                   ? t.isSuperTag
                     ? 'bg-gradient-to-r from-[#ef9f27] to-[#ba7200] text-white shadow-xs'
-                    : 'bg-[#166534] text-[#bbf7d0] shadow-xs'
+                    : 'bg-[#166534] text-[#a7f3d0] shadow-xs'
                   : t.isSuperTag
                     ? 'bg-[#fff8e1] text-[#7c4d00] hover:bg-[#ffecb3] border border-[#ffe082]'
                     : 'text-[#55605a] hover:bg-[#f3ede4]'
               }`}
             >
-              <span className="material-symbols-outlined text-[17px] sm:text-[18px]">{t.icon}</span>
+              <LucideIcon name={t.icon} className="text-[17px] sm:text-[18px]" />
               <span>{t.label}</span>
               {t.isSuperTag && (
                 <span className="px-1.5 py-0.2 rounded-full bg-white/20 text-[9px] font-black uppercase ml-0.5">
@@ -1758,8 +1747,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           {/* Quick Actions Shortcuts */}
           <div className="bg-white rounded-2xl border border-[#e8e2d9] p-6 shadow-xs">
             <h2 className="font-heading font-bold text-[16px] text-[#166534] mb-4 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px] text-[#c2410c]">bolt</span>
-              <span>ग्रामपंचायत भेट दिल्यावर त्वरित करण्याचे काम (Quick Data Entry Shortcuts)</span>
+              <LucideIcon name="bolt" className="text-[20px] text-[#c2410c]" />
+              <span>ग्रामपंचायत भेट दिल्यावर त्वरित करण्याचे काम</span>
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {isSuperAdmin && (
@@ -1768,14 +1757,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   onClick={() => setActiveTab('admin_management')}
                   className="p-4 rounded-xl bg-gradient-to-br from-[#166534] to-[#002117] text-white hover:shadow-md transition-all text-left group border border-[#ef9f27]/40 relative overflow-hidden"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#ef9f27] mb-2 block">
-                    admin_panel_settings
-                  </span>
+                  <LucideIcon name="admin_panel_settings" className=" text-[24px] text-[#ef9f27] mb-2 block" />
                   <strong className="block text-[13px] mb-1 flex items-center gap-1.5 text-white">
                     <span>अॅडमिन व पृष्ठ अधिकार</span>
                     <span className="px-1.5 py-0.2 rounded-full bg-[#ef9f27] text-[#002117] text-[9px] font-black">SUPER</span>
                   </strong>
-                  <p className="text-[11px] text-[#bbf7d0]">
+                  <p className="text-[11px] text-[#a7f3d0]">
                     इतर अॅडमिन्स जोडा व त्यांच्या पानांचे प्रवेश अधिकार नियंत्रित करा
                   </p>
                 </button>
@@ -1785,11 +1772,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => { setEditingEvent(null); setActiveTab('events'); }}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-2xl bg-[#fffdfa] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e7dec8] hover:border-[#166534] shadow-[0_2px_8px_rgba(20,40,30,0.03)] hover:shadow-[0_8px_20px_rgba(20,40,30,0.08)] hover:-translate-y-0.5"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#bbf7d0] mb-2 block">
-                    event
-                  </span>
+                  <LucideIcon name="event" className=" text-[24px] text-[#14532d] group-hover:text-[#a7f3d0] mb-2 block" />
                   <strong className="block text-[13px] mb-1">नवीन कार्यक्रम / जत्रा जोडा</strong>
                   <p className="text-[11px] text-[#707974] group-hover:text-white/80">
                     यात्रा, महाप्रसाद, आरोग्य शिबीर किंवा क्रीडा स्पर्धा
@@ -1801,11 +1786,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => { setEditingSchool(null); setActiveTab('shiksha'); }}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-2xl bg-[#fffdfa] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e7dec8] hover:border-[#166534] shadow-[0_2px_8px_rgba(20,40,30,0.03)] hover:shadow-[0_8px_20px_rgba(20,40,30,0.08)] hover:-translate-y-0.5"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#bbf7d0] mb-2 block">
-                    school
-                  </span>
+                  <LucideIcon name="school" className=" text-[24px] text-[#14532d] group-hover:text-[#a7f3d0] mb-2 block" />
                   <strong className="block text-[13px] mb-1">शाळा व शिक्षण व्यवस्थापन</strong>
                   <p className="text-[11px] text-[#707974] group-hover:text-white/80">
                     शाळा, शिष्यवृत्ती, अभ्यासिका व शिकवणी वर्ग
@@ -1817,11 +1800,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => { setEditingAnnouncement(null); setActiveTab('notices'); }}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-2xl bg-[#fffdfa] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e7dec8] hover:border-[#166534] shadow-[0_2px_8px_rgba(20,40,30,0.03)] hover:shadow-[0_8px_20px_rgba(20,40,30,0.08)] hover:-translate-y-0.5"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#166534] group-hover:text-[#bbf7d0] mb-2 block">
-                    campaign
-                  </span>
+                  <LucideIcon name="campaign" className=" text-[24px] text-[#14532d] group-hover:text-[#a7f3d0] mb-2 block" />
                   <strong className="block text-[13px] mb-1">नवीन नोटीस / ठराव टाका</strong>
                   <p className="text-[11px] text-[#707974] group-hover:text-white/80">
                     ग्रामसभा बैठक, कर भरणा अथवा वीज भारनियमन सूचना
@@ -1833,11 +1814,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => setActiveTab('water')}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-2xl bg-[#fffdfa] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e7dec8] hover:border-[#166534] shadow-[0_2px_8px_rgba(20,40,30,0.03)] hover:shadow-[0_8px_20px_rgba(20,40,30,0.08)] hover:-translate-y-0.5"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#bbf7d0] mb-2 block">
-                    water_drop
-                  </span>
+                  <LucideIcon name="water_drop" className=" text-[24px] text-[#0369a1] group-hover:text-[#a7f3d0] mb-2 block" />
                   <strong className="block text-[13px] mb-1">पाणी पुरवठा वेळ बदला</strong>
                   <p className="text-[11px] text-[#707974] group-hover:text-white/80">
                     वॉर्डनिहाय वेळ, टाकीतील पाणी साठा व दुरुस्ती स्थिती
@@ -1849,11 +1828,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => { setEditingScheme(null); setActiveTab('schemes'); }}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-2xl bg-[#fffdfa] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e7dec8] hover:border-[#166534] shadow-[0_2px_8px_rgba(20,40,30,0.03)] hover:shadow-[0_8px_20px_rgba(20,40,30,0.08)] hover:-translate-y-0.5"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#c2410c] group-hover:text-[#bbf7d0] mb-2 block">
-                    description
-                  </span>
+                  <LucideIcon name="description" className=" text-[24px] text-[#b45309] group-hover:text-[#a7f3d0] mb-2 block" />
                   <strong className="block text-[13px] mb-1">नवीन सरकारी योजना जोडा</strong>
                   <p className="text-[11px] text-[#707974] group-hover:text-white/80">
                     कागदपत्रे यादी, अनुदान रक्कम व शेवटची तारीख
@@ -1865,12 +1842,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => setActiveTab('broadcast')}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-2xl bg-[#fffdfa] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e7dec8] hover:border-[#166534] shadow-[0_2px_8px_rgba(20,40,30,0.03)] hover:shadow-[0_8px_20px_rgba(20,40,30,0.08)] hover:-translate-y-0.5"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#ba1a1a] group-hover:text-[#bbf7d0] mb-2 block">
-                    cell_tower
-                  </span>
-                  <strong className="block text-[13px] mb-1">तातडीची दवंडी (Push Alert)</strong>
+                  <LucideIcon name="cell_tower" className=" text-[24px] text-[#b91c1c] group-hover:text-[#a7f3d0] mb-2 block" />
+                  <strong className="block text-[13px] mb-1">तातडीची दवंडी </strong>
                   <p className="text-[11px] text-[#707974] group-hover:text-white/80">
                     सर्व गावकऱ्यांच्या मोबाईलवर लगेच अलर्ट पाठवा
                   </p>
@@ -1881,11 +1856,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => setActiveTab('businesses')}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-2xl bg-[#fffdfa] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e7dec8] hover:border-[#166534] shadow-[0_2px_8px_rgba(20,40,30,0.03)] hover:shadow-[0_8px_20px_rgba(20,40,30,0.08)] hover:-translate-y-0.5"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#006a4e] group-hover:text-[#bbf7d0] mb-2 block">
-                    storefront
-                  </span>
+                  <LucideIcon name="storefront" className=" text-[24px] text-[#115e59] group-hover:text-[#a7f3d0] mb-2 block" />
                   <strong className="block text-[13px] mb-1">स्थानिक दुकाने व पडताळणी</strong>
                   <p className="text-[11px] text-[#707974] group-hover:text-white/80">
                     दुकानांची तपासणी, मंजुरी व पडताळणी बॅज व्यवस्थापन
@@ -1897,11 +1870,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <button
                   type="button"
                   onClick={() => setActiveTab('reviews')}
-                  className="p-4 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e8e2d9]"
+                  className="p-4 rounded-2xl bg-[#fffdfa] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e7dec8] hover:border-[#166534] shadow-[0_2px_8px_rgba(20,40,30,0.03)] hover:shadow-[0_8px_20px_rgba(20,40,30,0.08)] hover:-translate-y-0.5"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#ef9f27] group-hover:text-[#bbf7d0] mb-2 block">
-                    rate_review
-                  </span>
+                  <LucideIcon name="rate_review" className=" text-[24px] text-[#b45309] group-hover:text-[#a7f3d0] mb-2 block" />
                   <strong className="block text-[13px] mb-1">नागरिक अभिप्राय व्यवस्थापन</strong>
                   <p className="text-[11px] text-[#707974] group-hover:text-white/80">
                     स्थानिक दुकानांचे रेटिंग, परीक्षणे व अभिप्राय
@@ -1918,9 +1889,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         <div className="flex flex-col gap-6">
           {/* Feedback Toast */}
           {bizFeedbackMsg && (
-            <div className="bg-[#bbf7d0] border border-[#006a4e] text-[#002117] p-3.5 rounded-xl text-xs font-bold flex items-center justify-between shadow-md transition-all animate-fade-in">
+            <div className="bg-[#e8f1ec] text-[#14532d] border border-[#006a4e] text-[#002117] p-3.5 rounded-xl text-xs font-bold flex items-center justify-between shadow-md transition-all animate-fade-in">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[18px] text-[#006a4e]">verified</span>
+                <LucideIcon name="verified" className="text-[18px] text-[#006a4e]" />
                 <span>{bizFeedbackMsg}</span>
               </div>
               <button onClick={() => setBizFeedbackMsg(null)} className="text-[#002117]/60 hover:text-[#002117]">
@@ -1934,17 +1905,17 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <div>
                 <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#bbf7d0] font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
-                    <span className="material-symbols-outlined text-[13px]">verified_user</span>
-                    ग्रामपंचायत पडताळणी केंद्र (Verification Desk)
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#a7f3d0] font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-xs">
+                    <LucideIcon name="verified_user" className="text-[13px]" />
+                    ग्रामपंचायत पडताळणी केंद्र 
                   </span>
                   <span className="text-[11px] text-[#707974]">
                     एकूण दुकाने: {adminBusinesses.length}
                   </span>
                 </div>
                 <h2 className="font-heading font-extrabold text-[18px] sm:text-[22px] text-[#166534] flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[24px] text-[#006a4e]">storefront</span>
-                  <span>स्थानिक दुकाने व व्यवसाय पडताळणी (Shop Verification)</span>
+                  <LucideIcon name="storefront" className="text-[24px] text-[#006a4e]" />
+                  <span>स्थानिक दुकाने व व्यवसाय पडताळणी </span>
                 </h2>
                 <p className="text-[12px] text-[#707974] mt-0.5">
                   गावकऱ्यांच्या सुरक्षिततेसाठी दुकानांची पडताळणी करा, अधिकृत ट्रस्ट बॅज द्या आणि अनधिकृत दुकाने नियंत्रित करा.
@@ -1958,10 +1929,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   disabled={loadingBusinesses}
                   className="px-3.5 py-2 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white text-[#166534] font-bold text-xs flex items-center gap-1.5 transition-all border border-[#e8e2d9] cursor-pointer"
                 >
-                  <span className={`material-symbols-outlined text-[16px] ${loadingBusinesses ? 'animate-spin' : ''}`}>
-                    refresh
-                  </span>
-                  <span>ताजे करा (Refresh)</span>
+                  <LucideIcon name="refresh" className={` text-[16px] ${loadingBusinesses ? 'animate-spin' : ''}`} />
+                  <span>ताजे करा </span>
                 </button>
               </div>
             </div>
@@ -1974,12 +1943,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <span className="text-[10px] text-[#55605a] block">पोर्टलवर नोंदणीकृत</span>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#f0fdf4] border border-[#bbf7d0]">
+              <div className="p-3.5 rounded-xl bg-[#f0fdf4] border border-[#cadbcf]">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#166534] block">प्रमाणित दुकाने</span>
                 <span className="font-heading font-black text-[22px] text-[#166534]">
                   {adminBusinesses.filter((b) => b.isVerified).length}
                 </span>
-                <span className="text-[10px] text-[#166534] block font-semibold">पडताळणी पूर्ण (Verified)</span>
+                <span className="text-[10px] text-[#166534] block font-semibold">पडताळणी पूर्ण </span>
               </div>
 
               <div className="p-3.5 rounded-xl bg-[#fffbeb] border border-[#fde68a] col-span-2 sm:col-span-1">
@@ -1994,9 +1963,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             {/* Search and Status Filters */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-6 bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9]">
               <div className="relative flex-1">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]">
-                  search
-                </span>
+                <LucideIcon name="search" className=" absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
                 <input
                   type="text"
                   value={businessSearch}
@@ -2031,9 +1998,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             {/* Businesses List */}
             {adminBusinesses.length === 0 ? (
               <div className="text-center py-12 text-[#707974]">
-                <span className="material-symbols-outlined text-[48px] text-[#ccc] mb-2 block">
-                  storefront
-                </span>
+                <LucideIcon name="storefront" className=" text-[48px] text-[#ccc] mb-2 block" />
                 <p className="font-bold text-[14px]">अद्याप कोणतीही दुकाने आढळली नाहीत</p>
                 <p className="text-[12px] mt-1">पोर्टलवर दुकान नोंदणी झाल्यानंतर ती येथे व्यवस्थापनासाठी दिसतील.</p>
               </div>
@@ -2063,7 +2028,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       <div
                         key={biz.id}
                         className={`bg-white rounded-2xl border p-4 shadow-xs flex flex-col justify-between gap-3.5 transition-all ${
-                          isVerified ? 'border-[#bbf7d0] hover:border-[#006a4e]' : 'border-[#fde68a] bg-[#fffdfa]'
+                          isVerified ? 'border-[#cadbcf] hover:border-[#006a4e]' : 'border-[#fde68a] bg-[#fffdfa]'
                         }`}
                       >
                         <div>
@@ -2085,7 +2050,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                                 <span
                                   className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase shrink-0 ${
                                     isVerified
-                                      ? 'bg-[#bbf7d0] text-[#002117]'
+                                      ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]'
                                       : 'bg-[#fef3c7] text-[#92400e]'
                                   }`}
                                 >
@@ -2094,12 +2059,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                               </div>
 
                               <p className="text-[11px] text-[#006a4e] font-semibold flex items-center gap-1 mt-0.5">
-                                <span className="material-symbols-outlined text-[13px]">category</span>
+                                <LucideIcon name="category" className="text-[13px]" />
                                 <span>{categoryName}</span>
                               </p>
 
                               <p className="text-[11px] text-[#707974] flex items-center gap-1.5 mt-1 truncate">
-                                <span className="material-symbols-outlined text-[13px] text-[#006a4e]">call</span>
+                                <LucideIcon name="call" className="text-[13px] text-[#006a4e]" />
                                 <a href={`tel:${biz.phone}`} className="hover:underline text-[#166534] font-mono font-bold">
                                   {biz.phone || '-'}
                                 </a>
@@ -2111,11 +2076,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           {/* Verification Badge Display */}
                           <div className="mt-3 p-2.5 rounded-xl bg-[#fcfbf9] border border-[#f0eee8] flex items-center justify-between text-[11px]">
                             <div className="flex items-center gap-1.5">
-                              <span className={`material-symbols-outlined text-[16px] ${isVerified ? 'text-[#006a4e]' : 'text-[#c2410c]'}`}>
-                                {isVerified ? 'verified' : 'pending_actions'}
-                              </span>
+                              <LucideIcon name={isVerified ? 'verified' : 'pending_actions'} className={` text-[16px] ${isVerified ? 'text-[#006a4e]' : 'text-[#c2410c]'}`} />
                               <span className="font-bold text-[#166534]">
-                                {isVerified ? badge : 'पडताळणी प्रलंबित (Not yet verified)'}
+                                {isVerified ? badge : 'पडताळणी प्रलंबित '}
                               </span>
                             </div>
                             <span className="text-[10px] text-[#707974]">
@@ -2137,9 +2100,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                                   : 'bg-[#166534] hover:bg-[#052e16] text-white'
                               }`}
                             >
-                              <span className="material-symbols-outlined text-[14px]">
-                                {isVerified ? 'cancel' : 'check_circle'}
-                              </span>
+                              <LucideIcon name={isVerified ? 'cancel' : 'check_circle'} className=" text-[14px]" />
                               <span>{isVerified ? 'पडताळणी रद्द करा' : 'पडताळणी मंजूर करा'}</span>
                             </button>
 
@@ -2152,7 +2113,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                               }}
                               className="px-2.5 py-1.5 rounded-xl bg-[#f5ede3] hover:bg-[#e8ded3] text-[#166534] text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer"
                             >
-                              <span className="material-symbols-outlined text-[14px]">military_tech</span>
+                              <LucideIcon name="military_tech" className="text-[14px]" />
                               <span>बॅज बदला</span>
                             </button>
                           </div>
@@ -2164,7 +2125,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                             title="दुकान हटवा"
                             className="p-1.5 rounded-xl text-[#ba1a1a] hover:bg-[#fef3c7]/40 transition-all cursor-pointer"
                           >
-                            <span className="material-symbols-outlined text-[17px]">delete</span>
+                            <LucideIcon name="delete" className="text-[17px]" />
                           </button>
                         </div>
                       </div>
@@ -2180,8 +2141,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <div className="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-[#e8e2d9] flex flex-col gap-4">
                 <div className="flex items-start justify-between border-b border-[#f0eee8] pb-3">
                   <div>
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117] text-[10px] font-black uppercase">
-                      ट्रस्ट बॅज व्यवस्थापन (Trust Badge)
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[10px] font-black uppercase">
+                      ट्रस्ट बॅज व्यवस्थापन 
                     </span>
                     <h3 className="font-heading font-black text-[16px] text-[#166534] mt-1">
                       {selectedBizForBadge.name}
@@ -2252,8 +2213,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     onClick={() => handleUpdateBusinessBadge(selectedBizForBadge, badgeToAssign)}
                     className="px-5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-98 cursor-pointer"
                   >
-                    <span className="material-symbols-outlined text-[16px]">save</span>
-                    <span>बॅज लागू करा (Save Badge)</span>
+                    <LucideIcon name="save" className="text-[16px]" />
+                    <span>बॅज लागू करा</span>
                   </button>
                 </div>
               </div>
@@ -2269,7 +2230,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <div>
                 <h2 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#166534] flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[24px] text-[#ef9f27]">rate_review</span>
+                  <LucideIcon name="rate_review" className="text-[24px] text-[#ef9f27]" />
                   <span>स्थानिक दुकाने - नागरिक अभिप्राय व्यवस्थापन</span>
                 </h2>
                 <p className="text-[12px] text-[#707974] mt-0.5">
@@ -2284,7 +2245,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   rel="noreferrer"
                   className="px-3.5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+                  <LucideIcon name="open_in_new" className="text-[16px]" />
                   <span>सार्वजनिक अभिप्राय पृष्ठ उघडा</span>
                 </a>
               </div>
@@ -2293,9 +2254,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             {/* Filter Controls */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-6 bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9]">
               <div className="relative flex-1">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]">
-                  search
-                </span>
+                <LucideIcon name="search" className=" absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
                 <input
                   type="text"
                   value={reviewSearch}
@@ -2311,7 +2270,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   onChange={(e) => setReviewFilterRating(e.target.value)}
                   className="p-2 bg-white rounded-lg text-xs font-bold text-[#166534] border border-[#e8e2d9] outline-none cursor-pointer"
                 >
-                  <option value="all">सर्व रेटिंग (All Stars)</option>
+                  <option value="all">सर्व रेटिंग</option>
                   <option value="5">⭐⭐⭐⭐⭐ (५ स्टार)</option>
                   <option value="4">⭐⭐⭐⭐ (४ स्टार)</option>
                   <option value="3">⭐⭐⭐ (३ स्टार)</option>
@@ -2352,9 +2311,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         </span>
                         <div className="flex items-center text-[#ef9f27]">
                           {[...Array(rev.rating || 5)].map((_, i) => (
-                            <span key={i} className="material-symbols-outlined text-[15px] font-fill">
-                              star
-                            </span>
+                            <LucideIcon name="star" key={i} className=" text-[15px] font-fill" />
                           ))}
                         </div>
                       </div>
@@ -2376,7 +2333,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         onClick={() => handleToggleVerifiedReview(rev.id)}
                         className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border cursor-pointer ${
                           rev.verifiedCitizen
-                            ? 'bg-[#bbf7d0]/40 text-[#006a4e] border-[#bbf7d0]'
+                            ? 'bg-[#e8f1ec] text-[#006a4e] border-[#cadbcf]'
                             : 'bg-white text-[#707974] border-[#e8e2d9]'
                         }`}
                         title="सत्यापित स्थिती बदला"
@@ -2389,7 +2346,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         className="p-1.5 rounded-lg bg-[#fef3c7]/40 hover:bg-[#fef3c7] text-[#ba1a1a] transition-all cursor-pointer"
                         title="अभिप्राय हटवा"
                       >
-                        <span className="material-symbols-outlined text-[18px]">delete</span>
+                        <LucideIcon name="delete" className="text-[18px]" />
                       </button>
                     </div>
                   </div>
@@ -2407,11 +2364,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <div className="bg-white p-5 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center justify-between">
               <div>
                 <h2 className="font-heading font-extrabold text-[17px] text-[#166534] flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[22px] text-[#c2410c]">celebration</span>
+                  <LucideIcon name="celebration" className="text-[22px] text-[#c2410c]" />
                   <span>गावातील कार्यक्रम व जत्रा ({events.length})</span>
                 </h2>
                 <p className="text-[12px] text-[#707974] mt-0.5">
-                  येथील सर्व कार्यक्रम थेट दिनदर्शिका (Events) पानावर व होमपेजवर दिसतात.
+                  येथील सर्व गावातील कार्यक्रम पानावर व होमपेजवर दिसतात.
                 </p>
               </div>
               <button
@@ -2432,7 +2389,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 }}
                 className="px-3 py-1.5 bg-[#166534] text-white text-[12px] font-bold rounded-xl hover:bg-[#052e16] transition-colors flex items-center gap-1 shrink-0"
               >
-                <span className="material-symbols-outlined text-[16px]">add</span>
+                <LucideIcon name="add" className="text-[16px]" />
                 <span>नवीन जोडा</span>
               </button>
             </div>
@@ -2444,7 +2401,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               </div>
             ) : events.length === 0 ? (
               <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-2">
-                <span className="material-symbols-outlined text-[42px] text-[#707974]">event_busy</span>
+                <LucideIcon name="event_busy" className="text-[42px] text-[#707974]" />
                 <p className="text-[14px] font-bold text-[#166534]">अद्याप कोणताही कार्यक्रम जोडलेला नाही</p>
                 <p className="text-[12px] text-[#707974]">उजवीकडील फॉर्म वापरून पहिला कार्यक्रम जोडा.</p>
               </div>
@@ -2464,7 +2421,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
                         <div className="flex items-center gap-2 flex-wrap mb-1">
-                          <span className="bg-[#bbf7d0] text-[#002117] text-[10px] font-black uppercase px-2 py-0.5 rounded">
+                          <span className="bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[10px] font-black uppercase px-2 py-0.5 rounded">
                             {evt.badge || 'गावातील कार्यक्रम'}
                           </span>
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#f3ede4] text-[#404945]">
@@ -2488,7 +2445,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#f3ede4] pt-2 text-[11px]">
                         <div className="flex items-center gap-3 text-[#707974]">
                           <span className="flex items-center gap-1 text-[#c2410c] font-medium">
-                            <span className="material-symbols-outlined text-[14px]">location_on</span>
+                            <LucideIcon name="location_on" className="text-[14px]" />
                             {evt.location}
                           </span>
                           <span>{evt.organizer}</span>
@@ -2513,7 +2470,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                             }}
                             className="px-2.5 py-1 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#166534] font-bold text-[11px] transition-colors flex items-center gap-1"
                           >
-                            <span className="material-symbols-outlined text-[14px]">edit</span>
+                            <LucideIcon name="edit" className="text-[14px]" />
                             <span>संपादित</span>
                           </button>
                           <button
@@ -2521,7 +2478,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                             onClick={() => handleDeleteEvent(evt.id)}
                             className="px-2.5 py-1 rounded-lg bg-[#fef3c7]/40 hover:bg-[#fef3c7] text-[#ba1a1a] font-bold text-[11px] transition-colors flex items-center gap-1"
                           >
-                            <span className="material-symbols-outlined text-[14px]">delete</span>
+                            <LucideIcon name="delete" className="text-[14px]" />
                             <span>हटवा</span>
                           </button>
                         </div>
@@ -2537,9 +2494,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs sticky top-4">
             <div className="flex items-center justify-between mb-2">
               <h2 className="font-heading font-extrabold text-[16px] text-[#166534] flex items-center gap-2">
-                <span className="material-symbols-outlined text-[20px] text-[#c2410c]">
-                  {editingEvent ? 'edit_note' : 'add_circle'}
-                </span>
+                <LucideIcon name={editingEvent ? 'edit_note' : 'add_circle'} className=" text-[20px] text-[#c2410c]" />
                 <span>{editingEvent ? 'कार्यक्रम संपादित करा' : 'नवीन कार्यक्रम किंवा जत्रा जोडा'}</span>
               </h2>
               {editingEvent && (
@@ -2571,7 +2526,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
             <form onSubmit={handleSaveEvent} className="flex flex-col gap-3 text-[12px]">
               <div>
-                <label className="font-bold text-[#166534] block mb-1">कार्यक्रमाचे नाव (Event Title) *</label>
+                <label className="font-bold text-[#166534] block mb-1">कार्यक्रमाचे नाव *</label>
                 <input
                   type="text"
                   required
@@ -2584,20 +2539,20 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="font-bold text-[#166534] block mb-1">श्रेणी (Category) *</label>
+                  <label className="font-bold text-[#166534] block mb-1">श्रेणी  *</label>
                   <select
                     value={eventForm.category}
                     onChange={(e) => setEventForm({ ...eventForm, category: e.target.value })}
                     className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#006a4e] outline-none bg-white"
                   >
-                    <option value="religious">धार्मिक उत्सव / यात्रा (Religious)</option>
-                    <option value="health">आरोग्य शिबीर (Health Camp)</option>
-                    <option value="agriculture">शेती कार्यशाळा (Agriculture)</option>
-                    <option value="sports">क्रीडा व युवक स्पर्धा (Sports)</option>
+                    <option value="religious">धार्मिक उत्सव / यात्रा</option>
+                    <option value="health">आरोग्य शिबीर </option>
+                    <option value="agriculture">शेती कार्यशाळा </option>
+                    <option value="sports">क्रीडा व युवक स्पर्धा</option>
                   </select>
                 </div>
                 <div>
-                  <label className="font-bold text-[#166534] block mb-1">विशेष बॅज (Badge)</label>
+                  <label className="font-bold text-[#166534] block mb-1">विशेष बॅज </label>
                   <input
                     type="text"
                     value={eventForm.badge}
@@ -2611,7 +2566,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="font-bold text-[#166534] block mb-1">तारीख (Event Date) *</label>
+                  <label className="font-bold text-[#166534] block mb-1">तारीख *</label>
                   <input
                     type="text"
                     required
@@ -2622,7 +2577,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-[#166534] block mb-1">वेळ (Event Time)</label>
+                  <label className="font-bold text-[#166534] block mb-1">वेळ</label>
                   <input
                     type="text"
                     value={eventForm.eventTime}
@@ -2634,7 +2589,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               </div>
 
               <div>
-                <label className="font-bold text-[#166534] block mb-1">स्थळ / ठिकाण (Location) *</label>
+                <label className="font-bold text-[#166534] block mb-1">स्थळ / ठिकाण *</label>
                 <input
                   type="text"
                   required
@@ -2646,7 +2601,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               </div>
 
               <div>
-                <label className="font-bold text-[#166534] block mb-1">आयोजक (Organizer)</label>
+                <label className="font-bold text-[#166534] block mb-1">आयोजक</label>
                 <input
                   type="text"
                   value={eventForm.organizer}
@@ -2657,7 +2612,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               </div>
 
               <div>
-                <label className="font-bold text-[#166534] block mb-1">फोटो लिंक (Image URL)</label>
+                <label className="font-bold text-[#166534] block mb-1">फोटो लिंक </label>
                 <input
                   type="url"
                   value={eventForm.imageUrl}
@@ -2668,7 +2623,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               </div>
 
               <div>
-                <label className="font-bold text-[#166534] block mb-1">कार्यक्रमाचा तपशील व वर्णन (Description)</label>
+                <label className="font-bold text-[#166534] block mb-1">कार्यक्रमाचा तपशील व वर्णन </label>
                 <textarea
                   rows={3}
                   value={eventForm.description}
@@ -2690,8 +2645,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </>
                 ) : (
                   <>
-                    <span className="material-symbols-outlined text-[18px]">save</span>
-                    <span>{editingEvent ? 'बदल जतन करा (Update)' : 'कार्यक्रम जोडा (Publish to Calendar)'}</span>
+                    <LucideIcon name="save" className="text-[18px]" />
+                    <span>{editingEvent ? 'बदल जतन करा' : 'कार्यक्रम जोडा'}</span>
                   </>
                 )}
               </button>
@@ -2713,7 +2668,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
-              <span className="material-symbols-outlined text-[18px]">account_balance</span>
+              <LucideIcon name="account_balance" className="text-[18px]" />
               <span>शाळा व महाविद्यालये ({shikshaSchools.length})</span>
             </button>
 
@@ -2725,7 +2680,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
-              <span className="material-symbols-outlined text-[18px]">workspace_premium</span>
+              <LucideIcon name="workspace_premium" className="text-[18px]" />
               <span>शिष्यवृत्ती योजना ({shikshaScholarships.length})</span>
             </button>
 
@@ -2737,7 +2692,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
-              <span className="material-symbols-outlined text-[18px]">local_library</span>
+              <LucideIcon name="local_library" className="text-[18px]" />
               <span>अभ्यासिका नियंत्रण ({shikshaAbhyasika.availableDesks}/{shikshaAbhyasika.totalDesks} जागा)</span>
             </button>
 
@@ -2749,7 +2704,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
-              <span className="material-symbols-outlined text-[18px]">cast_for_education</span>
+              <LucideIcon name="cast_for_education" className="text-[18px]" />
               <span>शिकवणी व कौशल्य ({shikshaTutors.length})</span>
             </button>
 
@@ -2761,7 +2716,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
-              <span className="material-symbols-outlined text-[18px]">book_online</span>
+              <LucideIcon name="book_online" className="text-[18px]" />
               <span>विद्यार्थी आरक्षण अर्ज ({deskRequests.length})</span>
             </button>
 
@@ -2773,7 +2728,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
-              <span className="material-symbols-outlined text-[18px]">campaign</span>
+              <LucideIcon name="campaign" className="text-[18px]" />
               <span>थेट सूचना पट्टी</span>
             </button>
           </div>
@@ -2785,9 +2740,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="font-heading font-extrabold text-[16px] text-[#166534] flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[20px] text-[#006a4e]">
-                      {editingSchool ? 'edit' : 'add_circle'}
-                    </span>
+                    <LucideIcon name={editingSchool ? 'edit' : 'add_circle'} className=" text-[20px] text-[#006a4e]" />
                     <span>{editingSchool ? 'शाळेची माहिती बदला' : 'नवीन शाळा / संस्था जोडा'}</span>
                   </h2>
                   {editingSchool && (
@@ -2821,7 +2774,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                 <form onSubmit={handleSaveSchool} className="space-y-3 text-[13px]">
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">शाळेचे नाव (School Name) *</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">शाळेचे नाव *</label>
                     <input
                       type="text"
                       required
@@ -2834,7 +2787,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">प्रवर्ग (Category)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">प्रवर्ग </label>
                       <select
                         value={schoolForm.category}
                         onChange={(e) => setSchoolForm({ ...schoolForm, category: e.target.value })}
@@ -2842,14 +2795,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       >
                         <option value="High School & Jr College">हायस्कूल व कनिष्ठ महाविद्यालय</option>
                         <option value="Primary School">प्राथमिक शाळा / अंगणवाडी</option>
-                        <option value="Technical & ITI">तांत्रिक व आय.टी.आय. (ITI)</option>
-                        <option value="Hostel & Lodging">वसतिगृह (Hostel)</option>
+                        <option value="Technical & ITI">तांत्रिक व आय.टी.आय.</option>
+                        <option value="Hostel & Lodging">वसतिगृह</option>
                         <option value="Other Institute">इतर शैक्षणिक संस्था</option>
                       </select>
                     </div>
 
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">लेबल (Badge)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">लेबल </label>
                       <input
                         type="text"
                         value={schoolForm.badge}
@@ -2862,7 +2815,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">वर्ग / इयत्ता (Grades)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">वर्ग / इयत्ता </label>
                       <input
                         type="text"
                         value={schoolForm.grades}
@@ -2873,7 +2826,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
 
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">माध्यम (Medium)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">माध्यम </label>
                       <input
                         type="text"
                         value={schoolForm.medium}
@@ -2909,7 +2862,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">पत्ता (Address)</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">पत्ता </label>
                     <input
                       type="text"
                       value={schoolForm.address}
@@ -2931,7 +2884,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">फोटो लिंक (Image URL)</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">फोटो लिंक </label>
                     <input
                       type="url"
                       value={schoolForm.imageUrl}
@@ -2942,7 +2895,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">सविस्तर माहिती (Description)</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">सविस्तर माहिती </label>
                     <textarea
                       rows={2}
                       value={schoolForm.description}
@@ -2956,8 +2909,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     type="submit"
                     className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 mt-2"
                   >
-                    <span className="material-symbols-outlined text-[18px]">save</span>
-                    <span>{editingSchool ? 'बदल जतन करा (Update)' : 'शाळा जोडा (Publish to Portal)'}</span>
+                    <LucideIcon name="save" className="text-[18px]" />
+                    <span>{editingSchool ? 'बदल जतन करा ' : 'शाळा जोडा '}</span>
                   </button>
                 </form>
               </div>
@@ -3002,13 +2955,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           <div className="flex items-center gap-3 mt-1.5 text-[11px] text-[#707974]">
                             {school.principalName && (
                               <span className="flex items-center gap-1">
-                                <span className="material-symbols-outlined text-[13px]">person</span>
+                                <LucideIcon name="person" className="text-[13px]" />
                                 {school.principalName}
                               </span>
                             )}
                             {school.contactPhone && (
                               <span className="flex items-center gap-1 font-mono">
-                                <span className="material-symbols-outlined text-[13px]">call</span>
+                                <LucideIcon name="call" className="text-[13px]" />
                                 {school.contactPhone}
                               </span>
                             )}
@@ -3038,7 +2991,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           className="p-2 rounded-lg bg-[#f0eee8] text-[#166534] hover:bg-[#166534] hover:text-white transition-colors"
                           title="संपादित करा"
                         >
-                          <span className="material-symbols-outlined text-[18px]">edit</span>
+                          <LucideIcon name="edit" className="text-[18px]" />
                         </button>
                         <button
                           type="button"
@@ -3046,7 +2999,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors"
                           title="हटवा"
                         >
-                          <span className="material-symbols-outlined text-[18px]">delete</span>
+                          <LucideIcon name="delete" className="text-[18px]" />
                         </button>
                       </div>
                     </div>
@@ -3063,9 +3016,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="font-heading font-extrabold text-[16px] text-[#166534] flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[20px] text-[#c2410c]">
-                      {editingScholarship ? 'edit' : 'add_circle'}
-                    </span>
+                    <LucideIcon name={editingScholarship ? 'edit' : 'add_circle'} className=" text-[20px] text-[#c2410c]" />
                     <span>{editingScholarship ? 'शिष्यवृत्ती संपादित करा' : 'नवीन शिष्यवृत्ती योजना नोंदवा'}</span>
                   </h2>
                   {editingScholarship && (
@@ -3097,7 +3048,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                 <form onSubmit={handleSaveScholarship} className="space-y-3 text-[13px]">
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">शिष्यवृत्तीचे नाव (Title) *</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">शिष्यवृत्तीचे नाव *</label>
                     <input
                       type="text"
                       required
@@ -3110,7 +3061,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">प्रवर्ग / टॅग (Badge)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">प्रवर्ग / टॅग </label>
                       <input
                         type="text"
                         value={scholarshipForm.badge}
@@ -3121,7 +3072,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
 
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">अंतिम मुदत (Deadline)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">अंतिम मुदत </label>
                       <input
                         type="text"
                         value={scholarshipForm.deadline}
@@ -3134,7 +3085,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">मिळणारा लाभ / रक्कम (Benefit)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">मिळणारा लाभ / रक्कम </label>
                       <input
                         type="text"
                         value={scholarshipForm.benefit}
@@ -3145,7 +3096,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
 
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">उत्पन्न मर्यादा (Income Limit)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">उत्पन्न मर्यादा </label>
                       <input
                         type="text"
                         value={scholarshipForm.incomeLimit}
@@ -3157,7 +3108,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">विभाग / शासन संस्था (Department)</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">विभाग / शासन संस्था </label>
                     <input
                       type="text"
                       value={scholarshipForm.department}
@@ -3168,7 +3119,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">अधिकृत वेबसाईट लिंक (Official URL)</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">अधिकृत वेबसाईट लिंक </label>
                     <input
                       type="url"
                       value={scholarshipForm.officialUrl}
@@ -3179,7 +3130,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">पात्रता निकष (Eligibility)</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">पात्रता निकष </label>
                     <input
                       type="text"
                       value={scholarshipForm.eligibility}
@@ -3190,7 +3141,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">तपशील व मार्गदर्शक माहिती (Description)</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">तपशील व मार्गदर्शक माहिती </label>
                     <textarea
                       rows={2}
                       value={scholarshipForm.description}
@@ -3204,8 +3155,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     type="submit"
                     className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 mt-2"
                   >
-                    <span className="material-symbols-outlined text-[18px]">save</span>
-                    <span>{editingScholarship ? 'बदल जतन करा (Update)' : 'शिष्यवृत्ती जोडा (Publish)'}</span>
+                    <LucideIcon name="save" className="text-[18px]" />
+                    <span>{editingScholarship ? 'बदल जतन करा ' : 'शिष्यवृत्ती जोडा '}</span>
                   </button>
                 </form>
               </div>
@@ -3233,7 +3184,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                             {sch.badge}
                           </span>
                           <span className="text-[11px] font-bold text-red-600 flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[13px]">alarm</span>
+                            <LucideIcon name="alarm" className="text-[13px]" />
                             {sch.deadline}
                           </span>
                         </div>
@@ -3260,7 +3211,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           className="text-[11px] font-bold text-[#006a4e] hover:underline flex items-center gap-1"
                         >
                           <span>पोर्टल लिंक</span>
-                          <span className="material-symbols-outlined text-[12px]">open_in_new</span>
+                          <LucideIcon name="open_in_new" className="text-[12px]" />
                         </a>
                         <div className="flex items-center gap-1.5">
                           <button
@@ -3282,7 +3233,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                             className="p-1.5 rounded-lg bg-[#f0eee8] text-[#166534] hover:bg-[#166534] hover:text-white transition-colors"
                             title="संपादित करा"
                           >
-                            <span className="material-symbols-outlined text-[16px]">edit</span>
+                            <LucideIcon name="edit" className="text-[16px]" />
                           </button>
                           <button
                             type="button"
@@ -3290,7 +3241,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                             className="p-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors"
                             title="हटवा"
                           >
-                            <span className="material-symbols-outlined text-[16px]">delete</span>
+                            <LucideIcon name="delete" className="text-[16px]" />
                           </button>
                         </div>
                       </div>
@@ -3307,8 +3258,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* Settings Form */}
               <div className="lg:col-span-7 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
                 <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[20px] text-[#006a4e]">tune</span>
-                  <span>ग्रामपंचायत अभ्यासिका नियंत्रण केंद्र (Digital Study Room)</span>
+                  <LucideIcon name="tune" className="text-[20px] text-[#006a4e]" />
+                  <span>ग्रामपंचायत अभ्यासिका नियंत्रण केंद्र </span>
                 </h2>
                 <p className="text-[12px] text-[#707974] mb-4">
                   विद्यार्थ्यांना स्पर्धा परीक्षा व अभ्यासासाठी उपलब्ध जागांची संख्या व वेळ येथे त्वरित बदला.
@@ -3327,7 +3278,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="p-3 rounded-xl bg-[#f8f6f0] border border-[#e8e2d9]">
-                      <label className="block font-bold text-[#166534] mb-1">एकूण जागा / टेबल्स (Total Desks)</label>
+                      <label className="block font-bold text-[#166534] mb-1">एकूण जागा / टेबल्स </label>
                       <input
                         type="number"
                         min="1"
@@ -3339,7 +3290,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
 
                     <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200">
-                      <label className="block font-bold text-emerald-900 mb-1">उपलब्ध रिकाम्या जागा (Open Desks)</label>
+                      <label className="block font-bold text-emerald-900 mb-1">उपलब्ध रिकाम्या जागा </label>
                       <input
                         type="number"
                         min="0"
@@ -3353,7 +3304,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">वेळ (Daily Timings)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">वेळ </label>
                       <input
                         type="text"
                         value={shikshaAbhyasika.timings}
@@ -3364,7 +3315,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
 
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">इंटरनेट / वायफाय गती (Wi-Fi)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">इंटरनेट / वायफाय गती </label>
                       <input
                         type="text"
                         value={shikshaAbhyasika.wifiSpeed}
@@ -3377,7 +3328,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">पुस्तकांची संख्या (Books Count)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">पुस्तकांची संख्या </label>
                       <input
                         type="text"
                         value={shikshaAbhyasika.bookCount}
@@ -3388,7 +3339,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
 
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">व्यवस्थापक / सेवक नाव (Caretaker)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">व्यवस्थापक / सेवक नाव </label>
                       <input
                         type="text"
                         value={shikshaAbhyasika.caretakerName}
@@ -3400,7 +3351,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">व्यवस्थापक पद (Role)</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">व्यवस्थापक पद </label>
                     <input
                       type="text"
                       value={shikshaAbhyasika.caretakerRole}
@@ -3425,8 +3376,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     type="submit"
                     className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
                   >
-                    <span className="material-symbols-outlined text-[18px]">save</span>
-                    <span>अभ्यासिका बदल जतन करा (Save Study Room Config)</span>
+                    <LucideIcon name="save" className="text-[18px]" />
+                    <span>अभ्यासिका बदल जतन करा </span>
                   </button>
                 </form>
               </div>
@@ -3434,13 +3385,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* Live Preview Card */}
               <div className="lg:col-span-5 space-y-4">
                 <h3 className="font-heading font-extrabold text-[15px] text-[#166534]">
-                  विद्यार्थ्यांना दिसणारे स्वरूप (Live Preview)
+                  विद्यार्थ्यांना दिसणारे स्वरूप 
                 </h3>
                 <div className="p-6 bg-gradient-to-br from-[#166534] to-[#00523e] text-white rounded-3xl shadow-lg relative overflow-hidden">
                   <div className="flex items-center justify-between mb-4">
                     <span className="px-3 py-1 bg-white/10 rounded-full text-[11px] font-bold backdrop-blur-xs flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                      थेट स्थिती (Live Status)
+                      थेट स्थिती 
                     </span>
                     <span className="text-[12px] opacity-80">{shikshaAbhyasika.timings}</span>
                   </div>
@@ -3477,9 +3428,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="font-heading font-extrabold text-[16px] text-[#166534] flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[20px] text-[#006a4e]">
-                      {editingTutor ? 'edit' : 'add_circle'}
-                    </span>
+                    <LucideIcon name={editingTutor ? 'edit' : 'add_circle'} className=" text-[20px] text-[#006a4e]" />
                     <span>{editingTutor ? 'शिकवणी वर्ग संपादित करा' : 'नवीन शिकवणी / कौशल्य केंद्र जोडा'}</span>
                   </h2>
                   {editingTutor && (
@@ -3509,7 +3458,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                 <form onSubmit={handleSaveTutor} className="space-y-3 text-[13px]">
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">वर्ग / संस्थेचे नाव (Name) *</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">वर्ग / संस्थेचे नाव  *</label>
                     <input
                       type="text"
                       required
@@ -3522,7 +3471,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">प्रवर्ग / गट (Category)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">प्रवर्ग / गट </label>
                       <input
                         type="text"
                         value={tutorForm.category}
@@ -3533,7 +3482,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
 
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">फी रचना (Fees Info)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">फी रचना </label>
                       <input
                         type="text"
                         value={tutorForm.feesInfo}
@@ -3557,7 +3506,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">वर्गाची वेळ (Timings)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">वर्गाची वेळ </label>
                       <input
                         type="text"
                         value={tutorForm.timing}
@@ -3568,7 +3517,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     </div>
 
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">संपर्क नंबर (Phone)</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">संपर्क नंबर </label>
                       <input
                         type="text"
                         value={tutorForm.phone}
@@ -3580,7 +3529,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">पत्ता (Address)</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">पत्ता </label>
                     <input
                       type="text"
                       value={tutorForm.address}
@@ -3594,8 +3543,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     type="submit"
                     className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 mt-2"
                   >
-                    <span className="material-symbols-outlined text-[18px]">save</span>
-                    <span>{editingTutor ? 'बदल जतन करा (Update)' : 'वर्ग जोडा (Publish)'}</span>
+                    <LucideIcon name="save" className="text-[18px]" />
+                    <span>{editingTutor ? 'बदल जतन करा ' : 'वर्ग जोडा '}</span>
                   </button>
                 </form>
               </div>
@@ -3623,12 +3572,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         <p className="text-[12px] text-[#555] mt-0.5">{tut.subjects}</p>
                         <div className="flex items-center gap-4 mt-2 text-[11px] text-[#707974]">
                           <span className="flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[13px]">schedule</span>
+                            <LucideIcon name="schedule" className="text-[13px]" />
                             {tut.timing}
                           </span>
                           {tut.phone && (
                             <span className="flex items-center gap-1 font-mono font-bold">
-                              <span className="material-symbols-outlined text-[13px]">call</span>
+                              <LucideIcon name="call" className="text-[13px]" />
                               {tut.phone}
                             </span>
                           )}
@@ -3653,7 +3602,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           className="p-1.5 rounded-lg bg-[#f0eee8] text-[#166534] hover:bg-[#166534] hover:text-white transition-colors"
                           title="संपादित करा"
                         >
-                          <span className="material-symbols-outlined text-[16px]">edit</span>
+                          <LucideIcon name="edit" className="text-[16px]" />
                         </button>
                         <button
                           type="button"
@@ -3661,7 +3610,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           className="p-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors"
                           title="हटवा"
                         >
-                          <span className="material-symbols-outlined text-[16px]">delete</span>
+                          <LucideIcon name="delete" className="text-[16px]" />
                         </button>
                       </div>
                     </div>
@@ -3677,8 +3626,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h2 className="font-heading font-extrabold text-[16px] text-[#166534] flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[20px] text-[#006a4e]">book_online</span>
-                    <span>विद्यार्थी अभ्यासिका आरक्षण अर्ज (Desk Reservations)</span>
+                    <LucideIcon name="book_online" className="text-[20px] text-[#006a4e]" />
+                    <span>विद्यार्थी अभ्यासिका आरक्षण अर्ज </span>
                   </h2>
                   <p className="text-[12px] text-[#707974] mt-0.5">
                     पोर्टलवरून विद्यार्थ्यांनी नोंदवलेले अभ्यासिका डेस्क अर्ज.
@@ -3691,9 +3640,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
               {deskRequests.length === 0 ? (
                 <div className="text-center py-12 text-[#707974]">
-                  <span className="material-symbols-outlined text-[48px] text-[#ccc] mb-2 block">
-                    event_seat
-                  </span>
+                  <LucideIcon name="event_seat" className=" text-[48px] text-[#ccc] mb-2 block" />
                   <p className="font-bold text-[14px]">अद्याप कोणतेही डेस्क आरक्षण अर्ज आलेले नाहीत</p>
                   <p className="text-[12px] mt-1">विद्यार्थी /shiksha पेजवरून डेस्क बुक करतात तेव्हा ते येथे दिसतील.</p>
                 </div>
@@ -3704,11 +3651,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       <tr>
                         <th className="p-3">विद्यार्थ्याचे नाव</th>
                         <th className="p-3">परीक्षा / ध्येय</th>
-                        <th className="p-3">वेळ (Time Slot)</th>
+                        <th className="p-3">वेळ </th>
                         <th className="p-3">डेस्क क्र.</th>
                         <th className="p-3">मोबाईल नंबर</th>
                         <th className="p-3">तारीख</th>
-                        <th className="p-3">कृती (Action)</th>
+                        <th className="p-3">कृती </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#f0eee8]">
@@ -3743,8 +3690,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               <div className="lg:col-span-6 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
                 <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[20px] text-[#006a4e]">campaign</span>
-                  <span>शिक्षण सूचना पट्टी संपादन (Live Notice Banner)</span>
+                  <LucideIcon name="campaign" className="text-[20px] text-[#006a4e]" />
+                  <span>शिक्षण सूचना पट्टी संपादन </span>
                 </h2>
                 <p className="text-[12px] text-[#707974] mb-4">
                   ही सूचना /shiksha पानाच्या सर्वात वरती ठळकपणे प्रदर्शित केली जाईल.
@@ -3752,7 +3699,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                 <form onSubmit={handleSaveShikshaNotice} className="space-y-4 text-[13px]">
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">मुख्य ठळक सूचना (Headline) *</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">मुख्य ठळक सूचना  *</label>
                     <input
                       type="text"
                       required
@@ -3764,7 +3711,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">दुय्यम माहिती / उपशीर्षक (Subtext)</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">दुय्यम माहिती / उपशीर्षक </label>
                     <input
                       type="text"
                       value={shikshaNotice.subtext}
@@ -3775,7 +3722,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
 
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">बटन मजकूर (Action Button Label)</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">बटन मजकूर </label>
                     <input
                       type="text"
                       value={shikshaNotice.actionLabel}
@@ -3794,7 +3741,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       className="w-4 h-4 text-[#166534] rounded"
                     />
                     <label htmlFor="noticeActiveToggle" className="font-bold text-[#2d312e] cursor-pointer">
-                      पानावर ही सूचना पट्टी सक्रिय ठेवा (Show on Shiksha Page)
+                      पानावर ही सूचना पट्टी सक्रिय ठेवा 
                     </label>
                   </div>
 
@@ -3802,8 +3749,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     type="submit"
                     className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
                   >
-                    <span className="material-symbols-outlined text-[18px]">save</span>
-                    <span>सूचना जतन करा (Save & Publish)</span>
+                    <LucideIcon name="save" className="text-[18px]" />
+                    <span>सूचना जतन करा </span>
                   </button>
                 </form>
               </div>
@@ -3811,13 +3758,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* Notice Preview */}
               <div className="lg:col-span-6 space-y-4">
                 <h3 className="font-heading font-extrabold text-[15px] text-[#166534]">
-                  थेट सूचना पट्टीचे थेट स्वरूप (Preview)
+                  थेट सूचना पट्टीचे थेट स्वरूप 
                 </h3>
                 {shikshaNotice.isActive ? (
                   <div className="bg-[#166534] text-white p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                        <span className="material-symbols-outlined text-[18px] text-amber-300">notifications_active</span>
+                        <LucideIcon name="notifications_active" className="text-[18px] text-amber-300" />
                       </div>
                       <div>
                         <div className="font-bold text-[13px]">{shikshaNotice.headline}</div>
@@ -3832,8 +3779,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </div>
                 ) : (
                   <div className="p-8 text-center text-[#707974] bg-white rounded-2xl border border-dashed border-[#ccc]">
-                    <span className="material-symbols-outlined text-[36px] mb-2 block">visibility_off</span>
-                    <p className="font-bold text-[13px]">सूचना पट्टी सध्या निष्क्रिय (Hidden) आहे</p>
+                    <LucideIcon name="visibility_off" className="text-[36px] mb-2 block" />
+                    <p className="font-bold text-[13px]">सूचना पट्टी सध्या निष्क्रिय  आहे</p>
                   </div>
                 )}
               </div>
@@ -3856,7 +3803,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                   }`}
               >
-                <span className="material-symbols-outlined text-[18px]">directions_bus</span>
+                <LucideIcon name="directions_bus" className="text-[18px]" />
                 <span>एसटी बसेस वेळापत्रक ({transportBuses.length})</span>
               </button>
 
@@ -3868,7 +3815,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                   }`}
               >
-                <span className="material-symbols-outlined text-[18px]">local_taxi</span>
+                <LucideIcon name="local_taxi" className="text-[18px]" />
                 <span>गावातील रिक्षा व टॅक्सी चालक ({transportAutos.length})</span>
               </button>
 
@@ -3880,7 +3827,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                   }`}
               >
-                <span className="material-symbols-outlined text-[18px]">call</span>
+                <LucideIcon name="call" className="text-[18px]" />
                 <span>आगार संपर्क क्रमांक ({transportDepots.length})</span>
               </button>
             </div>
@@ -3892,7 +3839,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-[#707974] text-[11px] font-bold flex items-center gap-1.5 transition-colors border border-stone-200"
                 title="मूळ अधिकृत बसेस रीसेट करा"
               >
-                <span className="material-symbols-outlined text-[16px]">restart_alt</span>
+                <LucideIcon name="restart_alt" className="text-[16px]" />
                 <span>डिफॉल्ट बसेस रीसेट करा</span>
               </button>
             )}
@@ -3904,9 +3851,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* Form Column */}
               <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
                 <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[20px] text-[#006a4e]">
-                    {editingBus ? 'edit_calendar' : 'add_circle'}
-                  </span>
+                  <LucideIcon name={editingBus ? 'edit_calendar' : 'add_circle'} className=" text-[20px] text-[#006a4e]" />
                   <span>{editingBus ? 'बस फेरी संपादित करा' : 'नवीन एसटी बस फेरी जोडा'}</span>
                 </h2>
                 <p className="text-[12px] text-[#707974] mb-4">
@@ -3926,15 +3871,15 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       />
                     </div>
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">बस प्रकार (Type) *</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">बस प्रकार  *</label>
                       <select
                         value={busForm.busType}
                         onChange={(e) => setBusForm({ ...busForm, busType: e.target.value as any })}
                         className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#006a4e] outline-none font-bold"
                       >
-                        <option value="Lalpari">साधी लालपरी (Ordinary ST)</option>
-                        <option value="Asiad">निमआराम (Asiad / Semi-Luxury)</option>
-                        <option value="Shivshahi">शिवशाही (Shivshahi AC)</option>
+                        <option value="Lalpari">साधी लालपरी </option>
+                        <option value="Asiad">निमआराम </option>
+                        <option value="Shivshahi">शिवशाही </option>
                         <option value="Ordinary">स्थानिक लोकल फेरी</option>
                       </select>
                     </div>
@@ -3942,7 +3887,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">सुरुवात (Source Marathi) *</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">सुरुवात  *</label>
                       <input
                         type="text"
                         required
@@ -3953,7 +3898,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       />
                     </div>
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">गंतव्य (Destination Marathi) *</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">गंतव्य  *</label>
                       <input
                         type="text"
                         required
@@ -4015,7 +3960,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block font-bold text-[#2d312e] mb-1">एसटी आगार (Depot) *</label>
+                      <label className="block font-bold text-[#2d312e] mb-1">एसटी आगार  *</label>
                       <input
                         type="text"
                         required
@@ -4079,7 +4024,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       type="submit"
                       className="flex-1 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
                     >
-                      <span className="material-symbols-outlined text-[18px]">save</span>
+                      <LucideIcon name="save" className="text-[18px]" />
                       <span>{editingBus ? 'बदल सेव्ह करा' : 'बस फेरी जोडा'}</span>
                     </button>
                     {editingBus && (
@@ -4112,7 +4057,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     >
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="font-mono font-bold text-sm bg-[#166534] text-[#bbf7d0] px-2.5 py-0.5 rounded-lg">
+                          <span className="font-mono font-bold text-sm bg-[#166534] text-[#a7f3d0] px-2.5 py-0.5 rounded-lg">
                             {bus.departureTime}
                           </span>
                           <span className="text-xs font-bold text-[#006a4e] bg-[#e6f7f0] px-2 py-0.5 rounded">
@@ -4166,7 +4111,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           className="p-2 rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors"
                           title="संपादित करा"
                         >
-                          <span className="material-symbols-outlined text-[18px]">edit</span>
+                          <LucideIcon name="edit" className="text-[18px]" />
                         </button>
                         <button
                           type="button"
@@ -4174,7 +4119,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           className="p-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors"
                           title="हटवा"
                         >
-                          <span className="material-symbols-outlined text-[18px]">delete</span>
+                          <LucideIcon name="delete" className="text-[18px]" />
                         </button>
                       </div>
                     </div>
@@ -4190,9 +4135,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               {/* Form */}
               <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
                 <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[20px] text-[#006a4e]">
-                    {editingAuto ? 'edit' : 'add_circle'}
-                  </span>
+                  <LucideIcon name={editingAuto ? 'edit' : 'add_circle'} className=" text-[20px] text-[#006a4e]" />
                   <span>{editingAuto ? 'चालक माहिती संपादन' : 'नवीन रिक्षा / टॅक्सी चालक जोडा'}</span>
                 </h2>
                 <p className="text-[12px] text-[#707974] mb-4">
@@ -4201,7 +4144,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
                 <form onSubmit={handleSaveAuto} className="space-y-3.5 text-[13px]">
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">चालकाचे नाव (Marathi) *</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">चालकाचे नाव  *</label>
                     <input
                       type="text"
                       required
@@ -4231,9 +4174,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         onChange={(e) => setAutoForm({ ...autoForm, vehicleType: e.target.value as any })}
                         className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#006a4e] outline-none font-bold"
                       >
-                        <option value="Auto Rickshaw">रिक्षा (Auto Rickshaw)</option>
+                        <option value="Auto Rickshaw">रिक्षा </option>
                         <option value="Maxi Cab / 4-Wheeler">मॅक्सी कॅब / जीप</option>
-                        <option value="Eco Van">इको व्हॅन (Eco Van)</option>
+                        <option value="Eco Van">इको व्हॅन </option>
                       </select>
                     </div>
                   </div>
@@ -4295,7 +4238,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       className="w-4 h-4 accent-[#166534]"
                     />
                     <label htmlFor="autoAvailable" className="font-bold text-[#166534] text-xs cursor-pointer">
-                      सध्या सेवेत उपलब्ध (Available)
+                      सध्या सेवेत उपलब्ध 
                     </label>
                   </div>
 
@@ -4304,7 +4247,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       type="submit"
                       className="flex-1 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
                     >
-                      <span className="material-symbols-outlined text-[18px]">save</span>
+                      <LucideIcon name="save" className="text-[18px]" />
                       <span>{editingAuto ? 'चालक सेव्ह करा' : 'नवीन चालक जोडा'}</span>
                     </button>
                     {editingAuto && (
@@ -4375,7 +4318,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           className="p-2 rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors"
                           title="संपादित करा"
                         >
-                          <span className="material-symbols-outlined text-[18px]">edit</span>
+                          <LucideIcon name="edit" className="text-[18px]" />
                         </button>
                         <button
                           type="button"
@@ -4383,7 +4326,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           className="p-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors"
                           title="हटवा"
                         >
-                          <span className="material-symbols-outlined text-[18px]">delete</span>
+                          <LucideIcon name="delete" className="text-[18px]" />
                         </button>
                       </div>
                     </div>
@@ -4397,7 +4340,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           {transportSubTab === 'depots' && (
             <div className="bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs space-y-4">
               <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
-                <span className="material-symbols-outlined text-[20px] text-[#006a4e]">phone_in_talk</span>
+                <LucideIcon name="phone_in_talk" className="text-[20px] text-[#006a4e]" />
                 <span>एसटी आगार व मदत केंद्र दूरध्वनी व्यवस्थापन</span>
               </h2>
               <p className="text-[12px] text-[#707974]">
@@ -4448,7 +4391,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   }}
                   className="px-5 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center gap-2 text-xs"
                 >
-                  <span className="material-symbols-outlined text-[18px]">save</span>
+                  <LucideIcon name="save" className="text-[18px]" />
                   <span>सर्व आगार संपर्क सेव्ह करा</span>
                 </button>
               </div>
@@ -4463,11 +4406,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <h2 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2">
-                <span className="material-symbols-outlined text-[22px] text-[#006a4e]">menu_book</span>
-                <span>ब्लॉग व माहिती लेख व्यवस्थापन (Knowledge Articles & Guides)</span>
+                <LucideIcon name="menu_book" className="text-[22px] text-[#006a4e]" />
+                <span>ब्लॉग व माहिती लेख व्यवस्थापन </span>
               </h2>
               <p className="text-xs text-[#707974] mt-0.5">
-                योजनांचे नियम, डिजिटल सातबारा, पीक सल्ला व शासकीय सेवांवर एसईओ-फ्रेंडली (SEO-Friendly) यूआरएलसह लेख प्रसिद्ध करा.
+                योजनांचे नियम, डिजिटल सातबारा, पीक सल्ला व शासकीय सेवांवर एसईओ-फ्रेंडली  यूआरएलसह लेख प्रसिद्ध करा.
               </p>
             </div>
 
@@ -4477,7 +4420,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               className="px-3.5 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-[#707974] text-xs font-bold flex items-center gap-1.5 transition-colors border border-stone-200 shrink-0"
               title="मूळ अधिकृत लेख पूर्ववत करा"
             >
-              <span className="material-symbols-outlined text-[16px]">restart_alt</span>
+              <LucideIcon name="restart_alt" className="text-[16px]" />
               <span>डिफॉल्ट लेख रीसेट करा</span>
             </button>
           </div>
@@ -4486,18 +4429,16 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             {/* Form Column */}
             <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
               <h3 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
-                <span className="material-symbols-outlined text-[20px] text-[#006a4e]">
-                  {editingBlog ? 'edit_note' : 'post_add'}
-                </span>
+                <LucideIcon name={editingBlog ? 'edit_note' : 'post_add'} className=" text-[20px] text-[#006a4e]" />
                 <span>{editingBlog ? 'लेख संपादित करा' : 'नवीन माहिती लेख तयार करा'}</span>
               </h3>
               <p className="text-xs text-[#707974] mb-4">
-                प्रत्येक लेखाला आयडी ऐवजी शीर्षकावर आधारित शोध-अनुकूल (SEO Friendly) URL नाव दिले जाते.
+                प्रत्येक लेखाला आयडी ऐवजी शीर्षकावर आधारित शोध-अनुकूल  URL नाव दिले जाते.
               </p>
 
               <form onSubmit={handleSaveBlog} className="space-y-3.5 text-[13px]">
                 <div>
-                  <label className="block font-bold text-[#2d312e] mb-1">मराठी मुख्य शीर्षक (Marathi Title) *</label>
+                  <label className="block font-bold text-[#2d312e] mb-1">मराठी मुख्य शीर्षक  *</label>
                   <input
                     type="text"
                     required
@@ -4517,7 +4458,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </div>
 
                 <div>
-                  <label className="block font-bold text-[#2d312e] mb-1">इंग्रजी शीर्षक (English / SEO Title)</label>
+                  <label className="block font-bold text-[#2d312e] mb-1">इंग्रजी शीर्षक </label>
                   <input
                     type="text"
                     value={blogForm.title}
@@ -4537,7 +4478,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 {/* SEO Friendly URL Slug (Instead of ID) */}
                 <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9]">
                   <label className="block font-bold text-[#166534] text-xs mb-1 flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[16px]">link</span>
+                    <LucideIcon name="link" className="text-[16px]" />
                     <span>URL नाव / स्लग (SEO Slug - ID ऐवजी शीर्षकाचे नाव) *</span>
                   </label>
                   <div className="flex items-center gap-1 text-xs font-mono text-[#707974] mb-1">
@@ -4553,28 +4494,28 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     className="w-full p-2 rounded-lg border border-[#e8e2d9] font-mono text-xs focus:border-[#006a4e] outline-none bg-white font-bold text-[#166534]"
                   />
                   <div className="text-[11px] text-[#707974] mt-1">
-                    Google शोध परिणामांमध्ये (SEO) वर येण्यासाठी आयडी ऐवजी शीर्षकातील कीवर्ड्स वापरा.
+                    Google शोध परिणामांमध्ये  वर येण्यासाठी आयडी ऐवजी शीर्षकातील कीवर्ड्स वापरा.
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">विभाग (Category) *</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">विभाग  *</label>
                     <select
                       value={blogForm.category}
                       onChange={(e) => setBlogForm({ ...blogForm, category: e.target.value as any })}
                       className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#006a4e] outline-none font-bold"
                     >
-                      <option value="General">सामान्य / इतर (General)</option>
-                      <option value="Schemes">शासकीय योजना (Schemes)</option>
-                      <option value="Agriculture">कृषी व शेती (Agriculture)</option>
-                      <option value="Governance">प्रशासन व सेवा (Governance)</option>
-                      <option value="Education">शिक्षण व करिअर (Education)</option>
-                      <option value="Health">आरोग्य व पोषण (Health)</option>
+                      <option value="General">सामान्य / इतर </option>
+                      <option value="Schemes">शासकीय योजना </option>
+                      <option value="Agriculture">कृषी व शेती </option>
+                      <option value="Governance">प्रशासन व सेवा </option>
+                      <option value="Education">शिक्षण व करिअर </option>
+                      <option value="Health">आरोग्य व पोषण </option>
                     </select>
                   </div>
                   <div>
-                    <label className="block font-bold text-[#2d312e] mb-1">लेखक (Author)</label>
+                    <label className="block font-bold text-[#2d312e] mb-1">लेखक </label>
                     <input
                       type="text"
                       value={blogForm.author}
@@ -4586,7 +4527,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </div>
 
                 <div>
-                  <label className="block font-bold text-[#2d312e] mb-1">कव्हर फोटो लिंक (Cover Image URL)</label>
+                  <label className="block font-bold text-[#2d312e] mb-1">कव्हर फोटो लिंक </label>
                   <input
                     type="url"
                     value={blogForm.coverImage}
@@ -4597,7 +4538,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </div>
 
                 <div>
-                  <label className="block font-bold text-[#2d312e] mb-1">थोडक्यात सारांश (Short Excerpt) *</label>
+                  <label className="block font-bold text-[#2d312e] mb-1">थोडक्यात सारांश  *</label>
                   <textarea
                     rows={2}
                     required
@@ -4609,7 +4550,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </div>
 
                 <div>
-                  <label className="block font-bold text-[#2d312e] mb-1">सविस्तर मजकूर (Full Article Content) *</label>
+                  <label className="block font-bold text-[#2d312e] mb-1">सविस्तर मजकूर  *</label>
                   <textarea
                     rows={7}
                     required
@@ -4640,7 +4581,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     className="w-4 h-4 accent-[#166534]"
                   />
                   <label htmlFor="blogFeatured" className="font-bold text-[#166534] text-xs cursor-pointer">
-                    ठळक लेख म्हणून मुख्य पानावर दाखवा (Featured Spotlight)
+                    ठळक लेख म्हणून मुख्य पानावर दाखवा 
                   </label>
                 </div>
 
@@ -4649,8 +4590,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     type="submit"
                     className="flex-1 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
                   >
-                    <span className="material-symbols-outlined text-[18px]">publish</span>
-                    <span>{editingBlog ? 'बदल सेव्ह करा' : 'लेख प्रसिद्ध करा (Publish)'}</span>
+                    <LucideIcon name="publish" className="text-[18px]" />
+                    <span>{editingBlog ? 'बदल सेव्ह करा' : 'लेख प्रसिद्ध करा '}</span>
                   </button>
                   {editingBlog && (
                     <button
@@ -4703,7 +4644,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         </h4>
 
                         <div className="mt-1 flex items-center gap-1 font-mono text-[11px] text-[#c2410c] bg-[#f9f3ea] px-2 py-0.5 rounded w-fit">
-                          <span className="material-symbols-outlined text-[13px]">link</span>
+                          <LucideIcon name="link" className="text-[13px]" />
                           <span>/blogs/{b.slug}</span>
                         </div>
 
@@ -4719,9 +4660,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         target="_blank"
                         rel="noreferrer"
                         className="p-2 rounded-xl bg-stone-100 text-[#166534] hover:bg-stone-200 transition-colors"
-                        title="थेट लेख पहा (Preview URL)"
+                        title="थेट लेख पहा "
                       >
-                        <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                        <LucideIcon name="open_in_new" className="text-[18px]" />
                       </a>
                       <button
                         type="button"
@@ -4746,7 +4687,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         className="p-2 rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors"
                         title="संपादित करा"
                       >
-                        <span className="material-symbols-outlined text-[18px]">edit</span>
+                        <LucideIcon name="edit" className="text-[18px]" />
                       </button>
                       <button
                         type="button"
@@ -4754,7 +4695,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         className="p-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors"
                         title="हटवा"
                       >
-                        <span className="material-symbols-outlined text-[18px]">delete</span>
+                        <LucideIcon name="delete" className="text-[18px]" />
                       </button>
                     </div>
                   </div>
@@ -4769,9 +4710,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           {/* Form */}
           <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px] text-[#c2410c]">
-                {editingAnnouncement ? 'edit_note' : 'add_circle'}
-              </span>
+              <LucideIcon name={editingAnnouncement ? 'edit_note' : 'add_circle'} className=" text-[20px] text-[#c2410c]" />
               <span>{editingAnnouncement ? 'सूचना संपादित करा' : 'नवीन सूचना किंवा ठराव प्रसिद्ध करा'}</span>
             </h2>
             <p className="text-[12px] text-[#707974] mb-4">
@@ -4779,8 +4718,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             </p>
 
             {noticeStatusFeedback && (
-              <div className="mb-4 p-3 rounded-xl bg-[#bbf7d0] text-[#002117] text-[12px] font-bold flex items-center gap-2">
-                <span className="material-symbols-outlined text-[18px]">check_circle</span>
+              <div className="mb-4 p-3 rounded-xl bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[12px] font-bold flex items-center gap-2">
+                <LucideIcon name="check_circle" className="text-[18px]" />
                 <span>{noticeStatusFeedback}</span>
               </div>
             )}
@@ -4788,7 +4727,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <form onSubmit={handleSaveNotice} className="flex flex-col gap-3">
               <div>
                 <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-                  सूचनेचे शीर्षक (Title) *
+                  सूचनेचे शीर्षक *
                 </label>
                 <input
                   type="text"
@@ -4802,38 +4741,38 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">वर्गवारी (Category)</label>
+                  <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">वर्गवारी </label>
                   <select
                     value={noticeCategory}
                     onChange={(e) => setNoticeCategory(e.target.value)}
                     className="w-full p-2.5 bg-[#f9f3ea] text-[12px] rounded-xl border border-[#e8e2d9]"
                   >
-                    <option value="ग्रामपंचायत">ग्रामपंचायत (General)</option>
-                    <option value="ग्रामसभा">ग्रामसभा (Gram Sabha)</option>
-                    <option value="पाणी पुरवठा">पाणी पुरवठा (Water Supply)</option>
-                    <option value="वीज भारनियमन">वीज भारनियमन (Power/MSEDCL)</option>
-                    <option value="कर व घरपट्टी">कर व घरपट्टी (Taxation)</option>
-                    <option value="कृषी व शेती">कृषी व शेती (Agriculture)</option>
-                    <option value="आरोग्य शिबीर">आरोग्य शिबीर (Health Camp)</option>
+                    <option value="ग्रामपंचायत">ग्रामपंचायत </option>
+                    <option value="ग्रामसभा">ग्रामसभा </option>
+                    <option value="पाणी पुरवठा">पाणी पुरवठा </option>
+                    <option value="वीज भारनियमन">वीज भारनियमन </option>
+                    <option value="कर व घरपट्टी">कर व घरपट्टी </option>
+                    <option value="कृषी व शेती">कृषी व शेती </option>
+                    <option value="आरोग्य शिबीर">आरोग्य शिबीर </option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">प्राधान्य (Priority)</label>
+                  <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">प्राधान्य </label>
                   <select
                     value={noticePriority}
                     onChange={(e) => setNoticePriority(e.target.value)}
                     className="w-full p-2.5 bg-[#f9f3ea] text-[12px] rounded-xl border border-[#e8e2d9]"
                   >
-                    <option value="NORMAL">सामान्य (Normal)</option>
-                    <option value="URGENT">🚨 तातडीचे (Urgent Alert)</option>
+                    <option value="NORMAL">सामान्य </option>
+                    <option value="URGENT">🚨 तातडीचे </option>
                   </select>
                 </div>
               </div>
 
               <div>
                 <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-                  सविस्तर माहिती / ठराव मजकूर (Message) *
+                  सविस्तर माहिती / ठराव मजकूर *
                 </label>
                 <textarea
                   required
@@ -4847,7 +4786,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
               <div>
                 <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
-                  माहिती स्त्रोत / अधिकारी (Author / Source)
+                  माहिती स्त्रोत / अधिकारी 
                 </label>
                 <input
                   type="text"
@@ -4863,7 +4802,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   type="submit"
                   className="flex-1 py-3 rounded-xl bg-[#166534] text-white font-bold text-[13px] hover:bg-[#052e16] transition-all flex items-center justify-center gap-2 shadow-xs"
                 >
-                  <span className="material-symbols-outlined text-[18px]">publish</span>
+                  <LucideIcon name="publish" className="text-[18px]" />
                   <span>{editingAnnouncement ? 'बदल जतन करा' : 'सूचना प्रसिद्ध करा'}</span>
                 </button>
                 {editingAnnouncement && (
@@ -4894,7 +4833,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 onClick={loadData}
                 className="text-[12px] text-[#006a4e] font-bold hover:underline flex items-center gap-1"
               >
-                <span className="material-symbols-outlined text-[16px]">refresh</span>
+                <LucideIcon name="refresh" className="text-[16px]" />
                 <span>रीफ्रेश करा</span>
               </button>
             </div>
@@ -4931,7 +4870,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         className="p-1.5 rounded-lg text-[#166534] hover:bg-[#f3ede4]"
                         title="संपादित करा"
                       >
-                        <span className="material-symbols-outlined text-[18px]">edit</span>
+                        <LucideIcon name="edit" className="text-[18px]" />
                       </button>
                       <button
                         type="button"
@@ -4939,7 +4878,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         className="p-1.5 rounded-lg text-[#ba1a1a] hover:bg-[#fef3c7]/40"
                         title="हटवा"
                       >
-                        <span className="material-symbols-outlined text-[18px]">delete</span>
+                        <LucideIcon name="delete" className="text-[18px]" />
                       </button>
                     </div>
                   </div>
@@ -4956,12 +4895,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {/* TAB 3: WATER SCHEDULE */}
       {activeTab === 'water' && (
         <div className="flex flex-col gap-6">
-          <div className="bg-[#bbf7d0]/40 border border-[#006a4e]/20 p-4 rounded-2xl flex items-center justify-between gap-4">
+          <div className="bg-[#e8f1ec] border border-[#006a4e]/20 p-4 rounded-2xl flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-[32px] text-[#006a4e]">water_drop</span>
+              <LucideIcon name="water_drop" className="text-[32px] text-[#006a4e]" />
               <div>
                 <strong className="text-[14px] text-[#002117] block">
-                  आसगाव पाणी पुरवठा थेट नियंत्रण (Water Rostering Manager)
+                  आसगाव पाणी पुरवठा थेट नियंत्रण 
                 </strong>
                 <p className="text-[12px] text-[#166534]">
                   ग्रामपंचायत जलकुंभ व वॉर्डनिहाय वेळा येथे बदला, जेणेकरून गावकऱ्यांना नळाला पाणी कधी येईल हे स्पष्ट समजेल.
@@ -4977,7 +4916,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   <div>
                     <h3 className="font-bold text-[15px] text-[#166534]">{w.ward}</h3>
                     <span className={`inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${w.status === 'NORMAL'
-                        ? 'bg-[#bbf7d0] text-[#002117]'
+                        ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]'
                         : w.status === 'LOW_PRESSURE'
                           ? 'bg-[#fed7aa] text-[#c2410c]'
                           : 'bg-[#fef3c7] text-[#ba1a1a]'
@@ -4990,7 +4929,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     onClick={() => setEditingWaterWard({ ...w })}
                     className="px-3 py-1.5 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white text-[12px] font-bold text-[#166534] transition-all flex items-center gap-1 border border-[#e8e2d9]"
                   >
-                    <span className="material-symbols-outlined text-[16px]">edit</span>
+                    <LucideIcon name="edit" className="text-[16px]" />
                     <span>वेळ बदला</span>
                   </button>
                 </div>
@@ -5047,10 +4986,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       onChange={(e) => setEditingWaterWard({ ...editingWaterWard, status: e.target.value as any })}
                       className="w-full p-2.5 bg-[#f9f3ea] text-[12px] rounded-xl border border-[#e8e2d9]"
                     >
-                      <option value="NORMAL">सुरळीत (Normal Pressure)</option>
-                      <option value="LOW_PRESSURE">कमी दाब (Low Pressure / Valve Issue)</option>
-                      <option value="MAINTENANCE">पाईपलाईन दुरुस्ती (Maintenance)</option>
-                      <option value="OFF">पाणी पुरवठा बंद (Off)</option>
+                      <option value="NORMAL">सुरळीत </option>
+                      <option value="LOW_PRESSURE">कमी दाब </option>
+                      <option value="MAINTENANCE">पाईपलाईन दुरुस्ती </option>
+                      <option value="OFF">पाणी पुरवठा बंद </option>
                     </select>
                   </div>
                   <div>
@@ -5089,7 +5028,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px] text-[#c2410c]">post_add</span>
+              <LucideIcon name="post_add" className="text-[20px] text-[#c2410c]" />
               <span>{editingScheme ? 'योजना संपादित करा' : 'नवीन सरकारी / कृषी योजना जोडा'}</span>
             </h2>
             <p className="text-[12px] text-[#707974] mb-4">
@@ -5098,7 +5037,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
             <form onSubmit={handleSaveScheme} className="flex flex-col gap-3">
               <div>
-                <label className="block text-[12px] font-bold mb-1">योजनेचे नाव (Scheme Title) *</label>
+                <label className="block text-[12px] font-bold mb-1">योजनेचे नाव  *</label>
                 <input
                   type="text"
                   required
@@ -5117,11 +5056,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     onChange={(e) => setSchemeForm({ ...schemeForm, category: e.target.value })}
                     className="w-full p-2.5 bg-[#f9f3ea] text-[12px] rounded-xl border border-[#e8e2d9]"
                   >
-                    <option value="Farmer">शेतकरी (Farmer)</option>
-                    <option value="Student">विद्यार्थी (Student)</option>
-                    <option value="Solar">सौर ऊर्जा / कुसुम (Solar)</option>
-                    <option value="Women">महिला व बालकल्याण (Women)</option>
-                    <option value="Health">आरोग्य (Health)</option>
+                    <option value="Farmer">शेतकरी </option>
+                    <option value="Student">विद्यार्थी </option>
+                    <option value="Solar">सौर ऊर्जा / कुसुम </option>
+                    <option value="Women">महिला व बालकल्याण </option>
+                    <option value="Health">आरोग्य </option>
                   </select>
                 </div>
                 <div>
@@ -5138,7 +5077,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               </div>
 
               <div>
-                <label className="block text-[12px] font-bold mb-1">योजनेचा फायदा / अनुदान रक्कम (Benefits)</label>
+                <label className="block text-[12px] font-bold mb-1">योजनेचा फायदा / अनुदान रक्कम </label>
                 <input
                   type="text"
                   value={schemeForm.benefits}
@@ -5149,7 +5088,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               </div>
 
               <div>
-                <label className="block text-[12px] font-bold mb-1">पात्रता निकष (Eligibility)</label>
+                <label className="block text-[12px] font-bold mb-1">पात्रता निकष </label>
                 <input
                   type="text"
                   value={schemeForm.eligibility}
@@ -5235,7 +5174,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       className="p-1.5 rounded-lg text-[#166534] hover:bg-[#f3ede4]"
                       title="संपादित करा"
                     >
-                      <span className="material-symbols-outlined text-[18px]">edit</span>
+                      <LucideIcon name="edit" className="text-[18px]" />
                     </button>
                     <button
                       type="button"
@@ -5243,7 +5182,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       className="p-1.5 rounded-lg text-[#ba1a1a] hover:bg-[#fef3c7]/40"
                       title="हटवा"
                     >
-                      <span className="material-symbols-outlined text-[18px]">delete</span>
+                      <LucideIcon name="delete" className="text-[18px]" />
                     </button>
                   </div>
                 </div>
@@ -5262,7 +5201,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px] text-[#c2410c]">person_add</span>
+              <LucideIcon name="person_add" className="text-[20px] text-[#c2410c]" />
               <span>{editingContact ? 'संपर्क संपादित करा' : 'नवीन अधिकारी / कर्मचारी संपर्क जोडा'}</span>
             </h2>
             <p className="text-[12px] text-[#707974] mb-4">
@@ -5283,13 +5222,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               </div>
 
               <div>
-                <label className="block text-[12px] font-bold mb-1">पद / हुद्दा (Designation) *</label>
+                <label className="block text-[12px] font-bold mb-1">पद / हुद्दा  *</label>
                 <input
                   type="text"
                   required
                   value={contactForm.designation}
                   onChange={(e) => setContactForm({ ...contactForm, designation: e.target.value })}
-                  placeholder="उदा. ग्रामसेवक (Gram Sevak)"
+                  placeholder="उदा. ग्रामसेवक "
                   className="w-full p-2.5 bg-[#f9f3ea] text-[13px] rounded-xl border border-[#e8e2d9]"
                 />
               </div>
@@ -5313,10 +5252,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     onChange={(e) => setContactForm({ ...contactForm, category: e.target.value as any })}
                     className="w-full p-2.5 bg-[#f9f3ea] text-[12px] rounded-xl border border-[#e8e2d9]"
                   >
-                    <option value="Administration">प्रशासन (Admin)</option>
-                    <option value="Water & Power">पाणी व वीज (Water/Power)</option>
+                    <option value="Administration">प्रशासन </option>
+                    <option value="Water & Power">पाणी व वीज </option>
                     <option value="Health & Anganwadi">आरोग्य व अंगणवाडी</option>
-                    <option value="Agriculture">कृषी (Agriculture)</option>
+                    <option value="Agriculture">कृषी </option>
                     <option value="Police & Security">पोलीस व सुरक्षा</option>
                   </select>
                 </div>
@@ -5390,7 +5329,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           }}
                           className="p-1 rounded text-[#166534] hover:bg-[#f3ede4]"
                         >
-                          <span className="material-symbols-outlined text-[16px]">edit</span>
+                          <LucideIcon name="edit" className="text-[16px]" />
                         </button>
                         <button
                           type="button"
@@ -5401,7 +5340,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           }}
                           className="p-1 rounded text-[#ba1a1a] hover:bg-[#fef3c7]/40"
                         >
-                          <span className="material-symbols-outlined text-[16px]">delete</span>
+                          <LucideIcon name="delete" className="text-[16px]" />
                         </button>
                       </div>
                     </div>
@@ -5413,7 +5352,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     href={`tel:${c.phone}`}
                     className="mt-3 py-1.5 px-3 rounded-xl bg-[#f9f3ea] hover:bg-[#166534] hover:text-white text-[#166534] font-bold text-[12px] flex items-center justify-center gap-1.5 transition-colors border border-[#e8e2d9]"
                   >
-                    <span className="material-symbols-outlined text-[15px]">call</span>
+                    <LucideIcon name="call" className="text-[15px]" />
                     <span>{c.phone}</span>
                   </a>
                 </div>
@@ -5428,7 +5367,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs">
             <h2 className="font-heading font-extrabold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px] text-[#c2410c]">construction</span>
+              <LucideIcon name="construction" className="text-[20px] text-[#c2410c]" />
               <span>{editingProject ? 'विकासकाम अद्ययावत करा' : 'नवीन विकासकाम किंवा प्रकल्प जोडा'}</span>
             </h2>
             <p className="text-[12px] text-[#707974] mb-4">
@@ -5437,7 +5376,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
             <form onSubmit={handleSaveProject} className="flex flex-col gap-3">
               <div>
-                <label className="block text-[12px] font-bold mb-1">कामाचे नाव (Work Title) *</label>
+                <label className="block text-[12px] font-bold mb-1">कामाचे नाव  *</label>
                 <input
                   type="text"
                   required
@@ -5484,15 +5423,15 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   />
                 </div>
                 <div>
-                  <label className="block text-[12px] font-bold mb-1">सद्यस्थिती (Status)</label>
+                  <label className="block text-[12px] font-bold mb-1">सद्यस्थिती </label>
                   <select
                     value={projectForm.status}
                     onChange={(e) => setProjectForm({ ...projectForm, status: e.target.value as any })}
                     className="w-full p-2 bg-[#f9f3ea] text-[12px] rounded-xl border border-[#e8e2d9]"
                   >
-                    <option value="PLANNING">नियोजन / मंजुरी टप्पा (Planning)</option>
-                    <option value="IN_PROGRESS">काम चालू (In Progress)</option>
-                    <option value="COMPLETED">काम पूर्ण (Completed)</option>
+                    <option value="PLANNING">नियोजन / मंजुरी टप्पा </option>
+                    <option value="IN_PROGRESS">काम चालू </option>
+                    <option value="COMPLETED">काम पूर्ण </option>
                   </select>
                 </div>
               </div>
@@ -5536,7 +5475,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               <div key={p.id} className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col gap-2">
                 <div className="flex items-start justify-between">
                   <div>
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${p.status === 'COMPLETED' ? 'bg-[#bbf7d0] text-[#002117]' : 'bg-[#fed7aa] text-[#c2410c]'
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${p.status === 'COMPLETED' ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]' : 'bg-[#fed7aa] text-[#c2410c]'
                       }`}>
                       {p.status === 'COMPLETED' ? 'पूर्ण' : 'काम चालू'}
                     </span>
@@ -5560,7 +5499,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       }}
                       className="p-1 rounded text-[#166534] hover:bg-[#f3ede4]"
                     >
-                      <span className="material-symbols-outlined text-[16px]">edit</span>
+                      <LucideIcon name="edit" className="text-[16px]" />
                     </button>
                     <button
                       type="button"
@@ -5571,7 +5510,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       }}
                       className="p-1 rounded text-[#ba1a1a] hover:bg-[#fef3c7]/40"
                     >
-                      <span className="material-symbols-outlined text-[16px]">delete</span>
+                      <LucideIcon name="delete" className="text-[16px]" />
                     </button>
                   </div>
                 </div>
@@ -5625,7 +5564,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       <span className="text-[11px] font-black uppercase text-[#c2410c]">{c.trackingNumber || 'KS-REG'}</span>
                       <h3 className="font-bold text-[14px] text-[#1d1b16]">{c.title}</h3>
                     </div>
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${c.status === 'RESOLVED' ? 'bg-[#bbf7d0] text-[#002117]' : 'bg-[#fef3c7] text-[#ba1a1a]'
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${c.status === 'RESOLVED' ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]' : 'bg-[#fef3c7] text-[#ba1a1a]'
                       }`}>
                       {c.status}
                     </span>
@@ -5651,7 +5590,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   }}
                   className="py-2 px-3 rounded-xl bg-[#166534] text-white text-[12px] font-bold flex items-center justify-center gap-1.5"
                 >
-                  <span className="material-symbols-outlined text-[16px]">edit_note</span>
+                  <LucideIcon name="edit_note" className="text-[16px]" />
                   <span>स्थिती बदला व ग्रामपंचायत कृती नोंदवा</span>
                 </button>
               </div>
@@ -5666,16 +5605,16 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </h3>
                 <form onSubmit={handleUpdateComplaintStatus} className="flex flex-col gap-3">
                   <div>
-                    <label className="block text-[12px] font-bold mb-1">नवीन स्थिती (Status)</label>
+                    <label className="block text-[12px] font-bold mb-1">नवीन स्थिती </label>
                     <select
                       value={resolutionStatus}
                       onChange={(e) => setResolutionStatus(e.target.value)}
                       className="w-full p-2.5 bg-[#f9f3ea] text-[12px] rounded-xl border border-[#e8e2d9]"
                     >
-                      <option value="SUBMITTED">नोंद झाली (Submitted)</option>
-                      <option value="IN_PROGRESS">ग्रामपंचायतीत अर्ज दिला / काम चालू (In Progress)</option>
-                      <option value="RESOLVED">तक्रार निवारण झाले (Resolved)</option>
-                      <option value="REJECTED">रद्द (Rejected)</option>
+                      <option value="SUBMITTED">नोंद झाली </option>
+                      <option value="IN_PROGRESS">ग्रामपंचायतीत अर्ज दिला / काम चालू </option>
+                      <option value="RESOLVED">तक्रार निवारण झाले </option>
+                      <option value="REJECTED">रद्द </option>
                     </select>
                   </div>
 
@@ -5718,11 +5657,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         <div className="max-w-2xl bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs mx-auto w-full">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-12 h-12 rounded-xl bg-[#fef3c7] text-[#ba1a1a] flex items-center justify-center shrink-0">
-              <span className="material-symbols-outlined text-[28px]">cell_tower</span>
+              <LucideIcon name="cell_tower" className="text-[28px]" />
             </div>
             <div>
               <h2 className="font-heading font-extrabold text-[18px] text-[#166534]">
-                तातडीची दवंडी (Instant Web Push Broadcast)
+                तातडीची दवंडी 
               </h2>
               <p className="text-[12px] text-[#707974]">
                 सर्व नोंदणीकृत गावकऱ्यांच्या मोबाईल स्क्रीनवर तात्काळ पॉप-अप सूचना पाठवा.
@@ -5731,8 +5670,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           </div>
 
           {pushFeedback && (
-            <div className="mb-4 p-3 rounded-xl bg-[#bbf7d0] text-[#002117] text-[12px] font-bold flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px]">campaign</span>
+            <div className="mb-4 p-3 rounded-xl bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[12px] font-bold flex items-center gap-2">
+              <LucideIcon name="campaign" className="text-[18px]" />
               <span>{pushFeedback}</span>
             </div>
           )}
@@ -5751,23 +5690,23 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             </div>
 
             <div>
-              <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">अलर्ट वर्गवारी (Category)</label>
+              <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">अलर्ट वर्गवारी </label>
               <select
                 value={broadcastCategory}
                 onChange={(e) => setBroadcastCategory(e.target.value)}
                 className="w-full p-2.5 bg-[#f9f3ea] text-[13px] rounded-xl border border-[#e8e2d9]"
               >
-                <option value="पाणी पुरवठा">पाणी पुरवठा (Water Alert)</option>
-                <option value="ग्रामसभा">ग्रामसभा बैठक (Gram Sabha)</option>
-                <option value="वीज पुरवठा">वीज पुरवठा (Power / MSEDCL)</option>
-                <option value="कृषी सल्ला">कृषी सल्ला व हवामान (Agri Alert)</option>
-                <option value="आरोग्य">आरोग्य शिबीर (Health Alert)</option>
-                <option value="आपत्कालीन">आपत्कालीन सूचना (Emergency)</option>
+                <option value="पाणी पुरवठा">पाणी पुरवठा </option>
+                <option value="ग्रामसभा">ग्रामसभा बैठक </option>
+                <option value="वीज पुरवठा">वीज पुरवठा </option>
+                <option value="कृषी सल्ला">कृषी सल्ला व हवामान </option>
+                <option value="आरोग्य">आरोग्य शिबीर </option>
+                <option value="आपत्कालीन">आपत्कालीन सूचना </option>
               </select>
             </div>
 
             <div>
-              <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">अलर्ट मजकूर (Message) *</label>
+              <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">अलर्ट मजकूर *</label>
               <textarea
                 required
                 rows={4}
@@ -5783,7 +5722,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               disabled={pushSending}
               className="py-3.5 px-4 rounded-xl bg-[#ba1a1a] hover:bg-[#93000a] text-white font-bold text-[14px] flex items-center justify-center gap-2 shadow-md transition-all mt-2"
             >
-              <span className="material-symbols-outlined text-[20px]">send</span>
+              <LucideIcon name="send" className="text-[20px]" />
               <span>{pushSending ? 'अलर्ट पाठवला जात आहे...' : 'सर्व गावकऱ्यांच्या मोबाईलवर पाठवा'}</span>
             </button>
           </form>
@@ -5825,7 +5764,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       <td className="p-3 text-[#55605a]">{u.phone || '-'}</td>
                       <td className="p-3 text-[#55605a]">{u.wardNumber || 'वॉर्ड २'}</td>
                       <td className="p-3">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-[#bbf7d0] text-[#002117]">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]">
                           {u.roles ? Array.from(u.roles).join(', ') : 'CITIZEN'}
                         </span>
                       </td>
@@ -5859,11 +5798,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         ) : (
           <div className="bg-white p-8 rounded-3xl border border-[#fef3c7] text-center flex flex-col items-center gap-3 shadow-xs">
             <div className="w-14 h-14 rounded-2xl bg-[#fef3c7]/40 text-[#ba1a1a] flex items-center justify-center">
-              <span className="material-symbols-outlined text-[32px]">lock</span>
+              <LucideIcon name="lock" className="text-[32px]" />
             </div>
-            <h3 className="font-heading font-black text-lg text-[#ba1a1a]">मर्यादित प्रवेश (Access Restricted)</h3>
+            <h3 className="font-heading font-black text-lg text-[#ba1a1a]">मर्यादित प्रवेश </h3>
             <p className="text-xs text-[#55605a] max-w-md leading-relaxed">
-              हे पृष्ठ केवळ चीफ सुपर अॅडमिन (Chief Super Admin) साठी राखीव आहे. अतिरिक्त पृष्ठ अधिकारांसाठी मुख्य प्रशासकाशी संपर्क साधा.
+              हे पृष्ठ केवळ चीफ सुपर अॅडमिन  साठी राखीव आहे. अतिरिक्त पृष्ठ अधिकारांसाठी मुख्य प्रशासकाशी संपर्क साधा.
             </p>
             <button
               onClick={() => setActiveTab('overview')}

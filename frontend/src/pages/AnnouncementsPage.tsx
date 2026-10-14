@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { Breadcrumb } from '../components/Breadcrumb';
@@ -9,7 +10,7 @@ interface AnnouncementsPageProps {
 }
 
 export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announcements: initialAnnouncements, onNavigateHome }) => {
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<'all' | 'resolutions' | 'urgent' | 'tenders' | 'health'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -115,11 +116,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
       {/* 1. TOP GAZETTE PORTAL STRIP */}
       <Breadcrumb
         items={[
-          { label: lang === 'MR' ? 'मुख्यपृष्ठ' : 'Home', onClick: onNavigateHome },
-          { label: lang === 'MR' ? 'अधिकृत घोषणा व सूचना फलक' : 'Civic Notices & Gazettes', active: true }
+          { label: t('nav_home'), onClick: onNavigateHome },
+          { label: t('nav_announcements'), active: true }
         ]}
         rightBadge={
-          <div className="text-[11px] font-semibold text-[#006a4e] bg-[#bbf7d0]/40 px-2.5 py-0.5 rounded-full border border-[#bbf7d0]">
+          <div className="text-[11px] font-semibold text-[#14532d] bg-[#e8f1ec] px-3 py-1 rounded-full border border-[#cadbcf]">
             {lang === 'MR'
               ? 'नागरिक पारदर्शकता व सूचना मंच • ठराव नोंदवही क्र. ०२'
               : 'CIVIC TRANSPARENCY & GAZETTE PORTAL • RESOLUTION REGISTER NO: 02'}
@@ -157,23 +158,23 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             onClick={() => alert(lang === 'MR' ? 'मासिक राजपत्र सारांश PDF (२.४ MB) डाउनलोड होत आहे.' : 'Downloading official Asgaon October Gazette summary PDF (2.4 MB).')}
             className="px-4 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all"
           >
-            <span className="material-symbols-outlined text-[16px]">download</span>
+            <LucideIcon name="download" className="text-[16px]" />
             <span>{lang === 'MR' ? 'मासिक राजपत्र डाउनलोड करा' : 'Download Monthly Gazette (राजपत्र)'}</span>
           </button>
           <button
             onClick={() => setShowRtiModal(true)}
             className="px-4 py-2.5 bg-[#c2410c] hover:bg-[#852f00] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all"
           >
-            <span className="material-symbols-outlined text-[16px]">report_problem</span>
+            <LucideIcon name="report_problem" className="text-[16px]" />
             <span>{lang === 'MR' ? 'नागरी तक्रार / विचारणा नोंदवा' : 'Register Civic Grievance'}</span>
           </button>
           <a
             href="https://wa.me/919422001100"
             target="_blank"
             rel="noreferrer"
-            className="px-4 py-2 bg-white hover:bg-[#f3ede4] text-[#006a4e] border border-[#bbf7d0] text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all text-center"
+            className="px-4 py-2 bg-white hover:bg-[#f3ede4] text-[#006a4e] border border-[#cadbcf] text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all text-center"
           >
-            <span className="material-symbols-outlined text-[16px]">chat</span>
+            <LucideIcon name="chat" className="text-[16px]" />
             <span>{lang === 'MR' ? 'व्हॉट्सअ‍ॅप सूचना' : 'WhatsApp Alerts'}</span>
           </a>
         </div>
@@ -182,8 +183,8 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
       {/* 3. 4 METRIC STATS */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#bbf7d0]/60 text-[#002117] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px]">notifications_active</span>
+          <div className="w-10 h-10 rounded-xl bg-[#e8f1ec] text-[#002117] flex items-center justify-center shrink-0">
+            <LucideIcon name="notifications_active" className="text-[20px]" />
           </div>
           <div>
             <div className="font-heading font-black text-[22px] text-[#166534]">{announcements.length || 18}</div>
@@ -198,7 +199,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
 
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#fef3c7] text-[#ba1a1a] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px]">warning</span>
+            <LucideIcon name="warning" className="text-[20px]" />
           </div>
           <div>
             <div className="font-heading font-black text-[22px] text-[#ba1a1a]">0{announcements.filter(a => (a.priority || '').toLowerCase() === 'urgent' || (a.priority || '').toLowerCase() === 'high').length || 4}</div>
@@ -213,7 +214,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
 
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#fef9ee] text-[#c2410c] border border-[#fde68a] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px]">event_seat</span>
+            <LucideIcon name="event_seat" className="text-[20px]" />
           </div>
           <div>
             <div className="font-heading font-bold text-[14px] text-[#c2410c] leading-tight">
@@ -230,7 +231,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
 
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#f3ede4] text-[#404945] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px]">timer</span>
+            <LucideIcon name="timer" className="text-[20px]" />
           </div>
           <div>
             <div className="font-heading font-black text-[22px] text-[#166534]">
@@ -250,7 +251,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
       <div className="flex flex-col gap-3">
         <div className="bg-white p-2.5 sm:p-3 rounded-xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
           <div className="relative flex-1">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]">search</span>
+            <LucideIcon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
             <input
               type="text"
               value={searchQuery}
@@ -265,11 +266,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <button className="px-3 py-2 rounded-lg bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9] text-[12px] font-medium flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px]">mic</span>
+              <LucideIcon name="mic" className="text-[16px]" />
               <span>{lang === 'MR' ? 'आवाज शोध' : 'Voice Search'}</span>
             </button>
             <div className="text-[12px] text-[#55605a] flex items-center gap-1 px-2 border-l border-[#e8e2d9]">
-              <span className="material-symbols-outlined text-[16px]">sort</span>
+              <LucideIcon name="sort" className="text-[16px]" />
               <span>{lang === 'MR' ? 'क्रमवारी: नवीनतम' : 'Sort: Latest'}</span>
             </div>
           </div>
@@ -305,7 +306,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 : 'bg-white text-[#ba1a1a] hover:bg-[#fef3c7]/40 border border-[#fef3c7]'
             }`}
           >
-            <span className="material-symbols-outlined text-[15px]">priority_high</span>
+            <LucideIcon name="priority_high" className="text-[15px]" />
             <span>{lang === 'MR' ? 'तातडीच्या सूचना' : 'Urgent & Civic Alerts'} ({announcements.filter(a => (a.priority || '').toLowerCase() === 'urgent' || (a.priority || '').toLowerCase() === 'high').length})</span>
           </button>
           <button
@@ -369,7 +370,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                 
                 {filteredNotices.length === 0 && announcements.length > 0 ? (
                   <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-                    <span className="material-symbols-outlined text-[48px] text-[#c2410c]">notifications_off</span>
+                    <LucideIcon name="notifications_off" className="text-[48px] text-[#c2410c]" />
                     <h3 className="font-heading font-bold text-[18px] text-[#166534]">
                       {lang === 'MR' ? 'कोणतीही जुळणारी सूचना आढळली नाही' : 'No matching notices found'}
                     </h3>
@@ -391,12 +392,12 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-2.5">
                         <div className="flex items-center gap-2">
                           <span className={`text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider flex items-center gap-1 ${item.priority === 'HIGH' || item.priority === 'URGENT' ? 'bg-[#ba1a1a]' : 'bg-[#006a4e]'}`}>
-                            <span className="material-symbols-outlined text-[13px]">{item.priority === 'HIGH' || item.priority === 'URGENT' ? 'warning' : 'campaign'}</span>
+                            <LucideIcon name={item.priority === 'HIGH' || item.priority === 'URGENT' ? 'warning' : 'campaign'} className="text-[13px]" />
                             <span>{item.category?.toUpperCase() || (lang === 'MR' ? 'राजपत्र सूचना' : 'GAZETTE CIRCULAR')}</span>
                           </span>
                           <span className="text-[11px] font-bold text-[#006a4e]">ASG-GP-{item.id ? String(item.id).substring(0, 5) : '2026'}</span>
                         </div>
-                        <span className="text-[10px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-2.5 py-0.5 rounded border border-[#bbf7d0]">
+                        <span className="text-[10px] font-bold text-[#006a4e] bg-[#e8f1ec] px-2.5 py-0.5 rounded border border-[#cadbcf]">
                           {lang === 'MR' ? 'प्रसिद्धी: ' : 'Issued by: '}
                           {item.issuedBy || item.authorName || (lang === 'MR' ? 'असगाव नागरी प्रशासन' : 'Asgaon Civic Administration')}
                         </span>
@@ -483,13 +484,13 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-3">
                 <div className="flex items-center gap-2">
                   <span className="bg-[#ba1a1a] text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[13px]">warning</span>
+                    <LucideIcon name="warning" className="text-[13px]" />
                     <span>URGENT CIVIC NOTICE</span>
                   </span>
                   <span className="text-[11px] font-bold text-[#ba1a1a]">PDR 104/FIN</span>
                   <span className="text-[11px] text-[#707974]">• Published Today, 07:30 AM</span>
                 </div>
-                <span className="text-[10px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-2.5 py-0.5 rounded border border-[#bbf7d0] self-start sm:self-auto">
+                <span className="text-[10px] font-bold text-[#006a4e] bg-[#e8f1ec] px-2.5 py-0.5 rounded border border-[#cadbcf] self-start sm:self-auto">
                   Issued by: Gram Sevak &amp; Sarpanch
                 </span>
               </div>
@@ -534,16 +535,16 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                     onClick={() => setShowTankerModal(true)}
                     className="py-1.5 px-3 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-lg transition-colors flex items-center gap-1"
                   >
-                    <span className="material-symbols-outlined text-[14px]">local_shipping</span>
+                    <LucideIcon name="local_shipping" className="text-[14px]" />
                     <span>Live Tanker Tracker</span>
                   </button>
                   <a
                     href="https://wa.me/?text=Asgaon%20Water%20Cut%20Alert:%20Saturday%2006AM-04PM%20for%20Wards%203,4,6."
                     target="_blank"
                     rel="noreferrer"
-                    className="py-1.5 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#bbf7d0]/20 font-bold rounded-lg transition-colors flex items-center gap-1"
+                    className="py-1.5 px-3 border border-[#006a4e] text-[#006a4e] hover:bg-[#e8f1ec]/60 font-bold rounded-lg transition-colors flex items-center gap-1"
                   >
-                    <span className="material-symbols-outlined text-[14px]">share</span>
+                    <LucideIcon name="share" className="text-[14px]" />
                     <span>Forward on WA</span>
                   </a>
                 </div>
@@ -577,7 +578,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               <div className="bg-[#f3ede4]/60 p-3.5 rounded-xl border border-[#e8e2d9] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-xl bg-white text-[#166534] border border-[#e8e2d9] flex flex-col items-center justify-center shrink-0">
-                    <span className="material-symbols-outlined text-[20px]">calendar_month</span>
+                    <LucideIcon name="calendar_month" className="text-[20px]" />
                     <span className="text-[9px] font-black uppercase">26 JAN</span>
                   </div>
                   <div>
@@ -651,7 +652,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                     onClick={() => alert('Downloading official Gram Sabha Agenda PDF (890 KB).')}
                     className="py-1.5 px-3 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-lg transition-colors flex items-center gap-1"
                   >
-                    <span className="material-symbols-outlined text-[14px]">download</span>
+                    <LucideIcon name="download" className="text-[14px]" />
                     <span>Agenda &amp; Draft Resolution PDF (890 KB)</span>
                   </button>
                   <button
@@ -670,7 +671,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="bg-[#bbf7d0] text-[#002117] text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider">
+                  <span className="bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider">
                     PRIMARY HEALTH CARE DRIVE
                   </span>
                   <span className="text-[11px] font-bold text-[#006a4e]">PHC-2024/09</span>
@@ -723,7 +724,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   Medical Officer: <strong>Dr. Santosh Zalke</strong> (MBBS, PHC Pauni)
                 </span>
                 <span className="text-[#006a4e] font-semibold flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">call</span>
+                  <LucideIcon name="call" className="text-[14px]" />
                   <span>PHC Ward Desk: 07185-242210</span>
                 </span>
               </div>
@@ -735,7 +736,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="bg-[#bbf7d0] text-[#002117] text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider">
+                  <span className="bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[10px] font-black uppercase px-2.5 py-0.5 rounded tracking-wider">
                     MSEDCL ROSTER NOTICE
                   </span>
                   <span className="text-[11px] font-bold text-[#006a4e]">ROST-301/RAB</span>
@@ -770,7 +771,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                       <td className="p-2 font-bold text-[#006a4e]">10:30 PM — 06:30 AM</td>
                       <td className="p-2 text-[#707974]">11 kV / 100 kVA</td>
                       <td className="p-2">
-                        <span className="bg-[#bbf7d0] text-[#002117] text-[9px] font-bold px-2 py-0.5 rounded">Active</span>
+                        <span className="bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[9px] font-bold px-2 py-0.5 rounded">Active</span>
                       </td>
                     </tr>
                     <tr className="hover:bg-[#fef9ee]">
@@ -779,7 +780,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                       <td className="p-2 font-bold text-[#c2410c]">09:00 AM — 05:00 PM</td>
                       <td className="p-2 text-[#707974]">11 kV / 100 kVA</td>
                       <td className="p-2">
-                        <span className="bg-[#bbf7d0] text-[#002117] text-[9px] font-bold px-2 py-0.5 rounded">Active</span>
+                        <span className="bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[9px] font-bold px-2 py-0.5 rounded">Active</span>
                       </td>
                     </tr>
                   </tbody>
@@ -788,7 +789,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
 
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 text-[11px] text-[#707974]">
                 <span className="flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px] text-[#c2410c]">electrical_services</span>
+                  <LucideIcon name="electrical_services" className="text-[14px] text-[#c2410c]" />
                   <span>Emergency Electrical Breakdown Desk (MSEDCL Pauni): <strong>+91 94221 04222</strong></span>
                 </span>
                 <button
@@ -855,9 +856,9 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   </button>
                   <button
                     onClick={() => alert('Downloading BOQ & Notice (450 KB).')}
-                    className="py-1.5 px-3 border border-[#166534] text-[#166534] hover:bg-[#bbf7d0]/20 font-bold rounded-lg transition-colors flex items-center gap-1"
+                    className="py-1.5 px-3 border border-[#166534] text-[#166534] hover:bg-[#e8f1ec]/60 font-bold rounded-lg transition-colors flex items-center gap-1"
                   >
-                    <span className="material-symbols-outlined text-[14px]">download</span>
+                    <LucideIcon name="download" className="text-[14px]" />
                     <span>Download BOQ &amp; Notice</span>
                   </button>
                 </div>
@@ -870,7 +871,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           {/* NOTICE 6: RTI & TRANSPARENCY QUERY BANNER */}
           <div className="bg-[#fef9ee] rounded-2xl p-4 sm:p-5 border border-[#fde68a] shadow-xs flex flex-col sm:flex-row items-center gap-4">
             <div className="w-16 h-16 rounded-xl bg-white border border-[#fde68a] overflow-hidden shrink-0 flex items-center justify-center">
-              <span className="material-symbols-outlined text-[36px] text-[#c2410c]">policy</span>
+              <LucideIcon name="policy" className="text-[36px] text-[#c2410c]" />
             </div>
             <div className="flex-1 text-[12px]">
               <span className="text-[10px] font-bold text-[#c2410c] uppercase tracking-wider block">
@@ -904,12 +905,12 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs flex flex-col gap-3.5">
             <div className="flex items-center justify-between border-b border-[#f3ede4] pb-3">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#006a4e] text-[20px]">account_balance</span>
+                <LucideIcon name="account_balance" className="text-[#006a4e] text-[20px]" />
                 <h3 className="font-heading font-bold text-[14px] text-[#166534]">
                   {lang === 'MR' ? 'गाव पदाधिकारी व प्रतिनिधी' : 'Panchayat Dignitaries'}
                 </h3>
               </div>
-              <span className="text-[10px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-2 py-0.5 rounded">
+              <span className="text-[10px] font-bold text-[#006a4e] bg-[#e8f1ec] px-2 py-0.5 rounded">
                 {lang === 'MR' ? 'कर्तव्य वेळापत्रक' : 'Duty Roster'}
               </span>
             </div>
@@ -917,7 +918,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             <div className="flex flex-col gap-3 text-[11px]">
               {/* Sarpanch */}
               <div className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-[#f3ede4]/40 transition-colors">
-                <div className="w-8 h-8 rounded-full bg-[#166534] text-[#bbf7d0] font-bold text-[11px] flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-full bg-[#166534] text-[#a7f3d0] font-bold text-[11px] flex items-center justify-center shrink-0">
                   SJ
                 </div>
                 <div>
@@ -988,7 +989,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           {/* WIDGET 2: CIRCULAR VERIFICATION & RTI */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
             <div className="flex items-center gap-2 border-b border-[#f3ede4] pb-3">
-              <span className="material-symbols-outlined text-[#006a4e] text-[20px]">verified</span>
+              <LucideIcon name="verified" className="text-[#006a4e] text-[20px]" />
               <div>
                 <h3 className="font-heading font-bold text-[14px] text-[#166534]">
                   {lang === 'MR' ? 'परिपत्रक पडताळणी व माहिती' : 'Circular Verification & RTI'}
@@ -1022,7 +1023,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             </form>
 
             {verifyStatus && (
-              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] p-2.5 rounded-lg text-[10px] text-[#002117] leading-tight mt-1">
+              <div className="bg-[#e8f1ec] border border-[#006a4e] p-2.5 rounded-lg text-[10px] text-[#002117] leading-tight mt-1">
                 {verifyStatus}
               </div>
             )}
@@ -1036,10 +1037,10 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           {/* WIDGET 3: WHATSAPP BROADCAST */}
           <div className="bg-[#166534] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-[#bbf7d0]">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-[#a7f3d0]">
                 {lang === 'MR' ? 'अधिकृत नागरी ब्रॉडकास्ट' : 'OFFICIAL GP BROADCAST'}
               </span>
-              <span className="bg-[#bbf7d0]/20 text-[#bbf7d0] text-[9px] font-bold px-2 py-0.5 rounded">
+              <span className="bg-[#e8f1ec]/60 text-[#a7f3d0] text-[9px] font-bold px-2 py-0.5 rounded">
                 {lang === 'MR' ? 'थेट' : 'Live'}
               </span>
             </div>
@@ -1059,7 +1060,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             {/* QR Mockup */}
             <div className="bg-white p-3 rounded-xl flex items-center gap-3 text-[#1a1c1b]">
               <div className="w-12 h-12 bg-[#166534] rounded-lg flex items-center justify-center text-white shrink-0">
-                <span className="material-symbols-outlined text-[28px]">qr_code_2</span>
+                <LucideIcon name="qr_code_2" className="text-[28px]" />
               </div>
               <div className="text-[10px]">
                 <strong className="block text-[#166534]">
@@ -1075,10 +1076,10 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               href="https://wa.me/919422001100?text=Please%20add%20me%20to%20Asgaon%20Gram%20Panchayat%20Official%20Alerts"
               target="_blank"
               rel="noreferrer"
-              className="w-full py-2.5 bg-[#bbf7d0] hover:bg-[#a0dec5] text-[#002117] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors mt-1"
+              className="w-full py-2.5 bg-[#a7f3d0] hover:bg-[#a0dec5] text-[#002117] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors mt-1"
             >
               <span>{lang === 'MR' ? 'व्हॉट्सअ‍ॅप सूचनांमध्ये सामील व्हा' : 'Subscribe to Official GP WhatsApp'}</span>
-              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+              <LucideIcon name="arrow_forward" className="text-[16px]" />
             </a>
           </div>
 
@@ -1086,12 +1087,12 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
             <div className="flex items-center justify-between border-b border-[#f3ede4] pb-3">
               <div className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[#006a4e] text-[18px]">task_alt</span>
+                <LucideIcon name="task_alt" className="text-[#006a4e] text-[18px]" />
                 <h3 className="font-heading font-bold text-[14px] text-[#166534]">
                   {lang === 'MR' ? 'नुकत्याच सोडवलेल्या तक्रारी' : 'Recent Grievance Action'}
                 </h3>
               </div>
-              <span className="text-[10px] font-bold text-[#006a4e] bg-[#bbf7d0]/40 px-2 py-0.5 rounded">
+              <span className="text-[10px] font-bold text-[#006a4e] bg-[#e8f1ec] px-2 py-0.5 rounded">
                 {lang === 'MR' ? 'गेल्या ४८ तासांत निवारण' : 'Resolved in last 48h'}
               </span>
             </div>
@@ -1102,7 +1103,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   <strong className="text-[#166534]">
                     Ticket #104 - {lang === 'MR' ? 'पथदिवे दुरुस्ती' : 'Streetlight Repair'}
                   </strong>
-                  <span className="text-[9px] font-bold text-[#006a4e] bg-[#bbf7d0] px-1.5 py-0.2 rounded">
+                  <span className="text-[9px] font-bold text-[#006a4e] bg-[#a7f3d0] px-1.5 py-0.2 rounded">
                     {lang === 'MR' ? 'निवारण' : 'RESOLVED'}
                   </span>
                 </div>
@@ -1118,7 +1119,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
                   <strong className="text-[#166534]">
                     Ticket #102 - {lang === 'MR' ? 'बोअरवेल क्लोरीनेशन' : 'Borewell Chlorination'}
                   </strong>
-                  <span className="text-[9px] font-bold text-[#006a4e] bg-[#bbf7d0] px-1.5 py-0.2 rounded">
+                  <span className="text-[9px] font-bold text-[#006a4e] bg-[#a7f3d0] px-1.5 py-0.2 rounded">
                     {lang === 'MR' ? 'निवारण' : 'RESOLVED'}
                   </span>
                 </div>
@@ -1157,7 +1158,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           {/* WIDGET 5: EMERGENCY HOTLINES */}
           <div className="bg-[#fef9ee] rounded-2xl p-4 border border-[#fde68a] shadow-xs flex flex-col gap-2">
             <span className="text-[9px] font-bold text-[#ba1a1a] uppercase tracking-wider flex items-center gap-1">
-              <span className="material-symbols-outlined text-[13px]">emergency</span>
+              <LucideIcon name="emergency" className="text-[13px]" />
               <span>{lang === 'MR' ? 'आपत्कालीन तत्पर हेल्पलाईन' : 'EMERGENCY QUICK HOTLINES'}</span>
             </span>
 
@@ -1189,11 +1190,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               onClick={() => setShowRtiModal(false)}
               className="absolute top-4 right-4 text-[#707974] hover:text-[#1a1c1b] p-1 rounded-full hover:bg-[#f3ede4]"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <LucideIcon name="close" className="text-[20px]" />
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#c2410c] text-[24px]">gavel</span>
+              <LucideIcon name="gavel" className="text-[#c2410c] text-[24px]" />
               <div>
                 <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'नागरिक माहिती अधिकार व तक्रार निवारण' : 'Citizen RTI / Grievance Desk'}
@@ -1205,15 +1206,15 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             </div>
 
             {modalSuccess ? (
-              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
-                <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
+              <div className="bg-[#e8f1ec] border border-[#006a4e] rounded-xl p-4 text-center">
+                <LucideIcon name="check_circle" className="text-[#006a4e] text-[40px] mb-2" />
                 <h4 className="font-bold text-[15px] text-[#166534]">
-                  {lang === 'MR' ? 'अर्ज प्रणालीत नोंदवला गेला!' : 'Request Registered in Database!'}
+                  {lang === 'MR' ? 'अर्ज यशस्वीरीत्या नोंदवला गेला!' : 'Request Submitted Successfully!'}
                 </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
                   {lang === 'MR'
-                    ? `तक्रार टोकन क्र. ${rtiTrackingNumber} तयार झाला. ४८ तासांत निवारण केले जाईल.`
-                    : `Tracking Ticket ${rtiTrackingNumber} generated. Official dispatch within 48 hours.`}
+                    ? `तक्रार नोंदणी क्र. ${rtiTrackingNumber} तयार झाला. ४८ तासांत निवारण केले जाईल.`
+                    : `Grievance Ref No. ${rtiTrackingNumber} generated. Official update within 48 hours.`}
                 </p>
               </div>
             ) : (
@@ -1293,11 +1294,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               onClick={() => setShowTankerModal(false)}
               className="absolute top-4 right-4 text-[#707974] hover:text-[#1a1c1b] p-1 rounded-full hover:bg-[#f3ede4]"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <LucideIcon name="close" className="text-[20px]" />
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#006a4e] text-[24px]">local_shipping</span>
+              <LucideIcon name="local_shipping" className="text-[#006a4e] text-[24px]" />
               <div>
                 <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'पाणी टँकर थेट स्थिती' : 'Emergency Water Tanker Tracker'}
@@ -1309,7 +1310,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             </div>
 
             <div className="flex flex-col gap-3 text-[12px]">
-              <div className="p-3 bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl flex items-center justify-between">
+              <div className="p-3 bg-[#e8f1ec] border border-[#006a4e] rounded-xl flex items-center justify-between">
                 <div>
                   <strong className="text-[#166534] block">Tanker #MH-36-T-4091</strong>
                   <span className="text-[11px] text-[#404945]">
@@ -1360,11 +1361,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               onClick={() => setShowAgendaPointModal(false)}
               className="absolute top-4 right-4 text-[#707974] hover:text-[#1a1c1b] p-1 rounded-full hover:bg-[#f3ede4]"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <LucideIcon name="close" className="text-[20px]" />
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#c2410c] text-[24px]">ballot</span>
+              <LucideIcon name="ballot" className="text-[#c2410c] text-[24px]" />
               <div>
                 <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'ग्रामसभेसाठी चर्चेचा मुद्दा नोंदवा' : 'Submit Gram Sabha Discussion Point'}
@@ -1376,8 +1377,8 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             </div>
 
             {modalSuccess ? (
-              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
-                <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
+              <div className="bg-[#e8f1ec] border border-[#006a4e] rounded-xl p-4 text-center">
+                <LucideIcon name="check_circle" className="text-[#006a4e] text-[40px] mb-2" />
                 <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'मुद्दा सभेसाठी नोंदवला गेला!' : 'Point Enrolled for Sabha!'}
                 </h4>

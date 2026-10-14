@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChevronRight, Home } from 'lucide-react';
 
 export interface BreadcrumbItem {
   label: string;
@@ -20,14 +21,12 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, rightBadge }) => 
           return (
             <React.Fragment key={index}>
               {index > 0 && (
-                <span className="material-symbols-outlined text-[14px] text-[#a0aaa5] select-none">
-                  chevron_right
-                </span>
+                <ChevronRight className="w-3.5 h-3.5 text-[#a0aaa5] select-none shrink-0" />
               )}
               {isLast || item.active || !item.onClick ? (
                 <span className="font-semibold text-[#1d1b16] flex items-center gap-1">
                   {index === 0 && (
-                    <span className="material-symbols-outlined text-[15px] text-[#006a4e]">home</span>
+                    <Home className="w-3.5 h-3.5 text-[#14532d] shrink-0" />
                   )}
                   <span>{item.label}</span>
                 </span>
@@ -38,7 +37,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, rightBadge }) => 
                   className="hover:text-[#166534] hover:underline font-medium text-[#55605a] transition-colors flex items-center gap-1 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#166534] rounded px-1 -mx-1"
                 >
                   {index === 0 && (
-                    <span className="material-symbols-outlined text-[15px]">home</span>
+                    <Home className="w-3.5 h-3.5 shrink-0" />
                   )}
                   <span>{item.label}</span>
                 </button>

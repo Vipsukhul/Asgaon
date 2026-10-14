@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { Breadcrumb } from '../components/Breadcrumb';
@@ -26,7 +27,7 @@ const DEFAULT_VILLAGE_EVENTS = [
     category: 'health',
     eventDate: '20 Nov 2025',
     eventTime: '09:00 AM — 04:00 PM',
-    location: 'प्राथमिक आरोग्य केंद्र (PHC), आसगाव',
+    location: 'प्राथमिक आरोग्य केंद्र, आसगाव',
     organizer: 'जिल्हा सामान्य रुग्णालय व ग्रामपंचायत आसगाव',
     badge: 'मोफत आरोग्य सेवा',
     description: 'तज्ज्ञ डॉक्टरांकडून रक्तदाब, मधुमेह, हृदय व मोतीबिंदू तपासणी. गरजूंना मोफत औषधे व चष्मे वाटप. कृपया आधार कार्ड आणावे.',
@@ -38,7 +39,7 @@ const DEFAULT_VILLAGE_EVENTS = [
     category: 'agriculture',
     eventDate: '28 Nov 2025',
     eventTime: '10:30 AM — 02:30 PM',
-    location: 'ग्रामपंचायत सभागृह (Samaj Mandir), आसगाव',
+    location: 'ग्रामपंचायत सभागृह, आसगाव',
     organizer: 'कृषी विज्ञान केंद्र व कृषी विभाग',
     badge: 'शेतकरी मार्गदर्शन',
     description: 'ठिबक सिंचन अनुदान, सेंद्रिय खते, माती परीक्षण अहवाल वाटप व ड्रोन फवारणी प्रात्यक्षिक. सर्व शेतकरी बांधवांसाठी अल्पोपहार.',
@@ -59,7 +60,7 @@ const DEFAULT_VILLAGE_EVENTS = [
 ];
 
 export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<'all' | 'religious' | 'health' | 'agriculture' | 'sports'>('all');
   const [activeMonthFilter, setActiveMonthFilter] = useState<'nov' | 'dec' | 'winter' | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -187,11 +188,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
       {/* 1. TOP BREADCRUMB & STATUS STRIP */}
       <Breadcrumb
         items={[
-          { label: lang === 'MR' ? 'मुख्यपृष्ठ' : 'Home', onClick: onNavigateHome },
-          { label: lang === 'MR' ? 'गावातील कार्यक्रम व दिनदर्शिका' : 'Village Events & Calendar', active: true }
+          { label: t('nav_home'), onClick: onNavigateHome },
+          { label: t('nav_events'), active: true }
         ]}
         rightBadge={
-          <div className="text-[11px] font-semibold text-[#006a4e] bg-[#bbf7d0]/40 px-2.5 py-0.5 rounded-full border border-[#bbf7d0]">
+          <div className="text-[11px] font-semibold text-[#14532d] bg-[#e8f1ec] px-3 py-1 rounded-full border border-[#cadbcf]">
             {lang === 'MR'
               ? 'सांस्कृतिक व सामाजिक दिनदर्शिका २०२५–२०२६ • असगाव नागरिक मंच'
               : 'COMMUNITY CULTURAL & DEVELOPMENT CALENDAR 2025–2026 • Asgaon Civic Forum'}
@@ -223,7 +224,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             onClick={() => setShowEventSubmitModal(true)}
             className="px-5 py-3 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center gap-2 shadow-md hover:shadow-lg transition-all"
           >
-            <span className="material-symbols-outlined text-[18px]">add_circle</span>
+            <LucideIcon name="add_circle" className="text-[18px]" />
             <span>{lang === 'MR' ? '+ नवीन कार्यक्रम / सूचना नोंदवा' : '+ Submit a Community Notice / Event'}</span>
           </button>
           <div className="flex items-center gap-2 text-[11px] text-[#55605a]">
@@ -232,7 +233,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               onClick={() => alert(lang === 'MR' ? 'वार्षिक गाव दिनदर्शिका PDF (३.१ MB) डाउनलोड होत आहे.' : 'Downloading official Asgaon Annual Village Event Calendar PDF (3.1 MB).')}
               className="text-[#006a4e] font-bold hover:underline flex items-center gap-0.5"
             >
-              <span className="material-symbols-outlined text-[14px]">picture_as_pdf</span>
+              <LucideIcon name="picture_as_pdf" className="text-[14px]" />
               <span>{lang === 'MR' ? 'वार्षिक दिनदर्शिका PDF' : 'Annual PDF'}</span>
             </button>
           </div>
@@ -242,8 +243,8 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
       {/* 3. 4 KEY METRIC COUNTERS */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#bbf7d0]/60 text-[#002117] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px]">event_upcoming</span>
+          <div className="w-10 h-10 rounded-xl bg-[#e8f1ec] text-[#002117] flex items-center justify-center shrink-0">
+            <LucideIcon name="event_upcoming" className="text-[20px]" />
           </div>
           <div>
             <div className="font-heading font-black text-[22px] text-[#166534]">12</div>
@@ -258,7 +259,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
 
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#fef9ee] text-[#c2410c] border border-[#fde68a] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px]">storefront</span>
+            <LucideIcon name="storefront" className="text-[20px]" />
           </div>
           <div>
             <div className="font-heading font-bold text-[13px] text-[#c2410c] leading-tight">
@@ -275,7 +276,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
 
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#f3ede4] text-[#166534] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px]">temple_hindu</span>
+            <LucideIcon name="temple_hindu" className="text-[20px]" />
           </div>
           <div>
             <div className="font-heading font-bold text-[13px] text-[#166534] leading-tight">
@@ -291,8 +292,8 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#bbf7d0]/40 text-[#006a4e] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px]">groups</span>
+          <div className="w-10 h-10 rounded-xl bg-[#e8f1ec] text-[#006a4e] flex items-center justify-center shrink-0">
+            <LucideIcon name="groups" className="text-[20px]" />
           </div>
           <div>
             <div className="font-heading font-black text-[22px] text-[#166534]">3,500+</div>
@@ -310,7 +311,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
       <div className="flex flex-col gap-3">
         <div className="bg-white p-2.5 sm:p-3 rounded-xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
           <div className="relative flex-1">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]">search</span>
+            <LucideIcon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
             <input
               type="text"
               value={searchQuery}
@@ -379,7 +380,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            <span className="material-symbols-outlined text-[16px] text-[#c2410c]">temple_hindu</span>
+            <LucideIcon name="temple_hindu" className="text-[16px] text-[#c2410c]" />
             <span>{lang === 'MR' ? 'धार्मिक उत्सव व जत्रा' : 'Religious Festivals & Jatras'} ({backendEvents.filter(e => (e.category || '').toLowerCase().includes('relig') || (e.category || '').toLowerCase().includes('cult')).length})</span>
           </button>
           <button
@@ -390,7 +391,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            <span className="material-symbols-outlined text-[16px] text-[#ba1a1a]">medical_services</span>
+            <LucideIcon name="medical_services" className="text-[16px] text-[#ba1a1a]" />
             <span>{lang === 'MR' ? 'आरोग्य शिबिरे' : 'Health & Camps'} ({backendEvents.filter(e => (e.category || '').toLowerCase().includes('health')).length})</span>
           </button>
           <button
@@ -401,7 +402,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            <span className="material-symbols-outlined text-[16px] text-[#006a4e]">agriculture</span>
+            <LucideIcon name="agriculture" className="text-[16px] text-[#006a4e]" />
             <span>{lang === 'MR' ? 'कृषी व शेतकरी मेळावे' : 'Agriculture & Seminars'} ({backendEvents.filter(e => (e.category || '').toLowerCase().includes('agri')).length})</span>
           </button>
           <button
@@ -412,7 +413,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
             }`}
           >
-            <span className="material-symbols-outlined text-[16px] text-[#006a4e]">sports_kabaddi</span>
+            <LucideIcon name="sports_kabaddi" className="text-[16px] text-[#006a4e]" />
             <span>{lang === 'MR' ? 'क्रीडा व युवक स्पर्धा' : 'Sports & Youth'} ({backendEvents.filter(e => (e.category || '').toLowerCase().includes('sport')).length})</span>
           </button>
         </div>
@@ -459,7 +460,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               <>
                 {filteredEvents.length === 0 ? (
                   <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-                    <span className="material-symbols-outlined text-[48px] text-[#c2410c]">event_busy</span>
+                    <LucideIcon name="event_busy" className="text-[48px] text-[#c2410c]" />
                     <h3 className="font-heading font-bold text-[18px] text-[#166534]">
                       {lang === 'MR' ? 'कोणताही कार्यक्रम आढळला नाही' : 'No matching events found'}
                     </h3>
@@ -486,7 +487,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                       <div className="flex-1 flex flex-col justify-between">
                         <div>
                           <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                            <span className="bg-[#bbf7d0] text-[#002117] text-[10px] font-black uppercase px-2.5 py-0.5 rounded">
+                            <span className="bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[10px] font-black uppercase px-2.5 py-0.5 rounded">
                               {evt.badge || (lang === 'MR' ? 'पडताळणीकृत कार्यक्रम' : 'VERIFIED EVENT')}
                             </span>
                             <span className="text-[11px] font-semibold text-[#c2410c] bg-[#fef9ee] px-2 py-0.5 rounded border border-[#fde68a]">
@@ -502,7 +503,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] border-t border-[#f3ede4] pt-2.5 gap-2">
                           <span className="text-[#c2410c] font-bold flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[15px]">location_on</span>
+                            <LucideIcon name="location_on" className="text-[15px]" />
                             <span>{evt.location}</span>
                           </span>
                           <div className="flex items-center gap-3">
@@ -512,9 +513,9 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                                 setTokenType(evt.title);
                                 setShowTokenModal(true);
                               }}
-                              className="py-1 px-3 bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold rounded-lg transition-colors"
+                              className="py-1 px-3 bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold rounded-lg transition-colors cursor-pointer"
                             >
-                              {lang === 'MR' ? 'नाव नोंदणी / टोकन' : 'RSVP / Register'}
+                              {lang === 'MR' ? 'मोफत नोंदणी करा' : 'Register for Free'}
                             </button>
                           </div>
                         </div>
@@ -618,14 +619,14 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               <span className="p-1.5 text-[#404945]">9</span>
 
               {/* 10th - Krishi Melava */}
-              <span className="p-1.5 bg-[#bbf7d0] text-[#002117] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'कृषी मेळावा' : 'Krishi Melawa'}>10</span>
+              <span className="p-1.5 bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'कृषी मेळावा' : 'Krishi Melawa'}>10</span>
               <span className="p-1.5 text-[#404945]">11</span>
               <span className="p-1.5 text-[#404945]">12</span>
               <span className="p-1.5 text-[#404945]">13</span>
               {/* 14th - Fogging & Vaccine */}
               <span className="p-1.5 bg-[#fef3c7] text-[#ba1a1a] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'मिशन इंद्रधनुष्य' : 'Mission Indradhanush'}>14</span>
               {/* 15th - Friday Haat */}
-              <span className="p-1.5 bg-[#bbf7d0] text-[#002117] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'शुक्रवार आठवडे बाजार' : 'Shukrawar Haat'}>15</span>
+              <span className="p-1.5 bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'शुक्रवार आठवडे बाजार' : 'Shukrawar Haat'}>15</span>
               <span className="p-1.5 text-[#404945]">16</span>
 
               {/* 17th - Eye Camp */}
@@ -635,7 +636,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               <span className="p-1.5 text-[#404945]">20</span>
               <span className="p-1.5 text-[#404945]">21</span>
               {/* 22nd - Friday Haat */}
-              <span className="p-1.5 bg-[#bbf7d0] text-[#002117] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'शुक्रवार आठवडे बाजार' : 'Shukrawar Haat'}>22</span>
+              <span className="p-1.5 bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'शुक्रवार आठवडे बाजार' : 'Shukrawar Haat'}>22</span>
               <span className="p-1.5 text-[#404945]">23</span>
 
               <span className="p-1.5 text-[#404945]">24</span>
@@ -644,7 +645,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               <span className="p-1.5 text-[#404945]">27</span>
               <span className="p-1.5 text-[#404945]">28</span>
               {/* 29th - Friday Haat */}
-              <span className="p-1.5 bg-[#bbf7d0] text-[#002117] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'शुक्रवार आठवडे बाजार' : 'Shukrawar Haat'}>29</span>
+              <span className="p-1.5 bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] font-bold rounded-lg cursor-pointer" title={lang === 'MR' ? 'शुक्रवार आठवडे बाजार' : 'Shukrawar Haat'}>29</span>
               <span className="p-1.5 text-[#404945]">30</span>
             </div>
 
@@ -668,9 +669,9 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
           {/* WIDGET 2: HOST A FUNCTION / HALL BOOKING */}
           <div className="bg-[#166534] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3.5">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#bbf7d0] text-[20px]">meeting_room</span>
+              <LucideIcon name="meeting_room" className="text-[#a7f3d0] text-[20px]" />
               <div>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-[#bbf7d0] block">
+                <span className="text-[9px] font-bold uppercase tracking-wider text-[#a7f3d0] block">
                   {lang === 'MR' ? 'सार्वजनिक सभागृह आरक्षण' : 'CIVIC VENUE RESERVATION'}
                 </span>
                 <h3 className="font-heading font-extrabold text-[15px] leading-snug">
@@ -688,15 +689,15 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             <div className="bg-white/10 p-3 rounded-xl flex flex-col gap-1.5 text-[11px]">
               <div className="flex justify-between">
                 <span>{lang === 'MR' ? 'समाज मंदिर सभागृह (४०० क्षमता):' : 'Community Hall (400 Capacity):'}</span>
-                <strong className="text-[#bbf7d0]">₹1,500 / {lang === 'MR' ? 'दिवस' : 'Day'}</strong>
+                <strong className="text-[#a7f3d0]">₹1,500 / {lang === 'MR' ? 'दिवस' : 'Day'}</strong>
               </div>
               <div className="flex justify-between">
                 <span>{lang === 'MR' ? 'ध्वनिवर्धक यंत्रणा (माईक/स्पीकर):' : 'Sound System / PA & Mic:'}</span>
-                <strong className="text-[#bbf7d0]">{lang === 'MR' ? 'समाविष्ट' : 'Included'}</strong>
+                <strong className="text-[#a7f3d0]">{lang === 'MR' ? 'समाविष्ट' : 'Included'}</strong>
               </div>
               <div className="flex justify-between">
                 <span>{lang === 'MR' ? 'पिण्याचे पाणी टँकर (२,००० ली):' : 'Drinking Water Tanker (2,000 L):'}</span>
-                <strong className="text-[#bbf7d0]">₹250 ({lang === 'MR' ? 'शासकीय दर' : 'Govt Rate'})</strong>
+                <strong className="text-[#a7f3d0]">₹250 ({lang === 'MR' ? 'शासकीय दर' : 'Govt Rate'})</strong>
               </div>
             </div>
 
@@ -711,7 +712,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
           {/* WIDGET 4: SWACHHATA ADVISORY */}
           <div className="bg-[#fef9ee] rounded-2xl p-4 border border-[#fde68a] shadow-xs flex flex-col gap-2.5">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#c2410c] text-[18px]">eco</span>
+              <LucideIcon name="eco" className="text-[#c2410c] text-[18px]" />
               <h4 className="font-heading font-bold text-[13px] text-[#c2410c]">
                 {lang === 'MR' ? 'स्वच्छता व शिस्त नियम' : 'Swachhata By-laws'}
               </h4>
@@ -719,7 +720,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
 
             <ul className="text-[11px] text-[#404945] flex flex-col gap-2">
               <li className="flex items-start gap-1.5">
-                <span className="material-symbols-outlined text-[14px] text-[#ba1a1a] mt-0.5 shrink-0">cancel</span>
+                <LucideIcon name="cancel" className="text-[14px] text-[#ba1a1a] mt-0.5 shrink-0" />
                 <span>
                   {lang === 'MR'
                     ? 'जत्रा व बाजारात प्लॅस्टिक कचरा किंवा थर्माकोल पत्रावळी टाकल्यास ₹५० दंड.'
@@ -727,7 +728,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                 </span>
               </li>
               <li className="flex items-start gap-1.5">
-                <span className="material-symbols-outlined text-[14px] text-[#006a4e] mt-0.5 shrink-0">check_circle</span>
+                <LucideIcon name="check_circle" className="text-[14px] text-[#006a4e] mt-0.5 shrink-0" />
                 <span>
                   {lang === 'MR'
                     ? 'भाजीपाला व सेंद्रिय कचरा ठरवून दिलेल्या हिरव्या कचराकुंड्यांमध्येच टाकावा.'
@@ -735,7 +736,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                 </span>
               </li>
               <li className="flex items-start gap-1.5">
-                <span className="material-symbols-outlined text-[14px] text-[#c2410c] mt-0.5 shrink-0">volume_off</span>
+                <LucideIcon name="volume_off" className="text-[14px] text-[#c2410c] mt-0.5 shrink-0" />
                 <span>
                   {lang === 'MR'
                     ? 'पोलीस नियमांनुसार रात्री १०:०० नंतर लाऊडस्पीकर वाजवण्यास सक्त मनाई.'
@@ -755,11 +756,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               onClick={() => setShowEventSubmitModal(false)}
               className="absolute top-4 right-4 text-[#707974] hover:text-[#1a1c1b] p-1 rounded-full hover:bg-[#f3ede4]"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <LucideIcon name="close" className="text-[20px]" />
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#006a4e] text-[24px]">event_note</span>
+              <LucideIcon name="event_note" className="text-[#006a4e] text-[24px]" />
               <div>
                 <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'गाव कार्यक्रम नोंदवा' : 'Submit Community Event'}
@@ -771,8 +772,8 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             </div>
 
             {modalSuccess ? (
-              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
-                <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
+              <div className="bg-[#e8f1ec] border border-[#006a4e] rounded-xl p-4 text-center">
+                <LucideIcon name="check_circle" className="text-[#006a4e] text-[40px] mb-2" />
                 <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'कार्यक्रमाचा प्रस्ताव सादर झाला!' : 'Event Proposal Submitted!'}
                 </h4>
@@ -875,11 +876,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               onClick={() => setShowHallModal(false)}
               className="absolute top-4 right-4 text-[#707974] hover:text-[#1a1c1b] p-1 rounded-full hover:bg-[#f3ede4]"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <LucideIcon name="close" className="text-[20px]" />
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#c2410c] text-[24px]">meeting_room</span>
+              <LucideIcon name="meeting_room" className="text-[#c2410c] text-[24px]" />
               <div>
                 <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {lang === 'MR' ? 'समाज मंदिर सभागृह आरक्षण' : 'Book Civic Samaj Mandir'}
@@ -891,8 +892,8 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
             </div>
 
             {modalSuccess ? (
-              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
-                <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
+              <div className="bg-[#e8f1ec] border border-[#006a4e] rounded-xl p-4 text-center">
+                <LucideIcon name="check_circle" className="text-[#006a4e] text-[40px] mb-2" />
                 <h4 className="font-bold text-[15px] text-[#166534]">
                   {lang === 'MR' ? 'सभागृह जागा तात्पुरती राखीव!' : 'Hall Booking Slot Held!'}
                 </h4>
@@ -963,29 +964,29 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
               onClick={() => setShowTokenModal(false)}
               className="absolute top-4 right-4 text-[#707974] hover:text-[#1a1c1b] p-1 rounded-full hover:bg-[#f3ede4]"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <LucideIcon name="close" className="text-[20px]" />
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#006a4e] text-[24px]">confirmation_number</span>
+              <LucideIcon name="confirmation_number" className="text-[#006a4e] text-[24px]" />
               <div>
                 <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
-                  {lang === 'MR' ? 'मोफत कार्यक्रम टोकन मिळवा' : 'Claim Free Event Token'}
+                  {lang === 'MR' ? 'मोफत कार्यक्रम नोंदणी' : 'Free Event Registration'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">{tokenType}</span>
               </div>
             </div>
 
             {modalSuccess ? (
-              <div className="bg-[#bbf7d0]/40 border border-[#006a4e] rounded-xl p-4 text-center">
-                <span className="material-symbols-outlined text-[#006a4e] text-[40px] mb-2">check_circle</span>
+              <div className="bg-[#e8f1ec] border border-[#006a4e] rounded-xl p-4 text-center">
+                <LucideIcon name="check_circle" className="text-[#006a4e] text-[40px] mb-2" />
                 <h4 className="font-bold text-[15px] text-[#166534]">
-                  {lang === 'MR' ? `टोकन #${generatedToken || 'ASG-894'} निश्चित झाले!` : `Token #${generatedToken || 'ASG-894'} Confirmed!`}
+                  {lang === 'MR' ? `नोंदणी क्रमांक #${generatedToken || 'ASG-894'} निश्चित झाला!` : `Registration #${generatedToken || 'ASG-894'} Confirmed!`}
                 </h4>
                 <p className="text-[12px] text-[#404945] mt-1">
                   {lang === 'MR'
-                    ? 'नोंदणीकृत क्रमांकावर एसएमएस पाठवला आहे. प्रवेशद्वारावर हा टोकन क्रमांक दाखवून रांगेविना प्रवेश मिळवा.'
-                    : 'SMS sent to mobile number. Present this token at the entrance for fast-track entry.'}
+                    ? 'नोंदणीकृत क्रमांकावर एसएमएस पाठवला आहे. प्रवेशद्वारावर हा नोंदणी क्रमांक दाखवून थेट प्रवेश मिळवा.'
+                    : 'SMS sent to mobile number. Present this registration number at the entrance for entry.'}
                 </p>
               </div>
             ) : (
@@ -1005,7 +1006,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                 </div>
                 <div>
                   <label className="font-bold text-[#166534] block mb-1">
-                    {lang === 'MR' ? 'मोबाईल नंबर (एसएमएससाठी)' : 'Mobile Number (for SMS token)'}
+                    {lang === 'MR' ? 'मोबाईल नंबर' : 'Mobile Number'}
                   </label>
                   <input
                     type="tel"
@@ -1016,16 +1017,16 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none"
                   />
                 </div>
-                <div className="bg-[#bbf7d0]/30 p-2.5 rounded-lg border border-[#006a4e]/20 text-[11px] text-[#166534]">
+                <div className="bg-[#a7f3d0]/30 p-2.5 rounded-lg border border-[#006a4e]/20 text-[11px] text-[#166534]">
                   {lang === 'MR'
                     ? '१००% मोफत प्रवेश. औषध / बियाणे किट वाटपात प्राधान्य.'
                     : '100% Free entry. Guaranteed medicine/seed kit priority allocation.'}
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs mt-1"
+                  className="w-full py-2.5 bg-[#166534] hover:bg-[#052e16] text-white font-bold rounded-xl transition-all shadow-xs mt-1 cursor-pointer"
                 >
-                  {lang === 'MR' ? 'त्वरित टोकन तयार करा' : 'Generate Fast-Track Token'}
+                  {lang === 'MR' ? 'नोंदणी निश्चित करा' : 'Confirm Registration'}
                 </button>
               </form>
             )}

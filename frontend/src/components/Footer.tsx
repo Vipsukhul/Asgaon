@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -6,7 +7,7 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
 
   const handleNav = (nav: string, e?: React.MouseEvent) => {
     if (e) e.preventDefault();
@@ -23,62 +24,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
   return (
     <footer className="w-full bg-[#052e16] text-[#dcfce7] border-t-4 border-[#166534] font-sans">
-      {/* 1. Emergency Helpline & Urgent Assistance Ribbon */}
-      <div className="bg-[#031e0f] border-b border-[#0f3d23] py-3.5 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 text-amber-300 font-bold">
-            <span className="material-symbols-outlined text-[18px] text-amber-400 animate-pulse">
-              emergency
-            </span>
-            <span>{lang === 'MR' ? '२४x७ तातडीचे आपत्कालीन संपर्क (Emergency Speed-Dial):' : '24x7 Emergency Helplines & Speed-Dial:'}</span>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-2 font-mono">
-            <a
-              href="tel:112"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2a0808] hover:bg-[#3d0d0d] text-[#fde68a] border border-[#5c1d1d] font-bold text-[11px] transition-colors"
-              title="पोलीस व राष्ट्रीय आपत्कालीन"
-            >
-              <span>🚨 ११२ (पोलीस / Police)</span>
-            </a>
-            <a
-              href="tel:108"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2a0808] hover:bg-[#3d0d0d] text-[#fde68a] border border-[#5c1d1d] font-bold text-[11px] transition-colors"
-              title="रुग्णवाहिका सेवा"
-            >
-              <span>🚑 १०८ (रुग्णवाहिका / Ambulance)</span>
-            </a>
-            <a
-              href="tel:101"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2a0808] hover:bg-[#3d0d0d] text-[#fde68a] border border-[#5c1d1d] font-bold text-[11px] transition-colors"
-              title="अग्निशामक दल"
-            >
-              <span>🔥 १०१ (अग्निशामक / Fire)</span>
-            </a>
-            <a
-              href="tel:18001801551"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#002b1f] hover:bg-[#003d2c] text-[#bbf7d0] border border-[#00513b] font-bold text-[11px] transition-colors"
-              title="किसान कॉल सेंटर"
-            >
-              <span>🌾 १८००-१८०-१५५१ (किसान सल्ला)</span>
-            </a>
-            <a
-              href="tel:1912"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#262000] hover:bg-[#3b3200] text-[#ffe082] border border-[#5c4d00] font-bold text-[11px] transition-colors"
-              title="महावितरण वीज तक्रार"
-            >
-              <span>⚡ १९१२ (वीज पुरवठा तक्रार)</span>
-            </a>
-            <a
-              href="tel:1091"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#163628] hover:bg-[#1e4835] text-[#bbf7d0] border border-[#2b5943] font-bold text-[11px] transition-colors"
-              title="महिला सुरक्षा हेल्पलाईन"
-            >
-              <span>👩 १०९१ (महिला सुरक्षा)</span>
-            </a>
-          </div>
-        </div>
-      </div>
+      
 
       {/* 2. Main Footer Grid (Identity + 3 Categorized Columns) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
@@ -89,13 +35,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <img
                 src="/asgaon-logo.png"
                 alt="Asgaon Village Civic Seal"
-                className="h-14 w-14 rounded-full border-2 border-[#bbf7d0] shrink-0 object-cover shadow-md ring-2 ring-white/10"
+                className="h-14 w-14 rounded-full border-2 border-[#cadbcf] shrink-0 object-cover shadow-md ring-2 ring-white/10"
               />
               <div>
                 <h3 className="font-heading font-black text-lg text-white tracking-wide">
                   {lang === 'MR' ? 'आसगाव डिजिटल ग्राम मंच' : 'Asgaon Digital Civic Portal'}
                 </h3>
-                <p className="text-[12px] text-[#bbf7d0] font-medium">
+                <p className="text-[12px] text-[#a7f3d0] font-medium">
                   {lang === 'MR' ? 'आसगाव स्वतंत्र नागरिक व ज्ञानपीठ मंच (ता. पवनी, जि. भंडारा)' : 'Independent Village Civic & Information Hub (Pauni, Bhandara)'}
                 </p>
                 <p className="text-[11px] text-[#7ea597] font-mono">
@@ -112,16 +58,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
             {/* Quick Civic Badges */}
             <div className="flex flex-wrap gap-2 pt-1 text-[11px]">
-              <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[#bbf7d0] flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[15px]">location_on</span>
+              <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[#a7f3d0] flex items-center gap-1.5">
+                <LucideIcon name="location_on" className="text-[15px]" />
                 <span>{lang === 'MR' ? 'प्रभाग १, २ व ३ (गावठाण)' : 'Wards 1, 2 & 3 (Gaothan)'}</span>
               </span>
-              <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[#bbf7d0] flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[15px]">schedule</span>
+              <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[#a7f3d0] flex items-center gap-1.5">
+                <LucideIcon name="schedule" className="text-[15px]" />
                 <span>{lang === 'MR' ? 'सोम - शनि (१०:०० ते १७:३०)' : 'Mon - Sat (10:00 AM - 5:30 PM)'}</span>
               </span>
-              <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[#bbf7d0] flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[15px]">account_balance</span>
+              <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[#a7f3d0] flex items-center gap-1.5">
+                <LucideIcon name="account_balance" className="text-[15px]" />
                 <span>{lang === 'MR' ? '१५ वा वित्त आयोग पारदर्शकता' : '15th Finance Commission Transparency'}</span>
               </span>
             </div>
@@ -130,7 +76,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Column 2: Civic & Schemes */}
           <div className="space-y-3">
             <h4 className="font-heading font-bold text-[13px] uppercase tracking-wider text-white border-b border-[#00382b] pb-2 flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-[#bbf7d0]">policy</span>
+              <LucideIcon name="policy" className="text-[16px] text-[#a7f3d0]" />
               <span>{lang === 'MR' ? 'नागरिक सेवा व योजना' : 'Civic Welfare & Schemes'}</span>
             </h4>
             <ul className="space-y-2 text-xs">
@@ -141,7 +87,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>{lang === 'MR' ? 'शासकीय योजना दालन (Schemes)' : 'Govt Schemes Portal'}</span>
+                  <span>{t('nav_schemes')}</span>
                 </a>
               </li>
               <li>
@@ -151,7 +97,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>{lang === 'MR' ? 'घरकुल आवास योजना (PMAY/Ramai)' : 'Gharkul Housing Grants'}</span>
+                  <span>{lang === 'MR' ? 'घरकुल आवास योजना' : 'Gharkul Housing Grants'}</span>
                 </a>
               </li>
               <li>
@@ -181,7 +127,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>{lang === 'MR' ? 'ग्रामसभा ठराव व जाहीर सूचना' : 'Gram Sabha & Village Notices'}</span>
+                  <span>{t('nav_announcements')}</span>
                 </a>
               </li>
             </ul>
@@ -190,7 +136,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Column 3: Agri, Businesses & Jobs */}
           <div className="space-y-3">
             <h4 className="font-heading font-bold text-[13px] uppercase tracking-wider text-white border-b border-[#00382b] pb-2 flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-[#bbf7d0]">storefront</span>
+              <LucideIcon name="storefront" className="text-[16px] text-[#a7f3d0]" />
               <span>{lang === 'MR' ? 'शेती, व्यवसाय व रोजगार' : 'Agri, Business & Jobs'}</span>
             </h4>
             <ul className="space-y-2 text-xs">
@@ -201,7 +147,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>{lang === 'MR' ? 'थेट बाजारभाव व कृषी सल्ला (Krishi)' : 'Live Mandi Rates & Advisory'}</span>
+                  <span>{t('nav_krishi')}</span>
                 </a>
               </li>
               <li>
@@ -211,7 +157,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>{lang === 'MR' ? 'स्थानिक दुकाने व सेवा सूची (Directory)' : 'Local Business Directory'}</span>
+                  <span>{t('nav_businesses')}</span>
                 </a>
               </li>
               <li>
@@ -221,7 +167,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>{lang === 'MR' ? 'स्थानिक दुकाने व अभिप्राय' : 'Businesses & Shop Ratings'}</span>
+                  <span>{lang === 'MR' ? 'स्थानिक व्यवसाय अभिप्राय' : 'Business Reviews'}</span>
                 </a>
               </li>
               <li>
@@ -231,7 +177,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>{lang === 'MR' ? 'गावचा रोजगार व नोकऱ्या (Jobs Board)' : 'Village Jobs Board'}</span>
+                  <span>{t('nav_jobs')}</span>
                 </a>
               </li>
               <li>
@@ -241,7 +187,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>{lang === 'MR' ? 'आठवडी बाजार व खरेदी-विक्री (Market)' : 'Weekly Haat & Marketplace'}</span>
+                  <span>{t('nav_marketplace')}</span>
                 </a>
               </li>
               <li>
@@ -251,7 +197,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>{lang === 'MR' ? 'पवनी-भंडारा एसटी बस वेळापत्रक' : 'MSRTC Bus Schedules'}</span>
+                  <span>{t('nav_transport')}</span>
                 </a>
               </li>
             </ul>
@@ -260,7 +206,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Column 4: Blogs, Education & Events */}
           <div className="space-y-3">
             <h4 className="font-heading font-bold text-[13px] uppercase tracking-wider text-white border-b border-[#00382b] pb-2 flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-[#bbf7d0]">menu_book</span>
+              <LucideIcon name="menu_book" className="text-[16px] text-[#a7f3d0]" />
               <span>{lang === 'MR' ? 'ज्ञानपीठ व शिक्षण' : 'Education & Knowledge'}</span>
             </h4>
             <ul className="space-y-2 text-xs">
@@ -271,17 +217,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>{lang === 'MR' ? 'माहिती लेख व नागरिक ब्लॉग्स (Blogs)' : 'Village Articles & Guides'}</span>
+                  <span>{t('nav_blogs')}</span>
                 </a>
               </li>
               <li>
                 <a
                   href="/blogs/write"
                   onClick={(e) => handleNav('write-blog', e)}
-                  className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all font-bold text-[#bbf7d0]"
+                  className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all font-bold text-[#a7f3d0]"
                 >
-                  <span className="material-symbols-outlined text-[14px]">edit_note</span>
-                  <span>{lang === 'MR' ? 'नवीन लेख लिहा (Write Blog)' : 'Write Community Article'}</span>
+                  <LucideIcon name="edit_note" className="text-[14px]" />
+                  <span>{lang === 'MR' ? 'नवीन लेख लिहा' : 'Write Community Article'}</span>
                 </a>
               </li>
               <li>
@@ -291,7 +237,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>{lang === 'MR' ? 'शाळा, वसतिगृह व अभ्यासिका (Education)' : 'Schools, Hostels & Library'}</span>
+                  <span>{t('nav_education')}</span>
                 </a>
               </li>
               <li>
@@ -301,7 +247,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#b6d6ca]"
                 >
                   <span className="text-[#00a877]">›</span>
-                  <span>{lang === 'MR' ? 'गावचे सण, उत्सव व क्रीडा स्पर्धा' : 'Festivals & Village Events'}</span>
+                  <span>{t('nav_events')}</span>
                 </a>
               </li>
               <li>
@@ -310,8 +256,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={(e) => handleNav('emergency', e)}
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all text-[#fde68a] font-bold"
                 >
-                  <span className="material-symbols-outlined text-[14px]">call</span>
-                  <span>{lang === 'MR' ? 'सर्व आपत्कालीन संपर्क (Directory)' : 'All Emergency Helplines'}</span>
+                  <LucideIcon name="call" className="text-[14px]" />
+                  <span>{t('nav_emergency')}</span>
                 </a>
               </li>
             </ul>
@@ -324,18 +270,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-emerald-200">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4">
             <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-[15px] text-amber-300">verified</span>
+              <LucideIcon name="verified" className="text-[15px] text-amber-300" />
               <span>{lang === 'MR' ? 'डिजिटल ग्राम माहिती मंच' : 'Digital Village Civic Portal'}</span>
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-[15px] text-emerald-400">lock</span>
+              <LucideIcon name="lock" className="text-[15px] text-emerald-400" />
               <span>{lang === 'MR' ? '१००% सुरक्षित व जाहिरातमुक्त नागरिक व्यासपीठ' : '100% Secure & Ad-Free Citizen Platform'}</span>
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-[15px] text-emerald-400">smart_toy</span>
-              <span>{lang === 'MR' ? 'AI शोध व क्रॉलर्स अनुपालन (Robots.txt)' : 'AI & Crawler Compliant'}</span>
+              <LucideIcon name="smart_toy" className="text-[15px] text-emerald-400" />
+              <span>{lang === 'MR' ? 'AI शोध व क्रॉलर्स' : 'AI Crawler'}</span>
             </span>
           </div>
 
@@ -344,8 +290,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-[11px] border border-white/15 transition-colors shrink-0 cursor-pointer"
             title={lang === 'MR' ? "पानाच्या वर जा" : "Scroll to Top"}
           >
-            <span>{lang === 'MR' ? 'वर जा (Top)' : 'Top'}</span>
-            <span className="material-symbols-outlined text-[15px]">arrow_upward</span>
+            <span>{lang === 'MR' ? 'वर जा' : 'Top'}</span>
+            <LucideIcon name="arrow_upward" className="text-[15px]" />
           </button>
         </div>
       </div>

@@ -1,17 +1,12 @@
 package com.digitalgaon.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class JobRequest {
     @NotBlank(message = "Job title is required")
     private String title;
@@ -27,4 +22,19 @@ public class JobRequest {
     @NotBlank(message = "Contact phone is required")
     private String contactPhone;
     private LocalDate expiresAt;
+
+    public JobRequest() {}
+
+    @Builder
+    public JobRequest(String title, String employerName, String employmentType, String salaryRange, String location, String description, String requirements, String contactPhone, LocalDate expiresAt) {
+        this.title = title;
+        this.employerName = employerName;
+        this.employmentType = employmentType;
+        this.salaryRange = salaryRange;
+        this.location = location;
+        this.description = description;
+        this.requirements = requirements;
+        this.contactPhone = contactPhone;
+        this.expiresAt = expiresAt;
+    }
 }

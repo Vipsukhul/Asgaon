@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React from 'react';
 import type { Scheme } from '../types';
 import { useLanguage } from '../context/LanguageContext';
@@ -23,7 +24,7 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-5 gap-3">
         <div>
           <h2 className="font-heading font-extrabold text-[24px] text-emerald-950 flex items-center gap-2">
-            <span className="material-symbols-outlined text-indigo-800 text-[28px]">verified_user</span>
+            <LucideIcon name="verified_user" className="text-indigo-800 text-[28px]" />
             <span>{lang === 'MR' ? 'शासकीय योजना व थेट लाभ मार्गदर्शन कक्ष' : 'Sarkari Yojana Guidance Desk (Direct Welfare)'}</span>
           </h2>
           <p className="text-[13px] text-stone-600">
@@ -38,7 +39,7 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
           onClick={onOpenCSC}
           className="px-4 py-2 rounded-xl bg-indigo-800 hover:bg-indigo-900 text-white text-[13px] font-extrabold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
         >
-          <span className="material-symbols-outlined text-[18px]">contact_support</span>
+          <LucideIcon name="contact_support" className="text-[18px]" />
           <span>{lang === 'MR' ? 'सीएससी / आपले सरकार केंद्र' : 'Visit CSC Kiosk'}</span>
         </button>
       </div>
@@ -84,7 +85,7 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
               {/* Documents Required Checklist */}
               <div className="bg-[#faf6ee] p-3 rounded-xl border border-[#efe7dc] mb-4">
                 <div className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-900 mb-2 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[16px] text-emerald-700">task_alt</span>
+                  <LucideIcon name="task_alt" className="text-[16px] text-emerald-700" />
                   <span>{lang === 'MR' ? 'आवश्यक कागदपत्रे' : 'Required Documents'}</span>
                 </div>
                 <ul className="space-y-1.5">
@@ -107,7 +108,7 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
                 className="text-[12px] text-indigo-800 font-extrabold hover:underline flex items-center gap-0.5"
               >
                 <span>{scheme.actionLabel || (lang === 'MR' ? 'अधिकृत पोर्टलवर अर्ज करा' : 'Apply on Portal')}</span>
-                <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+                <LucideIcon name="open_in_new" className="text-[14px]" />
               </a>
 
               <div className="flex items-center gap-2">
@@ -122,7 +123,7 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
                   title={lang === 'MR' ? 'योजना जतन करा' : 'Bookmark this Scheme'}
                   className="p-1 rounded-lg text-stone-500 hover:text-emerald-900 hover:bg-[#faf6ee] transition-colors cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-[20px]">bookmark_border</span>
+                  <LucideIcon name="bookmark_border" className="text-[20px]" />
                 </button>
               </div>
             </div>

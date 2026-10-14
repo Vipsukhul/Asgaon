@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useMemo, useEffect } from 'react';
 import { INITIAL_BLOG_POSTS, type BlogPost } from '../data/blogData';
 import { SEOHead } from '../components/SEOHead';
@@ -26,7 +27,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
   currentUser,
   onRequireLogin
 }) => {
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const [posts, setPosts] = useState<BlogPost[]>(() => {
     const saved = localStorage.getItem('dg_village_blogs');
     if (saved) {
@@ -201,12 +202,12 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
       {/* 1. Breadcrumbs */}
       <Breadcrumb
         items={[
-          { label: lang === 'MR' ? 'मुख्यपृष्ठ' : 'Home', onClick: onNavigateHome },
-          { label: lang === 'MR' ? 'माहिती लेख व नागरिक ब्लॉग' : 'Village Blogs & Knowledge Hub', active: true }
+          { label: t('nav_home'), onClick: onNavigateHome },
+          { label: t('nav_blogs'), active: true }
         ]}
         rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#bbf7d0] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
-            <span className="material-symbols-outlined text-[15px] text-[#002117]">verified</span>
+          <div className="flex items-center gap-1.5 bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] px-3 py-1 rounded-full text-[11px] font-bold">
+            <LucideIcon name="verified" className="text-[15px] text-[#14532d]" />
             <span>{lang === 'MR' ? 'नागरिक व ग्राम माहिती व्यासपीठ' : 'Civic Knowledge Platform'}</span>
           </div>
         }
@@ -219,9 +220,9 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-[#bbf7d0] text-xs font-bold border border-white/10">
-              <span className="material-symbols-outlined text-[15px]">auto_stories</span>
-              <span>{lang === 'MR' ? 'नागरिक ज्ञानपीठ • Community Blog' : 'COMMUNITY BLOG & KNOWLEDGE HUB'}</span>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-[#a7f3d0] text-xs font-bold border border-white/10">
+              <LucideIcon name="auto_stories" className="text-[15px]" />
+              <span>{lang === 'MR' ? 'नागरिक ज्ञानपीठ' : 'Community Knowledge Hub'}</span>
             </div>
 
             <h1 className="font-heading font-extrabold text-[22px] sm:text-[28px] text-white leading-tight">
@@ -234,14 +235,14 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                 : 'Guides, agricultural tips, government scheme walk-throughs, and community development thoughts written by Asgaon villagers, farmers, and youths.'}
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-[#bbf7d0] font-medium">
+            <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-[#a7f3d0] font-medium">
               <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[16px]">menu_book</span>
+                <LucideIcon name="menu_book" className="text-[16px]" />
                 <span>{posts.length} {lang === 'MR' ? 'एकूण लेख' : 'Total Articles'}</span>
               </span>
               <span>•</span>
               <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[16px]">group</span>
+                <LucideIcon name="group" className="text-[16px]" />
                 <span>{lang === 'MR' ? 'सर्व नागरिकांसाठी खुले व्यासपीठ' : 'Open platform for all citizens'}</span>
               </span>
             </div>
@@ -251,10 +252,10 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto shrink-0">
             <button
               onClick={handleOpenWriteModal}
-              className="px-6 py-3.5 rounded-2xl bg-[#bbf7d0] hover:bg-[#a0e4c8] text-[#002117] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5"
+              className="px-6 py-3.5 rounded-2xl bg-[#a7f3d0] hover:bg-[#a0e4c8] text-[#002117] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5"
             >
-              <span className="material-symbols-outlined text-[20px]">edit_note</span>
-              <span>{lang === 'MR' ? 'नवीन लेख लिहा (Write Blog)' : 'Write New Article'}</span>
+              <LucideIcon name="edit_note" className="text-[20px]" />
+              <span>{lang === 'MR' ? 'नवीन लेख लिहा' : 'Write New Article'}</span>
             </button>
           </div>
         </div>
@@ -277,8 +278,8 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
           <div className="lg:w-1/2 flex flex-col justify-between space-y-4">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#bbf7d0] text-[10px] font-black uppercase">
-                  {lang === 'MR' ? 'ठळक लेख • Featured Spotlight' : 'Featured Spotlight'}
+                <span className="px-2.5 py-0.5 rounded-full bg-[#166534] text-[#a7f3d0] text-[10px] font-black uppercase">
+                  {lang === 'MR' ? 'ठळक लेख' : 'Featured Spotlight'}
                 </span>
                 <span className="text-xs text-[#707974] font-medium">{featuredPost.publishDate}</span>
                 <span className="text-xs text-[#707974]">•</span>
@@ -307,12 +308,12 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                   onClick={(e) => handleShare(e, featuredPost)}
                   className="px-3 py-1.5 rounded-xl bg-[#e6f7f0] hover:bg-[#d0f0e3] text-[#006a4e] text-xs font-bold transition-all border border-[#b8ebd5] flex items-center gap-1"
                 >
-                  <span className="material-symbols-outlined text-[16px]">share</span>
+                  <LucideIcon name="share" className="text-[16px]" />
                   <span>{lang === 'MR' ? 'शेअर' : 'Share'}</span>
                 </button>
-                <span className="px-4 py-1.5 rounded-xl bg-[#166534] text-[#bbf7d0] group-hover:bg-[#052e16] text-xs font-bold flex items-center gap-1 transition-colors">
+                <span className="px-4 py-1.5 rounded-xl bg-[#166534] text-[#a7f3d0] group-hover:bg-[#052e16] text-xs font-bold flex items-center gap-1 transition-colors">
                   <span>{lang === 'MR' ? 'वाचा' : 'Read'}</span>
-                  <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                  <LucideIcon name="arrow_forward" className="text-[16px]" />
                 </span>
               </div>
             </div>
@@ -324,7 +325,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
       <div id="blogs-list-container" className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
         <div className="flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="relative w-full md:flex-1">
-            <span className="material-symbols-outlined absolute left-3 top-2.5 text-[#707974] text-[20px]">search</span>
+            <LucideIcon name="search" className="absolute left-3 top-2.5 text-[#707974] text-[20px]" />
             <input
               type="text"
               value={searchQuery}
@@ -349,7 +350,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
 
           <div className="flex items-center gap-2 w-full md:w-auto shrink-0">
             <span className="text-[12px] font-bold text-[#707974] flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px]">sort</span>
+              <LucideIcon name="sort" className="text-[16px]" />
               <span>{lang === 'MR' ? 'क्रमवारी:' : 'Sort By:'}</span>
             </span>
             <select
@@ -357,9 +358,9 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
               onChange={(e) => setSortBy(e.target.value as any)}
               className="bg-[#f9f3ea] text-[#1d1b16] p-2 rounded-xl text-[12px] font-bold border border-[#e8e2d9] focus:outline-none"
             >
-              <option value="latest">{lang === 'MR' ? 'नवीनतम लेख (Latest First)' : 'Latest First'}</option>
-              <option value="popular">{lang === 'MR' ? 'सर्वाधिक पसंती (Most Liked)' : 'Most Liked'}</option>
-              <option value="views">{lang === 'MR' ? 'सर्वाधिक वाचलेले (Most Viewed)' : 'Most Viewed'}</option>
+              <option value="latest">{lang === 'MR' ? 'नवीनतम लेख' : 'Latest First'}</option>
+              <option value="popular">{lang === 'MR' ? 'सर्वाधिक पसंती' : 'Most Liked'}</option>
+              <option value="views">{lang === 'MR' ? 'सर्वाधिक वाचलेले' : 'Most Viewed'}</option>
             </select>
           </div>
         </div>
@@ -374,7 +375,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${selectedCategory === cat.id
-                  ? 'bg-[#166534] text-[#bbf7d0] shadow-xs'
+                  ? 'bg-[#166534] text-[#a7f3d0] shadow-xs'
                   : 'bg-[#f4efe8] text-[#555] hover:bg-[#eae2d7]'
                 }`}
             >
@@ -388,7 +389,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
       {/* 5. Blog Grid */}
       {filteredPosts.length === 0 ? (
         <div className="bg-white rounded-3xl p-12 text-center border border-[#e8e2d9] shadow-xs">
-          <span className="material-symbols-outlined text-[48px] text-[#707974] mb-3 block">menu_book</span>
+          <LucideIcon name="menu_book" className="text-[48px] text-[#707974] mb-3 block" />
           <h3 className="font-heading font-extrabold text-lg text-[#1d1b16]">
             {lang === 'MR' ? 'कोणताही लेख आढळला नाही' : 'No articles found'}
           </h3>
@@ -425,15 +426,15 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                     loading="lazy"
                   />
                   <div className="absolute top-3 left-3 flex items-center gap-1.5">
-                    <span className="px-2.5 py-0.5 rounded-md bg-[#166534]/95 text-[#bbf7d0] text-[11px] font-bold shadow-sm">
+                    <span className="px-2.5 py-0.5 rounded-md bg-[#166534]/95 text-[#a7f3d0] text-[11px] font-bold shadow-sm">
                       {lang === 'MR' ? (post.categoryMarathi || post.category) : post.category}
                     </span>
-                    <span className="px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-[#bbf7d0] text-[10px] font-mono font-bold shadow-sm">
+                    <span className="px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-[#a7f3d0] text-[10px] font-mono font-bold shadow-sm">
                       #{post.id}
                     </span>
                   </div>
                   <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-xs text-white text-[11px] px-2 py-0.5 rounded-md font-mono flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[13px]">schedule</span>
+                    <LucideIcon name="schedule" className="text-[13px]" />
                     <span>{post.readTimeMinutes} {lang === 'MR' ? 'मि.' : 'min'}</span>
                   </div>
                 </div>
@@ -492,10 +493,10 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                     className="p-1.5 rounded-lg bg-[#e6f7f0] text-[#006a4e] hover:bg-[#d0f0e3] transition-colors"
                     title={lang === 'MR' ? 'WhatsApp वर पाठवा' : 'Share on WhatsApp'}
                   >
-                    <span className="material-symbols-outlined text-[16px]">share</span>
+                    <LucideIcon name="share" className="text-[16px]" />
                   </button>
                   <span className="p-1.5 rounded-lg bg-[#f4efe8] text-[#166534] group-hover:bg-[#166534] group-hover:text-white transition-colors">
-                    <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    <LucideIcon name="arrow_forward" className="text-[16px]" />
                   </span>
                 </div>
               </div>

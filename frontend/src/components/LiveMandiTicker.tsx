@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React from 'react';
 import type { MandiPrice } from '../types';
 import { useLanguage } from '../context/LanguageContext';
@@ -15,7 +16,7 @@ export const LiveMandiTicker: React.FC<LiveMandiTickerProps> = ({ prices, onView
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3.5 gap-2">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center">
-            <span className="material-symbols-outlined text-[20px]">trending_up</span>
+            <LucideIcon name="trending_up" className="text-[20px]" />
           </div>
           <span className="font-heading font-extrabold text-[16px] text-emerald-950">
             {lang === 'MR' ? 'थेट बाजारभाव (पवनी व भंडारा कृषी उत्पन्न बाजार)' : 'LIVE MANDI BHAAV (Pauni & Bhandara APMC)'}
@@ -33,7 +34,7 @@ export const LiveMandiTicker: React.FC<LiveMandiTickerProps> = ({ prices, onView
             className="text-[12px] text-[#c2410c] font-bold hover:underline flex items-center gap-0.5 cursor-pointer"
           >
             <span>{lang === 'MR' ? 'संपूर्ण बाजारभाव पत्रक' : 'Full APMC Sheet'}</span>
-            <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+            <LucideIcon name="chevron_right" className="text-[16px]" />
           </button>
         </div>
       </div>

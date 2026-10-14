@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useMemo, useEffect } from 'react';
 import { INITIAL_BLOG_POSTS, DEFAULT_BLOG_COMMENTS, type BlogPost, type BlogComment } from '../data/blogData';
 import { SEOHead } from '../components/SEOHead';
@@ -400,8 +401,8 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <Breadcrumb
           items={[
-            { label: t('nav_home') || (isMr ? 'मुख्य पृष्ठ' : 'Home'), onClick: onNavigateHome },
-            { label: isMr ? 'माहिती व ज्ञान केंद्र (ब्लॉग्स)' : 'Village Knowledge Hub & Blogs', onClick: onNavigateBack },
+            { label: t('nav_home'), onClick: onNavigateHome },
+            { label: t('nav_blogs'), onClick: onNavigateBack },
             { label: currentTitle, active: true }
           ]}
         />
@@ -410,9 +411,9 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
           {onWriteBlog && (
             <button
               onClick={onWriteBlog}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#166534] text-[#bbf7d0] hover:bg-[#052e16] font-bold text-xs shadow-2xs transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#166534] text-[#a7f3d0] hover:bg-[#052e16] font-bold text-xs shadow-2xs transition-all"
             >
-              <span className="material-symbols-outlined text-[16px]">edit_note</span>
+              <LucideIcon name="edit_note" className="text-[16px]" />
               <span>{isMr ? 'लेख लिहा' : 'Write Article'}</span>
             </button>
           )}
@@ -421,8 +422,8 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
             onClick={onNavigateBack}
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white border border-[#e8e2d9] text-[#166534] font-bold text-xs hover:bg-[#f9f3ea] shadow-2xs transition-all shrink-0"
           >
-            <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-            <span>{isMr ? 'मागे जा (Back)' : 'Back'}</span>
+            <LucideIcon name="arrow_back" className="text-[16px]" />
+            <span>{isMr ? 'मागे जा' : 'Back'}</span>
           </button>
         </div>
       </div>
@@ -430,21 +431,21 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
       {/* 2. Article Header Card */}
       <header className="bg-white rounded-2xl p-6 sm:p-8 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
         <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className="px-2.5 py-1 rounded-md bg-[#166534] text-[#bbf7d0] text-[11px] font-bold uppercase tracking-wider">
+          <span className="px-2.5 py-1 rounded-md bg-[#166534] text-[#a7f3d0] text-[11px] font-bold uppercase tracking-wider">
             {currentCategory}
           </span>
           <span className="text-[#707974] flex items-center gap-1 font-medium">
-            <span className="material-symbols-outlined text-[15px]">calendar_today</span>
+            <LucideIcon name="calendar_today" className="text-[15px]" />
             <span>{post.publishDate}</span>
           </span>
           <span className="text-[#707974]">•</span>
           <span className="text-[#707974] flex items-center gap-1 font-medium">
-            <span className="material-symbols-outlined text-[15px]">schedule</span>
+            <LucideIcon name="schedule" className="text-[15px]" />
             <span>{post.readTimeMinutes} {isMr ? 'मिनिटे वाचन' : 'min read'}</span>
           </span>
           <span className="text-[#707974]">•</span>
           <span className="text-[#707974] flex items-center gap-1 font-medium">
-            <span className="material-symbols-outlined text-[15px]">visibility</span>
+            <LucideIcon name="visibility" className="text-[15px]" />
             <span>{post.viewCount || 120} {isMr ? 'वाचक' : 'readers'}</span>
           </span>
         </div>
@@ -473,13 +474,13 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
         {/* Author Details & Interactive Likes/Share Action Bar */}
         <div className="p-4 rounded-xl bg-[#fcfaf7] border border-[#e8e2d9] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-[#166534] text-[#bbf7d0] flex items-center justify-center font-extrabold text-base shrink-0 shadow-2xs">
+            <div className="w-12 h-12 rounded-xl bg-[#166534] text-[#a7f3d0] flex items-center justify-center font-extrabold text-base shrink-0 shadow-2xs">
               {post.author.substring(0, 2).toUpperCase()}
             </div>
             <div>
               <div className="text-sm font-extrabold text-[#1d1b16] flex items-center gap-1.5">
                 <span>{post.author}</span>
-                <span className="material-symbols-outlined text-[16px] text-[#006a4e]">verified</span>
+                <LucideIcon name="verified" className="text-[16px] text-[#006a4e]" />
               </div>
               <div className="text-xs text-[#707974] font-medium">
                 {currentAuthorRole}
@@ -497,9 +498,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
                 }`}
               title={isLiked ? (isMr ? 'पसंती मागे घ्या' : 'Unlike') : (isMr ? 'मला हा लेख आवडला' : 'Like article')}
             >
-              <span className={`material-symbols-outlined text-[18px] transition-transform ${isLiked ? 'text-red-600 scale-110' : ''}`}>
-                {isLiked ? 'favorite' : 'favorite_border'}
-              </span>
+              <LucideIcon name={isLiked ? 'favorite' : 'favorite_border'} className={` text-[18px] transition-transform ${isLiked ? 'text-red-600 scale-110' : ''}`} />
               <span>{likesCount} {isMr ? 'पसंती' : 'Likes'}</span>
             </button>
 
@@ -508,7 +507,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
               onClick={handleShareWhatsApp}
               className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#25d366] hover:bg-[#20ba59] text-white text-xs font-bold transition-all shadow-2xs"
             >
-              <span className="material-symbols-outlined text-[16px]">share</span>
+              <LucideIcon name="share" className="text-[16px]" />
               <span>WhatsApp</span>
             </button>
 
@@ -518,7 +517,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
               className="p-2 rounded-xl bg-white border border-[#e8e2d9] hover:bg-[#f9f3ea] text-[#404945] text-xs font-bold transition-all shadow-2xs"
               title={isMr ? 'लेखाची लिंक कॉपी करा' : 'Copy article link'}
             >
-              <span className="material-symbols-outlined text-[18px]">content_copy</span>
+              <LucideIcon name="content_copy" className="text-[18px]" />
             </button>
 
             {/* Native Share Button */}
@@ -527,14 +526,14 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
               className="p-2 rounded-xl bg-white border border-[#e8e2d9] hover:bg-[#f9f3ea] text-[#404945] text-xs font-bold transition-all shadow-2xs"
               title={isMr ? 'इतर माध्यमातून शेअर करा' : 'Share via other apps'}
             >
-              <span className="material-symbols-outlined text-[18px]">share</span>
+              <LucideIcon name="share" className="text-[18px]" />
             </button>
           </div>
         </div>
 
         {likeToast && (
           <div className="bg-[#e6f7f0] border border-[#b8ebd5] text-[#006a4e] text-xs font-bold px-4 py-2 rounded-xl animate-fade-in flex items-center gap-2">
-            <span className="material-symbols-outlined text-[16px]">check_circle</span>
+            <LucideIcon name="check_circle" className="text-[16px]" />
             <span>{likeToast}</span>
           </div>
         )}
@@ -542,13 +541,13 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
         {/* Prominent Clean Hash ID Permalink Bar */}
         <div className="bg-[#f9f5ed] border border-[#e5decb] rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
           <div className="flex items-center gap-3 overflow-hidden w-full sm:w-auto">
-            <span className="w-9 h-9 rounded-xl bg-[#166534] text-[#bbf7d0] flex items-center justify-center shrink-0 shadow-2xs font-mono font-bold text-sm">
+            <span className="w-9 h-9 rounded-xl bg-[#166534] text-[#a7f3d0] flex items-center justify-center shrink-0 shadow-2xs font-mono font-bold text-sm">
               #
             </span>
             <div className="overflow-hidden min-w-0">
               <div className="text-[11px] font-bold text-[#707974] flex items-center gap-2 mb-0.5">
-                <span>{isMr ? 'लेखाची कायमस्वरूपी वेब लिंक (Direct Hash ID):' : 'Direct Article Permalink (Hash ID):'}</span>
-                <span className="px-2 py-0.5 rounded-md bg-[#166534] text-[#bbf7d0] text-[11px] font-mono font-black tracking-wider">
+                <span>{isMr ? 'लेखाची थेट लिंक:' : 'Direct Article Link:'}</span>
+                <span className="px-2 py-0.5 rounded-md bg-[#166534] text-[#a7f3d0] text-[11px] font-mono font-black tracking-wider">
                   #{post.id || post.slug}
                 </span>
               </div>
@@ -559,10 +558,10 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
           </div>
           <button
             onClick={handleCopyLink}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white hover:bg-[#166534] text-[#166534] hover:text-[#bbf7d0] border border-[#d8cfbe] text-xs font-bold transition-all shadow-2xs shrink-0 cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white hover:bg-[#166534] text-[#166534] hover:text-[#a7f3d0] border border-[#d8cfbe] text-xs font-bold transition-all shadow-2xs shrink-0 cursor-pointer"
           >
-            <span className="material-symbols-outlined text-[16px]">content_copy</span>
-            <span>{isMr ? 'लिंक कॉपी करा (Copy)' : 'Copy Link'}</span>
+            <LucideIcon name="content_copy" className="text-[16px]" />
+            <span>{isMr ? 'लिंक कॉपी करा' : 'Copy Link'}</span>
           </button>
         </div>
 
@@ -585,8 +584,8 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
         {/* Tags */}
         <div className="pt-6 border-t border-[#f0eee8] flex flex-wrap items-center gap-2">
           <span className="text-xs font-bold text-[#707974] flex items-center gap-1">
-            <span className="material-symbols-outlined text-[15px]">label</span>
-            <span>{isMr ? 'टॅग्ज (Keywords):' : 'Tags & Keywords:'}</span>
+            <LucideIcon name="label" className="text-[15px]" />
+            <span>{isMr ? 'विषय / टॅग्ज:' : 'Tags:'}</span>
           </span>
           {(currentTags || []).map((tag, i) => (
             <span
@@ -603,11 +602,11 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
       <section className="bg-white rounded-2xl p-6 sm:p-8 border border-[#e8e2d9] shadow-xs space-y-6">
         <div className="flex items-center justify-between border-b border-[#f0eee8] pb-4">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[24px] text-[#006a4e]">forum</span>
+            <LucideIcon name="forum" className="text-[24px] text-[#006a4e]" />
             <h3 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#166534]">
               {isMr ? 'प्रतिक्रिया व ग्राम संवाद' : 'Comments & Discussion'}
             </h3>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117] text-xs font-bold">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-xs font-bold">
               {comments.length}
             </span>
           </div>
@@ -622,13 +621,13 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
             {/* Authenticated user indicator */}
             <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-[#e8e2d9]">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-[#166534] text-[#bbf7d0] flex items-center justify-center font-bold text-xs">
+                <div className="w-8 h-8 rounded-full bg-[#166534] text-[#a7f3d0] flex items-center justify-center font-bold text-xs">
                   {currentUser.fullName.charAt(0)}
                 </div>
                 <div>
                   <div className="text-xs font-bold text-[#166534] flex items-center gap-1">
                     <span>{currentUser.fullName}</span>
-                    <span className="material-symbols-outlined text-[15px] text-[#006a4e]">verified</span>
+                    <LucideIcon name="verified" className="text-[15px] text-[#006a4e]" />
                   </div>
                   <div className="text-[11px] text-[#707974]">
                     {isMr
@@ -645,14 +644,14 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
 
             {commentSuccessMsg && (
               <div className="bg-[#e6f7f0] border border-[#b8ebd5] text-[#006a4e] text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-2">
-                <span className="material-symbols-outlined text-[16px]">check_circle</span>
+                <LucideIcon name="check_circle" className="text-[16px]" />
                 <span>{commentSuccessMsg}</span>
               </div>
             )}
 
             <div>
               <label className="block text-[11px] font-bold text-[#707974] mb-1.5">
-                {isMr ? 'तुमची प्रतिक्रिया किंवा प्रश्न (Your Comment) *' : 'Your Comment or Question *'}
+                {isMr ? 'तुमची प्रतिक्रिया किंवा प्रश्न *' : 'Your Comment or Question *'}
               </label>
               <textarea
                 required
@@ -676,9 +675,9 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
               </span>
               <button
                 type="submit"
-                className="px-5 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-[#bbf7d0] text-xs font-bold flex items-center gap-1.5 transition-colors shadow-2xs shrink-0"
+                className="px-5 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-[#a7f3d0] text-xs font-bold flex items-center gap-1.5 transition-colors shadow-2xs shrink-0"
               >
-                <span className="material-symbols-outlined text-[16px]">send</span>
+                <LucideIcon name="send" className="text-[16px]" />
                 <span>{isMr ? 'प्रतिक्रिया नोंदवा' : 'Post Comment'}</span>
               </button>
             </div>
@@ -687,7 +686,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
           /* Login prompt when not authenticated */
           <div className="p-6 rounded-2xl bg-gradient-to-br from-[#fbf8f3] to-[#f4eee4] border border-[#e8e2d9] text-center space-y-3">
             <div className="w-12 h-12 mx-auto rounded-full bg-[#166534]/10 text-[#166534] flex items-center justify-center">
-              <span className="material-symbols-outlined text-[24px]">lock</span>
+              <LucideIcon name="lock" className="text-[24px]" />
             </div>
             <div>
               <h4 className="font-heading font-extrabold text-[15px] sm:text-[17px] text-[#166534]">
@@ -702,10 +701,10 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
             <button
               type="button"
               onClick={onRequireLogin}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-[#bbf7d0] text-xs font-bold transition-all shadow-sm"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-[#a7f3d0] text-xs font-bold transition-all shadow-sm"
             >
-              <span className="material-symbols-outlined text-[18px]">login</span>
-              <span>{isMr ? 'लॉगिन करा (Login to Join Discussion)' : 'Sign In to Join Discussion'}</span>
+              <LucideIcon name="login" className="text-[18px]" />
+              <span>{isMr ? 'लॉगिन करा' : 'Sign In to Join Discussion'}</span>
             </button>
           </div>
         )}
@@ -745,7 +744,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
                     className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#fcfaf7] hover:bg-emerald-50 text-[11px] font-bold text-[#707974] hover:text-emerald-700 border border-[#e8e2d9] transition-colors"
                     title={isMr ? 'पसंत करा' : 'Like'}
                   >
-                    <span className="material-symbols-outlined text-[14px]">thumb_up</span>
+                    <LucideIcon name="thumb_up" className="text-[14px]" />
                     <span>{comment.likesCount}</span>
                   </button>
                 </div>
@@ -763,7 +762,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
       <section className="bg-gradient-to-r from-[#166534] to-[#0f533f] text-white rounded-2xl p-6 sm:p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-sm border border-[#052e16]">
         <div>
           <h3 className="text-[16px] sm:text-[18px] font-extrabold flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#bbf7d0]">share</span>
+            <LucideIcon name="share" className="text-[#a7f3d0]" />
             <span>{isMr ? 'हा लेख इतर ग्रामस्थांना उपयुक्त वाटेल का?' : 'Found this article helpful?'}</span>
           </h3>
           <p className="text-xs sm:text-[13px] text-[#d6eee4] mt-1 font-medium">
@@ -777,7 +776,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
             onClick={handleShareWhatsApp}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#25d366] hover:bg-[#20ba59] text-white text-xs font-bold transition-all shadow-md shrink-0"
           >
-            <span className="material-symbols-outlined text-[18px]">chat</span>
+            <LucideIcon name="chat" className="text-[18px]" />
             <span>{isMr ? 'WhatsApp वर शेअर करा' : 'Share on WhatsApp'}</span>
           </button>
         </div>
@@ -788,7 +787,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
         <section className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="font-heading font-extrabold text-[18px] text-[#166534]">
-              {isMr ? 'इतर संबंधित माहिती लेख (Related Knowledge Articles)' : 'Related Knowledge Articles'}
+              {isMr ? 'इतर संबंधित माहिती लेख' : 'Related Knowledge Articles'}
             </h3>
             <button
               onClick={onNavigateBack}
@@ -835,7 +834,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
                     <span>{rel.readTimeMinutes} {isMr ? 'मि. वाचन' : 'min read'}</span>
                     <span className="text-[#166534] font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
                       <span>{isMr ? 'वाचा' : 'Read'}</span>
-                      <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                      <LucideIcon name="arrow_forward" className="text-[14px]" />
                     </span>
                   </div>
                 </div>

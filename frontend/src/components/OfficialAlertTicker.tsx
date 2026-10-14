@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -28,7 +29,7 @@ export const OfficialAlertTicker: React.FC<OfficialAlertTickerProps> = ({ onView
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-600"></span>
         </span>
-        <span className="material-symbols-outlined text-[20px] text-amber-700 shrink-0">campaign</span>
+        <LucideIcon name="campaign" className="text-[20px] text-amber-700 shrink-0" />
         <span className="text-[11px] uppercase tracking-wider text-amber-900 font-black hidden sm:inline px-2 py-0.5 rounded-full bg-amber-200/80 border border-amber-300">
           {lang === 'MR' ? 'थेट' : 'LIVE'}
         </span>
@@ -51,7 +52,7 @@ export const OfficialAlertTicker: React.FC<OfficialAlertTickerProps> = ({ onView
             className="text-emerald-800 hover:text-emerald-950 text-[12px] font-bold flex items-center hover:underline whitespace-nowrap"
           >
             <span>{lang === 'MR' ? 'सर्व पहा' : 'View All'}</span>
-            <span className="material-symbols-outlined text-[16px] ml-0.5">chevron_right</span>
+            <LucideIcon name="chevron_right" className="text-[16px] ml-0.5" />
           </button>
         )}
         <button

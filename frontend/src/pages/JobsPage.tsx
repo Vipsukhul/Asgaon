@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useState } from 'react';
 import type { Job } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
@@ -19,9 +20,9 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
 
   const categories = [
     { id: 'All', label: lang === 'MR' ? 'सर्व संधी' : 'All Openings' },
-    { id: 'farm', label: lang === 'MR' ? 'रोजंदारी व शेतमजूर' : 'Daily Wage & Farm Labor (रोजंदारी)' },
-    { id: 'staff', label: lang === 'MR' ? 'दुकान व कार्यालय कर्मचारी' : 'Permanent Staff (Shop / Office)' },
-    { id: 'tech', label: lang === 'MR' ? 'कुशल तंत्रज्ञ (वायरमन/टेक)' : 'Skilled Technical (Wireman / Tech)' },
+    { id: 'farm', label: lang === 'MR' ? 'रोजंदारी व शेतमजूर' : 'Daily Wage & Farm Labor' },
+    { id: 'staff', label: lang === 'MR' ? 'दुकान व कार्यालय कर्मचारी' : 'Shop & Office Staff' },
+    { id: 'tech', label: lang === 'MR' ? 'कुशल तंत्रज्ञ व कारागीर' : 'Skilled Technicians & Artisans' },
     { id: 'women', label: lang === 'MR' ? 'महिला व बचत गट कामे' : 'Women & SHG Works' }
   ];
 
@@ -35,7 +36,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
     return {
       id: j.id || `dyn-job-${idx}`,
       tagBadge: j.employmentType ? String(j.employmentType).toUpperCase() : 'ACTIVE VACANCY',
-      tagColor: 'bg-[#bbf7d0] text-[#002117]',
+      tagColor: 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]',
       certBadge: 'Asgaon Verified Employer',
       posted: j.postedAgo || 'Recently Posted',
       title: j.title,
@@ -81,11 +82,11 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
       <Breadcrumb
         items={[
           { label: t('nav_home'), onClick: onNavigateHome },
-          { label: lang === 'MR' ? 'ग्राम रोजगार मंच' : 'Jobs', active: true }
+          { label: t('nav_jobs'), active: true }
         ]}
         rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#bbf7d0] text-[#002117] px-3 py-1 rounded-full text-[11px] font-bold">
-            <span className="material-symbols-outlined text-[15px] text-[#002117]">verified</span>
+          <div className="flex items-center gap-1.5 bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] px-3 py-1 rounded-full text-[11px] font-bold">
+            <LucideIcon name="verified" className="text-[15px] text-[#14532d]" />
             <span>{lang === 'MR' ? '१००% थेट स्थानिक रोजगार • शून्य दलाली' : '100% Direct Village Employment • No Middlemen Fee'}</span>
           </div>
         }
@@ -123,7 +124,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
             onClick={onPostJob}
             className="w-full py-2.5 px-4 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-2 transition-colors shadow-xs"
           >
-            <span className="material-symbols-outlined text-[18px]">post_add</span>
+            <LucideIcon name="post_add" className="text-[18px]" />
             <span>{lang === 'MR' ? 'नोकरीची जाहिरात करा' : 'Post a Job Vacancy'}</span>
           </button>
 
@@ -131,7 +132,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
             onClick={() => alert(lang === 'MR' ? 'उमेदवार नोंदणी फॉर्म उघडला आहे.' : 'Candidate registration modal opened.')}
             className="w-full py-2.5 px-4 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] text-[#1d1b16] text-[13px] font-bold flex items-center justify-center gap-2 transition-colors border border-[#e8e2d9]"
           >
-            <span className="material-symbols-outlined text-[18px]">how_to_reg</span>
+            <LucideIcon name="how_to_reg" className="text-[18px]" />
             <span>{lang === 'MR' ? 'उमेदवार नोंदणी करा' : 'Register as Job Seeker'}</span>
           </button>
         </div>
@@ -140,20 +141,20 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
       {/* 3. Four Metric Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-[#bbf7d0] text-[#002117] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[22px]">work</span>
+          <div className="w-11 h-11 rounded-xl bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] flex items-center justify-center shrink-0">
+            <LucideIcon name="work" className="text-[22px]" />
           </div>
           <div>
             <div className="font-heading font-extrabold text-[20px] text-[#166534]">{allJobs.length}</div>
             <div className="text-[11px] font-bold text-[#707974] uppercase">
-              {lang === 'MR' ? 'सध्याच्या संधी (आसगाव परिसर)' : 'Active Openings (Asgaon Cluster)'}
+              {lang === 'MR' ? 'सध्याच्या संधी (आसगाव परिसर)' : 'Active Openings (Asgaon Area)'}
             </div>
           </div>
         </div>
 
         <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center gap-3">
           <div className="w-11 h-11 rounded-xl bg-[#fed7aa] text-[#c2410c] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[22px]">payments</span>
+            <LucideIcon name="payments" className="text-[22px]" />
           </div>
           <div>
             <div className="font-heading font-extrabold text-[20px] text-[#c2410c]">₹650 - ₹950</div>
@@ -165,7 +166,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
 
         <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center gap-3">
           <div className="w-11 h-11 rounded-xl bg-[#dbe1ff] text-[#002873] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[22px]">verified</span>
+            <LucideIcon name="verified" className="text-[22px]" />
           </div>
           <div>
             <div className="font-heading font-extrabold text-[20px] text-[#002873]">100% Direct</div>
@@ -177,7 +178,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
 
         <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex items-center gap-3">
           <div className="w-11 h-11 rounded-xl bg-[#f3ede4] text-[#1d1b16] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[22px]">engineering</span>
+            <LucideIcon name="engineering" className="text-[22px]" />
           </div>
           <div>
             <div className="font-heading font-extrabold text-[20px] text-[#1d1b16]">14 Works</div>
@@ -192,7 +193,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
       <div className="bg-white rounded-2xl p-4 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
         <div className="flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="relative w-full md:flex-1">
-            <span className="material-symbols-outlined absolute left-3 top-2.5 text-[#707974] text-[20px]">search</span>
+            <LucideIcon name="search" className="absolute left-3 top-2.5 text-[#707974] text-[20px]" />
             <input
               type="text"
               value={search}
@@ -252,12 +253,12 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
             <div className="bg-white rounded-2xl p-12 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
               <div className="w-8 h-8 border-3 border-[#166534] border-t-transparent rounded-full animate-spin mb-1" />
               <p className="text-[13px] font-bold text-[#166534]">
-                {lang === 'MR' ? 'नोकरी माहिती लोड होत आहे, कृपया प्रतीक्षा करा...' : 'Connecting to database & loading job vacancies...'}
+                {lang === 'MR' ? 'नोकरी माहिती लोड होत आहे, कृपया प्रतीक्षा करा...' : 'Loading job vacancies...'}
               </p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-              <span className="material-symbols-outlined text-[48px] text-[#c2410c]">work_off</span>
+              <LucideIcon name="work_off" className="text-[48px] text-[#c2410c]" />
               <h3 className="font-heading font-bold text-[18px] text-[#166534]">
                 {lang === 'MR' ? 'एकही नोकरी आढळली नाही' : 'No matching job openings'}
               </h3>
@@ -285,7 +286,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                       <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider ${job.tagColor}`}>
                         {job.tagBadge}
                       </span>
-                      <span className="text-[11px] font-bold text-[#166534] bg-[#bbf7d0] px-2 py-0.5 rounded">
+                      <span className="text-[11px] font-bold text-[#166534] bg-[#a7f3d0] px-2 py-0.5 rounded">
                         {lang === 'MR' ? 'सत्यापित मालक' : job.certBadge}
                       </span>
                     </div>
@@ -296,7 +297,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                     {job.title}
                   </h3>
                   <div className="text-[12px] font-semibold text-[#c2410c] mb-3 flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[15px]">apartment</span>
+                    <LucideIcon name="apartment" className="text-[15px]" />
                     <span>{job.employer}</span>
                   </div>
 
@@ -352,7 +353,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                       href={`tel:${job.phone}`}
                       className="px-3.5 py-1.5 rounded-lg bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold flex items-center gap-1 shadow-xs transition-colors"
                     >
-                      <span className="material-symbols-outlined text-[14px]">call</span>
+                      <LucideIcon name="call" className="text-[14px]" />
                       <span>{lang === 'MR' ? 'थेट फोन करा' : 'Direct Call Employer'}</span>
                     </a>
 
@@ -362,7 +363,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                       rel="noopener noreferrer"
                       className="px-3 py-1.5 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#166534] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9]"
                     >
-                      <span className="material-symbols-outlined text-[14px] text-[#25D366]">chat</span>
+                      <LucideIcon name="chat" className="text-[14px] text-[#25D366]" />
                       <span>WhatsApp</span>
                     </a>
                   </div>
@@ -372,7 +373,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                     className="text-[12px] font-bold text-[#c2410c] hover:underline flex items-center gap-0.5"
                   >
                     <span>{lang === 'MR' ? 'प्रोफाइलद्वारे अर्ज करा' : 'Apply via Village Profile'}</span>
-                    <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                    <LucideIcon name="arrow_forward" className="text-[14px]" />
                   </button>
                 </div>
               </div>
@@ -470,15 +471,15 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
               className="mt-3 text-[12px] text-[#166534] font-bold hover:underline flex items-center gap-1"
             >
               <span>{lang === 'MR' ? 'वेतन दर मार्गदर्शक PDF डाऊनलोड करा' : 'Download Wage Benchmark PDF'}</span>
-              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+              <LucideIcon name="arrow_forward" className="text-[14px]" />
             </button>
           </div>
 
           {/* Widget 2: Instant Village Job Alerts */}
           <div className="bg-[#052e16] text-white rounded-2xl p-5 shadow-xs border border-[#166534]">
             <div className="flex items-center gap-2 mb-2">
-              <span className="material-symbols-outlined text-[#bbf7d0] text-[22px]">notifications_active</span>
-              <h3 className="font-heading font-extrabold text-[15px] text-[#bbf7d0]">
+              <LucideIcon name="notifications_active" className="text-[#a7f3d0] text-[22px]" />
+              <h3 className="font-heading font-extrabold text-[15px] text-[#a7f3d0]">
                 {lang === 'MR' ? 'झटपट नोकरी अलर्ट्स!' : 'Instant Village Job Alerts!'}
               </h3>
             </div>
@@ -491,15 +492,15 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
 
             <ul className="space-y-1.5 text-[11px] text-white/80 mb-4">
               <li className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[14px] text-[#bbf7d0]">check_circle</span>
+                <LucideIcon name="check_circle" className="text-[14px] text-[#a7f3d0]" />
                 <span>{lang === 'MR' ? 'सत्यापित स्थानिक नोकऱ्या' : 'Verified jobs'}</span>
               </li>
               <li className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[14px] text-[#bbf7d0]">check_circle</span>
+                <LucideIcon name="check_circle" className="text-[14px] text-[#a7f3d0]" />
                 <span>{lang === 'MR' ? '१००% मोफत सूचना' : '100% free alerts, no fees ever'}</span>
               </li>
               <li className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[14px] text-[#bbf7d0]">check_circle</span>
+                <LucideIcon name="check_circle" className="text-[14px] text-[#a7f3d0]" />
                 <span>{lang === 'MR' ? 'थेट मालकांशी संपर्क' : 'Direct connect to employers'}</span>
               </li>
             </ul>
@@ -524,7 +525,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
             </p>
 
             <div className="bg-[#f9f3ea] p-3 rounded-xl border border-[#e8e2d9] text-[11px] text-[#404945] mb-3 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#c2410c] text-[20px]">groups</span>
+              <LucideIcon name="groups" className="text-[#c2410c] text-[20px]" />
               <span>{lang === 'MR' ? 'थेट स्थानिक कामगारांशी संपर्क • १००% पडताळणी केलेले प्रोफाइल' : 'Direct connect with verified local worker profiles'}</span>
             </div>
 
@@ -532,7 +533,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
               onClick={onPostJob}
               className="w-full py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold transition-colors flex items-center justify-center gap-1"
             >
-              <span className="material-symbols-outlined text-[15px]">add_circle</span>
+              <LucideIcon name="add_circle" className="text-[15px]" />
               <span>{lang === 'MR' ? 'नोकरीची जाहिरात पोस्ट करा' : 'Post Vacancy'}</span>
             </button>
           </div>
@@ -540,7 +541,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
           {/* Widget 4: MGNREGA 100 Days Guarantee */}
           <div className="bg-[#f9f3ea] rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
             <div className="flex items-center gap-2 text-[#166534] font-bold text-[14px] mb-1">
-              <span className="material-symbols-outlined text-[18px]">verified_user</span>
+              <LucideIcon name="verified_user" className="text-[18px]" />
               <span>{lang === 'MR' ? 'मनरेगा १०० दिवस रोजगार हमी' : 'MGNREGA 100 Days Guarantee'}</span>
             </div>
             <p className="text-[11px] text-[#707974] leading-relaxed mb-3">
@@ -555,7 +556,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
               className="text-[12px] text-[#c2410c] font-bold hover:underline flex items-center gap-1"
             >
               <span>{lang === 'MR' ? 'मनरेगा जॉब कार्डसाठी अर्ज करा' : 'Apply for MGNREGA Job Card'}</span>
-              <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+              <LucideIcon name="open_in_new" className="text-[14px]" />
             </a>
           </div>
         </div>

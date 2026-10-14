@@ -118,7 +118,7 @@ export const BUS_SCHEDULES: BusSchedule[] = [
     approxArrivalTime: '10:30 AM',
     durationMinutes: 150,
     busType: 'Asiad',
-    busTypeMarathi: 'निमआराम (Asian/Express)',
+    busTypeMarathi: 'निमआराम एक्सप्रेस',
     depot: 'Pauni Depot',
     depotMarathi: 'पवनी आगार',
     fareGeneral: 135,
@@ -530,7 +530,7 @@ export const DEPOT_CONTACTS: DepotContact[] = [
 
 export const MSRTC_CONCESSIONS = [
   {
-    title: 'महिला सन्मान योजना (Mahila Samman Yojana)',
+    title: 'महिला सन्मान योजना',
     benefit: '५०% तिकीट सवलत (अर्धे तिकीट)',
     eligibility: 'महाराष्ट्रातील सर्व महिला व विद्यार्थिनींसाठी सर्व साध्या व निमआराम बसेसमध्ये लागू.',
     requirement: 'कोणत्याही विशेष पासची गरज नाही; कंडक्टरकडे थेट महिला तिकीट मिळते.'

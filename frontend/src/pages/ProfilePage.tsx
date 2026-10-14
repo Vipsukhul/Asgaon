@@ -1,3 +1,4 @@
+import { LucideIcon } from '../components/LucideIcon';
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import type { Scheme } from '../types';
@@ -105,7 +106,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       title: 'PM-KUSUM Component-B 90% Solar Pump Subsidy',
       sub: 'Grant: 90% capital subsidy directly to bank',
       icon: 'solar_power',
-      iconColor: 'bg-[#bbf7d0] text-[#002117]',
+      iconColor: 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]',
       url: 'https://pmkusum.mahadiscom.in'
     },
     {
@@ -171,10 +172,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       if (res) {
         setTrackResult(res);
       } else {
-        setTrackError(`Token [${trackInput.trim()}] is registered and under routine Gram Sevak review.`);
+        setTrackError(`Grievance [${trackInput.trim()}] is registered and under routine Gram Sevak review.`);
       }
     } catch {
-      setTrackError(`No active record found for [${trackInput.trim()}]. Please double-check the token code.`);
+      setTrackError(`No active record found for [${trackInput.trim()}]. Please double-check the grievance number.`);
     } finally {
       setTrackingLoading(false);
     }
@@ -205,8 +206,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     <div className="w-full flex flex-col gap-6 font-sans">
       <Breadcrumb
         items={[
-          { label: t('nav_home') || (isMr ? 'मुख्य पृष्ठ' : 'Home'), onClick: onNavigateHome },
-          { label: isMr ? 'माझे नागरिक खाते व तक्रारी (Profile & Grievances)' : 'Citizen Profile & Grievances', active: true }
+          { label: t('nav_home'), onClick: onNavigateHome },
+          { label: t('nav_profile'), active: true }
         ]}
       />
 
@@ -214,7 +215,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       {showRosterAlert && (
         <div className="w-full bg-[#fef3c7] text-[#93000a] py-2.5 px-4 rounded-xl shadow-xs border border-[#fde68a] flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
-            <span className="material-symbols-outlined text-[20px] text-[#ba1a1a] shrink-0">water_drop</span>
+            <LucideIcon name="water_drop" className="text-[20px] text-[#ba1a1a] shrink-0" />
             <div className="truncate">
               <span className="font-heading font-extrabold text-[13px] text-[#ba1a1a] mr-2">
                 {isMr ? 'आसगाव कालवा पाणी वाटप रोस्टर:' : 'Asgaon Canal Water Roster:'}
@@ -234,7 +235,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               onClick={() => setShowRosterAlert(false)}
               className="text-[12px] font-bold text-[#93000a] hover:underline cursor-pointer"
             >
-              {isMr ? 'बंद करा (Dismiss)' : 'Dismiss'}
+              {isMr ? 'बंद करा' : 'Dismiss'}
             </button>
           </div>
         </div>
@@ -244,11 +245,11 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       <div className="bg-white rounded-2xl p-6 shadow-xs border border-[#e8e2d9] flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
         <div className="flex items-center gap-4">
           <div className="relative">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#166534] to-[#006a4e] text-[#bbf7d0] flex items-center justify-center font-heading font-black text-[28px] border-2 border-[#bbf7d0] shadow-sm">
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#166534] to-[#006a4e] text-[#a7f3d0] flex items-center justify-center font-heading font-black text-[28px] border-2 border-[#cadbcf] shadow-sm">
               {currentUser.avatarInitials}
             </div>
-            <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full bg-[#166534] text-[#bbf7d0] flex items-center justify-center border-2 border-white shadow-xs" title={isMr ? "सत्यापित आसगाव नागरिक" : "Verified Asgaon Citizen"}>
-              <span className="material-symbols-outlined text-[15px]">verified</span>
+            <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full bg-[#166534] text-[#a7f3d0] flex items-center justify-center border-2 border-white shadow-xs" title={isMr ? "सत्यापित आसगाव नागरिक" : "Verified Asgaon Citizen"}>
+              <LucideIcon name="verified" className="text-[15px]" />
             </div>
           </div>
 
@@ -257,25 +258,23 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               <h1 className="font-heading font-extrabold text-[24px] text-[#1d1b16] tracking-tight">
                 {currentUser.fullName}
               </h1>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#bbf7d0] text-[#002117] text-[11px] font-bold uppercase tracking-wider">
-                <span className="material-symbols-outlined text-[13px]">
-                  {currentUser.role === 'BUSINESS_OWNER' ? 'storefront' : currentUser.role === 'ADMIN' ? 'shield_person' : currentUser.role === 'STUDENT' ? 'school' : 'agriculture'}
-                </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[11px] font-bold uppercase tracking-wider">
+                <LucideIcon name={currentUser.role === 'BUSINESS_OWNER' ? 'storefront' : currentUser.role === 'ADMIN' ? 'shield_person' : currentUser.role === 'STUDENT' ? 'school' : 'agriculture'} className=" text-[13px]" />
                 <span>{getRoleLabel(currentUser.role)}</span>
               </span>
             </div>
 
             <div className="flex flex-wrap items-center gap-4 text-[13px] text-[#707974] mt-1">
               <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[16px] text-[#c2410c]">location_on</span>
+                <LucideIcon name="location_on" className="text-[16px] text-[#c2410c]" />
                 <span>{currentUser.ward || (isMr ? 'प्रभाग २' : 'Ward 2')}, {isMr ? 'आसगाव (पिन ४४१९१०)' : 'Asgaon (PIN 441910)'}</span>
               </span>
               <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[16px] text-[#166534]">smartphone</span>
+                <LucideIcon name="smartphone" className="text-[16px] text-[#166534]" />
                 <span className="font-semibold text-[#1d1b16]">
                   {currentUser.phone ? `+91 ${currentUser.phone}` : (isMr ? 'नोंदणी नसलेला मोबाईल' : 'Unregistered Mobile')}
                 </span>
-                <span className="text-[10px] text-[#376757] font-bold bg-[#bbf7d0] px-1.5 py-0.2 rounded ml-1">
+                <span className="text-[10px] text-[#376757] font-bold bg-[#a7f3d0] px-1.5 py-0.2 rounded ml-1">
                   {isMr ? 'सक्रिय' : 'Active'}
                 </span>
               </span>
@@ -295,8 +294,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             }}
             className="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
           >
-            <span className="material-symbols-outlined text-[16px]">edit</span>
-            <span>{isMr ? 'माहिती बदला (Edit)' : 'Edit Profile'}</span>
+            <LucideIcon name="edit" className="text-[16px]" />
+            <span>{isMr ? 'माहिती बदला' : 'Edit Profile'}</span>
           </button>
 
           {currentUser.isLoggedIn ? (
@@ -304,15 +303,15 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               onClick={onLogout}
               className="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-[#fef3c7]/60 hover:bg-[#fef3c7] text-[#ba1a1a] text-[13px] font-bold flex items-center justify-center gap-1.5 border border-[#fde68a] transition-colors cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[16px]">logout</span>
-              <span>{isMr ? 'बाहेर पडा (Sign Out)' : 'Sign Out'}</span>
+              <LucideIcon name="logout" className="text-[16px]" />
+              <span>{isMr ? 'बाहेर पडा' : 'Sign Out'}</span>
             </button>
           ) : (
             <button
               onClick={onOpenLoginModal}
               className="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[16px]">login</span>
+              <LucideIcon name="login" className="text-[16px]" />
               <span>{isMr ? 'गुगलने लॉगिन करा' : 'Sign In with Google'}</span>
             </button>
           )}
@@ -329,8 +328,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
               }`}
           >
-            <span className="material-symbols-outlined text-[18px]">badge</span>
-            <span>{isMr ? 'नागरिक माहिती नोंद (Dossier)' : 'Citizen Dossier'}</span>
+            <LucideIcon name="badge" className="text-[18px]" />
+            <span>{isMr ? 'नागरिक माहिती' : 'Citizen Overview'}</span>
           </button>
 
           <button
@@ -340,7 +339,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
               }`}
           >
-            <span className="material-symbols-outlined text-[18px]">assignment_turned_in</span>
+            <LucideIcon name="assignment_turned_in" className="text-[18px]" />
             <span>{isMr ? 'माझ्या तक्रारी व स्थिती' : 'My Grievances & Tracking'}</span>
             <span className="bg-[#fed7aa] text-[#c2410c] text-[11px] px-1.5 py-0.2 rounded-full font-bold">
               {userComplaints.length}
@@ -354,9 +353,9 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
               }`}
           >
-            <span className="material-symbols-outlined text-[18px]">bookmark</span>
+            <LucideIcon name="bookmark" className="text-[18px]" />
             <span>{isMr ? 'जतन केलेल्या योजना' : 'Saved Schemes'}</span>
-            <span className="bg-[#bbf7d0] text-[#002117] text-[11px] px-1.5 py-0.2 rounded-full font-bold">
+            <span className="bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[11px] px-1.5 py-0.2 rounded-full font-bold">
               {savedItems.length}
             </span>
           </button>
@@ -368,7 +367,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
               }`}
           >
-            <span className="material-symbols-outlined text-[18px]">cell_tower</span>
+            <LucideIcon name="cell_tower" className="text-[18px]" />
             <span>{isMr ? 'एसएमएस व प्रसारण सूचना' : 'SMS & Broadcast Alerts'}</span>
           </button>
         </nav>
@@ -385,11 +384,11 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               {userComplaints.length}
             </div>
             <div className="text-[11px] text-[#376757] font-semibold mt-0.5">
-              {isMr ? 'डेटाबेसमध्ये नोंदणीकृत' : 'Live in Neon Database'}
+              {isMr ? 'नोंदणीकृत तक्रारी' : 'Officially Registered'}
             </div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-[#bbf7d0] text-[#002117] flex items-center justify-center">
-            <span className="material-symbols-outlined text-[22px]">assignment</span>
+          <div className="w-10 h-10 rounded-xl bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] flex items-center justify-center">
+            <LucideIcon name="assignment" className="text-[22px]" />
           </div>
         </div>
 
@@ -406,7 +405,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             </div>
           </div>
           <div className="w-10 h-10 rounded-xl bg-[#fed7aa] text-[#c2410c] flex items-center justify-center">
-            <span className="material-symbols-outlined text-[22px]">policy</span>
+            <LucideIcon name="policy" className="text-[22px]" />
           </div>
         </div>
 
@@ -423,7 +422,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             </div>
           </div>
           <div className="w-10 h-10 rounded-xl bg-[#dbe1ff] text-[#002873] flex items-center justify-center">
-            <span className="material-symbols-outlined text-[22px]">account_balance</span>
+            <LucideIcon name="account_balance" className="text-[22px]" />
           </div>
         </div>
 
@@ -440,7 +439,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             </div>
           </div>
           <div className="w-10 h-10 rounded-xl bg-[#f3ede4] text-[#1d1b16] flex items-center justify-center">
-            <span className="material-symbols-outlined text-[22px]">bookmark</span>
+            <LucideIcon name="bookmark" className="text-[22px]" />
           </div>
         </div>
       </div>
@@ -451,24 +450,24 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
             <div>
               <h3 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#c2410c]">badge</span>
-                <span>{isMr ? 'आसगाव नागरिक अभिलेख व डिजिटल नोंद' : 'Asgaon Citizen Record & Digital Dossier'}</span>
+                <LucideIcon name="badge" className="text-[#c2410c]" />
+                <span>{isMr ? 'आसगाव नागरिक अभिलेख' : 'Asgaon Citizen Record & Profile'}</span>
               </h3>
               <p className="text-[12px] text-[#707974]">
-                {isMr ? 'सत्यापित गाव नागरिक नोंदणी माहिती' : 'Authenticated village citizen registry data'}
+                {isMr ? 'सत्यापित गाव नागरिक माहिती' : 'Verified village resident profile'}
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
                 <div className="text-[11px] uppercase font-bold text-[#707974]">
-                  {isMr ? 'पूर्ण कायदेशीर नाव' : 'Full Legal Name'}
+                  {isMr ? 'पूर्ण नाव' : 'Full Name'}
                 </div>
                 <div className="font-heading font-extrabold text-[15px] text-[#166534] mt-0.5">
                   {currentUser.fullName}
                 </div>
                 <div className="text-[11px] text-[#707974] mt-0.5">
-                  {isMr ? 'आसगाव नागरिक मतदार नोंद' : 'Asgaon Civic Electoral Roll'}
+                  {isMr ? 'आसगाव ग्रामस्थ नोंद' : 'Asgaon Village Resident'}
                 </div>
               </div>
 
@@ -509,9 +508,9 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </div>
             </div>
 
-            <div className="p-4 bg-[#bbf7d0]/40 border border-[#006a4e]/30 rounded-xl flex items-center justify-between gap-3">
+            <div className="p-4 bg-[#e8f1ec] border border-[#006a4e]/30 rounded-xl flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-[24px] text-[#006a4e]">verified_user</span>
+                <LucideIcon name="verified_user" className="text-[24px] text-[#006a4e]" />
                 <div>
                   <h4 className="font-bold text-[13px] text-[#166534]">
                     {isMr ? 'डीबीटी थेट बँक खात्याशी जोडणी सक्रिय' : 'DBT Direct-to-Bank Enrolment Active'}
@@ -532,8 +531,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs flex flex-col justify-between">
             <div>
               <h3 className="font-heading font-extrabold text-[16px] text-[#166534] flex items-center gap-2 mb-3">
-                <span className="material-symbols-outlined text-[#006a4e]">support_agent</span>
-                <span>{isMr ? 'नागरिक मदत कक्ष (CSC Kiosk)' : 'Civic CSC Assistance Desk'}</span>
+                <LucideIcon name="support_agent" className="text-[#006a4e]" />
+                <span>{isMr ? 'नागरिक मदत कक्ष (CSC केंद्र)' : 'CSC Assistance Desk'}</span>
               </h3>
               <p className="text-[12px] text-[#404945] leading-relaxed mb-4">
                 {isMr
@@ -542,15 +541,15 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </p>
               <div className="space-y-2 text-[12px]">
                 <div className="flex items-center gap-2 text-[#707974]">
-                  <span className="material-symbols-outlined text-[16px] text-[#166534]">store</span>
-                  <span>{isMr ? 'कियोस्क: आसगाव ग्राम सचिवालय' : 'VLE Kiosk: Asgaon Panchayat Bhawan'}</span>
+                  <LucideIcon name="store" className="text-[16px] text-[#166534]" />
+                  <span>{isMr ? 'केंद्र: आसगाव ग्राम सचिवालय' : 'Center: Asgaon Panchayat Bhawan'}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[#707974]">
-                  <span className="material-symbols-outlined text-[16px] text-[#166534]">schedule</span>
+                  <LucideIcon name="schedule" className="text-[16px] text-[#166534]" />
                   <span>{isMr ? 'वेळ: सोम - शनि, सकाळी ०९:३० — ०५:३०' : 'Timings: Mon - Sat, 09:30 AM — 05:30 PM'}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[#707974]">
-                  <span className="material-symbols-outlined text-[16px] text-[#166534]">call</span>
+                  <LucideIcon name="call" className="text-[16px] text-[#166534]" />
                   <span>{isMr ? 'मदत क्रमांक:' : 'Helpline:'} +91 98221 04500</span>
                 </div>
               </div>
@@ -560,8 +559,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               onClick={onOpenGrievanceModal}
               className="mt-6 w-full py-2.5 rounded-xl bg-[#c2410c] hover:bg-[#852f00] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[18px]">campaign</span>
-              <span>{isMr ? 'नवीन तक्रार नोंदवा (Lodge Grievance)' : 'Lodge a Grievance Ticket'}</span>
+              <LucideIcon name="campaign" className="text-[18px]" />
+              <span>{isMr ? 'नवीन तक्रार नोंदवा' : 'Lodge a Grievance'}</span>
             </button>
           </div>
         </div>
@@ -573,13 +572,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           {/* Tracking Search Card */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
             <h3 className="font-heading font-bold text-[16px] text-[#166534] mb-1 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#c2410c]">search</span>
-              <span>{isMr ? 'तक्रार स्थिती तपासा' : 'Track Grievance Token'}</span>
+              <LucideIcon name="search" className="text-[#c2410c]" />
+              <span>{isMr ? 'तक्रार स्थिती तपासा' : 'Track Grievance Status'}</span>
             </h3>
             <p className="text-[12px] text-[#707974] mb-3">
               {isMr
-                ? 'तुमचा तक्रार टोकन नंबर टाका (उदा. ASG-2026-XXXXX किंवा KS-6181) आणि थेट स्थिती पहा.'
-                : 'Enter your tracking ticket number (e.g. ASG-2026-XXXXX or KS-6181) to inspect resolution notes.'}
+                ? 'तुमचा तक्रार क्रमांक टाका (उदा. ASG-2026-XXXXX किंवा KS-6181) आणि थेट स्थिती पहा.'
+                : 'Enter your grievance tracking number (e.g. ASG-2026-XXXXX or KS-6181) to check status.'}
             </p>
 
             <form onSubmit={handleTrackSubmit} className="flex gap-2">
@@ -588,7 +587,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 required
                 value={trackInput}
                 onChange={(e) => setTrackInput(e.target.value)}
-                placeholder="Enter Token e.g. ASG-2026-41513, KS-6181..."
+                placeholder={isMr ? "तक्रार क्रमांक टाका (उदा. ASG-2026-41513)..." : "Enter Grievance No. e.g. ASG-2026-41513..."}
                 className="flex-1 bg-[#f9f3ea] p-2.5 rounded-xl border border-[#e8e2d9] text-[13px] font-mono uppercase focus:outline-none focus:ring-2 focus:ring-[#166534]"
               />
               <button
@@ -601,12 +600,12 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             </form>
 
             {trackResult && (
-              <div className="mt-4 p-4 rounded-xl bg-[#bbf7d0]/40 border border-[#006a4e] flex flex-col gap-2 animate-fadeIn text-[13px]">
+              <div className="mt-4 p-4 rounded-xl bg-[#e8f1ec] border border-[#006a4e] flex flex-col gap-2 animate-fadeIn text-[13px]">
                 <div className="flex items-center justify-between">
                   <span className="font-mono font-bold text-[#166534] text-[15px]">
-                    {isMr ? 'तक्रार टोकन:' : 'Ticket:'} {trackResult.trackingNumber}
+                    {isMr ? 'तक्रार क्रमांक:' : 'Grievance No:'} {trackResult.trackingNumber}
                   </span>
-                  <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${trackResult.status === 'RESOLVED' ? 'bg-[#bbf7d0] text-[#002117]' :
+                  <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${trackResult.status === 'RESOLVED' ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]' :
                       trackResult.status === 'IN_PROGRESS' ? 'bg-[#dbe1ff] text-[#002873]' :
                         'bg-[#fef3c7] text-[#ba1a1a]'
                     }`}>
@@ -636,7 +635,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   {isMr ? `गावातील थेट तक्रारी (${userComplaints.length})` : `Live Village Grievances (${userComplaints.length})`}
                 </h3>
                 <p className="text-[12px] text-[#707974]">
-                  {isMr ? 'डेटाबेसवरून थेट अद्ययावत' : 'Synced directly from Database'}
+                  {isMr ? 'थेट ग्रामपंचायत अद्यतन' : 'Real-time Gram Panchayat records'}
                 </p>
               </div>
 
@@ -644,14 +643,14 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 onClick={onOpenGrievanceModal}
                 className="px-3.5 py-2 rounded-xl bg-[#c2410c] hover:bg-[#852f00] text-white text-[12px] font-bold flex items-center gap-1 shadow-xs cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[16px]">add</span>
+                <LucideIcon name="add" className="text-[16px]" />
                 <span>{isMr ? 'नवीन तक्रार नोंदवा' : 'Lodge New Grievance'}</span>
               </button>
             </div>
 
             {loadingComplaints ? (
               <div className="text-center py-8 text-[#707974] text-[13px]">
-                {isMr ? 'डेटाबेसमधून तक्रारी लोड होत आहेत...' : 'Loading grievances from database...'}
+                {isMr ? 'तक्रारी लोड होत आहेत...' : 'Loading village grievances...'}
               </div>
             ) : userComplaints.length === 0 ? (
               <div className="text-center py-8 text-[#707974] text-[13px]">
@@ -684,7 +683,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${item.status === 'RESOLVED' ? 'bg-[#bbf7d0] text-[#002117]' :
+                      <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${item.status === 'RESOLVED' ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]' :
                           item.status === 'IN_PROGRESS' ? 'bg-[#dbe1ff] text-[#002873]' :
                             'bg-[#fef3c7] text-[#ba1a1a]'
                         }`}>
@@ -703,7 +702,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       {activeTab === 'saved' && (
         <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
           <h3 className="font-heading font-extrabold text-[18px] text-[#166534] mb-4 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#c2410c]">bookmarks</span>
+            <LucideIcon name="bookmarks" className="text-[#c2410c]" />
             <span>{isMr ? `जतन केलेल्या शासकीय योजना (${savedItems.length})` : `Saved Welfare Schemes & Subsidies (${savedItems.length})`}</span>
           </h3>
 
@@ -716,7 +715,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <div className="flex items-start gap-2.5">
                     <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${item.iconColor}`}>
-                      <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
+                      <LucideIcon name={item.icon} className="text-[20px]" />
                     </div>
                     <div>
                       <div className="text-[10px] uppercase font-bold text-[#707974]">{item.type}</div>
@@ -730,7 +729,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     className="text-[#707974] hover:text-[#ba1a1a] p-1 shrink-0 cursor-pointer"
                     title={isMr ? "जतन सूचीतून काढा" : "Remove from saved"}
                   >
-                    <span className="material-symbols-outlined text-[18px]">close</span>
+                    <LucideIcon name="close" className="text-[18px]" />
                   </button>
                 </div>
 
@@ -742,9 +741,9 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     className="font-bold text-[#166534] hover:underline flex items-center gap-1"
                   >
                     <span>{isMr ? 'पोर्टलवर अर्ज करा' : 'Apply on Portal'}</span>
-                    <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+                    <LucideIcon name="open_in_new" className="text-[14px]" />
                   </a>
-                  <span className="text-[10px] font-semibold text-[#376757] bg-[#bbf7d0] px-2 py-0.5 rounded">
+                  <span className="text-[10px] font-semibold text-[#376757] bg-[#a7f3d0] px-2 py-0.5 rounded">
                     {isMr ? 'सत्यापित' : 'Verified'}
                   </span>
                 </div>
@@ -758,7 +757,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       {activeTab === 'broadcasts' && (
         <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs max-w-2xl">
           <h3 className="font-heading font-extrabold text-[18px] text-[#166534] mb-1 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#c2410c]">tune</span>
+            <LucideIcon name="tune" className="text-[#c2410c]" />
             <span>{isMr ? 'एसएमएस व प्रसारण सूचना सदस्यता' : 'SMS & Broadcast Advisory Subscriptions'}</span>
           </h3>
           <p className="text-[12px] text-[#707974] mb-4">
@@ -768,18 +767,16 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           </p>
 
           {/* Web Push Notification Device Card */}
-          <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-[#166534]/10 via-[#bbf7d0]/20 to-[#166534]/5 border border-[#006a4e]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-[#166534]/10 via-[#a7f3d0]/20 to-[#166534]/5 border border-[#006a4e]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#166534] text-[#bbf7d0] flex items-center justify-center shrink-0 shadow-xs">
-                <span className="material-symbols-outlined text-[22px]">
-                  {pushEnabled ? 'notifications_active' : 'notifications'}
-                </span>
+              <div className="w-10 h-10 rounded-xl bg-[#166534] text-[#a7f3d0] flex items-center justify-center shrink-0 shadow-xs">
+                <LucideIcon name={pushEnabled ? 'notifications_active' : 'notifications'} className=" text-[22px]" />
               </div>
               <div>
                 <div className="font-heading font-extrabold text-[14px] text-[#166534] flex items-center gap-1.5">
                   <span>{isMr ? 'मोबाईल/डेस्कटॉप थेट पुश नोटिफिकेशन्स' : 'Device Push Notifications'}</span>
                   <span className={`px-2 py-0.2 rounded-full text-[10px] font-bold ${
-                    pushEnabled ? 'bg-[#bbf7d0] text-[#002117]' : 'bg-[#f3ede4] text-[#707974]'
+                    pushEnabled ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]' : 'bg-[#f3ede4] text-[#707974]'
                   }`}>
                     {pushEnabled ? (isMr ? 'सक्रिय' : 'Active') : (isMr ? 'बंद' : 'Disabled')}
                   </span>
@@ -802,9 +799,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   : 'bg-[#166534] hover:bg-[#052e16] text-white'
               }`}
             >
-              <span className="material-symbols-outlined text-[16px]">
-                {pushToggling ? 'sync' : pushEnabled ? 'notifications_off' : 'notifications_active'}
-              </span>
+              <LucideIcon name={pushToggling ? 'sync' : pushEnabled ? 'notifications_off' : 'notifications_active'} className=" text-[16px]" />
               <span>
                 {pushToggling
                   ? (isMr ? 'अद्ययावत करत आहे...' : 'Updating...')
@@ -818,7 +813,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           <div className="space-y-3 text-[13px]">
             <div className="flex items-center justify-between p-3 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9]">
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-[20px] text-[#166534]">trending_up</span>
+                <LucideIcon name="trending_up" className="text-[20px] text-[#166534]" />
                 <div>
                   <div className="font-bold text-[#1d1b16]">
                     {isMr ? 'दैनिक कृषी बाजारभाव (मंडी भाव) एसएमएस' : 'Daily Mandi Price SMS'}
@@ -838,7 +833,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
             <div className="flex items-center justify-between p-3 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9]">
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-[20px] text-[#002873]">cloud</span>
+                <LucideIcon name="cloud" className="text-[20px] text-[#002873]" />
                 <div>
                   <div className="font-bold text-[#1d1b16]">
                     {isMr ? 'हवामान अंदाज व कालवा पाणी वाटप सूचना' : 'Weather Advisories & Canal Water Alerts'}
@@ -858,7 +853,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
             <div className="flex items-center justify-between p-3 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9]">
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-[20px] text-[#c2410c]">groups</span>
+                <LucideIcon name="groups" className="text-[20px] text-[#c2410c]" />
                 <div>
                   <div className="font-bold text-[#1d1b16]">
                     {isMr ? 'ग्रामसभा विषयसूची व बैठक सूचना' : 'Gram Sabha Agenda & Meeting Alerts'}
@@ -878,7 +873,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
             <div className="flex items-center justify-between p-3 rounded-xl bg-[#f9f3ea] border border-[#e8e2d9]">
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-[20px] text-[#707974]">bolt</span>
+                <LucideIcon name="bolt" className="text-[20px] text-[#707974]" />
                 <div>
                   <div className="font-bold text-[#1d1b16]">
                     {isMr ? 'शेती वीज पुरवठा वेळापत्रक' : 'Agri Feeder Power Schedule'}
@@ -907,17 +902,17 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               onClick={() => setEditModalOpen(false)}
               className="absolute top-4 right-4 text-[#707974] hover:text-[#1a1c1b] p-1 rounded-full hover:bg-[#f3ede4] cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <LucideIcon name="close" className="text-[20px]" />
             </button>
 
             <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-[#006a4e] text-[24px]">edit_note</span>
+              <LucideIcon name="edit_note" className="text-[#006a4e] text-[24px]" />
               <div>
                 <h3 className="font-heading font-extrabold text-[17px] text-[#166534]">
                   {isMr ? 'नागरिक प्रोफाइल संपादन' : 'Edit Citizen Profile'}
                 </h3>
                 <span className="text-[11px] text-[#707974]">
-                  {isMr ? 'आसगाव पोर्टलवरील तुमची माहिती बदला' : 'Update your Asgaon portal identity'}
+                  {isMr ? 'आसगाव पोर्टलवरील तुमची माहिती बदला' : 'Update your Asgaon portal profile'}
                 </span>
               </div>
             </div>
@@ -925,7 +920,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             <form onSubmit={handleSaveProfile} className="flex flex-col gap-3 text-[12px]">
               <div>
                 <label className="font-bold text-[#166534] block mb-1">
-                  {isMr ? 'पूर्ण नाव (Full Name)' : 'Full Name'}
+                  {isMr ? 'पूर्ण नाव' : 'Full Name'}
                 </label>
                 <input
                   type="text"
@@ -939,7 +934,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
               <div>
                 <label className="font-bold text-[#166534] block mb-1">
-                  {isMr ? 'मोबाईल नंबर (Mobile Number)' : 'Mobile Number'}
+                  {isMr ? 'मोबाईल नंबर' : 'Mobile Number'}
                 </label>
                 <input
                   type="tel"
@@ -954,7 +949,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="font-bold text-[#166534] block mb-1">
-                    {isMr ? 'आसगावमधील प्रभाग (Ward)' : 'Ward in Asgaon'}
+                    {isMr ? 'आसगावमधील प्रभाग' : 'Ward in Asgaon'}
                   </label>
                   <select
                     value={editWard}
@@ -970,25 +965,25 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
                 <div>
                   <label className="font-bold text-[#166534] block mb-1">
-                    {isMr ? 'नागरी भूमिका (Civic Role)' : 'Civic Role'}
+                    {isMr ? 'नागरी भूमिका' : 'Role'}
                   </label>
                   <select
                     value={editRole}
                     onChange={(e) => setEditRole(e.target.value)}
                     className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none bg-white"
                   >
-                    <option value="FARMER">{isMr ? 'शेतकरी (Farmer)' : 'Farmer'}</option>
-                    <option value="BUSINESS_OWNER">{isMr ? 'व्यापारी (Business Owner)' : 'Business Owner'}</option>
-                    <option value="STUDENT">{isMr ? 'विद्यार्थी (Student)' : 'Student'}</option>
-                    <option value="SELLER">{isMr ? 'विक्रेता (Vendor)' : 'Seller / Vendor'}</option>
-                    <option value="CITIZEN">{isMr ? 'ग्रामस्थ नागरिक (Citizen)' : 'General Resident'}</option>
+                    <option value="FARMER">{isMr ? 'शेतकरी' : 'Farmer'}</option>
+                    <option value="BUSINESS_OWNER">{isMr ? 'व्यापारी' : 'Business Owner'}</option>
+                    <option value="STUDENT">{isMr ? 'विद्यार्थी' : 'Student'}</option>
+                    <option value="SELLER">{isMr ? 'विक्रेता' : 'Seller / Vendor'}</option>
+                    <option value="CITIZEN">{isMr ? 'ग्रामस्थ नागरिक' : 'General Resident'}</option>
                   </select>
                 </div>
               </div>
 
               <div>
                 <label className="font-bold text-[#166534] block mb-1">
-                  {isMr ? 'व्यवसाय किंवा परिचय (Occupation / Bio)' : 'Occupation / Bio'}
+                  {isMr ? 'व्यवसाय किंवा थोडक्यात माहिती' : 'Occupation / Bio'}
                 </label>
                 <input
                   type="text"
@@ -1005,7 +1000,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   onClick={() => setEditModalOpen(false)}
                   className="px-4 py-2 rounded-xl bg-[#f3ede4] text-[#1d1b16] font-bold hover:bg-[#e8e2d9] cursor-pointer"
                 >
-                  {isMr ? 'रद्द करा (Cancel)' : 'Cancel'}
+                  {isMr ? 'रद्द करा' : 'Cancel'}
                 </button>
                 <button
                   type="submit"
@@ -1025,8 +1020,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           onClick={onNavigateHome}
           className="text-[13px] text-[#166534] font-bold hover:underline inline-flex items-center gap-1 cursor-pointer"
         >
-          <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-          <span>{isMr ? 'मुख्य पृष्ठावर परत जा (Return to Village Homepage)' : 'Return to Village Homepage & Public Civic Directory'}</span>
+          <LucideIcon name="arrow_back" className="text-[16px]" />
+          <span>{isMr ? 'मुख्य पृष्ठावर परत जा' : 'Return to Village Homepage'}</span>
         </button>
       </div>
     </div>

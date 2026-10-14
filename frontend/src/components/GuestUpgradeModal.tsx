@@ -1,3 +1,4 @@
+import { LucideIcon } from './LucideIcon';
 import React from 'react';
 
 interface GuestUpgradeModalProps {
@@ -19,7 +20,7 @@ export const GuestUpgradeModal: React.FC<GuestUpgradeModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
       <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-[#e8e2d9] overflow-hidden p-6 text-center">
         <div className="w-14 h-14 rounded-full bg-[#f9f3ea] text-[#c2410c] flex items-center justify-center mx-auto mb-3 border border-[#e8e2d9]">
-          <span className="material-symbols-outlined text-[30px]">lock_open</span>
+          <LucideIcon name="lock_open" className="text-[30px]" />
         </div>
 
         <h3 className="font-heading font-extrabold text-[20px] text-[#166534] mb-1">
@@ -34,15 +35,15 @@ export const GuestUpgradeModal: React.FC<GuestUpgradeModalProps> = ({
             Authenticated Privileges:
           </div>
           <div className="text-[12px] text-[#1d1b16] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[16px] text-[#376757]">bookmark</span>
+            <LucideIcon name="bookmark" className="text-[16px] text-[#376757]" />
             <span>Bookmark favorite businesses, jobs &amp; schemes</span>
           </div>
           <div className="text-[12px] text-[#1d1b16] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[16px] text-[#376757]">history</span>
+            <LucideIcon name="history" className="text-[16px] text-[#376757]" />
             <span>Track complaint status and job application replies</span>
           </div>
           <div className="text-[12px] text-[#1d1b16] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[16px] text-[#376757]">notifications</span>
+            <LucideIcon name="notifications" className="text-[16px] text-[#376757]" />
             <span>Get emergency SMS broadcasts directly to your phone</span>
           </div>
         </div>
@@ -53,7 +54,7 @@ export const GuestUpgradeModal: React.FC<GuestUpgradeModalProps> = ({
             onClick={onProceedToLogin}
             className="w-full py-2.5 rounded-xl bg-[#166534] text-white text-[13px] font-bold hover:bg-[#052e16] transition-colors shadow-xs flex items-center justify-center gap-2"
           >
-            <span className="material-symbols-outlined text-[18px]">login</span>
+            <LucideIcon name="login" className="text-[18px]" />
             <span>Sign In</span>
           </button>
           <button
