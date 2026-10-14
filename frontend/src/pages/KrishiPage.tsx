@@ -144,34 +144,14 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
 
   return (
     <div className="w-full flex flex-col gap-6 font-sans">
-      {/* 1. Canal Irrigation Top Notice Banner */}
-      <div className="w-full bg-amber-50 text-amber-950 py-2.5 px-4 rounded-xl shadow-xs border border-amber-300 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2 min-w-0">
-          <LucideIcon name="water_drop" className="text-[20px] text-amber-700 shrink-0" />
-          <span className="text-[13px] font-semibold truncate">
-            <strong>Canal Irrigation Alert:</strong> Rotational irrigation release commences tomorrow 06:00 AM for Sector 3 &amp; 4.
-          </span>
-        </div>
-        <button
-          onClick={() => alert('Viewing Sector 3 & 4 Canal Roster.')}
-          className="text-amber-900 text-[12px] font-bold underline shrink-0 cursor-pointer"
-        >
-          View Roster ↗
-        </button>
-      </div>
-
+      
       {/* 2. Breadcrumbs & Accredited Badge */}
       <Breadcrumb
         items={[
           { label: t('nav_home'), onClick: onNavigateHome },
           { label: t('nav_krishi'), active: true }
         ]}
-        rightBadge={
-          <div className="flex items-center gap-1.5 bg-emerald-100 text-emerald-900 border border-emerald-300 px-3 py-1 rounded-full text-[11px] font-bold">
-            <LucideIcon name="verified" className="text-[15px] text-emerald-700" />
-            <span>{lang === 'MR' ? 'जि. प. कृषी विभाग अधिकृत' : 'ZP Agriculture Directorate Accredited'}</span>
-          </div>
-        }
+        
       />
 
       {/* 3. Hero Header Banner */}

@@ -49,28 +49,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </p>
               </div>
             </div>
-
-            <p className="text-xs sm:text-[13px] text-[#a9c9bd] leading-relaxed">
-              {lang === 'MR'
-                ? 'गावातील शेतकरी, महिला, युवक व नागरिकांसाठी शासकीय योजनांची पारदर्शक माहिती, चालू बाजारभाव, पीक सल्ले, स्थानिक दुकाने आणि नागरिक सेवा एकाच ठिकाणी उपलब्ध करून देणारा स्वतंत्र डिजिटल मंच.'
-                : 'Independent, transparent digital civic platform providing Asgaon farmers, women, students, and citizens with verified welfare schemes, live mandi benchmarks, bus timings, local businesses, and public services.'}
-            </p>
-
-            {/* Quick Civic Badges */}
-            <div className="flex flex-wrap gap-2 pt-1 text-[11px]">
-              <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[#a7f3d0] flex items-center gap-1.5">
-                <LucideIcon name="location_on" className="text-[15px]" />
-                <span>{lang === 'MR' ? 'प्रभाग १, २ व ३ (गावठाण)' : 'Wards 1, 2 & 3 (Gaothan)'}</span>
-              </span>
-              <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[#a7f3d0] flex items-center gap-1.5">
-                <LucideIcon name="schedule" className="text-[15px]" />
-                <span>{lang === 'MR' ? 'सोम - शनि (१०:०० ते १७:३०)' : 'Mon - Sat (10:00 AM - 5:30 PM)'}</span>
-              </span>
-              <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[#a7f3d0] flex items-center gap-1.5">
-                <LucideIcon name="account_balance" className="text-[15px]" />
-                <span>{lang === 'MR' ? '१५ वा वित्त आयोग पारदर्शकता' : '15th Finance Commission Transparency'}</span>
-              </span>
-            </div>
           </div>
 
           {/* Column 2: Civic & Schemes */}
@@ -272,11 +250,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <span className="flex items-center gap-1">
               <LucideIcon name="verified" className="text-[15px] text-amber-300" />
               <span>{lang === 'MR' ? 'डिजिटल ग्राम माहिती मंच' : 'Digital Village Civic Portal'}</span>
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              <LucideIcon name="lock" className="text-[15px] text-emerald-400" />
-              <span>{lang === 'MR' ? '१००% सुरक्षित व जाहिरातमुक्त नागरिक व्यासपीठ' : '100% Secure & Ad-Free Citizen Platform'}</span>
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">

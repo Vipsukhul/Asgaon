@@ -18,7 +18,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
   onNavigateHome,
   onSelectScheme
 }) => {
-  const { lang,setLang, t } = useLanguage();
+  const { lang, t } = useLanguage();
 
   // Read initial category/search from URL params if present
   const getInitialParam = (key: string, fallback: string) => {
@@ -256,32 +256,17 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
           { label: t('nav_home'), onClick: onNavigateHome },
           { label: t('nav_schemes'), active: true }
         ]}
-        rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] px-3 py-1 rounded-full text-[11px] font-bold">
-            <LucideIcon name="verified" className="text-[15px] text-[#14532d]" />
-            <span>{lang === 'MR' ? 'पवनी तहसील थेट लाभ मदत कक्ष प्रमाणित' : 'Pauni Tehsil Direct Benefit Transfer (DBT) Verified'}</span>
-          </div>
-        }
+        
       />
 
       {/* 3. Hero Header Banner */}
       <header className="bg-white rounded-2xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
         <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[10px] font-extrabold uppercase tracking-wider mb-2">
-            {lang === 'MR' ? 'डीबीटी पडताळणीकृत • मोफत नागरी सेवा • थेट शासकीय लाभ' : 'DBT VERIFIED | ZERO FEE | DIRECT WELFARE ASSISTANCE'}
-          </span>
-
           <h1 className="font-heading font-extrabold text-[24px] sm:text-[28px] text-[#166534] leading-tight mb-1">
             {lang === 'MR' ? 'शासकीय योजना व घरकुल मार्गदर्शन दालन' : 'Sarkari Yojana & Gharkul Guidance Portal'}
           </h1>
           <p className="font-heading font-bold text-[14px] sm:text-[15px] text-[#c2410c] mb-2">
             {lang === 'MR' ? 'सर्व शासकीय योजना, ग्रामीण घरकुल योजना व कृषी अनुदान — अधिकृत माहिती व थेट अर्ज' : 'Central & Maharashtra Govt Welfare Schemes, Housing Grants & Farm Subsidies'}
-          </p>
-
-          <p className="text-[13px] text-[#404945] leading-relaxed">
-            {lang === 'MR'
-              ? 'केंद्र व महाराष्ट्र शासनाच्या १००% अधिकृत जनकल्याणकारी योजना: घरकुल आवास (रमाई, शबरी, मोदी आवास, PMAY-G), पीएम किसान, लाडकी बहीण, सौर कृषी पंप आणि महाडीबीटी शिष्यवृत्ती. थेट अधिकृत पोर्टल, शून्य दलाली, मोफत अर्ज.'
-              : '100% authenticated government welfare programs from Central & Maharashtra governments including Gharkul Housing (Ramai, Shabari, Modi Awas, PMAY-G), PM-Kisan, Ladki Bahin, Solar Pumps, and MahaDBT scholarships. Direct official portals, zero middlemen, zero fee.'}
           </p>
         </div>
 
@@ -304,18 +289,8 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               className="flex-1 py-2 px-3 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] text-[#1d1b16] text-[12px] font-bold flex items-center justify-center gap-1.5 transition-colors border border-[#e8e2d9]"
             >
               <LucideIcon name="support_agent" className="text-[16px]" />
-              <span>{lang === 'MR' ? 'सीएससी मदत कक्ष' : 'CSC Desk Helpline'}</span>
+              <span>{lang === 'MR' ? 'सीएससी मदत' : 'CSC Helpline'}</span>
             </a>
-
-            <button
-              type="button"
-              onClick={() => setLang(lang === 'MR' ? 'EN' : 'MR')}
-              className="px-3 py-2 rounded-xl bg-[#f9f3ea] hover:bg-[#e8e2d9] text-[#166534] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9] transition-all"
-              title={lang === 'MR' ? 'Switch to English' : 'मराठीत बदला'}
-            >
-              <LucideIcon name="translate" className="text-[15px]" />
-              <span>{lang === 'MR' ? 'EN' : 'मराठी'}</span>
-            </button>
           </div>
         </div>
       </header>
@@ -680,7 +655,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                       <LucideIcon name="open_in_new" className="text-[14px]" />
                     </a>
 
-                    {onSelectScheme ? (
+                    {/* {onSelectScheme ? (
                       <button
                         onClick={() => onSelectScheme(item.slug)}
                         className="px-3.5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold transition-colors shadow-xs flex items-center gap-1"
@@ -695,7 +670,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                       >
                         <span>{lang === 'MR' ? 'तपशील पहा' : 'View Details'}</span>
                       </button>
-                    )}
+                    )} */}
 
                     {onBookmarkScheme && (
                       <button
@@ -933,7 +908,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
               className="w-full py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold flex items-center justify-center gap-1 mb-2 shadow-xs transition-colors"
             >
               <LucideIcon name="call" className="text-[15px]" />
-              <span>{lang === 'MR' ? 'ऑपरेटरशी संपर्क साधा: +९१ ९८२२१ ०४५००' : 'Call Operator: +91 98221 04500'}</span>
+              <span>{lang === 'MR' ? 'ऑपरेटरशी संपर्क साधा' : 'Call Operator'}</span>
             </a>
 
             <button

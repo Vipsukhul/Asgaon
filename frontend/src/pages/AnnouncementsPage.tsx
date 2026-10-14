@@ -119,23 +119,11 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
           { label: t('nav_home'), onClick: onNavigateHome },
           { label: t('nav_announcements'), active: true }
         ]}
-        rightBadge={
-          <div className="text-[11px] font-semibold text-[#14532d] bg-[#e8f1ec] px-3 py-1 rounded-full border border-[#cadbcf]">
-            {lang === 'MR'
-              ? 'नागरिक पारदर्शकता व सूचना मंच • ठराव नोंदवही क्र. ०२'
-              : 'CIVIC TRANSPARENCY & GAZETTE PORTAL • RESOLUTION REGISTER NO: 02'}
-          </div>
-        }
       />
 
       {/* 2. HERO BANNER */}
       <div className="bg-gradient-to-br from-[#166534]/5 via-white to-[#166534]/10 rounded-2xl p-6 sm:p-8 border border-[#c4d6cf] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex-1">
-          <span className="inline-block bg-[#006a4e]/10 text-[#006a4e] text-[10px] font-black tracking-widest px-3 py-1 rounded-full uppercase border border-[#006a4e]/20 mb-2">
-            {lang === 'MR'
-              ? 'असगाव नागरिक मंच • २४x७ डिजिटल जाहीर सूचना फलक'
-              : 'ASGAON CIVIC PORTAL • 24x7 Digital Citizen Notice Board'}
-          </span>
           <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#166534] leading-tight mb-1">
             {lang === 'MR'
               ? 'गाव जाहीर सूचना फलक व राजपत्र'
@@ -146,11 +134,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               ? 'अधिकृत घोषणा, आपत्कालीन सूचना व जाहीर परिपत्रके'
               : 'Official Announcements & Public Circulars'}
           </h2>
-          <p className="text-[13px] sm:text-[14px] text-[#404945] max-w-2xl leading-relaxed">
-            {lang === 'MR'
-              ? 'असगाव गावासाठी पाणी व वीज पुरवठा वेळापत्रक, ग्रामसभा ठराव, सार्वजनिक विकासकामे, निविदा आणि अधिकृत प्रशासकीय परिपत्रकांची खात्रीशीर माहिती.'
-              : 'Official gazettes, emergency water and power schedules, mandatory Gram Sabha resolutions, public tenders/works, and extension circulars for Asgaon.'}
-          </p>
+          
         </div>
 
         <div className="flex flex-col sm:flex-row md:flex-col gap-2 shrink-0">
@@ -159,24 +143,16 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             className="px-4 py-2.5 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all"
           >
             <LucideIcon name="download" className="text-[16px]" />
-            <span>{lang === 'MR' ? 'मासिक राजपत्र डाउनलोड करा' : 'Download Monthly Gazette (राजपत्र)'}</span>
+            <span>{lang === 'MR' ? 'मासिक राजपत्र' : 'Download Gazette'}</span>
           </button>
           <button
             onClick={() => setShowRtiModal(true)}
             className="px-4 py-2.5 bg-[#c2410c] hover:bg-[#852f00] text-white text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all"
           >
             <LucideIcon name="report_problem" className="text-[16px]" />
-            <span>{lang === 'MR' ? 'नागरी तक्रार / विचारणा नोंदवा' : 'Register Civic Grievance'}</span>
+            <span>{lang === 'MR' ? 'नागरी तक्रार' : 'Complaint'}</span>
           </button>
-          <a
-            href="https://wa.me/919422001100"
-            target="_blank"
-            rel="noreferrer"
-            className="px-4 py-2 bg-white hover:bg-[#f3ede4] text-[#006a4e] border border-[#cadbcf] text-[12px] font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all text-center"
-          >
-            <LucideIcon name="chat" className="text-[16px]" />
-            <span>{lang === 'MR' ? 'व्हॉट्सअ‍ॅप सूचना' : 'WhatsApp Alerts'}</span>
-          </a>
+          
         </div>
       </div>
 
@@ -264,16 +240,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
               className="w-full pl-9 pr-3 py-2 bg-[#f3ede4]/40 rounded-lg text-[13px] text-[#1a1c1b] placeholder-[#707974] border border-transparent focus:border-[#006a4e] focus:bg-white outline-none"
             />
           </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <button className="px-3 py-2 rounded-lg bg-[#f3ede4] text-[#404945] hover:bg-[#e8e2d9] text-[12px] font-medium flex items-center gap-1">
-              <LucideIcon name="mic" className="text-[16px]" />
-              <span>{lang === 'MR' ? 'आवाज शोध' : 'Voice Search'}</span>
-            </button>
-            <div className="text-[12px] text-[#55605a] flex items-center gap-1 px-2 border-l border-[#e8e2d9]">
-              <LucideIcon name="sort" className="text-[16px]" />
-              <span>{lang === 'MR' ? 'क्रमवारी: नवीनतम' : 'Sort: Latest'}</span>
-            </div>
-          </div>
+         
         </div>
 
         {/* Filter categories pills */}
@@ -1153,31 +1120,6 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({ announceme
             >
               {lang === 'MR' ? 'सर्व नागरी तक्रार नोंदवही पहा →' : 'View All Public Grievance Log →'}
             </button>
-          </div>
-
-          {/* WIDGET 5: EMERGENCY HOTLINES */}
-          <div className="bg-[#fef9ee] rounded-2xl p-4 border border-[#fde68a] shadow-xs flex flex-col gap-2">
-            <span className="text-[9px] font-bold text-[#ba1a1a] uppercase tracking-wider flex items-center gap-1">
-              <LucideIcon name="emergency" className="text-[13px]" />
-              <span>{lang === 'MR' ? 'आपत्कालीन तत्पर हेल्पलाईन' : 'EMERGENCY QUICK HOTLINES'}</span>
-            </span>
-
-            <div className="grid grid-cols-2 gap-2 text-center">
-              <div className="bg-white p-2 rounded-lg border border-[#fde68a]">
-                <span className="text-[16px] font-black text-[#ba1a1a] block">108</span>
-                <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'रुग्णवाहिका' : 'Ambulance'}</span>
-              </div>
-              <div className="bg-white p-2 rounded-lg border border-[#fde68a]">
-                <span className="text-[16px] font-black text-[#166534] block">112</span>
-                <span className="text-[10px] text-[#707974]">{lang === 'MR' ? 'पोलीस / आपत्कालीन' : 'Police / SOS'}</span>
-              </div>
-            </div>
-
-            <div className="text-[10px] text-[#707974] text-center mt-1">
-              {lang === 'MR'
-                ? 'असगाव प्राथमिक आरोग्य उपकेंद्र (ओपीडी स. ०८:०० ते दु. ०४:००)'
-                : 'Asgaon Primary Health Sub-Center (OPD 08:00 AM – 04:00 PM)'}
-            </div>
           </div>
         </div>
       </div>

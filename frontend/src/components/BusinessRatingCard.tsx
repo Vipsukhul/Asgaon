@@ -158,11 +158,8 @@ export const BusinessRatingCard: React.FC<BusinessRatingCardProps> = ({
           <LucideIcon name="hotel_class" className="text-[#c2410c] text-[20px]" />
           <div>
             <h4 className="font-heading font-extrabold text-[14px] text-[#166534]">
-              ग्राहक रेटिंग व नागरिक अभिप्राय (Rating &amp; Reviews)
+              नागरिक अभिप्राय
             </h4>
-            <span className="text-[11px] text-[#707974]">
-              गावकऱ्यांचा प्रत्यक्ष अनुभव व पडताळणीकृत मते
-            </span>
           </div>
         </div>
 

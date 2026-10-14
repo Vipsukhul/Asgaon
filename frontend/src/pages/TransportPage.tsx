@@ -12,7 +12,7 @@ import { SEOHead } from '../components/SEOHead';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { useLanguage } from '../context/LanguageContext';
 import {
-  Clock,
+ 
   ArrowRight,
   Phone,
   Share2,
@@ -21,8 +21,7 @@ import {
   HelpCircle,
   Navigation,
   Compass,
-  ArrowLeft,
-  Settings
+ 
 } from 'lucide-react';
 
 interface TransportPageProps {
@@ -30,7 +29,7 @@ interface TransportPageProps {
   onNavigateToAdmin?: () => void;
 }
 
-export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, onNavigateToAdmin }) => {
+export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome }) => {
   const { lang, t } = useLanguage();
   const [selectedRouteFilter, setSelectedRouteFilter] = useState<'all' | 'pauni' | 'bhandara' | 'nagpur' | 'other' | 'incoming'>('all');
   const [timeFilter, setTimeFilter] = useState<'all' | 'morning' | 'afternoon' | 'evening' | 'night'>('all');
@@ -238,62 +237,22 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-12 relative z-10">
-          <div className="flex items-center justify-between gap-4 mb-6">
-            <button
-              onClick={onNavigateHome}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold backdrop-blur-md transition-all border border-white/15"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>{t('nav_home')}</span>
-            </button>
-
-            <div className="flex items-center gap-2">
-              {onNavigateToAdmin && (
-                <button
-                  onClick={onNavigateToAdmin}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-[#a7f3d0] border border-white/20 text-xs font-bold transition-all"
-                  title="ॲडमिन पॅनेलमधून बसेस व्यवस्थापित करा"
-                >
-                  <Settings className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">{lang === 'MR' ? 'प्रशासक संपादन' : 'Admin'}</span>
-                </button>
-              )}
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#e8f1ec]/60 text-[#a7f3d0] border border-[#cadbcf]/30 text-xs font-semibold">
-                <span className="w-2 h-2 rounded-full bg-[#a7f3d0] animate-pulse" />
-                {lang === 'MR' ? 'दैनिक अद्ययावत' : 'Daily Updated'}
-              </span>
-            </div>
-          </div>
-
           <div className="max-w-3xl">
-            <div className="flex items-center gap-2 text-[#a7f3d0] text-xs font-bold uppercase tracking-wider mb-2">
-              <Compass className="w-4 h-4 text-[#a7f3d0]" />
-              <span>{lang === 'MR' ? 'MSRTC व स्थानिक वाहतूक केंद्र • आसगाव (पवनी)' : 'MSRTC & Local Transit Hub • Asgaon (Pauni)'}</span>
-            </div>
-
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              {lang === 'MR' ? 'आसगाव एसटी बस वेळापत्रक व वाहतूक' : 'Asgaon ST Bus Timetable & Transport'}
+              {lang === 'MR' ? 'आसगाव एसटी बस वेळापत्रक' : 'Asgaon ST Bus Timetable'}
             </h1>
-            <p className="mt-2.5 text-[#d6eee4]/90 text-sm sm:text-base leading-relaxed">
-              {lang === 'MR'
-                ? 'पवनी, भंडारा, नागपूर, साकोली व ब्रह्मपुरी मार्गावरील सर्व एसटी बसेस, महिला सन्मान ५०% सवलत, गावातील रिक्षा चालक संपर्क आणि एसटी आगार दूरध्वनी क्रमांक.'
-                : 'MSRTC buses connecting Pauni, Bhandara, Nagpur, Sakoli, and Bramhapuri, 50% Mahila Sanman concession, local auto rickshaw contacts, and bus depot inquiry numbers.'}
-            </p>
           </div>
 
           {/* Next Upcoming Bus Banner Card */}
           {nextBus && (
             <div className="mt-6 p-4 sm:p-5 rounded-2xl bg-black/20 backdrop-blur-md border border-white/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
               <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 rounded-xl bg-white/10 border border-[#cadbcf]/30 flex items-center justify-center text-[#a7f3d0] shrink-0">
-                  <Clock className="w-6 h-6" />
-                </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="px-2.5 py-0.5 rounded text-[11px] font-black bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] uppercase tracking-wide">
                       {lang === 'MR' ? 'पुढील बस' : 'NEXT BUS'}
                     </span>
-                    <span className="text-xs text-[#a7f3d0] font-medium">
+                    <span className="text-xs text-[#1de607] font-medium">
                       {lang === 'MR'
                         ? `निघण्यास अंदाजे ${getMinutesDifferenceText(nextBus.departureTime24)}`
                         : `Departs in approx ${getMinutesDifferenceText(nextBus.departureTime24)}`}
@@ -346,7 +305,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
               }`}
           >
             <Navigation className="w-4 h-4" />
-            <span>{lang === 'MR' ? `एसटी वेळापत्रक (${buses.length})` : `ST Bus Schedule (${buses.length})`}</span>
+            <span>{lang === 'MR' ? `वेळापत्रक` : `Schedule`}</span>
           </button>
 
           <button
@@ -357,7 +316,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
               }`}
           >
             <Compass className="w-4 h-4" />
-            <span>{lang === 'MR' ? `गावातील रिक्षा स्टँड (${autos.length})` : `Auto Stand (${autos.length})`}</span>
+            <span>{lang === 'MR' ? `रिक्षा` : `Auto`}</span>
           </button>
 
           <button
@@ -368,7 +327,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
               }`}
           >
             <Phone className="w-4 h-4" />
-            <span>{lang === 'MR' ? `आगार संपर्क (${depots.length})` : `Depot Contacts (${depots.length})`}</span>
+            <span>{lang === 'MR' ? `आगार संपर्क` : `Depot`}</span>
           </button>
 
           <button
@@ -379,7 +338,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
               }`}
           >
             <HelpCircle className="w-4 h-4" />
-            <span>{lang === 'MR' ? '५०% सवलत व पास माहिती' : 'Concessions & Pass Guide'}</span>
+            <span>{lang === 'MR' ? 'पास माहिती' : 'Pass Guide'}</span>
           </button>
         </div>
 
@@ -812,34 +771,6 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome, on
             </div>
           </div>
         )}
-
-        {/* Bottom Village Assistance Card - Unified Deep Green Accent */}
-        <div className="mt-10 bg-gradient-to-r from-[#166534] to-[#0f533f] rounded-3xl p-6 sm:p-8 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xl border border-[#052e16]">
-          <div className="max-w-xl">
-            <span className="px-3 py-1 rounded-full bg-[#e8f1ec]/60 text-[#a7f3d0] text-xs font-bold border border-[#cadbcf]/30">
-              ग्रामपंचायत सहकार्य केंद्र
-            </span>
-            <h3 className="text-xl sm:text-2xl font-bold mt-2">नवीन बस फेरी किंवा थांबा मागणी आहे?</h3>
-            <p className="text-xs sm:text-sm text-[#d6eee4] mt-1.5 leading-relaxed">
-              विद्यार्थी व नागरिकांच्या सोयीसाठी नवीन बस फेरी सुरू करण्यासाठी ग्रामपंचायत आसगावकडून पवनी व भंडारा आगाराकडे ठराव पाठवला जातो. तक्रार किंवा मागणी नोंदवा.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3 shrink-0">
-            <button
-              onClick={onNavigateHome}
-              className="px-5 py-2.5 rounded-xl bg-[#c2410c] hover:bg-[#852f00] text-white font-bold text-xs transition-all shadow-md"
-            >
-              तक्रार / मागणी नोंदवा
-            </button>
-            <a
-              href="tel:07185255342"
-              className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/20 transition-all"
-            >
-              पवनी आगार फोन
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   );

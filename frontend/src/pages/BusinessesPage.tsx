@@ -146,21 +146,11 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
           { label: t('nav_home'), onClick: onNavigateHome },
           { label: t('nav_businesses'), active: true }
         ]}
-        rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] px-3 py-1 rounded-full text-[11px] font-bold">
-            <LucideIcon name="verified_user" className="text-[15px] text-[#14532d]" />
-            <span>{lang === 'MR' ? 'प्रमाणित स्थानिक दुकाने • आज अद्ययावत' : 'Verified Local Businesses • Updated Today'}</span>
-          </div>
-        }
       />
 
       {/* 2. Hero / Header Banner */}
       <div className="bg-white rounded-2xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
         <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[10px] font-extrabold uppercase tracking-wider mb-2">
-            {allBusinesses.length} {lang === 'MR' ? 'नोंदणीकृत स्थानिक दुकाने व सेवा केंद्र' : 'Verified Local Businesses'}
-          </span>
-
           <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#166534] leading-tight mb-1">
             {lang === 'MR' ? 'स्थानिक दुकाने व सेवा निर्देशिका' : 'Local Business & Service Directory'}
           </h1>
@@ -168,20 +158,6 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
             {lang === 'MR' ? 'आसगाव - पवनी तालुका व्यापारी व सेवा केंद्र सूची' : 'Local Business & Service Directory (Asgaon, Pauni)'}
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 text-[12px] font-bold text-[#166534]">
-            <span className="flex items-center gap-1">
-              <LucideIcon name="check_circle" className="text-[16px] text-[#376757]" />
-              <span>{lang === 'MR' ? '१००% शून्य-दलाली थेट निर्देशिका' : '100% Zero-Commission Directory'}</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <LucideIcon name="check_circle" className="text-[16px] text-[#376757]" />
-              <span>{lang === 'MR' ? 'थेट फोन आणि व्हॉट्सॲप संपर्क' : 'Direct Phone & WhatsApp'}</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <LucideIcon name="check_circle" className="text-[16px] text-[#376757]" />
-              <span>{lang === 'MR' ? 'स्थानिक प्रभाग पडताळणीकृत दुकाने' : 'Local Ward Verified Outlets'}</span>
-            </span>
-          </div>
         </div>
 
         {/* Right CTA Box */}
@@ -191,7 +167,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
             className="w-full py-2.5 px-4 rounded-xl bg-[#c2410c] hover:bg-[#852f00] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
           >
             <LucideIcon name="add_business" className="text-[18px]" />
-            <span>{t('btn_register_shop', lang === 'MR' ? 'दुकान नोंदवा' : 'Register Business')} ({lang === 'MR' ? 'मोफत' : 'FREE'})</span>
+            <span>{t('btn_register_shop', lang === 'MR' ? 'दुकान नोंदवा' : 'Register Business')}</span>
           </button>
 
           <button
@@ -206,7 +182,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
             }`}
           >
             <LucideIcon name="map" className="text-[16px]" />
-            <span>{viewMode === 'map' ? (lang === 'MR' ? 'सूची दृश्य पहा' : 'View List') : (lang === 'MR' ? 'थेट गावाचा नकाशा' : 'Live Map')}</span>
+            <span>{viewMode === 'map' ? (lang === 'MR' ? 'सूची दृश्य पहा' : 'View List') : (lang === 'MR' ? 'नकाशा' : 'Map')}</span>
           </button>
         </div>
       </div>

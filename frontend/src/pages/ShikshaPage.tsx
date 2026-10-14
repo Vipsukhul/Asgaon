@@ -208,11 +208,6 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
           <h2 className="text-[14px] sm:text-[15px] font-bold text-[#c2410c] mb-2">
             {lang === 'MR' ? 'आसगाव व पवनी परिसर — शैक्षणिक व करिअर दालन' : 'Asgaon & Pauni Educational and Career Guidance Hub'}
           </h2>
-          <p className="text-[13px] sm:text-[14px] text-[#404945] max-w-2xl leading-relaxed">
-            {lang === 'MR'
-              ? 'आसगाव व पवनी परिसरातील विद्यार्थ्यांसाठी स्थानिक शाळा, कनिष्ठ महाविद्यालये, शासकीय शिष्यवृत्ती, मोफत डिजिटल अभ्यासिका आणि करिअर मार्गदर्शन मंच.'
-              : 'Comprehensive village school directory, government scholarship updates, 24x7 digital study rooms, accredited skill training, and career counseling for students of Asgaon and Pauni region.'}
-          </p>
         </div>
 
         {/* 3 Dynamic Counters */}

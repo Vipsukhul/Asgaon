@@ -84,37 +84,17 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
           { label: t('nav_home'), onClick: onNavigateHome },
           { label: t('nav_jobs'), active: true }
         ]}
-        rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] px-3 py-1 rounded-full text-[11px] font-bold">
-            <LucideIcon name="verified" className="text-[15px] text-[#14532d]" />
-            <span>{lang === 'MR' ? '१००% थेट स्थानिक रोजगार • शून्य दलाली' : '100% Direct Village Employment • No Middlemen Fee'}</span>
-          </div>
-        }
+        
       />
 
       {/* 2. Hero Header Banner */}
       <div className="bg-white rounded-2xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
         <div className="max-w-2xl">
-          <div className="flex flex-wrap items-center gap-2 mb-2">
-            <span className="text-[10px] font-extrabold text-[#ba1a1a] bg-[#fef3c7] px-2 py-0.5 rounded uppercase tracking-wider">
-              {lang === 'MR' ? 'सत्यापित रोजगार | शून्य दलाली' : 'VERIFIED EMPLOYMENT | ZERO BROKERAGE'}
-            </span>
-            <span className="text-[11px] text-[#707974]">
-              {lang === 'MR' ? 'पवनी व हवेली तालुका परिसर' : 'Pauni Taluka • Haveli Boundary'}
-            </span>
-          </div>
-
           <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#166534] leading-tight mb-1">
             {lang === 'MR' ? 'ग्रामीण रोजगार मंच — स्थानिक नोकऱ्या व कामे' : 'Gramin Rojgar Manch — Local Village Job Board'}
           </h1>
           <p className="font-heading font-bold text-[15px] text-[#c2410c] mb-2">
             {lang === 'MR' ? 'स्थानिक रोजगार, रोजंदारी व कारागीर' : 'Local Jobs, Daily Wage & Skilled Trades'}
-          </p>
-
-          <p className="text-[13px] text-[#404945] leading-relaxed">
-            {lang === 'MR'
-              ? 'आसगाव व परिसरातील ५ ते १५ किमी अंतरावरील थेट नोकऱ्या. गावातील तरुण, कुशल कारागीर, शेतमजूर आणि महिला बचत गटांसाठी थेट संपर्क.'
-              : 'Zero-brokerage, verified local job opportunities within 5 to 15 km of Asgaon & Pauni. Connecting village youth, skilled technicians, daily wage laborers, and women self-help groups (SHGs) directly with employers.'}
           </p>
         </div>
 

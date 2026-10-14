@@ -538,33 +538,6 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
           </div>
         )}
 
-        {/* Prominent Clean Hash ID Permalink Bar */}
-        <div className="bg-[#f9f5ed] border border-[#e5decb] rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
-          <div className="flex items-center gap-3 overflow-hidden w-full sm:w-auto">
-            <span className="w-9 h-9 rounded-xl bg-[#166534] text-[#a7f3d0] flex items-center justify-center shrink-0 shadow-2xs font-mono font-bold text-sm">
-              #
-            </span>
-            <div className="overflow-hidden min-w-0">
-              <div className="text-[11px] font-bold text-[#707974] flex items-center gap-2 mb-0.5">
-                <span>{isMr ? 'लेखाची थेट लिंक:' : 'Direct Article Link:'}</span>
-                <span className="px-2 py-0.5 rounded-md bg-[#166534] text-[#a7f3d0] text-[11px] font-mono font-black tracking-wider">
-                  #{post.id || post.slug}
-                </span>
-              </div>
-              <div className="font-mono text-xs sm:text-sm font-extrabold text-[#166534] truncate select-all">
-                {window.location.origin}/blogs/{post.id || post.slug}
-              </div>
-            </div>
-          </div>
-          <button
-            onClick={handleCopyLink}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white hover:bg-[#166534] text-[#166534] hover:text-[#a7f3d0] border border-[#d8cfbe] text-xs font-bold transition-all shadow-2xs shrink-0 cursor-pointer"
-          >
-            <LucideIcon name="content_copy" className="text-[16px]" />
-            <span>{isMr ? 'लिंक कॉपी करा' : 'Copy Link'}</span>
-          </button>
-        </div>
-
         {/* Cover Photo */}
         <div className="rounded-2xl overflow-hidden border border-[#e8e2d9] shadow-2xs bg-stone-100 h-48 sm:h-60 md:h-64 max-h-[260px] w-full relative">
           <img

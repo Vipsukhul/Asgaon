@@ -215,22 +215,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
 
   return (
     <div className="w-full flex flex-col gap-6">
-      {/* 1. TOP WEEKLY HAAT BANNER */}
-      <div className="bg-[#c2410c] text-white px-4 py-2.5 rounded-xl shadow-xs flex flex-col md:flex-row items-center justify-between gap-3 text-[12px] font-medium">
-        <div className="flex items-center gap-2">
-          <LucideIcon name="campaign" className="text-[18px] text-[#fef3c7]" />
-          <span>
-            <strong className="font-bold">{lang === 'MR' ? 'साप्ताहिक आठवडी बाजार सूचना:' : 'Weekly Haat Reminder:'}</strong> {lang === 'MR' ? 'आसगाव शुक्रवार आठवडी बाजार जुना बस स्टँड मैदानावर सकाळी ०८:०० वाजता सुरू होतो • स्थानिक शेतकऱ्यांसाठी मोफत जागा' : 'Asgaon Weekly Bazaar opens this Friday at 08:00 AM at Old Bus Stand Ground • Zero stall fee for local registered farmers'}
-          </span>
-        </div>
-        <button
-          onClick={() => setShowStallModal(true)}
-          className="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-md text-[11px] font-bold transition-all shrink-0 flex items-center gap-1 border border-white/30"
-        >
-          <span>{lang === 'MR' ? 'बाजार नकाशा पहा' : 'View Haat Map'}</span>
-          <LucideIcon name="arrow_forward" className="text-[14px]" />
-        </button>
-      </div>
+      
 
       {/* 2. BREADCRUMB & PLATFORM BADGE */}
       <Breadcrumb
@@ -238,25 +223,18 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
           { label: t('nav_home'), onClick: onNavigateHome },
           { label: t('nav_marketplace'), active: true }
         ]}
-        rightBadge={
-          <div className="text-[11px] font-semibold text-[#14532d] bg-[#e8f1ec] px-3 py-1 rounded-full border border-[#cadbcf]">
-            {lang === 'MR' ? '९८.३% थेट शेतकरी व विक्रेते • शून्य दलाली' : '98.3% Direct Sellers • 100% Zero-Middlemen'}
-          </div>
-        }
       />
 
       {/* 3. HERO BANNER */}
       <div className="bg-gradient-to-br from-[#166534]/5 via-white to-[#166534]/10 rounded-2xl p-6 sm:p-8 border border-[#c4d6cf] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex-1">
-          <span className="inline-block bg-[#006a4e]/10 text-[#006a4e] text-[10px] font-black tracking-widest px-3 py-1 rounded-full uppercase border border-[#006a4e]/20 mb-2">
-            {lang === 'MR' ? 'स्थानिक खरेदी-विक्री — आसगाव बाजारपेठ' : 'LOCAL COMMERCE — ASGAON BAZAAR PLATFORM'}
-          </span>
+          
           <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#166534] leading-tight mb-2">
             {lang === 'MR' ? 'गाव बाजारपेठ — शेतमाल, पशुधन व अवजारे' : 'Gaon Marketplace — Local Farm Produce & Village Bazar'}
           </h1>
           <p className="text-[13px] sm:text-[14px] text-[#404945] max-w-2xl leading-relaxed">
             {lang === 'MR'
-              ? 'आसगाव व परिसरातील गावांमधील थेट शेतमाल, जनावरे, ट्रॅक्टर, बियाणे आणि शेती अवजारे खरेदी-विक्री मंच. शून्य मध्यस्थ आणि थेट शेतकरी संपर्क.'
+              ? 'आसगाव व परिसरातील गावांमधील थेट शेतमाल, जनावरे, ट्रॅक्टर, बियाणे आणि शेती अवजारे खरेदी-विक्री मंच.'
               : 'Buy, sell, and rent directly within Asgaon and neighboring villages. Farm crops, livestock, tractors, seed batches, and tools with zero broker cuts.'}
           </p>
         </div>
@@ -269,9 +247,6 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             <LucideIcon name="add_circle" className="text-[18px]" />
             <span>{lang === 'MR' ? '+ मोफत शेतमाल/वस्तू नोंदवा' : '+ Post a Free Village Listing'}</span>
           </button>
-          <span className="text-[10px] text-[#55605a]">
-            {lang === 'MR' ? 'थेट व्हॉट्सअ‍ॅप व फोन संपर्क • १००% मोफत' : 'SMS & Verified • Instant Direct Connect'}
-          </span>
         </div>
       </div>
 
@@ -289,24 +264,7 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
               className="w-full pl-9 pr-3 py-2 bg-[#f3ede4]/40 rounded-lg text-[13px] text-[#1a1c1b] placeholder-[#707974] border border-transparent focus:border-[#006a4e] focus:bg-white outline-none"
             />
           </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={() => { setVerifiedOnly(!verifiedOnly); setCurrentPage(1); }}
-              className={`px-3 py-2 rounded-lg text-[12px] font-medium border flex items-center gap-1.5 transition-all ${
-                verifiedOnly ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] border-[#006a4e]' : 'bg-white text-[#404945] border-[#e8e2d9]'
-              }`}
-            >
-              <LucideIcon name="verified" className="text-[16px]" />
-              <span>{lang === 'MR' ? 'प्रमाणित विक्रेते' : 'Verified Sellers'}</span>
-            </button>
-            <div className="text-[12px] text-[#55605a] hidden sm:flex items-center gap-1 px-2">
-              <LucideIcon name="sort" className="text-[16px]" />
-              <span>{lang === 'MR' ? 'क्रम: नवीन नोंदी प्रथम' : 'Sort: Newest First'}</span>
-            </div>
-            <div className="text-[11px] font-bold text-[#006a4e] bg-[#f3ede4] px-2.5 py-1.5 rounded-lg border border-[#e8e2d9]">
-              {lang === 'MR' ? 'पिन: ४४१९१० (पवनी)' : 'PIN: 441910 Only (Pauni)'}
-            </div>
-          </div>
+          
         </div>
 
         {/* Filter categories pills */}
@@ -372,15 +330,6 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* LEFT COLUMN: LISTINGS (8 cols) */}
         <div className="lg:col-span-8 flex flex-col gap-8">
-          <div className="flex items-center justify-between">
-            <h2 className="font-heading font-extrabold text-[17px] text-[#166534]">
-              {lang === 'MR' ? 'बाजारपेठ सूची' : 'Marketplace Catalog'}{' '}
-              <span className="text-[13px] font-normal text-[#707974]">
-                ({lang === 'MR' ? `एकूण ${totalVisible} नोंदी` : `Showing ${totalVisible} listings`})
-              </span>
-            </h2>
-          </div>
-
           {totalVisible === 0 && (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
               <LucideIcon name="storefront" className="text-[48px] text-[#c2410c]" />
@@ -918,38 +867,8 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({ onNavigateHome
             >
               <LucideIcon name="call" className="text-[14px]" />
               <span>
-                {lang === 'MR' ? 'धर्म काटा प्रमुख: ९३७०४ ८८१०२' : 'Call Weighbridge In-charge: 93704 88102'}
+                {lang === 'MR' ? 'धर्म काटा प्रमुख' : 'Call Weighbridge In-charge'}
               </span>
-            </a>
-          </div>
-
-          {/* WIDGET 4: OFFICIAL MSP CHECKER */}
-          <div className="bg-[#166534] text-white rounded-2xl p-5 shadow-xs flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-[#a7f3d0]">
-                {lang === 'MR' ? 'शासकीय हमीभाव' : 'OFFICIAL PROCUREMENT'}
-              </span>
-              <span className="bg-[#e8f1ec]/60 text-[#a7f3d0] text-[9px] font-bold px-2 py-0.5 rounded">
-                {lang === 'MR' ? 'खरेदी केंद्र आज सुरू' : 'Centre Open Today'}
-              </span>
-            </div>
-
-            <h3 className="font-heading font-extrabold text-[15px] leading-snug">
-              {lang === 'MR' ? 'माल विकण्यापूर्वी शासकीय हमीभाव तपासा' : 'Check Government MSP Before You Sell'}
-            </h3>
-
-            <p className="text-[11px] text-[#e8e2d9] leading-relaxed">
-              {lang === 'MR'
-                ? 'सोयाबीन २०२६ हमीभाव: ₹४,८९२/क्विंटल • कापूस (मध्यम धागा): ₹७,१२१/क्विंटल. शासनाच्या हमीभावापेक्षा कमी दरात घाईघाईने माल विकू नका.'
-                : 'Soybean 2026 MSP: ₹4,892/qtl • Cotton (Medium Staple): ₹7,121/qtl. Never settle for distress sales below Govt minimum price floor.'}
-            </p>
-
-            <a
-              href="#mandi-bulletin"
-              className="w-full py-2.5 bg-[#a7f3d0] hover:bg-[#a0dec5] text-[#002117] text-[12px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors mt-1"
-            >
-              <span>{lang === 'MR' ? 'बाजारभाव पत्रिका पहा' : 'Open Mandi Price Bulletin'}</span>
-              <LucideIcon name="arrow_forward" className="text-[16px]" />
             </a>
           </div>
         </div>

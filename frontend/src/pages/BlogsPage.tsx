@@ -205,12 +205,6 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
           { label: t('nav_home'), onClick: onNavigateHome },
           { label: t('nav_blogs'), active: true }
         ]}
-        rightBadge={
-          <div className="flex items-center gap-1.5 bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] px-3 py-1 rounded-full text-[11px] font-bold">
-            <LucideIcon name="verified" className="text-[15px] text-[#14532d]" />
-            <span>{lang === 'MR' ? 'नागरिक व ग्राम माहिती व्यासपीठ' : 'Civic Knowledge Platform'}</span>
-          </div>
-        }
       />
 
       {/* 2. Community Blog Hero & Write Action Banner */}
@@ -220,20 +214,9 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-[#a7f3d0] text-xs font-bold border border-white/10">
-              <LucideIcon name="auto_stories" className="text-[15px]" />
-              <span>{lang === 'MR' ? 'नागरिक ज्ञानपीठ' : 'Community Knowledge Hub'}</span>
-            </div>
-
             <h1 className="font-heading font-extrabold text-[22px] sm:text-[28px] text-white leading-tight">
-              {lang === 'MR' ? 'आसगाव माहिती लेख व नागरिक ब्लॉग' : 'Asgaon Village Blogs & Knowledge Hub'}
+              {lang === 'MR' ? 'आसगाव माहिती लेख' : 'Asgaon Village Blogs'}
             </h1>
-
-            <p className="text-xs sm:text-[13px] text-[#d6eee4] leading-relaxed">
-              {lang === 'MR'
-                ? 'गावातील शेतकरी, युवक, महिला व प्रतिनिधी यांनी प्रत्यक्ष अनुभवातून लिहिलेले मार्गदर्शन, पीक सल्ले, शासकीय योजना आणि गाव विकासाचे विचार.'
-                : 'Guides, agricultural tips, government scheme walk-throughs, and community development thoughts written by Asgaon villagers, farmers, and youths.'}
-            </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-[#a7f3d0] font-medium">
               <span className="flex items-center gap-1">

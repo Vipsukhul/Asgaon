@@ -191,32 +191,18 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onNavigateHome }) => {
           { label: t('nav_home'), onClick: onNavigateHome },
           { label: t('nav_events'), active: true }
         ]}
-        rightBadge={
-          <div className="text-[11px] font-semibold text-[#14532d] bg-[#e8f1ec] px-3 py-1 rounded-full border border-[#cadbcf]">
-            {lang === 'MR'
-              ? 'सांस्कृतिक व सामाजिक दिनदर्शिका २०२५–२०२६ • असगाव नागरिक मंच'
-              : 'COMMUNITY CULTURAL & DEVELOPMENT CALENDAR 2025–2026 • Asgaon Civic Forum'}
-          </div>
-        }
       />
 
       {/* 2. HERO BANNER */}
       <div className="bg-gradient-to-br from-[#166534]/5 via-white to-[#166534]/10 rounded-2xl p-6 sm:p-8 border border-[#c4d6cf] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex-1">
-          <span className="inline-block bg-[#c2410c]/10 text-[#c2410c] text-[10px] font-black tracking-widest px-3 py-1 rounded-full uppercase border border-[#c2410c]/20 mb-2">
-            {lang === 'MR' ? 'समुदाय • असगाव सांस्कृतिक व नागरी मंच' : 'COMMUNITY • Asgaon Cultural & Civic Forum'}
-          </span>
           <h1 className="font-heading font-extrabold text-[26px] sm:text-[30px] text-[#166534] leading-tight mb-1">
             {lang === 'MR' ? 'गावातील कार्यक्रम, जत्रा व मेळावे' : 'Village Events, Festivals & Community Gatherings'}
           </h1>
           <h2 className="text-[14px] sm:text-[15px] font-bold text-[#c2410c] mb-2">
             {lang === 'MR' ? 'गावातील सभा, जत्रा, कृषी मेळावे व समाज दिनदर्शिका' : 'Community Calendar, Melawas & Celebrations'}
           </h2>
-          <p className="text-[13px] sm:text-[14px] text-[#404945] max-w-2xl leading-relaxed">
-            {lang === 'MR'
-              ? 'असगावमधील आगामी आठवडे बाजार, वार्षिक जत्रा, सर्वोपचार आरोग्य शिबिरे, कबड्डी स्पर्धा, कृषी मार्गदर्शन कार्यशाळा आणि ग्रामसभा संवाद मंचांची अद्ययावत माहिती.'
-              : 'Discover upcoming weekly rural bazaars, sacred annual jatras, multi-specialty health camps, kabaddi championships, agricultural innovation workshops, and Gram Sabha dialogue forums in Asgaon.'}
-          </p>
+          
         </div>
 
         <div className="flex flex-col items-start sm:items-end gap-2 shrink-0">

@@ -205,9 +205,6 @@ export const LiveBusinessMap: React.FC<LiveBusinessMapProps> = ({
                 आसगाव थेट व्यवसाय नकाशा
               </h3>
             </div>
-            <p className="text-[11px] text-[#a7f3d0]">
-              गावातील दुकाने, कृषी केंद्र, दवाखाने व सेवा थेट नकाशावर पहा व मार्ग मिळवा
-            </p>
           </div>
         </div>
 

@@ -418,11 +418,11 @@ export const Header: React.FC<HeaderProps> = ({
           />
 
           {/* Drawer Panel */}
-          <div className="fixed top-0 right-0 h-screen h-[100dvh] w-[86%] max-w-[340px] bg-[#fdfbf7] shadow-2xl flex flex-col z-[100000] border-l border-[#efe7dc] animate-slide-drawer">
-            {/* Drawer Header */}
-            <div className="p-3.5 border-b border-[#efe7dc] bg-white flex items-center justify-between shrink-0">
+          <div className="fixed top-0 right-0 h-[100dvh] max-h-[100dvh] w-[86%] max-w-[320px] bg-[#fdfbf7] shadow-2xl flex flex-col z-[100000] border-l border-[#efe7dc] animate-slide-drawer">
+            {/* Drawer Header (Compact) */}
+            <div className="py-2 px-3 border-b border-[#efe7dc] bg-white flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-emerald-800 text-white flex items-center justify-center font-black text-sm">
+                <div className="w-7 h-7 rounded-lg bg-emerald-800 text-white flex items-center justify-center font-black text-xs">
                   आ
                 </div>
                 <div>
@@ -437,41 +437,58 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-stone-500 hover:text-stone-900 hover:bg-[#faf6ee] transition-colors cursor-pointer"
+                className="w-7 h-7 rounded-lg flex items-center justify-center text-stone-500 hover:text-stone-900 hover:bg-[#faf6ee] transition-colors cursor-pointer"
                 aria-label="Close Menu"
               >
-                <LucideIcon name="close" className="text-[20px]" />
+                <LucideIcon name="close" className="text-[18px]" />
               </button>
             </div>
 
-            {/* Drawer Body (Scrollable) */}
-            <div className="flex-1 overflow-y-auto p-3 space-y-3">
-              {/* 1. Login / Citizen Profile Card at TOP (Under Menu Header) */}
+            {/* Drawer Body (Scrollable with safe bottom padding) */}
+            <div className="flex-1 overflow-y-auto overscroll-contain p-2.5 space-y-2 pb-14 touch-pan-y">
+              {/* 1. Login / Citizen Profile Card + Language in ONE unified compact bar */}
               {currentUser?.isLoggedIn ? (
-                <div className="bg-white p-3 rounded-2xl border border-[#efe7dc] shadow-2xs">
-                  <div className="flex items-center gap-2.5 mb-2.5">
-                    <div className="w-10 h-10 rounded-full bg-emerald-800 text-emerald-100 flex items-center justify-center text-xs font-black shrink-0">
-                      {currentUser?.avatarInitials || (userRole ? userRole.substring(0, 2) : 'AC')}
+                <div className="bg-white p-2 rounded-xl border border-[#efe7dc] shadow-2xs">
+                  <div className="flex items-center justify-between gap-1.5">
+                    <div className="flex items-center gap-2 truncate flex-1">
+                      <div className="w-7 h-7 rounded-full bg-emerald-800 text-emerald-100 flex items-center justify-center text-[10px] font-black shrink-0">
+                        {currentUser?.avatarInitials || (userRole ? userRole.substring(0, 2) : 'AC')}
+                      </div>
+                      <div className="truncate">
+                        <div className="font-bold text-emerald-950 text-[11px] truncate leading-tight">
+                          {currentUser?.fullName || 'Asgaon Citizen'}
+                        </div>
+                        <div className="text-[9px] text-stone-500 truncate leading-tight">
+                          {currentUser?.ward || 'Ward 2'} • {currentUser?.role || userRole || 'CITIZEN'}
+                        </div>
+                      </div>
                     </div>
-                    <div className="truncate flex-1">
-                      <div className="font-bold text-emerald-950 text-[13px] truncate">
-                        {currentUser?.fullName || 'Asgaon Citizen'}
-                      </div>
-                      <div className="text-[10px] text-stone-500 truncate">
-                        {currentUser?.ward || 'Ward 2'} • {currentUser?.role || userRole || 'CITIZEN'}
-                      </div>
+                    {/* Compact Language Toggle */}
+                    <div className="flex items-center rounded-lg bg-[#faf6ee] p-0.5 border border-[#efe7dc] shrink-0">
+                      {(['MR', 'EN'] as const).map((l) => (
+                        <button
+                          key={l}
+                          type="button"
+                          onClick={() => setLang(l)}
+                          className={`px-2 py-0.5 rounded text-[10px] font-extrabold transition-all cursor-pointer ${
+                            lang === l ? 'bg-emerald-800 text-white shadow-2xs' : 'text-stone-600 hover:text-stone-900'
+                          }`}
+                        >
+                          {l === 'MR' ? 'मराठी' : 'EN'}
+                        </button>
+                      ))}
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#efe7dc]">
+                  <div className="grid grid-cols-2 gap-1.5 pt-1.5 mt-1.5 border-t border-[#efe7dc]">
                     <button
                       type="button"
                       onClick={() => {
                         setActiveNav('profile');
                         setMobileMenuOpen(false);
                       }}
-                      className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-[#faf6ee] text-emerald-950 font-bold text-xs hover:bg-[#f3ede4] transition-colors"
+                      className="flex items-center justify-center gap-1 py-1 px-2 rounded-lg bg-[#faf6ee] text-emerald-950 font-bold text-[11px] hover:bg-[#f3ede4] transition-colors"
                     >
-                      <LucideIcon name="badge" className="text-[16px] text-emerald-700" />
+                      <LucideIcon name="badge" className="text-[13px] text-emerald-700" />
                       <span>{t('nav_profile')}</span>
                     </button>
                     <button
@@ -480,73 +497,61 @@ export const Header: React.FC<HeaderProps> = ({
                         setMobileMenuOpen(false);
                         onLogout?.();
                       }}
-                      className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-red-50 text-red-700 font-bold text-xs hover:bg-red-100 transition-colors"
+                      className="flex items-center justify-center gap-1 py-1 px-2 rounded-lg bg-red-50 text-red-700 font-bold text-[11px] hover:bg-red-100 transition-colors"
                     >
-                      <LucideIcon name="logout" className="text-[16px]" />
+                      <LucideIcon name="logout" className="text-[13px]" />
                       <span>{lang === 'MR' ? 'बाहेर पडा' : 'Logout'}</span>
                     </button>
                   </div>
                 </div>
               ) : (
-                <div className="bg-white p-3.5 rounded-2xl border border-[#efe7dc] shadow-2xs">
+                <div className="bg-white p-1.5 rounded-xl border border-[#efe7dc] shadow-2xs flex items-center gap-1.5">
                   <button
                     type="button"
                     onClick={() => {
                       setMobileMenuOpen(false);
                       onOpenLogin();
                     }}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-800 text-white hover:bg-emerald-900 font-bold text-[13px] shadow-xs active:scale-95 transition-all cursor-pointer"
+                    className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shadow-xs active:scale-95 transition-all cursor-pointer whitespace-nowrap"
                   >
-                    <LucideIcon name="login" className="text-[18px]" />
-                    <span>{lang === 'MR' ? 'लॉगिन / नोंदणी करा' : 'Login / Register'}</span>
+                    <LucideIcon name="login" className="text-[14px]" />
+                    <span>{lang === 'MR' ? 'लॉगिन' : 'Login'}</span>
                   </button>
+
+                  {/* Compact Language Toggle */}
+                  <div className="flex items-center rounded-lg bg-[#faf6ee] p-0.5 border border-[#efe7dc] shrink-0">
+                    {(['MR', 'EN'] as const).map((l) => (
+                      <button
+                        key={l}
+                        type="button"
+                        onClick={() => setLang(l)}
+                        className={`px-2 py-1 rounded text-[11px] font-black transition-all cursor-pointer ${
+                          lang === l ? 'bg-emerald-800 text-white shadow-2xs' : 'text-stone-600 hover:text-stone-900'
+                        }`}
+                      >
+                        {l === 'MR' ? 'मराठी' : 'EN'}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
 
-              {/* 2. Language Switcher */}
-              <div className="bg-white p-3 rounded-2xl border border-[#efe7dc] shadow-2xs">
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setLang('MR')}
-                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border cursor-pointer ${lang === 'MR'
-                        ? 'bg-emerald-800 text-white border-emerald-800 shadow-xs ring-2 ring-emerald-600/20'
-                        : 'bg-[#faf6ee] text-stone-700 border-[#efe7dc] hover:bg-[#f3ede4]'
-                      }`}
-                  >
-                    <span className="text-sm">🇮🇳</span>
-                    <span>मराठी</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setLang('EN')}
-                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border cursor-pointer ${lang === 'EN'
-                        ? 'bg-emerald-800 text-white border-emerald-800 shadow-xs ring-2 ring-emerald-600/20'
-                        : 'bg-[#faf6ee] text-stone-700 border-[#efe7dc] hover:bg-[#f3ede4]'
-                      }`}
-                  >
-                    <span className="text-sm">🌐</span>
-                    <span>English</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* 3. Mobile Quick Search Bar */}
+              {/* 2. Compact Search Bar */}
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   setMobileMenuOpen(false);
                   onSearch(searchVal);
                 }}
-                className="relative flex items-center w-full h-10 rounded-xl bg-white border border-[#efe7dc] focus-within:border-emerald-600 px-3 shadow-inner"
+                className="relative flex items-center w-full h-8 rounded-lg bg-white border border-[#efe7dc] focus-within:border-emerald-600 px-2.5 shadow-2xs"
               >
-                <LucideIcon name="search" className="text-[19px] text-stone-400 mr-2" />
+                <LucideIcon name="search" className="text-[15px] text-stone-400 mr-1.5 shrink-0" />
                 <input
                   type="text"
                   value={searchVal}
                   onChange={(e) => setSearchVal(e.target.value)}
-                  placeholder={lang === 'MR' ? 'योजना, व्यवसाय, बस किंवा सेवा शोधा...' : 'Search shops, bus, schemes...'}
-                  className="w-full bg-transparent text-stone-900 text-[12px] focus:outline-none placeholder:text-stone-400 font-medium"
+                  placeholder={lang === 'MR' ? 'योजना, व्यवसाय, बस शोधा...' : 'Search shops, bus, schemes...'}
+                  className="w-full bg-transparent text-stone-900 text-[11px] focus:outline-none placeholder:text-stone-400 font-medium"
                 />
                 {searchVal && (
                   <button
@@ -554,14 +559,14 @@ export const Header: React.FC<HeaderProps> = ({
                     onClick={() => setSearchVal('')}
                     className="text-stone-400 hover:text-stone-700 p-0.5 cursor-pointer"
                   >
-                    <LucideIcon name="close" className="text-[16px]" />
+                    <LucideIcon name="close" className="text-[13px]" />
                   </button>
                 )}
               </form>
 
-              {/* 4. Categorized Navigation Hubs List */}
-              <div className="space-y-1">
-                <div className="text-[10px] font-bold text-stone-400 uppercase tracking-wider px-2 pt-1 pb-1">
+              {/* 3. Categorized Navigation Hubs List (Compact rows) */}
+              <div className="space-y-0.5">
+                <div className="text-[9px] font-extrabold text-stone-400 uppercase tracking-wider px-2 pt-1 pb-0.5">
                   {lang === 'MR' ? 'नागरिक सेवा व विभाग' : 'Civic Hubs & Departments'}
                 </div>
 
@@ -572,14 +577,14 @@ export const Header: React.FC<HeaderProps> = ({
                     setActiveNav('home');
                     setMobileMenuOpen(false);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all text-left cursor-pointer ${activeNav === 'home' || activeNav === 'all'
+                  className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-left cursor-pointer ${activeNav === 'home' || activeNav === 'all'
                       ? 'bg-emerald-800 text-white shadow-xs'
                       : 'text-stone-800 hover:bg-white hover:text-emerald-950'
                     }`}
                 >
-                  <LucideIcon name="home" className={` text-[20px] ${activeNav === 'home' || activeNav === 'all' ? 'text-white' : 'text-emerald-700' }`} />
+                  <LucideIcon name="home" className={` text-[17px] ${activeNav === 'home' || activeNav === 'all' ? 'text-white' : 'text-emerald-700' }`} />
                   <span className="flex-1 truncate">{t('nav_home')}</span>
-                  <LucideIcon name="chevron_right" className="text-[16px] opacity-40" />
+                  <LucideIcon name="chevron_right" className="text-[14px] opacity-40" />
                 </button>
 
                 {navItems.map((item) => {
@@ -592,14 +597,14 @@ export const Header: React.FC<HeaderProps> = ({
                         setActiveNav(item.id);
                         setMobileMenuOpen(false);
                       }}
-                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all text-left cursor-pointer ${isActive
+                      className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-left cursor-pointer ${isActive
                           ? 'bg-emerald-800 text-white shadow-xs'
                           : 'text-stone-800 hover:bg-white hover:text-emerald-950'
                         }`}
                     >
-                      <LucideIcon name={item.icon} className={` text-[20px] ${isActive ? 'text-white' : 'text-emerald-700'}`} />
+                      <LucideIcon name={item.icon} className={` text-[17px] ${isActive ? 'text-white' : 'text-emerald-700'}`} />
                       <span className="flex-1 truncate">{item.label}</span>
-                      <LucideIcon name="chevron_right" className="text-[16px] opacity-40" />
+                      <LucideIcon name="chevron_right" className="text-[14px] opacity-40" />
                     </button>
                   );
                 })}
@@ -607,11 +612,11 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
 
             {/* Drawer Footer: Grievance and Emergency Services */}
-            <div className="p-3 border-t border-[#efe7dc] bg-white space-y-2 shrink-0">
-              <div className="flex items-center justify-between text-[11px] text-stone-500 px-1">
+            <div className="py-2 px-3 pb-[max(0.6rem,env(safe-area-inset-bottom))] border-t border-[#efe7dc] bg-white space-y-1.5 shrink-0">
+              <div className="flex items-center justify-between text-[10px] text-stone-500 px-1">
                 <span>{lang === 'MR' ? 'आपत्कालीन मदत:' : 'Emergency Help:'}</span>
                 <a href="tel:108" className="text-red-700 font-bold hover:underline flex items-center gap-1">
-                  <LucideIcon name="phone_in_talk" className="text-[14px]" />
+                  <LucideIcon name="phone_in_talk" className="text-[13px]" />
                   <span>१०८ रुग्णवाहिका</span>
                 </a>
               </div>

@@ -13,7 +13,21 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://localhost:8080',
-        changeOrigin: true
+        changeOrigin: true,
+        configure: (proxy) => {
+          proxy.on('error', (_err, _req, res) => {
+            if (res && 'writeHead' in res && !(res as any).headersSent) {
+              (res as any).writeHead(503, { 'Content-Type': 'application/json' });
+              (res as any).end(
+                JSON.stringify({
+                  success: false,
+                  message: 'Local backend server on port 8080 is offline.',
+                  data: null
+                })
+              );
+            }
+          });
+        }
       }
     }
   }

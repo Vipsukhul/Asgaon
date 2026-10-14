@@ -245,7 +245,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[12px] font-bold transition-colors border border-[#e8e2d9]"
         >
           <LucideIcon name="arrow_back" className="text-[16px]" />
-          <span>{lang === 'MR' ? 'सर्व योजनांकडे परत जा' : 'Back to All Schemes'}</span>
+          <span>{lang === 'MR' ? 'परत जा' : 'Back'}</span>
         </button>
       </div>
 
@@ -256,9 +256,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
             <span className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#dbe1ff] text-[#002873]">
               {scheme.category} {isGharkul ? (lang === 'MR' ? '• घरकुल योजना' : '• GHARKUL SCHEME') : (lang === 'MR' ? '• शासकीय योजना' : '• GOVT SCHEME')}
             </span>
-            <span className="text-[12px] font-bold text-[#ba1a1a] bg-[#fef3c7] px-2.5 py-0.5 rounded-md">
-              {scheme.deadlineText}
-            </span>
+
           </div>
 
           <div className="flex items-center gap-2">
@@ -267,7 +265,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#25d366] hover:bg-[#20ba5a] text-white text-[12px] font-bold transition-colors shadow-xs"
             >
               <LucideIcon name="share" className="text-[16px]" />
-              <span>{lang === 'MR' ? 'व्हाट्सॲपवर शेअर करा' : 'WhatsApp Share'}</span>
+              <span>{lang === 'MR' ? 'शेअर' : 'Share'}</span>
             </button>
           </div>
         </div>
@@ -537,7 +535,7 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
               className="w-full py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold flex items-center justify-center gap-1 mb-2 transition-colors"
             >
               <LucideIcon name="call" className="text-[15px]" />
-              <span>{lang === 'MR' ? 'ऑपरेटरशी संपर्क: ९८२२१०४५००' : 'Call Operator: +91 98221 04500'}</span>
+              <span>{lang === 'MR' ? 'ऑपरेटरशी संपर्क' : 'Call Operator'}</span>
             </a>
           </div>
 
