@@ -590,20 +590,24 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--site-bg)] text-[#1d1b16] flex flex-col font-sans relative">
+    <div className={`min-h-screen bg-[var(--site-bg)] text-[#1d1b16] flex flex-col font-sans relative ${
+      activeNav === 'admin' ? 'h-screen overflow-hidden' : ''
+    }`}>
       {/* Authentic Village Folk Art Graffiti Backdrop */}
-      <VillageGraffitiBackdrop />
+      {activeNav !== 'admin' && <VillageGraffitiBackdrop />}
 
-      {/* 1. Header with dynamic navigation */}
-      <Header
-        activeNav={activeNav}
-        setActiveNav={(nav) => navigateTo(nav)}
-        onOpenLogin={() => setLoginModalOpen(true)}
-        onSearch={handleSearch}
-        userRole={userRole}
-        currentUser={currentUser}
-        onLogout={handleLogout}
-      />
+      {/* 1. Header with dynamic navigation (Public Citizen Pages Only) */}
+      {activeNav !== 'admin' && (
+        <Header
+          activeNav={activeNav}
+          setActiveNav={(nav) => navigateTo(nav)}
+          onOpenLogin={() => setLoginModalOpen(true)}
+          onSearch={handleSearch}
+          userRole={userRole}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+        />
+      )}
 
       {/* Floating Server Wake-up notification */}
       {isServerWaking && (
@@ -613,9 +617,9 @@ export function App() {
         </div>
       )}
 
-      {/* Main Container - dynamic top padding matching mobile single-row (pt-16) vs desktop two-row (md:pt-28) header */}
-      <main className={`flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 ${
-        activeNav === 'admin' ? 'pt-16 md:pt-22' : 'pt-16 sm:pt-20 md:pt-28'
+      {/* Main Container - Fullscreen edge-to-edge for Admin; Containerized with top header padding for Citizens */}
+      <main className={`flex-1 w-full ${
+        activeNav === 'admin' ? 'p-0 max-w-none h-full overflow-hidden' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-16 sm:pt-20 md:pt-28'
       }`}>
         {/* 2. Marquee Campaign Official Alert Ticker (Hidden in Admin mode) */}
         {activeNav !== 'admin' && (
@@ -637,6 +641,11 @@ export function App() {
             onOpenLoginModal={() => setLoginModalOpen(true)}
             onLogout={handleLogout}
             schemes={schemes}
+            businesses={businesses}
+            jobs={jobs}
+            onOpenRegisterShop={() => setRegisterShopOpen(true)}
+            onOpenPostJob={() => setPostJobOpen(true)}
+            onSelectBusinessSlug={navigateToBusiness}
           />
         )}
 
@@ -902,8 +911,8 @@ export function App() {
         )}
       </main>
 
-      {/* 4. Civic Footer */}
-      <Footer onNavigate={navigateTo} />
+      {/* 4. Civic Footer (Public Citizen Pages Only) */}
+      {activeNav !== 'admin' && <Footer onNavigate={navigateTo} />}
 
       {/* Interactive Modals */}
 

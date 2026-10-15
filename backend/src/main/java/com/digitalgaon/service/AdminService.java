@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
+import com.digitalgaon.dto.CreateUserAdminRequest;
+import com.digitalgaon.dto.UpdateUserAdminRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,6 +34,7 @@ public class AdminService {
     private final AnnouncementRepository announcementRepository;
     private final MarketplaceListingRepository marketplaceListingRepository;
     private final PushNotificationService pushNotificationService;
+    private final PasswordEncoder passwordEncoder;
 
     public AdminService(UserRepository userRepository,
                         RoleRepository roleRepository,
@@ -39,7 +43,8 @@ public class AdminService {
                         JobRepository jobRepository,
                         AnnouncementRepository announcementRepository,
                         MarketplaceListingRepository marketplaceListingRepository,
-                        PushNotificationService pushNotificationService) {
+                        PushNotificationService pushNotificationService,
+                        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.complaintRepository = complaintRepository;
@@ -48,6 +53,7 @@ public class AdminService {
         this.announcementRepository = announcementRepository;
         this.marketplaceListingRepository = marketplaceListingRepository;
         this.pushNotificationService = pushNotificationService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public AdminStatsDto getDashboardStats() {
@@ -72,23 +78,143 @@ public class AdminService {
         );
     }
 
+    private UserAdminDto toUserAdminDto(User u) {
+        return new UserAdminDto(
+                u.getId(),
+                u.getFullName(),
+                u.getPhone(),
+                u.getEmail(),
+                u.getVillageName(),
+                u.getWardNumber(),
+                u.getOccupation(),
+                u.getIsVerified(),
+                u.getIsActive(),
+                u.getRoles().stream().map(Role::getName).collect(Collectors.toSet()),
+                u.getCreatedAt()
+        );
+    }
+
     public List<UserAdminDto> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(u -> new UserAdminDto(
-                        u.getId(),
-                        u.getFullName(),
-                        u.getPhone(),
-                        u.getEmail(),
-                        u.getVillageName(),
-                        u.getWardNumber(),
-                        u.getOccupation(),
-                        u.getIsVerified(),
-                        u.getIsActive(),
-                        u.getRoles().stream().map(Role::getName).collect(Collectors.toSet()),
-                        u.getCreatedAt()
-                ))
+                .map(this::toUserAdminDto)
                 .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public UserAdminDto createUser(CreateUserAdminRequest req) {
+        if (req.getPhone() == null || req.getPhone().isBlank()) {
+            throw new IllegalArgumentException("मोबाईल नंबर आवश्यक आहे (Phone number is required)");
+        }
+        String cleanPhone = req.getPhone().trim();
+        if (userRepository.existsByPhone(cleanPhone)) {
+            throw new IllegalArgumentException("हा मोबाईल नंबर आधीच नोंदणीकृत आहे (Phone number already registered)");
+        }
+        if (req.getEmail() != null && !req.getEmail().isBlank()) {
+            String cleanEmail = req.getEmail().trim();
+            if (userRepository.existsByEmail(cleanEmail)) {
+                throw new IllegalArgumentException("हा ईमेल आधीच नोंदणीकृत आहे (Email already registered)");
+            }
+        }
+
+        User user = new User();
+        user.setFullName(req.getFullName() != null && !req.getFullName().isBlank() ? req.getFullName().trim() : "ग्रामस्थ नागरिक");
+        user.setPhone(cleanPhone);
+        user.setEmail(req.getEmail() != null && !req.getEmail().isBlank() ? req.getEmail().trim() : null);
+
+        String rawPassword = (req.getPassword() != null && !req.getPassword().isBlank()) ? req.getPassword().trim() : "Asgaon@123";
+        user.setPasswordHash(passwordEncoder.encode(rawPassword));
+
+        user.setVillageName(req.getVillageName() != null && !req.getVillageName().isBlank() ? req.getVillageName().trim() : "Asgaon");
+        user.setWardNumber(req.getWardNumber() != null && !req.getWardNumber().isBlank() ? req.getWardNumber().trim() : "वॉर्ड २ (गावठाण)");
+        user.setOccupation(req.getOccupation() != null && !req.getOccupation().isBlank() ? req.getOccupation().trim() : "ग्रामस्थ नागरिक");
+        user.setIsActive(req.getIsActive() != null ? req.getIsActive() : true);
+        user.setIsVerified(req.getIsVerified() != null ? req.getIsVerified() : true);
+        user.setCreatedAt(OffsetDateTime.now());
+        user.setUpdatedAt(OffsetDateTime.now());
+
+        String targetRole = req.getRole() != null && !req.getRole().isBlank() ? req.getRole().trim().toUpperCase() : "ROLE_CITIZEN";
+        if (!targetRole.startsWith("ROLE_")) {
+            targetRole = "ROLE_" + targetRole;
+        }
+        final String roleName = targetRole;
+        Role role = roleRepository.findByName(roleName)
+                .orElseGet(() -> roleRepository.save(new Role(roleName, "System assigned " + roleName + " role")));
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        user.setRoles(roles);
+
+        User saved = userRepository.save(user);
+        return toUserAdminDto(saved);
+    }
+
+    @Transactional
+    public UserAdminDto updateUser(UUID userId, UpdateUserAdminRequest req) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found: " + userId));
+
+        if (req.getFullName() != null && !req.getFullName().isBlank()) {
+            user.setFullName(req.getFullName().trim());
+        }
+        if (req.getPhone() != null && !req.getPhone().isBlank() && !req.getPhone().trim().equals(user.getPhone())) {
+            String cleanPhone = req.getPhone().trim();
+            if (userRepository.existsByPhone(cleanPhone)) {
+                throw new IllegalArgumentException("हा मोबाईल नंबर आधीच नोंदणीकृत आहे");
+            }
+            user.setPhone(cleanPhone);
+        }
+        if (req.getEmail() != null) {
+            String cleanEmail = req.getEmail().trim();
+            if (!cleanEmail.isEmpty() && !cleanEmail.equalsIgnoreCase(user.getEmail())) {
+                if (userRepository.existsByEmail(cleanEmail)) {
+                    throw new IllegalArgumentException("हा ईमेल आधीच नोंदणीकृत आहे");
+                }
+                user.setEmail(cleanEmail);
+            } else if (cleanEmail.isEmpty()) {
+                user.setEmail(null);
+            }
+        }
+        if (req.getPassword() != null && !req.getPassword().isBlank()) {
+            user.setPasswordHash(passwordEncoder.encode(req.getPassword().trim()));
+        }
+        if (req.getWardNumber() != null) {
+            user.setWardNumber(req.getWardNumber().trim());
+        }
+        if (req.getOccupation() != null) {
+            user.setOccupation(req.getOccupation().trim());
+        }
+        if (req.getIsActive() != null) {
+            user.setIsActive(req.getIsActive());
+        }
+        if (req.getIsVerified() != null) {
+            user.setIsVerified(req.getIsVerified());
+        }
+        if (req.getRole() != null && !req.getRole().isBlank()) {
+            String targetRole = req.getRole().trim().toUpperCase();
+            if (!targetRole.startsWith("ROLE_")) {
+                targetRole = "ROLE_" + targetRole;
+            }
+            final String roleName = targetRole;
+            Role role = roleRepository.findByName(roleName)
+                    .orElseGet(() -> roleRepository.save(new Role(roleName, "System assigned " + roleName + " role")));
+            Set<Role> roles = new HashSet<>();
+            roles.add(role);
+            user.setRoles(roles);
+        }
+
+        user.setUpdatedAt(OffsetDateTime.now());
+        User saved = userRepository.save(user);
+        return toUserAdminDto(saved);
+    }
+
+    @Transactional
+    public void deleteUser(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found: " + userId));
+
+        user.getRoles().clear();
+        userRepository.delete(user);
     }
 
     @Transactional
@@ -104,7 +230,6 @@ public class AdminService {
 
         final String targetRole = normalizedRole;
         Role role = roleRepository.findByName(targetRole)
-                .or(() -> roleRepository.findByName(targetRole.replace("ROLE_", "")))
                 .orElseGet(() -> roleRepository.save(new Role(targetRole, "System assigned " + targetRole + " role")));
 
         Set<Role> roles = new HashSet<>();
@@ -113,19 +238,7 @@ public class AdminService {
         user.setUpdatedAt(OffsetDateTime.now());
         User saved = userRepository.save(user);
 
-        return new UserAdminDto(
-                saved.getId(),
-                saved.getFullName(),
-                saved.getPhone(),
-                saved.getEmail(),
-                saved.getVillageName(),
-                saved.getWardNumber(),
-                saved.getOccupation(),
-                saved.getIsVerified(),
-                saved.getIsActive(),
-                saved.getRoles().stream().map(Role::getName).collect(Collectors.toSet()),
-                saved.getCreatedAt()
-        );
+        return toUserAdminDto(saved);
     }
 
     @Transactional

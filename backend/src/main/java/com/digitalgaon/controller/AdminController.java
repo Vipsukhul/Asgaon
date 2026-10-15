@@ -2,6 +2,8 @@ package com.digitalgaon.controller;
 
 import com.digitalgaon.dto.AdminStatsDto;
 import com.digitalgaon.dto.ApiResponse;
+import com.digitalgaon.dto.CreateUserAdminRequest;
+import com.digitalgaon.dto.UpdateUserAdminRequest;
 import com.digitalgaon.dto.UserAdminDto;
 import com.digitalgaon.model.Complaint;
 import com.digitalgaon.service.AdminService;
@@ -35,6 +37,25 @@ public class AdminController {
     @Operation(summary = "Get all registered citizens and their roles (Super Admin)")
     public ResponseEntity<ApiResponse<List<UserAdminDto>>> getAllUsers() {
         return ResponseEntity.ok(ApiResponse.ok("Users loaded", adminService.getAllUsers()));
+    }
+
+    @PostMapping("/users")
+    @Operation(summary = "Create a new citizen or admin user (Admin/Super Admin)")
+    public ResponseEntity<ApiResponse<UserAdminDto>> createUser(@RequestBody CreateUserAdminRequest body) {
+        return ResponseEntity.ok(ApiResponse.ok("User created successfully", adminService.createUser(body)));
+    }
+
+    @PutMapping("/users/{userId}")
+    @Operation(summary = "Update citizen or admin user details (Admin/Super Admin)")
+    public ResponseEntity<ApiResponse<UserAdminDto>> updateUser(@PathVariable UUID userId, @RequestBody UpdateUserAdminRequest body) {
+        return ResponseEntity.ok(ApiResponse.ok("User updated successfully", adminService.updateUser(userId, body)));
+    }
+
+    @DeleteMapping("/users/{userId}")
+    @Operation(summary = "Delete citizen or admin user (Super Admin)")
+    public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable UUID userId) {
+        adminService.deleteUser(userId);
+        return ResponseEntity.ok(ApiResponse.ok("User deleted successfully", userId.toString()));
     }
 
     @PatchMapping("/users/{userId}/role")

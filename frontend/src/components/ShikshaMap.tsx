@@ -1,8 +1,10 @@
 import { LucideIcon } from './LucideIcon';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useLanguage } from '../context/LanguageContext';
+import type { SchoolItem } from '../data/shikshaData';
+import { DEFAULT_SCHOOLS } from '../data/shikshaData';
 
 export interface EducationMapItem {
   id: string;
@@ -121,9 +123,10 @@ export const EDUCATION_INSTITUTES: EducationMapItem[] = [
 
 interface ShikshaMapProps {
   height?: string;
+  schools?: SchoolItem[];
 }
 
-export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
+export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px', schools: propSchools }) => {
   const { lang } = useLanguage();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -131,10 +134,105 @@ export const ShikshaMap: React.FC<ShikshaMapProps> = ({ height = '500px' }) => {
   const [selectedItem, setSelectedItem] = useState<EducationMapItem | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
+  // Dynamic schools list synced with prop & localStorage
+  const [schoolsList, setSchoolsList] = useState<SchoolItem[]>(() => {
+    if (propSchools && propSchools.length > 0) return propSchools;
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('dg_shiksha_schools');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        } catch {}
+      }
+    }
+    return DEFAULT_SCHOOLS;
+  });
+
+  useEffect(() => {
+    if (propSchools && propSchools.length > 0) {
+      setSchoolsList(propSchools);
+    }
+  }, [propSchools]);
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('dg_shiksha_schools');
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length > 0) setSchoolsList(parsed);
+          } catch {}
+        }
+      }
+    };
+    window.addEventListener('shiksha-data-updated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+    return () => {
+      window.removeEventListener('shiksha-data-updated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  }, []);
+
+  // Compute map items dynamically with edited coordinates
+  const dynamicInstitutes = useMemo<EducationMapItem[]>(() => {
+    const mapped: EducationMapItem[] = schoolsList.map((s, idx) => {
+      const catLower = (s.category || '').toLowerCase();
+      let cat: 'school' | 'library' | 'technical' | 'hostel' = 'school';
+      let icon = 'school';
+      let color = '#166534';
+
+      if (catLower.includes('tech') || catLower.includes('iti')) {
+        cat = 'technical';
+        icon = 'precision_manufacturing';
+        color = '#8c5000';
+      } else if (catLower.includes('hostel')) {
+        cat = 'hostel';
+        icon = 'hotel';
+        color = '#002873';
+      } else if (catLower.includes('primary')) {
+        cat = 'school';
+        icon = 'child_care';
+        color = '#c2410c';
+      }
+
+      const defaultMatch = EDUCATION_INSTITUTES.find((e) => e.id === s.id) || EDUCATION_INSTITUTES[idx % EDUCATION_INSTITUTES.length];
+      const lat = typeof s.latitude === 'number' && !isNaN(s.latitude) ? s.latitude : (defaultMatch?.latitude || 20.7858);
+      const lng = typeof s.longitude === 'number' && !isNaN(s.longitude) ? s.longitude : (defaultMatch?.longitude || 79.6345);
+
+      return {
+        id: s.id,
+        name: s.name,
+        nameEnglish: s.name,
+        category: cat,
+        categoryLabelMarathi: s.badge || s.category,
+        categoryLabelEnglish: s.category,
+        address: s.address,
+        landmark: s.address,
+        inCharge: s.principalName || 'मुख्याध्यापक',
+        phone: s.contactPhone || '',
+        timings: s.grades ? `इयत्ता: ${s.grades}` : 'सकाळी १०:०० ते ५:००',
+        highlights: s.tags && s.tags.length > 0 ? s.tags : [s.medium, s.badge],
+        latitude: lat,
+        longitude: lng,
+        icon,
+        color
+      };
+    });
+
+    const libraryItem = EDUCATION_INSTITUTES.find((e) => e.category === 'library');
+    if (libraryItem && !mapped.some((m) => m.id === libraryItem.id)) {
+      mapped.unshift(libraryItem);
+    }
+
+    return mapped;
+  }, [schoolsList]);
+
   // Filter items
   const filteredItems = activeCategory === 'all'
-    ? EDUCATION_INSTITUTES
-    : EDUCATION_INSTITUTES.filter(item => item.category === activeCategory);
+    ? dynamicInstitutes
+    : dynamicInstitutes.filter(item => item.category === activeCategory);
 
   // Initialize Leaflet Map
   useEffect(() => {

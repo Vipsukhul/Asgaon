@@ -5,6 +5,7 @@ import type { Business } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { SEOHead } from '../components/SEOHead';
 import { useLanguage } from '../context/LanguageContext';
+import { api } from '../services/api';
 
 export interface PublicReview {
   id: string | number;
@@ -19,80 +20,7 @@ export interface PublicReview {
   verifiedCitizen: boolean;
 }
 
-const SEED_REVIEWS: PublicReview[] = [
-  {
-    id: 'rev-1',
-    businessId: '1',
-    businessName: 'खडके किराणा आणि जनरल स्टोअर्स',
-    businessSlug: 'khadke-kirana',
-    userName: 'रमेश पाटील',
-    wardOrArea: 'वॉर्ड २ (गावठाण)',
-    rating: 5,
-    date: 'काल',
-    comment: 'उत्कृष्ट सेवा आणि वाजवी दर. वेळेवर सर्व धान्य व किराणा माल उपलब्ध असतो. गावातच अशी दर्जेदार सोय असल्याने पवनीला जाण्याची गरज भासत नाही.',
-    verifiedCitizen: true
-  },
-  {
-    id: 'rev-2',
-    businessId: '2',
-    businessName: 'पाटील कृषी केंद्र',
-    businessSlug: 'patil-krishi-kendra',
-    userName: 'सुनीता झाळके',
-    wardOrArea: 'आंबेडकर वॉर्ड १',
-    rating: 5,
-    date: '३ दिवसांपूर्वी',
-    comment: 'अतिशय नम्र बोलणे आणि खात्रीशीर बियाणे. रासायनिक व सेंद्रिय खतांचा योग्य सल्ला देतात. सर्व शेतकरी बांधवांना नक्की शिफारस करतो.',
-    verifiedCitizen: true
-  },
-  {
-    id: 'rev-3',
-    businessId: '3',
-    businessName: 'सोनवणे मेडिकल व क्लिनिक',
-    businessSlug: 'sonone-medical',
-    userName: 'विठ्ठल मेश्राम',
-    wardOrArea: 'विठ्ठल मंदिर परिसर वॉर्ड ३',
-    rating: 5,
-    date: '१ आठवड्यापूर्वी',
-    comment: 'तातडीच्या वेळी रात्रीही आवश्यक औषधे उपलब्ध करून दिली. बीपी व शुगर तपासणी मोफत केली जाते. अतिशय तत्पर सेवा.',
-    verifiedCitizen: true
-  },
-  {
-    id: 'rev-4',
-    businessId: '4',
-    businessName: 'गायत्री झेरॉक्स व सीएससी केंद्र',
-    businessSlug: 'gayatri-csc',
-    userName: 'प्रशांत चौधरी',
-    wardOrArea: 'वॉर्ड ४ (शिवार)',
-    rating: 4,
-    date: '२ आठवड्यांपूर्वी',
-    comment: 'लाडकी बहीण योजना व पीएम किसान ई-केवायसीचे काम अगदी कमी वेळेत करून दिले. डिजिटल प्रिंटिंगची सोय उत्तम आहे.',
-    verifiedCitizen: true
-  },
-  {
-    id: 'rev-5',
-    businessId: '1',
-    businessName: 'खडके किराणा आणि जनरल स्टोअर्स',
-    businessSlug: 'khadke-kirana',
-    userName: 'संजय कापसे',
-    wardOrArea: 'गावठाण वॉर्ड २',
-    rating: 5,
-    date: '२ आठवड्यांपूर्वी',
-    comment: 'स्वच्छ किराणा, डिजिटल यूपीआय पेमेंट व घरपोच सेवा. आसगावमधील सर्वात विश्वासू दुकान!',
-    verifiedCitizen: true
-  },
-  {
-    id: 'rev-6',
-    businessId: '5',
-    businessName: 'माऊली ट्रॅक्टर व कृषी अवजारे',
-    businessSlug: 'mauli-tractors',
-    userName: 'अनिल भोंगाडे',
-    wardOrArea: 'वॉर्ड ३ (मंदिर चौक)',
-    rating: 5,
-    date: '३ आठवड्यांपूर्वी',
-    comment: 'नांगरणी व रोटाव्हेटरचे काम वेळेत पूर्ण केले. डिझेलचे दर आणि अवजारांचे भाडे अतिशय वाजवी आहे.',
-    verifiedCitizen: true
-  }
-];
+const SEED_REVIEWS: PublicReview[] = [];
 
 interface ReviewsPageProps {
   businesses?: Business[];
@@ -126,6 +54,29 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<'recent' | 'highest' | 'lowest'>('recent');
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
+  // Fetch reviews directly from PostgreSQL database on load
+  useEffect(() => {
+    let isMounted = true;
+    api.getReviews().then((res: any) => {
+      const list = Array.isArray(res) ? res : (res?.data || []);
+      if (isMounted && list.length > 0) {
+        setAllReviews(list.map((r: any) => ({
+          id: r.id,
+          businessId: r.businessId,
+          businessName: r.businessName,
+          businessSlug: r.businessSlug,
+          userName: r.userName,
+          wardOrArea: r.wardOrArea || '',
+          rating: r.rating,
+          date: r.createdAt ? new Date(r.createdAt).toLocaleDateString() : 'नुकताच',
+          comment: r.comment,
+          verifiedCitizen: r.verifiedCitizen ?? true
+        })));
+      }
+    }).catch(err => console.error('Failed to load reviews from DB:', err));
+    return () => { isMounted = false; };
+  }, []);
 
   const activeFilterCount =
     (selectedBusinessFilter !== 'all' ? 1 : 0) +
@@ -221,6 +172,17 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
     // Save to all public reviews list
     const updated = [newRev, ...allReviews];
     saveReviews(updated);
+
+    // Save to PostgreSQL Database
+    api.submitReview({
+      businessId: finalBizId,
+      businessName: finalBizName,
+      userName: formName.trim(),
+      wardOrArea: formWard,
+      rating: formRating,
+      comment: formComment.trim(),
+      verifiedCitizen: Boolean(formPhone.trim())
+    }).catch(err => console.error('Failed to submit review to DB:', err));
 
     // Also sync to individual business storage key for seamless backward compatibility
     try {

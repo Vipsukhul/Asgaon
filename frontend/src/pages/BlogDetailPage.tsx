@@ -191,20 +191,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
         /* ignore */
       }
     }
-    return DEFAULT_BLOG_COMMENTS[post.slug] || [
-      {
-        id: `c-default-${post.slug}`,
-        blogSlug: post.slug,
-        authorName: isMr ? 'आसगाव ग्रामस्थ' : 'Asgaon Citizen',
-        authorRole: isMr ? 'नागरिक' : 'Citizen',
-        content: isMr
-          ? 'गावातील सर्व शेतकरी व नागरिकांसाठी अतिशय उपयुक्त आणि सविस्तर माहिती!'
-          : 'Very informative and helpful advisory for all farmers and village residents!',
-        timestamp: isMr ? '१ दिवसापूर्वी' : '1 day ago',
-        timestampISO: new Date().toISOString(),
-        likesCount: 5
-      }
-    ];
+    return DEFAULT_BLOG_COMMENTS[post.slug] || [];
   });
 
   // Comment Content Input (No name input needed as user authentication is used)
@@ -225,22 +212,7 @@ export const BlogDetailPage: React.FC<BlogDetailPageProps> = ({
         /* ignore */
       }
     }
-    setComments(
-      DEFAULT_BLOG_COMMENTS[post.slug] || [
-        {
-          id: `c-default-${post.slug}`,
-          blogSlug: post.slug,
-          authorName: isMr ? 'आसगाव ग्रामस्थ' : 'Asgaon Citizen',
-          authorRole: isMr ? 'नागरिक' : 'Citizen',
-          content: isMr
-            ? 'गावातील सर्व शेतकरी व नागरिकांसाठी अतिशय उपयुक्त आणि सविस्तर माहिती!'
-            : 'Very informative and helpful advisory for all farmers and village residents!',
-          timestamp: isMr ? '१ दिवसापूर्वी' : '1 day ago',
-          timestampISO: new Date().toISOString(),
-          likesCount: 5
-        }
-      ]
-    );
+    setComments(DEFAULT_BLOG_COMMENTS[post.slug] || []);
   }, [post.slug, isMr]);
 
   const handleSubmitComment = (e: React.FormEvent) => {

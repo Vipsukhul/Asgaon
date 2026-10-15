@@ -98,13 +98,8 @@ public class DataSeeder implements CommandLineRunner {
 
     private void seedRoles() {
         createRoleIfMissing("ROLE_SUPER_ADMIN", "Master civic coordinator and super administrator");
-        createRoleIfMissing("SUPER_ADMIN", "Super administrator without role prefix");
         createRoleIfMissing("ROLE_ADMIN", "Gram Panchayat administrator and desk officer");
-        createRoleIfMissing("ADMIN", "Gram admin without role prefix");
         createRoleIfMissing("ROLE_CITIZEN", "General resident of Asgaon");
-        createRoleIfMissing("ROLE_FARMER", "Cultivator with Krishi access");
-        createRoleIfMissing("ROLE_STUDENT", "Student and youth");
-        createRoleIfMissing("ROLE_BUSINESS_OWNER", "Local merchant and enterprise owner");
     }
 
     private Role createRoleIfMissing(String name, String desc) {

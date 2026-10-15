@@ -45,7 +45,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   {lang === 'MR' ? 'आसगाव स्वतंत्र नागरिक व ज्ञानपीठ मंच (ता. पवनी, जि. भंडारा)' : 'Independent Village Civic & Information Hub (Pauni, Bhandara)'}
                 </p>
                 <p className="text-[11px] text-[#7ea597] font-mono">
-                  {lang === 'MR' ? 'पिन कोड: ४४१ ९१० • महाराष्ट्र' : 'PIN: 441910 • Maharashtra'}
+                  {lang === 'MR' ? 'पिन कोड: ४४१९१० • महाराष्ट्र' : 'PIN: 441910 • Maharashtra'}
                 </p>
               </div>
             </div>

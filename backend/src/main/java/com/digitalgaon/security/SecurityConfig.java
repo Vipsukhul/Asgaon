@@ -75,8 +75,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/marketplace", "/api/v1/marketplace/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/businesses", "/api/v1/businesses/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/jobs", "/api/v1/jobs/**").permitAll()
-                        // Admin endpoints
-                        .requestMatchers("/api/v1/admin", "/api/v1/admin/**").permitAll()
+                        // Admin endpoints (Stats public; user directory, roles & grievance status restricted)
+                        .requestMatchers(HttpMethod.GET, "/api/v1/admin/stats").permitAll()
+                        .requestMatchers("/api/v1/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
                         // Cloudinary image upload endpoint
                         .requestMatchers("/api/v1/upload", "/api/v1/upload/**").permitAll()
                         // Web Push notifications endpoint
@@ -85,6 +86,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/blogs", "/api/v1/blogs/**").permitAll()
                         // Panchayat Transparency & eGramSwaraj Open Data
                         .requestMatchers("/api/v1/transparency", "/api/v1/transparency/**").permitAll()
+                        // Core Village Datasets (Education, Transport, Banners, Gallery, Directory, Reviews)
+                        .requestMatchers(HttpMethod.GET, "/api/v1/education/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/transport/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/banners", "/api/v1/banners/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/gallery/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/directory/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/reviews", "/api/v1/reviews/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/reviews").permitAll()
                         // All other endpoints require authentication
                         .anyRequest().authenticated()
                 );

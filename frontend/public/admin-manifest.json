@@ -1,0 +1,63 @@
+{
+  "name": "आसगाव ग्रामपंचायत प्रशासक कक्ष (Asgaon Admin)",
+  "short_name": "ग्राम प्रशासक",
+  "description": "आसगाव ग्रामपंचायत प्रशासकीय नियंत्रण कक्ष, नागरी तक्रार निवारण व शासकीय सेवा व्यवस्थापन",
+  "start_url": "/admin",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a2e1d",
+  "theme_color": "#14532d",
+  "orientation": "any",
+  "categories": ["government", "productivity", "management"],
+  "lang": "mr",
+  "icons": [
+    {
+      "src": "/admin-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/asgaon-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/asgaon-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "तक्रार निवारण कक्ष",
+      "short_name": "तक्रारी",
+      "description": "नागरिकांच्या तक्रारींचे निवारण व स्थिती",
+      "url": "/admin#complaints",
+      "icons": [{ "src": "/admin-icon.svg", "sizes": "512x512" }]
+    },
+    {
+      "name": "तातडीची दवंडी (Push Alert)",
+      "short_name": "दवंडी",
+      "description": "सर्व गावकऱ्यांना मोबाईलवर तात्काळ अलर्ट",
+      "url": "/admin#broadcast",
+      "icons": [{ "src": "/admin-icon.svg", "sizes": "512x512" }]
+    },
+    {
+      "name": "गावकऱ्यांची यादी व भूमिका",
+      "short_name": "नागरिक यादी",
+      "description": "नोंदणीकृत ग्रामस्थ व मतदार वॉर्ड",
+      "url": "/admin#users",
+      "icons": [{ "src": "/admin-icon.svg", "sizes": "512x512" }]
+    },
+    {
+      "name": "ग्राम पारदर्शकता व निधी",
+      "short_name": "पारदर्शकता",
+      "description": "१५ वा वित्त आयोग व eGramSwaraj",
+      "url": "/admin#transparency",
+      "icons": [{ "src": "/admin-icon.svg", "sizes": "512x512" }]
+    }
+  ]
+}

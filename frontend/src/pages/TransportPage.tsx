@@ -8,6 +8,7 @@ import {
   type AutoDriver,
   type DepotContact
 } from '../data/transportData';
+import { api } from '../services/api';
 import { SEOHead } from '../components/SEOHead';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { useLanguage } from '../context/LanguageContext';
@@ -91,8 +92,55 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome }) 
     return DEPOT_CONTACTS;
   });
 
-  // Listen for admin changes dispatched across tabs / windows
+  // Fetch transport data directly from PostgreSQL database on load
   useEffect(() => {
+    let isMounted = true;
+    api.getBuses().then((res: any) => {
+      const list = Array.isArray(res) ? res : (res?.data || []);
+      if (isMounted && list.length > 0) {
+        setBuses(list.map((b: any) => ({
+          id: b.id,
+          busNumber: b.busNumber,
+          source: b.source,
+          destination: b.destination,
+          sourceMarathi: b.sourceMarathi,
+          destinationMarathi: b.destinationMarathi,
+          via: b.via ? b.via.split(',').map((v: string) => v.trim()) : [],
+          viaMarathi: b.viaMarathi ? b.viaMarathi.split(',').map((v: string) => v.trim()) : [],
+          departureTime: b.departureTime,
+          departureTime24: b.departureTime24,
+          approxArrivalTime: b.approxArrivalTime,
+          durationMinutes: b.durationMinutes,
+          busType: b.busType,
+          busTypeMarathi: b.busTypeMarathi,
+          depot: b.depot,
+          depotMarathi: b.depotMarathi,
+          fareGeneral: b.fareGeneral,
+          fareMahila: b.fareMahila,
+          fareSenior: b.fareSenior,
+          frequency: b.frequency,
+          frequencyMarathi: b.frequencyMarathi,
+          boardingPointAtAsgaon: b.boardingPointAtAsgaon,
+          boardingPointMarathi: b.boardingPointMarathi,
+          isPopular: b.isPopular
+        })));
+      }
+    }).catch(err => console.error('Failed to load buses from DB:', err));
+
+    api.getAutos().then((res: any) => {
+      const list = Array.isArray(res) ? res : (res?.data || []);
+      if (isMounted && list.length > 0) {
+        setAutos(list);
+      }
+    }).catch(err => console.error('Failed to load autos from DB:', err));
+
+    api.getDepots().then((res: any) => {
+      const list = Array.isArray(res) ? res : (res?.data || []);
+      if (isMounted && list.length > 0) {
+        setDepots(list);
+      }
+    }).catch(err => console.error('Failed to load depots from DB:', err));
+
     const handleSync = () => {
       const savedBuses = localStorage.getItem('dg_transport_buses');
       if (savedBuses) {
@@ -111,6 +159,7 @@ export const TransportPage: React.FC<TransportPageProps> = ({ onNavigateHome }) 
     window.addEventListener('dg_transport_updated', handleSync);
     window.addEventListener('storage', handleSync);
     return () => {
+      isMounted = false;
       window.removeEventListener('dg_transport_updated', handleSync);
       window.removeEventListener('storage', handleSync);
     };

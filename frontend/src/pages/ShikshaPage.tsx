@@ -82,8 +82,71 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
   const [scholarshipSearch, setScholarshipSearch] = useState('');
   const [isScholarshipFilterOpen, setIsScholarshipFilterOpen] = useState(false);
 
-  // Listen for storage changes across tabs or admin edits
+  // Fetch directly from PostgreSQL database on load
   useEffect(() => {
+    let isMounted = true;
+    api.getSchools().then((res: any) => {
+      const list = Array.isArray(res) ? res : (res?.data || []);
+      if (isMounted && list.length > 0) {
+        setSchools(list.map((s: any) => ({
+          id: s.id,
+          name: s.name,
+          badge: s.badge || '',
+          category: s.category,
+          grades: s.grades || '',
+          medium: s.medium || '',
+          description: s.description || '',
+          tags: s.tags ? s.tags.split(',').map((t: string) => t.trim()) : [],
+          principalName: s.principalName || '',
+          contactPhone: s.contactPhone || '',
+          address: s.address || '',
+          imageUrl: s.imageUrl || '',
+          latitude: s.latitude,
+          longitude: s.longitude,
+        })));
+      }
+    }).catch(err => console.error('Failed to load schools from DB:', err));
+
+    api.getScholarships().then((res: any) => {
+      const list = Array.isArray(res) ? res : (res?.data || []);
+      if (isMounted && list.length > 0) {
+        setScholarships(list);
+      }
+    }).catch(err => console.error('Failed to load scholarships from DB:', err));
+
+    api.getStudyCenters().then((res: any) => {
+      const list = Array.isArray(res) ? res : (res?.data || []);
+      if (isMounted && list.length > 0) {
+        const lib = list.find((c: any) => c.type === 'LIBRARY');
+        if (lib) {
+          setAbhyasika({
+            title: lib.name,
+            totalDesks: lib.totalDesks || 40,
+            availableDesks: lib.availableDesks || 15,
+            timings: lib.timing || '06:00 AM – 11:00 PM',
+            caretakerName: lib.caretakerName || '',
+            caretakerRole: lib.caretakerRole || '',
+            wifiSpeed: lib.wifiSpeed || '',
+            bookCount: lib.bookCount || '',
+            noticeText: lib.noticeText || '',
+          });
+        }
+        const tuts = list.filter((c: any) => c.type === 'TUTOR');
+        if (tuts.length > 0) {
+          setTutors(tuts.map((t: any) => ({
+            id: t.id,
+            name: t.name,
+            category: t.category,
+            subjects: t.subjects,
+            timing: t.timing,
+            phone: t.phone,
+            address: t.address,
+            feesInfo: t.feesInfo,
+          })));
+        }
+      }
+    }).catch(err => console.error('Failed to load study centers from DB:', err));
+
     const handleStorageChange = () => {
       try {
         const s = localStorage.getItem('dg_shiksha_schools');
@@ -99,7 +162,10 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
       } catch { /* ignore */ }
     };
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    return () => {
+      isMounted = false;
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   // Desk reservation state
@@ -235,7 +301,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
 
       {/* 4.5 INTERACTIVE EDUCATION & LIBRARY GIS MAP */}
       <div id="schools-map" className="w-full">
-        <ShikshaMap height="480px" />
+        <ShikshaMap height="480px" schools={schools} />
       </div>
 
       {/* 5. MAIN 2-COLUMN LAYOUT */}
@@ -511,6 +577,18 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                             >
                               <LucideIcon name="call" className="text-[14px]" />
                               <span>{lang === 'MR' ? 'संपर्क साधा' : 'Call School'}</span>
+                            </a>
+                          ) : null}
+                          {school.latitude && school.longitude ? (
+                            <a
+                              href={`https://www.google.com/maps/dir/?api=1&destination=${school.latitude},${school.longitude}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="py-1.5 px-3 bg-[#e8f1ec] hover:bg-[#cadbcf] text-[#14532d] text-[11px] font-bold rounded-lg transition-colors inline-flex items-center gap-1"
+                              title={lang === 'MR' ? 'गुगल मॅपवर दिशा पहा' : 'View on Google Maps'}
+                            >
+                              <LucideIcon name="navigation" className="text-[13px]" />
+                              <span>{lang === 'MR' ? 'दिशा / नकाशा' : 'Directions'}</span>
                             </a>
                           ) : null}
                         </div>

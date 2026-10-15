@@ -1,5 +1,6 @@
 package com.digitalgaon.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ public class User {
     @Column(unique = true, length = 100)
     private String email;
 
+    @JsonIgnore
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 

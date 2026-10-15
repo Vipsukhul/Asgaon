@@ -1,7 +1,7 @@
 import { LucideIcon } from '../components/LucideIcon';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { api } from '../services/api';
-import type { Scheme } from '../types';
+import type { Scheme, Business, Job } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { useLanguage } from '../context/LanguageContext';
 import { useToast } from '../context/ToastContext';
@@ -29,6 +29,11 @@ interface ProfilePageProps {
   onUpdateUser?: (updated: UserProfileData) => void;
   onLogout?: () => void;
   schemes?: Scheme[];
+  businesses?: Business[];
+  jobs?: Job[];
+  onOpenRegisterShop?: () => void;
+  onOpenPostJob?: () => void;
+  onSelectBusinessSlug?: (slug: string) => void;
 }
 
 export const ProfilePage: React.FC<ProfilePageProps> = ({
@@ -46,13 +51,37 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   },
   onUpdateUser,
   onLogout,
-  schemes = []
+  schemes = [],
+  businesses = [],
+  jobs = [],
+  onOpenRegisterShop,
+  onOpenPostJob,
+  onSelectBusinessSlug
 }) => {
   const { lang, setLang, t } = useLanguage();
   const toast = useToast();
   const isMr = lang === 'MR';
-  const [activeTab, setActiveTab] = useState<'overview' | 'saved' | 'broadcasts'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'saved' | 'my-listings' | 'broadcasts'>('overview');
   const [showRosterAlert, setShowRosterAlert] = useState(true);
+
+  // Compute listings associated with current user's phone
+  const userPhoneDigits = (currentUser?.phone || '').replace(/\D/g, '').slice(-10);
+
+  const myBusinesses = useMemo(() => {
+    if (!userPhoneDigits) return [];
+    return businesses.filter((b) => {
+      const bDigits = (b.phone || '').replace(/\D/g, '').slice(-10);
+      return bDigits && bDigits === userPhoneDigits;
+    });
+  }, [businesses, userPhoneDigits]);
+
+  const myJobs = useMemo(() => {
+    if (!userPhoneDigits) return [];
+    return jobs.filter((j) => {
+      const jDigits = (j.contactPhone || '').replace(/\D/g, '').slice(-10);
+      return jDigits && jDigits === userPhoneDigits;
+    });
+  }, [jobs, userPhoneDigits]);
 
   // Edit Profile Modal
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -285,12 +314,12 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     const clean = (role || 'CITIZEN').replace('ROLE_', '');
     switch (clean) {
       case 'SUPER_ADMIN':
-        return isMr ? 'मुख्य प्रशासक (Super Admin)' : 'Super Administrator';
+        return isMr ? 'मुख्य प्रशासक' : 'Super Admin';
       case 'ADMIN':
-        return isMr ? 'ग्राम प्रशासक (Admin)' : 'Portal Administrator';
+        return isMr ? 'प्रशासक' : 'Admin';
       case 'CITIZEN':
       default:
-        return isMr ? 'नागरिक (Citizen)' : 'Citizen Resident';
+        return isMr ? 'नागरिक' : 'Citizen';
     }
   };
 
@@ -491,6 +520,22 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             <span className="bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[11px] px-1.5 py-0.2 rounded-full font-bold">
               {savedItems.length}
             </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('my-listings')}
+            className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all cursor-pointer ${activeTab === 'my-listings'
+                ? 'bg-[#166534] text-white shadow-xs'
+                : 'bg-white text-[#404945] hover:bg-[#f3ede4] border border-[#e8e2d9]'
+              }`}
+          >
+            <LucideIcon name="storefront" className="text-[18px]" />
+            <span>{isMr ? 'माझे व्यवसाय व नोकऱ्या' : 'My Businesses & Jobs'}</span>
+            {(myBusinesses.length > 0 || myJobs.length > 0) && (
+              <span className="bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[11px] px-1.5 py-0.2 rounded-full font-bold">
+                {myBusinesses.length + myJobs.length}
+              </span>
+            )}
           </button>
 
           <button
@@ -786,6 +831,256 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* My Listings & Jobs Tab */}
+      {activeTab === 'my-listings' && (
+        <div className="flex flex-col gap-6">
+          {/* Section A: My Registered Businesses */}
+          <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-4 border-b border-[#f0eae1]">
+              <div>
+                <h3 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2">
+                  <LucideIcon name="storefront" className="text-[#c2410c]" />
+                  <span>{isMr ? `माझे नोंदणीकृत व्यवसाय व दुकाने (${myBusinesses.length})` : `My Registered Businesses & Shops (${myBusinesses.length})`}</span>
+                </h3>
+                <p className="text-[12px] text-[#707974] mt-0.5">
+                  {isMr
+                    ? `मोबाईल क्रमांक +91 ${currentUser.phone || 'नोंदणीकृत'} शी जोडलेले व्यवसाय`
+                    : `Enterprises associated with mobile +91 ${currentUser.phone || 'registered'}`}
+                </p>
+              </div>
+
+              {onOpenRegisterShop && (
+                <button
+                  type="button"
+                  onClick={onOpenRegisterShop}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold transition-all shadow-xs cursor-pointer self-start sm:self-auto"
+                >
+                  <LucideIcon name="add_business" className="text-[16px]" />
+                  <span>{isMr ? 'नवीन व्यवसाय नोंदणी करा' : 'Register New Shop'}</span>
+                </button>
+              )}
+            </div>
+
+            {myBusinesses.length === 0 ? (
+              <div className="text-center py-10 px-4 rounded-xl bg-[#faf6ee] border border-dashed border-[#e2d8c9] flex flex-col items-center justify-center">
+                <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mb-3">
+                  <LucideIcon name="store" className="text-[28px]" />
+                </div>
+                <h4 className="font-heading font-bold text-[16px] text-[#1d1b16]">
+                  {isMr ? 'अद्याप कोणताही व्यवसाय नोंदणी केलेला नाही' : 'No Businesses Registered Yet'}
+                </h4>
+                <p className="text-[13px] text-[#707974] max-w-md mt-1.5 mb-4">
+                  {isMr
+                    ? 'आपले किराणा दुकान, कृषी केंद्र, गॅरेज, दुग्ध व्यवसाय किंवा इतर सेवा गावच्या अधिकृत डिजिटल डिरेक्टरीमध्ये मोफत नोंदवा.'
+                    : 'List your shop, agriculture center, dairy, or local service in Asgaon’s official civic directory for free.'}
+                </p>
+                {onOpenRegisterShop && (
+                  <button
+                    type="button"
+                    onClick={onOpenRegisterShop}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold shadow-xs cursor-pointer"
+                  >
+                    <LucideIcon name="add" className="text-[16px]" />
+                    <span>{isMr ? 'आताच व्यवसाय नोंदणी करा' : 'Register Your Business Now'}</span>
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {myBusinesses.map((b) => (
+                  <div
+                    key={b.id}
+                    className="bg-white rounded-xl p-4 border border-[#e8e2d9] hover:border-emerald-700 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-start justify-between gap-3 mb-3">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={b.imageUrl || 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=400&q=80'}
+                            alt={b.name}
+                            className="w-12 h-12 rounded-xl object-cover border border-[#e8e2d9]"
+                          />
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-stone-100 text-stone-700">
+                              {b.category}
+                            </span>
+                            <h4 className="font-heading font-extrabold text-[15px] text-[#1d1b16] mt-0.5">
+                              {b.name}
+                            </h4>
+                          </div>
+                        </div>
+
+                        {/* Status Badge */}
+                        {b.isVerified ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-50 text-emerald-800 border border-emerald-300">
+                            <LucideIcon name="verified" className="text-[13px] text-emerald-700" />
+                            <span>{isMr ? 'सत्यापित व सक्रिय' : 'Approved & Live'}</span>
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-50 text-amber-900 border border-amber-300">
+                            <LucideIcon name="hourglass_empty" className="text-[13px] text-amber-700 animate-pulse" />
+                            <span>{isMr ? 'पडताळणी प्रलंबित' : 'Pending Review'}</span>
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="space-y-1.5 text-xs text-[#525955] my-2.5">
+                        <div className="flex items-center gap-1.5">
+                          <LucideIcon name="location_on" className="text-[15px] text-[#c2410c] shrink-0" />
+                          <span className="truncate">{b.address || 'आसगाव बाजारपेठ'}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <LucideIcon name="schedule" className="text-[15px] text-[#166534] shrink-0" />
+                          <span>{b.openingHours || 'सकाळी ८:०० ते रात्री ८:००'}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <LucideIcon name="phone" className="text-[15px] text-[#002873] shrink-0" />
+                          <span>+91 {b.phone}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 border-t border-[#f0eae1] flex items-center justify-between">
+                      <div className="flex items-center gap-1 text-xs font-bold text-amber-700">
+                        <LucideIcon name="star" className="text-[14px] fill-amber-500 text-amber-500" />
+                        <span>{b.rating || 5.0}</span>
+                        <span className="text-stone-400 font-normal">({b.ratingCount || 1} परीक्षणे)</span>
+                      </div>
+
+                      {onSelectBusinessSlug && (
+                        <button
+                          type="button"
+                          onClick={() => onSelectBusinessSlug(b.slug)}
+                          className="inline-flex items-center gap-1 text-xs font-bold text-emerald-800 hover:text-emerald-950 cursor-pointer"
+                        >
+                          <span>{isMr ? 'डिरेक्टरीमध्ये पहा' : 'View in Directory'}</span>
+                          <LucideIcon name="arrow_forward" className="text-[14px]" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Section B: My Job Postings */}
+          <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-4 border-b border-[#f0eae1]">
+              <div>
+                <h3 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2">
+                  <LucideIcon name="work" className="text-[#002873]" />
+                  <span>{isMr ? `माझ्या नोकरीच्या जाहिराती (${myJobs.length})` : `My Posted Job Openings (${myJobs.length})`}</span>
+                </h3>
+                <p className="text-[12px] text-[#707974] mt-0.5">
+                  {isMr
+                    ? 'गावातील कामगार, शेतकरी व तरुणांसाठी आपण दिलेल्या रोजगाराच्या संधी'
+                    : 'Employment vacancies posted by you for local youth and laborers'}
+                </p>
+              </div>
+
+              {onOpenPostJob && (
+                <button
+                  type="button"
+                  onClick={onOpenPostJob}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#002873] hover:bg-[#001d52] text-white text-xs font-bold transition-all shadow-xs cursor-pointer self-start sm:self-auto"
+                >
+                  <LucideIcon name="post_add" className="text-[16px]" />
+                  <span>{isMr ? 'नवीन नोकरी पोस्ट करा' : 'Post New Job'}</span>
+                </button>
+              )}
+            </div>
+
+            {myJobs.length === 0 ? (
+              <div className="text-center py-10 px-4 rounded-xl bg-[#faf6ee] border border-dashed border-[#e2d8c9] flex flex-col items-center justify-center">
+                <div className="w-14 h-14 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center mb-3">
+                  <LucideIcon name="work_outline" className="text-[28px]" />
+                </div>
+                <h4 className="font-heading font-bold text-[16px] text-[#1d1b16]">
+                  {isMr ? 'अद्याप कोणतीही नोकरी पोस्ट केलेली नाही' : 'No Jobs Posted Yet'}
+                </h4>
+                <p className="text-[13px] text-[#707974] max-w-md mt-1.5 mb-4">
+                  {isMr
+                    ? 'आपल्या शेतात, दुकानात किंवा उद्योगात मदतनीस, ट्रॅक्टर चालक, विक्री प्रतिनिधी किंवा कारागीर हवे असल्यास लगेच जाहिरात पोस्ट करा.'
+                    : 'Need farm hands, shop staff, drivers, or skilled workers? Post a job notice for free to reach Asgaon youth.'}
+                </p>
+                {onOpenPostJob && (
+                  <button
+                    type="button"
+                    onClick={onOpenPostJob}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#002873] hover:bg-[#001d52] text-white text-xs font-bold shadow-xs cursor-pointer"
+                  >
+                    <LucideIcon name="add" className="text-[16px]" />
+                    <span>{isMr ? 'नोकरीची जाहिरात द्या' : 'Post a Job Vacancy'}</span>
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {myJobs.map((j) => (
+                  <div
+                    key={j.id}
+                    className="bg-white rounded-xl p-4 border border-[#e8e2d9] hover:border-blue-700 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-start justify-between gap-3 mb-2.5">
+                        <div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-blue-50 text-blue-900 border border-blue-200">
+                            {j.employmentType || 'Full-Time'}
+                          </span>
+                          <h4 className="font-heading font-extrabold text-[15px] text-[#1d1b16] mt-1">
+                            {j.title}
+                          </h4>
+                          <div className="text-xs text-stone-600 font-semibold mt-0.5">
+                            {j.employerName}
+                          </div>
+                        </div>
+
+                        {/* Status Badge */}
+                        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black ${
+                          j.status === 'ACTIVE'
+                            ? 'bg-emerald-50 text-emerald-800 border border-emerald-300'
+                            : 'bg-stone-100 text-stone-700 border border-stone-300'
+                        }`}>
+                          <span className={`w-1.5 h-1.5 rounded-full ${j.status === 'ACTIVE' ? 'bg-emerald-600' : 'bg-stone-400'}`}></span>
+                          <span>{j.status === 'ACTIVE' ? (isMr ? 'सक्रिय / भरती चालू' : 'Active') : (isMr ? 'मुदत संपली' : 'Closed')}</span>
+                        </span>
+                      </div>
+
+                      <div className="space-y-1.5 text-xs text-[#525955] my-2.5">
+                        <div className="flex items-center gap-1.5">
+                          <LucideIcon name="payments" className="text-[15px] text-[#166534] shrink-0" />
+                          <span className="font-bold text-stone-900">{j.salaryRange || 'वाजवी मानधन / दैनिक मजुरी'}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <LucideIcon name="location_on" className="text-[15px] text-[#c2410c] shrink-0" />
+                          <span>{j.location || 'आसगाव'}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <LucideIcon name="phone" className="text-[15px] text-[#002873] shrink-0" />
+                          <span>+91 {j.contactPhone}</span>
+                        </div>
+                      </div>
+
+                      {j.description && (
+                        <p className="text-xs text-stone-600 line-clamp-2 mt-2 bg-[#fcf9f5] p-2.5 rounded-lg border border-[#f0eae1]">
+                          {j.description}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="pt-3 border-t border-[#f0eae1] flex items-center justify-between text-xs text-stone-500">
+                      <span>{j.postedAgo || 'नुकतीच जोडली'}</span>
+                      <span className="font-bold text-blue-900">{j.expiresAt ? `मुदत: ${j.expiresAt}` : '३० दिवसांसाठी वैध'}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

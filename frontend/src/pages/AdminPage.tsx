@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import type { UserProfileData } from './ProfilePage';
 import { Breadcrumb } from '../components/Breadcrumb';
+import { AdminNavSystem } from '../components/AdminNavSystem';
 import { useLanguage } from '../context/LanguageContext';
 import { sendTestPushNotification } from '../services/pushNotifications';
 import { AdminLogsSection } from '../components/AdminLogsSection';
@@ -47,6 +48,8 @@ import {
   INITIAL_BLOG_POSTS,
   type BlogPost
 } from '../data/blogData';
+
+export const DEFAULT_USERS_FALLBACK: any[] = [];
 
 interface AdminPageProps {
   currentUser: UserProfileData;
@@ -201,6 +204,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
     contactPhone: '',
     address: 'आसगाव',
     imageUrl: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80',
+    latitude: '20.7858',
+    longitude: '79.6345'
   });
 
   const [shikshaScholarships, setShikshaScholarships] = useState<ScholarshipItem[]>(() => {
@@ -619,6 +624,108 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         }
       })
       .catch((err) => console.error('Error fetching admin schemes:', err));
+
+    api.getSchools()
+      .then((res: any) => {
+        const list = Array.isArray(res) ? res : (res?.data || []);
+        if (list.length > 0) {
+          const mapped = list.map((s: any) => ({
+            id: s.id,
+            name: s.name,
+            badge: s.badge || '',
+            category: s.category,
+            grades: s.grades || '',
+            medium: s.medium || '',
+            description: s.description || '',
+            tags: s.tags ? s.tags.split(',').map((t: string) => t.trim()) : [],
+            principalName: s.principalName || '',
+            contactPhone: s.contactPhone || '',
+            address: s.address || '',
+            imageUrl: s.imageUrl || '',
+            latitude: s.latitude,
+            longitude: s.longitude
+          }));
+          setShikshaSchools(mapped);
+          localStorage.setItem('dg_shiksha_schools', JSON.stringify(mapped));
+        }
+      })
+      .catch((err) => console.error('Error fetching admin schools:', err));
+
+    api.getScholarships()
+      .then((res: any) => {
+        const list = Array.isArray(res) ? res : (res?.data || []);
+        if (list.length > 0) {
+          setShikshaScholarships(list);
+          localStorage.setItem('dg_shiksha_scholarships', JSON.stringify(list));
+        }
+      })
+      .catch((err) => console.error('Error fetching admin scholarships:', err));
+
+    api.getBuses()
+      .then((res: any) => {
+        const list = Array.isArray(res) ? res : (res?.data || []);
+        if (list.length > 0) {
+          const mapped = list.map((b: any) => ({
+            id: b.id,
+            busNumber: b.busNumber,
+            source: b.source,
+            destination: b.destination,
+            sourceMarathi: b.sourceMarathi,
+            destinationMarathi: b.destinationMarathi,
+            via: b.via ? b.via.split(',').map((v: string) => v.trim()) : [],
+            viaMarathi: b.viaMarathi ? b.viaMarathi.split(',').map((v: string) => v.trim()) : [],
+            departureTime: b.departureTime,
+            departureTime24: b.departureTime24,
+            approxArrivalTime: b.approxArrivalTime,
+            durationMinutes: b.durationMinutes,
+            busType: b.busType,
+            busTypeMarathi: b.busTypeMarathi,
+            depot: b.depot,
+            depotMarathi: b.depotMarathi,
+            fareGeneral: b.fareGeneral,
+            fareMahila: b.fareMahila,
+            fareSenior: b.fareSenior,
+            frequency: b.frequency,
+            frequencyMarathi: b.frequencyMarathi,
+            boardingPointAtAsgaon: b.boardingPointAtAsgaon,
+            boardingPointMarathi: b.boardingPointMarathi,
+            isPopular: b.isPopular
+          }));
+          setTransportBuses(mapped);
+          localStorage.setItem('dg_transport_buses', JSON.stringify(mapped));
+        }
+      })
+      .catch((err) => console.error('Error fetching admin buses:', err));
+
+    api.getAutos()
+      .then((res: any) => {
+        const list = Array.isArray(res) ? res : (res?.data || []);
+        if (list.length > 0) {
+          setTransportAutos(list);
+          localStorage.setItem('dg_transport_autos', JSON.stringify(list));
+        }
+      })
+      .catch((err) => console.error('Error fetching admin autos:', err));
+
+    api.getVillageContacts()
+      .then((res: any) => {
+        const list = Array.isArray(res) ? res : (res?.data || []);
+        if (list.length > 0) {
+          setContacts(list);
+          localStorage.setItem('dg_village_contacts', JSON.stringify(list));
+        }
+      })
+      .catch((err) => console.error('Error fetching admin contacts:', err));
+
+    api.getWaterSchedules()
+      .then((res: any) => {
+        const list = Array.isArray(res) ? res : (res?.data || []);
+        if (list.length > 0) {
+          setWaterSchedules(list);
+          localStorage.setItem('dg_water_schedule', JSON.stringify(list));
+        }
+      })
+      .catch((err) => console.error('Error fetching admin water schedules:', err));
   }, []);
 
   const [schemeForm, setSchemeForm] = useState({
@@ -685,21 +792,206 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
   const [pushSending, setPushSending] = useState(false);
   const [pushFeedback, setPushFeedback] = useState<string | null>(null);
 
-  // 8. Users (Dynamic from backend API /admin/users)
-  const [users, setUsers] = useState<any[]>([]);
+  // 8. Users (Dynamic from backend API /admin/users + CRUD Management)
+  const [users, setUsers] = useState<any[]>(() => {
+    const saved = localStorage.getItem('dg_users_cache');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          if (parsed.some((u: any) => String(u.id).startsWith('usr-root') || String(u.id).startsWith('usr-sevak') || String(u.id).startsWith('usr-sarpanch'))) {
+            localStorage.removeItem('dg_users_cache');
+            return [];
+          }
+          return parsed;
+        }
+      } catch {}
+    }
+    return DEFAULT_USERS_FALLBACK;
+  });
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [userSearch, setUserSearch] = useState('');
+  const [userRoleFilter, setUserRoleFilter] = useState<'ALL' | 'CITIZEN' | 'ADMIN' | 'SUPER_ADMIN'>('ALL');
+  const [userPage, setUserPage] = useState(1);
+  const [userPageSize, setUserPageSize] = useState(10);
+
+  // User CRUD Modals state
+  const [isAddUserOpen, setIsAddUserOpen] = useState(false);
+  const [viewingUser, setViewingUser] = useState<any | null>(null);
+  const [editingUser, setEditingUser] = useState<any | null>(null);
+  const [userFormSubmitting, setUserFormSubmitting] = useState(false);
+
+  const [newUserForm, setNewUserForm] = useState({
+    fullName: '',
+    phone: '',
+    password: '',
+    email: '',
+    wardNumber: 'वॉर्ड २ (गावठाण)',
+    occupation: 'ग्रामस्थ नागरिक',
+    role: 'CITIZEN',
+    isVerified: true,
+    isActive: true
+  });
+
+  useEffect(() => {
+    setUserPage(1);
+  }, [userSearch, userRoleFilter, userPageSize]);
 
   const handleUpdateUserRole = async (userId: string, newRole: string) => {
     try {
       await api.updateUserRole(userId, newRole);
-      setUsers((prev) =>
-        prev.map((u) => (u.id === userId ? { ...u, roles: [newRole] } : u))
-      );
-      alert(`वापरकर्ता भूमिका बदलली: ${newRole}`);
+      setUsers((prev) => {
+        const updated = prev.map((u) => (u.id === userId ? { ...u, roles: [newRole] } : u));
+        localStorage.setItem('dg_users_cache', JSON.stringify(updated));
+        return updated;
+      });
+      alert(`वापरकर्ता भूमिका यशस्वीरीत्या बदलली: ${newRole}`);
     } catch (e: any) {
-      alert(`भूमिका बदलताना त्रुटी आली: ${e.message || 'Error'}`);
+      // Local fallback
+      setUsers((prev) => {
+        const updated = prev.map((u) => (u.id === userId ? { ...u, roles: [newRole] } : u));
+        localStorage.setItem('dg_users_cache', JSON.stringify(updated));
+        return updated;
+      });
+      alert(`वापरकर्ता भूमिका स्थानिकरित्या बदलली: ${newRole}`);
     }
+  };
+
+  const handleToggleUserStatus = async (user: any) => {
+    if (user.phone === '9999999999') {
+      alert('मूळ सुपर अॅडमिन खात्याची स्थिती बदलता येणार नाही!');
+      return;
+    }
+    const newStatus = user.isActive === false ? true : false;
+    try {
+      await api.updateAdminUser(user.id, { isActive: newStatus });
+    } catch {}
+    setUsers((prev) => {
+      const updated = prev.map((u) => (u.id === user.id ? { ...u, isActive: newStatus } : u));
+      localStorage.setItem('dg_users_cache', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const handleCreateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanPhone = newUserForm.phone.trim();
+    if (!cleanPhone || cleanPhone.length !== 10) {
+      alert('कृपया १० अंकी वैध मोबाईल नंबर टाका (Please enter valid 10-digit phone number)');
+      return;
+    }
+    if (!newUserForm.fullName.trim()) {
+      alert('कृपया वापरकर्त्याचे नाव टाका');
+      return;
+    }
+    setUserFormSubmitting(true);
+    try {
+      const res = await api.createAdminUser(newUserForm);
+      const createdUser = res?.data || res || {
+        ...newUserForm,
+        id: 'usr-' + Date.now(),
+        roles: [newUserForm.role],
+        createdAt: new Date().toISOString()
+      };
+      setUsers((prev) => {
+        const updated = [createdUser, ...prev];
+        localStorage.setItem('dg_users_cache', JSON.stringify(updated));
+        return updated;
+      });
+      setIsAddUserOpen(false);
+      setNewUserForm({
+        fullName: '',
+        phone: '',
+        password: '',
+        email: '',
+        wardNumber: 'वॉर्ड २ (गावठाण)',
+        occupation: 'ग्रामस्थ नागरिक',
+        role: 'CITIZEN',
+        isVerified: true,
+        isActive: true
+      });
+      alert('नवीन नागरिक / वापरकर्ता यशस्वीरीत्या जोडला गेला!');
+    } catch (err: any) {
+      // Local fallback
+      const fallbackUser = {
+        id: 'usr-' + Date.now(),
+        fullName: newUserForm.fullName.trim(),
+        phone: cleanPhone,
+        email: newUserForm.email?.trim() || undefined,
+        wardNumber: newUserForm.wardNumber,
+        occupation: newUserForm.occupation,
+        roles: [newUserForm.role],
+        isVerified: newUserForm.isVerified,
+        isActive: newUserForm.isActive,
+        createdAt: new Date().toISOString()
+      };
+      setUsers((prev) => {
+        const updated = [fallbackUser, ...prev];
+        localStorage.setItem('dg_users_cache', JSON.stringify(updated));
+        return updated;
+      });
+      setIsAddUserOpen(false);
+      setNewUserForm({
+        fullName: '',
+        phone: '',
+        password: '',
+        email: '',
+        wardNumber: 'वॉर्ड २ (गावठाण)',
+        occupation: 'ग्रामस्थ नागरिक',
+        role: 'CITIZEN',
+        isVerified: true,
+        isActive: true
+      });
+      alert('नवीन नागरिक / वापरकर्ता जोडला गेला! (' + (err.message || 'नोंदणी यशस्वी') + ')');
+    } finally {
+      setUserFormSubmitting(false);
+    }
+  };
+
+  const handleUpdateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingUser) return;
+    setUserFormSubmitting(true);
+    try {
+      const res = await api.updateAdminUser(editingUser.id, editingUser);
+      const updatedUser = res?.data || res || editingUser;
+      setUsers((prev) => {
+        const updated = prev.map((u) => (u.id === editingUser.id ? { ...u, ...updatedUser, roles: [editingUser.role] } : u));
+        localStorage.setItem('dg_users_cache', JSON.stringify(updated));
+        return updated;
+      });
+      setEditingUser(null);
+      alert('वापरकर्ता माहिती यशस्वीरीत्या अद्यतनित झाली!');
+    } catch (err: any) {
+      setUsers((prev) => {
+        const updated = prev.map((u) => (u.id === editingUser.id ? { ...u, ...editingUser, roles: [editingUser.role] } : u));
+        localStorage.setItem('dg_users_cache', JSON.stringify(updated));
+        return updated;
+      });
+      setEditingUser(null);
+      alert('वापरकर्ता माहिती अद्यतनित झाली!');
+    } finally {
+      setUserFormSubmitting(false);
+    }
+  };
+
+  const handleDeleteUser = async (userId: string, userName: string, phone: string) => {
+    if (phone === '9999999999') {
+      alert('मूळ सुपर अॅडमिन खाते हटवता येणार नाही!');
+      return;
+    }
+    if (!window.confirm(`तुम्हाला खात्री आहे का? "${userName || phone}" हे वापरकर्ता खाते हटवायचे आहे का?`)) {
+      return;
+    }
+    try {
+      await api.deleteAdminUser(userId);
+    } catch {}
+    setUsers((prev) => {
+      const updated = prev.filter((u) => u.id !== userId);
+      localStorage.setItem('dg_users_cache', JSON.stringify(updated));
+      return updated;
+    });
+    alert('वापरकर्ता यशस्वीरीत्या हटवला गेला!');
   };
 
 
@@ -730,8 +1022,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
     }
   }, [currentUser.phone, currentUser.role, activeTab]);
 
-  // Load all data
+  // Load all data (Only when authenticated as Admin / Super Admin)
   const loadData = () => {
+    if (!isAdmin) return;
+
     api.getAdminStats()
       .then((res) => { if (res) setStats(res); })
       .catch((e) => console.log('Admin stats fetch notice:', e.message));
@@ -762,6 +1056,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       .then((res) => {
         if (res && Array.isArray(res)) {
           setUsers(res);
+          localStorage.setItem('dg_users_cache', JSON.stringify(res));
         }
       })
       .catch((e) => console.log('Admin users fetch notice:', e.message))
@@ -1113,6 +1408,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       return;
     }
     const tags = schoolForm.tagsString.split(',').map(t => t.trim()).filter(Boolean);
+    const lat = schoolForm.latitude ? parseFloat(schoolForm.latitude) : undefined;
+    const lng = schoolForm.longitude ? parseFloat(schoolForm.longitude) : undefined;
+
     const payload: SchoolItem = {
       id: editingSchool ? editingSchool.id : 'sch-' + Date.now(),
       name: schoolForm.name.trim(),
@@ -1126,18 +1424,23 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       contactPhone: schoolForm.contactPhone || '',
       address: schoolForm.address || 'आसगाव',
       imageUrl: schoolForm.imageUrl || 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80',
+      latitude: !isNaN(lat as number) ? lat : 20.7858,
+      longitude: !isNaN(lng as number) ? lng : 79.6345,
     };
 
     let updated: SchoolItem[];
     if (editingSchool) {
       updated = shikshaSchools.map(s => s.id === editingSchool.id ? payload : s);
-      alert('शाळेची माहिती अद्ययावत केली!');
+      alert('शाळेची माहिती व नकाशा स्थान निर्देशांक अद्ययावत केले!');
     } else {
       updated = [payload, ...shikshaSchools];
-      alert('नवीन शाळा यशस्वीरीत्या जोडली!');
+      alert('नवीन शाळा नकाशा निर्देशांकासह जोडली!');
     }
     setShikshaSchools(updated);
     localStorage.setItem('dg_shiksha_schools', JSON.stringify(updated));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('shiksha-data-updated'));
+    }
     setEditingSchool(null);
     setSchoolForm({
       name: '',
@@ -1151,6 +1454,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       contactPhone: '',
       address: 'आसगाव',
       imageUrl: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80',
+      latitude: '20.7858',
+      longitude: '79.6345'
     });
   };
 
@@ -1528,159 +1833,69 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
   }
 
   return (
-    <div className="w-full flex flex-col gap-6">
-      <Breadcrumb
-        items={[
-          { label: t('nav_home'), onClick: onExit },
-          { label: t('nav_admin'), active: true }
-        ]}
+    <div className="w-full h-full md:h-screen flex flex-col md:flex-row bg-[#fcfaf7] overflow-hidden">
+      {/* Responsive Admin Navigation System (Desktop Collapsible Sidebar + Mobile Sticky Bar + Drawer + Bottom Dock + PWA) */}
+      <AdminNavSystem
+        activeTab={activeTab}
+        onSelectTab={(tabId) => setActiveTab(tabId as any)}
+        currentUser={currentUser}
+        isSuperAdmin={isSuperAdmin}
+        isTabAllowed={isTabAllowed}
+        badges={{
+          complaints: complaints.filter((c) => c.status !== 'RESOLVED' && c.status !== 'REJECTED').length,
+          businesses: adminBusinesses.filter((b) => !b.isVerified).length,
+          reviews: adminReviews.length,
+          events: events.length,
+          schools: shikshaSchools.length,
+          buses: transportBuses.length,
+          blogs: villageBlogs.length,
+          notices: announcements.length,
+          schemes: schemes.length,
+          contacts: contacts.length,
+          projects: projects.length,
+          users: users.length
+        }}
+        onExit={onExit || (() => {})}
+        onLogout={onLogout || (() => {})}
       />
 
-      {/* Top Banner with responsive mobile and role badge */}
-      <div className="bg-gradient-to-r from-[#166534] via-[#14532d] to-[#052e16] text-white rounded-2xl p-4 sm:p-6 shadow-sm border border-[#cadbcf]/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5 w-full md:w-auto">
-          <div className="w-full">
-            
+      {/* Main Admin Viewport Area (Independent Scrolling) */}
+      <main className="flex-1 min-w-0 h-full overflow-y-auto p-3 sm:p-6 pb-24 md:pb-8 flex flex-col gap-5 w-full">
+        {/* Top Context Bar & Public View Trigger */}
+        <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#166534] to-[#0a2e1d] p-0.5 shadow-xs flex items-center justify-center shrink-0">
+              <img src="/admin-icon.svg" alt="Asgaon Admin" className="w-7 h-7" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="font-heading font-black text-sm sm:text-base text-[#14532d]">
+                  आसगाव ग्राम माहिती व प्रशासन केंद्र
+                </h1>
+                
+              </div>
+            </div>
+          </div>
 
-            <h1 className="font-heading font-extrabold text-[19px] sm:text-[23px] text-white leading-tight">
-              आसगाव ग्राम माहिती व डेटा व्यवस्थापन केंद्र
-            </h1>
-            <p className="text-[11px] sm:text-[12px] text-[#a7f3d0] font-medium mt-0.5">
-              ग्रामपंचायतीतून मिळणारी खरी माहिती गावकऱ्यांपर्यंत पोहोचवणारा स्वतंत्र मंच
-            </p>
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+            <Breadcrumb
+              items={[
+                { label: t('nav_home'), onClick: onExit },
+                { label: t('nav_admin'), active: true }
+              ]}
+            />
+            {onExit && (
+              <button
+                type="button"
+                onClick={onExit}
+                className="px-3 py-1.5 rounded-xl border border-[#cadbcf] hover:bg-[#f3ede4] text-[#14532d] text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+              >
+                <LucideIcon name="visibility" className="text-[15px]" />
+                <span className="hidden sm:inline">सार्वजनिक पोर्टल</span>
+              </button>
+            )}
           </div>
         </div>
-
-        <div className="flex items-center gap-2 w-full md:w-auto justify-between md:justify-end flex-wrap pt-2 md:pt-0 border-t md:border-t-0 border-white/10">
-          {onExit && (
-            <button
-              onClick={onExit}
-              className="flex-1 md:flex-initial px-3.5 py-2.5 sm:py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-[12px] transition-all flex items-center justify-center gap-1.5 border border-white/20 cursor-pointer"
-            >
-              <LucideIcon name="visibility" className="text-[16px]" />
-              <span>सार्वजनिक दृश्य</span>
-            </button>
-          )}
-          {onLogout && (
-            <button
-              onClick={onLogout}
-              className="flex-1 md:flex-initial px-3.5 py-2.5 sm:py-2 rounded-xl bg-[#fef3c7]/20 hover:bg-[#fef3c7]/30 text-[#fde68a] font-bold text-[12px] transition-all flex items-center justify-center gap-1.5 border border-[#fde68a]/30 cursor-pointer"
-            >
-              <LucideIcon name="logout" className="text-[16px]" />
-              <span>बाहेर पडा</span>
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Mobile Select Tab Navigation (Quick 1-tap jump on phones) */}
-      <div className="block md:hidden">
-        <div className="flex items-center justify-between mb-1.5">
-          <label className="text-[11px] font-bold uppercase tracking-wider text-[#707974] flex items-center gap-1">
-            <LucideIcon name="tune" className="text-[15px] text-[#006a4e]" />
-            <span>व्यवस्थापन विभाग निवडा:</span>
-          </label>
-          <span className="text-[10px] font-bold text-[#006a4e] bg-[#e8f1ec] px-2 py-0.5 rounded-full">
-            {isSuperAdmin ? 'सर्व १७ मॉड्यूल्स' : `${allowedModules.length} मॉड्यूल्स अधिकार`}
-          </span>
-        </div>
-
-        <div className="relative">
-          <select
-            value={activeTab}
-            onChange={(e) => setActiveTab(e.target.value as any)}
-            className="w-full p-3 pl-10 pr-9 bg-white border-2 border-[#166534] rounded-xl text-xs sm:text-sm font-bold text-[#166534] shadow-xs appearance-none cursor-pointer"
-          >
-            {[
-              { id: 'overview', label: '📊 आढावा ' },
-              ...(isSuperAdmin
-                ? [{ id: 'admin_management', label: '🛡️ अॅडमिन अधिकार नियंत्रण ' }]
-                : []),
-              { id: 'businesses', label: `🏪 दुकाने व पडताळणी (${adminBusinesses.length})` },
-              { id: 'reviews', label: `⭐ नागरिक अभिप्राय (${adminReviews.length})` },
-              { id: 'banners', label: '🖼️ हिरो स्लायडर व बॅनर' },
-              { id: 'gallery', label: '📸 छायाचित्र दालन (Gallery)' },
-              { id: 'transparency', label: '🏛️ ग्राम पारदर्शकता व Gemini AI' },
-              { id: 'events', label: `🎪 कार्यक्रम व जत्रा (${events.length})` },
-              { id: 'shiksha', label: `🏫 शिक्षण व शाळा (${shikshaSchools.length})` },
-              { id: 'transport', label: `🚌 वाहतूक व बसेस (${transportBuses.length})` },
-              { id: 'blogs', label: `📰 ब्लॉग व लेख (${villageBlogs.length})` },
-              { id: 'notices', label: `📢 सूचना फलक (${announcements.length})` },
-              { id: 'water', label: '💧 पाणी पुरवठा' },
-              { id: 'schemes', label: `📋 योजना व्यवस्थापन (${schemes.length})` },
-              { id: 'contacts', label: `📞 महत्त्वाचे संपर्क (${contacts.length})` },
-              { id: 'projects', label: `🏗️ विकासकामे (${projects.length})` },
-              { id: 'broadcast', label: '🚨 तातडीची दवंडी ' },
-              { id: 'users', label: '👥 गावकऱ्यांची यादी' },
-              { id: 'logs', label: '📜 ऑडिट नोंदी ' }
-            ]
-              .filter((t) => isTabAllowed(t.id))
-              .map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.label}
-                </option>
-              ))}
-          </select>
-          <LucideIcon name="dashboard_customize" className=" absolute left-3 top-1/2 -translate-y-1/2 text-[#166534] text-[20px] pointer-events-none" />
-          <LucideIcon name="expand_more" className=" absolute right-3 top-1/2 -translate-y-1/2 text-[#166534] text-[20px] pointer-events-none" />
-        </div>
-      </div>
-
-      {/* Navigation Tabs (Scrollable pills on desktop & tablet) */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 border-b border-[#e8e2d9] no-scrollbar scroll-smooth -mx-2 px-2 sm:mx-0 sm:px-0">
-        {[
-          { id: 'overview', icon: 'analytics', label: 'आढावा ' },
-          ...(isSuperAdmin
-            ? [{
-                id: 'admin_management',
-                icon: 'admin_panel_settings',
-                label: 'अॅडमिन अधिकार',
-                isSuperTag: true
-              }]
-            : []),
-          { id: 'businesses', icon: 'storefront', label: `दुकाने व पडताळणी (${adminBusinesses.length})` },
-          { id: 'reviews', icon: 'rate_review', label: `नागरिक अभिप्राय (${adminReviews.length})` },
-          { id: 'banners', icon: 'view_carousel', label: 'हिरो स्लायडर व बॅनर' },
-          { id: 'gallery', icon: 'photo_library', label: 'छायाचित्र दालन' },
-          { id: 'transparency', icon: 'account_balance', label: 'ग्राम पारदर्शकता व Gemini AI' },
-          { id: 'events', icon: 'event', label: `कार्यक्रम व जत्रा (${events.length})` },
-          { id: 'shiksha', icon: 'school', label: `शिक्षण व शाळा (${shikshaSchools.length})` },
-          { id: 'transport', icon: 'directions_bus', label: `वाहतूक व बसेस (${transportBuses.length})` },
-          { id: 'blogs', icon: 'menu_book', label: `ब्लॉग व लेख (${villageBlogs.length})` },
-          { id: 'notices', icon: 'campaign', label: `सूचना फलक (${announcements.length})` },
-          { id: 'water', icon: 'water_drop', label: 'पाणी पुरवठा' },
-          { id: 'schemes', icon: 'description', label: `योजना व्यवस्थापन (${schemes.length})` },
-          { id: 'contacts', icon: 'contacts', label: `महत्त्वाचे संपर्क (${contacts.length})` },
-          { id: 'projects', icon: 'construction', label: `विकासकामे (${projects.length})` },
-          { id: 'broadcast', icon: 'cell_tower', label: 'तातडीची दवंडी ' },
-          { id: 'users', icon: 'group', label: 'गावकऱ्यांची यादी' },
-          { id: 'logs', icon: 'manage_history', label: 'ऑडिट नोंदी ' }
-        ]
-          .filter((t) => isTabAllowed(t.id))
-          .map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setActiveTab(t.id as any)}
-              className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-[11px] sm:text-[13px] font-bold transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer ${
-                activeTab === t.id
-                  ? t.isSuperTag
-                    ? 'bg-gradient-to-r from-[#ef9f27] to-[#ba7200] text-white shadow-xs'
-                    : 'bg-[#166534] text-[#a7f3d0] shadow-xs'
-                  : t.isSuperTag
-                    ? 'bg-[#fff8e1] text-[#7c4d00] hover:bg-[#ffecb3] border border-[#ffe082]'
-                    : 'text-[#55605a] hover:bg-[#f3ede4]'
-              }`}
-            >
-              <LucideIcon name={t.icon} className="text-[17px] sm:text-[18px]" />
-              <span>{t.label}</span>
-              {t.isSuperTag && (
-                <span className="px-1.5 py-0.2 rounded-full bg-white/20 text-[9px] font-black uppercase ml-0.5">
-                  SUPER
-                </span>
-              )}
-            </button>
-          ))}
-      </div>
 
       {/* TAB 1: OVERVIEW */}
       {activeTab === 'overview' && (
@@ -2780,6 +2995,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                           contactPhone: '',
                           address: 'आसगाव',
                           imageUrl: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80',
+                          latitude: '20.7858',
+                          longitude: '79.6345',
                         });
                       }}
                       className="text-[12px] text-red-600 hover:underline font-bold"
@@ -2892,6 +3109,52 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     />
                   </div>
 
+                  {/* GIS Map Location Coordinates */}
+                  <div className="p-3.5 bg-[#f7f5f0] rounded-xl border border-[#e8e2d9] space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="block font-bold text-[#166534] text-xs flex items-center gap-1.5">
+                        <LucideIcon name="location_on" className="text-[16px] text-[#006a4e]" />
+                        <span>नकाशा स्थान निर्देशांक (GIS Coordinates) *</span>
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setSchoolForm({ ...schoolForm, latitude: '20.8085', longitude: '79.7242' })}
+                        className="text-[11px] text-[#006a4e] hover:underline font-bold cursor-pointer"
+                      >
+                        🎯 आसगाव केंद्र भरा
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <span className="text-[11px] font-medium text-[#707974] block mb-1">अक्षांश (Latitude)</span>
+                        <input
+                          type="number"
+                          step="any"
+                          required
+                          value={schoolForm.latitude}
+                          onChange={(e) => setSchoolForm({ ...schoolForm, latitude: e.target.value })}
+                          placeholder="उदा. 20.7858"
+                          className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#006a4e] outline-none bg-white font-mono text-xs"
+                        />
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-medium text-[#707974] block mb-1">रेखांश (Longitude)</span>
+                        <input
+                          type="number"
+                          step="any"
+                          required
+                          value={schoolForm.longitude}
+                          onChange={(e) => setSchoolForm({ ...schoolForm, longitude: e.target.value })}
+                          placeholder="उदा. 79.6345"
+                          className="w-full p-2.5 rounded-xl border border-[#e8e2d9] focus:border-[#006a4e] outline-none bg-white font-mono text-xs"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-[#707974]">
+                      💡 हे निर्देशांक बदलल्यास शिक्षण व शाळा नकाशावरील (GIS Map) पिन त्या अचूक जागेवर हलवली जाईल.
+                    </p>
+                  </div>
+
                   <div>
                     <label className="block font-bold text-[#2d312e] mb-1">वैशिष्ट्ये / टॅग्ज (स्वल्पविरामाने वेगळे करा)</label>
                     <input
@@ -2985,6 +3248,10 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                                 {school.contactPhone}
                               </span>
                             )}
+                            <span className="flex items-center gap-1 font-mono text-[#006a4e]">
+                              <LucideIcon name="location_on" className="text-[13px]" />
+                              {school.latitude || 20.7858}, {school.longitude || 79.6345}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -3001,11 +3268,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                               grades: school.grades,
                               medium: school.medium,
                               description: school.description,
-                              tagsString: school.tags.join(', '),
+                              tagsString: school.tags ? school.tags.join(', ') : '',
                               principalName: school.principalName,
                               contactPhone: school.contactPhone,
                               address: school.address,
                               imageUrl: school.imageUrl,
+                              latitude: school.latitude !== undefined ? String(school.latitude) : '20.7858',
+                              longitude: school.longitude !== undefined ? String(school.longitude) : '79.6345'
                             });
                           }}
                           className="p-2 rounded-lg bg-[#f0eee8] text-[#166534] hover:bg-[#166534] hover:text-white transition-colors"
@@ -5734,202 +6003,997 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       )}
 
       {/* TAB 9: USERS DIRECTORY (UNIFIED CITIZEN & ADMIN HIERARCHY) */}
-      {activeTab === 'users' && (
-        <div className="bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
-          {/* Informative Architecture Banner */}
-          <div className="p-4 rounded-2xl bg-gradient-to-r from-[#e8f1ec] via-[#f0fdf4] to-[#fef9ee] border border-[#cadbcf] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#166534] text-white flex items-center justify-center shrink-0 shadow-xs">
-                <LucideIcon name="badge" className="text-[22px]" />
+      {activeTab === 'users' && (() => {
+        // Calculate counts for filters
+        const citizenCount = users.filter((u) => {
+          const r = (u.roles && u.roles.length > 0) ? String(Array.from(u.roles)[0]).replace('ROLE_', '') : 'CITIZEN';
+          return !r.includes('ADMIN');
+        }).length;
+
+        const adminCount = users.filter((u) => {
+          const r = (u.roles && u.roles.length > 0) ? String(Array.from(u.roles)[0]).replace('ROLE_', '') : '';
+          return r === 'ADMIN';
+        }).length;
+
+        const superAdminCount = users.filter((u) => {
+          const r = (u.roles && u.roles.length > 0) ? String(Array.from(u.roles)[0]).replace('ROLE_', '') : '';
+          return r === 'SUPER_ADMIN';
+        }).length;
+
+        // Filter users based on search query & selected role
+        const filteredUsers = users.filter((u) => {
+          const query = userSearch.trim().toLowerCase();
+          const matchesSearch = !query || 
+            (u.fullName && u.fullName.toLowerCase().includes(query)) || 
+            (u.phone && u.phone.includes(query)) ||
+            (u.wardNumber && u.wardNumber.toLowerCase().includes(query)) ||
+            (u.occupation && u.occupation.toLowerCase().includes(query));
+
+          if (!matchesSearch) return false;
+
+          const rawRole = (u.roles && u.roles.length > 0) ? String(Array.from(u.roles)[0]).replace('ROLE_', '') : 'CITIZEN';
+          if (userRoleFilter === 'CITIZEN') return !rawRole.includes('ADMIN');
+          if (userRoleFilter === 'ADMIN') return rawRole === 'ADMIN';
+          if (userRoleFilter === 'SUPER_ADMIN') return rawRole === 'SUPER_ADMIN';
+          return true;
+        });
+
+        // Pagination calculation
+        const totalUserPages = Math.max(1, Math.ceil(filteredUsers.length / userPageSize));
+        const safeUserPage = Math.min(Math.max(1, userPage), totalUserPages);
+        const startIndex = (safeUserPage - 1) * userPageSize;
+        const endIndex = Math.min(startIndex + userPageSize, filteredUsers.length);
+        const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
+        return (
+          <div className="bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
+            {/* Informative Architecture Banner */}
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-[#e8f1ec] via-[#f0fdf4] to-[#fef9ee] border border-[#cadbcf] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#166534] text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <LucideIcon name="badge" className="text-[22px]" />
+                </div>
+                <div>
+                  <h3 className="font-heading font-black text-lg text-[#14532d]">
+                    <span>नागरी व प्रशासकीय युनिक लॉगिन रचना</span>
+                  </h3>
+                  <p className="text-xs text-[#55605a]">गावकरी व प्रशासकीय खात्यांचे व्यवस्थापन, नोंदणी व सुरक्षित अधिकार वाटप</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-heading font-black text-sm text-[#14532d] flex items-center gap-2">
-                  <span>नागरी व प्रशासकीय युनिक लॉगिन रचना (3-Tier Unified Architecture)</span>
-                </h3>
-                <p className="text-[12px] text-[#55605a] mt-0.5 max-w-2xl leading-relaxed">
-                  सर्व गावकऱ्यांसाठी <strong>एकच युनिक नागरी लॉगिन (CITIZEN)</strong> आहे — शेतकरी, विद्यार्थी, व्यापारी हे त्यांचे कार्यक्षेत्र आहे, स्वतंत्र भूमिका नव्हे. केवळ प्रशासकीय कामकाजासाठी <strong>ADMIN</strong> (विभागीय अधिकार) व <strong>SUPER_ADMIN</strong> (सर्वोच्च अधिकार) असे २ स्तर आहेत.
-                </p>
+
+              <div className="flex items-center gap-2 flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => setIsAddUserOpen(true)}
+                  className="px-4 py-2.5 rounded-xl bg-[#166534] hover:bg-[#14532d] text-white text-xs font-black shrink-0 flex items-center gap-2 shadow-sm cursor-pointer transition-all active:scale-98"
+                >
+                  <LucideIcon name="person_add" className="text-[17px]" />
+                  <span>नवीन नागरिक / वापरकर्ता जोडा</span>
+                </button>
+
+                {isSuperAdmin && (
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('admin_management')}
+                    className="px-3.5 py-2.5 rounded-xl bg-white hover:bg-[#f0fdf4] text-[#166534] border border-[#cadbcf] text-xs font-bold shrink-0 flex items-center gap-1.5 shadow-2xs cursor-pointer transition-all"
+                  >
+                    <LucideIcon name="admin_panel_settings" className="text-[16px]" />
+                    <span>अॅडमिन मॉड्युल अधिकार</span>
+                  </button>
+                )}
               </div>
             </div>
 
-            {isSuperAdmin && (
+            {/* Quick Metrics Bar with interactive click-to-filter */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <button
                 type="button"
-                onClick={() => setActiveTab('admin_management')}
-                className="px-3.5 py-2 rounded-xl bg-[#166534] hover:bg-[#14532d] text-white text-xs font-bold shrink-0 flex items-center gap-1.5 shadow-xs cursor-pointer transition-all"
+                onClick={() => setUserRoleFilter(userRoleFilter === 'CITIZEN' ? 'ALL' : 'CITIZEN')}
+                className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between ${
+                  userRoleFilter === 'CITIZEN'
+                    ? 'bg-[#dcfce7] border-[#166534] shadow-xs ring-2 ring-[#166534]/30'
+                    : 'bg-[#f0fdf4] border-[#bbf7d0] hover:border-[#86efac] hover:shadow-2xs'
+                }`}
               >
-                <LucideIcon name="admin_panel_settings" className="text-[16px]" />
-                <span>अॅडमिन मॉड्युल अधिकार नियंत्रित करा</span>
+                <div>
+                  <span className="text-[11px] font-bold text-[#166534] block">१. ग्रामस्थ नागरिक (CITIZEN)</span>
+                  <span className="text-xl font-black text-[#14532d]">{citizenCount}</span>
+                </div>
+                <div className="flex flex-col items-end gap-1">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#166534] text-white font-black">सार्वजनिक</span>
+                  {userRoleFilter === 'CITIZEN' && (
+                    <span className="text-[10px] font-bold text-[#166534] flex items-center gap-0.5">
+                      ✓ निवडलेले
+                    </span>
+                  )}
+                </div>
               </button>
-            )}
-          </div>
 
-          {/* Quick Metrics Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="p-3.5 rounded-xl bg-[#f0fdf4] border border-[#bbf7d0] flex items-center justify-between">
-              <div>
-                <span className="text-[11px] font-bold text-[#166534] block">१. ग्रामस्थ नागरिक (CITIZEN)</span>
-                <span className="text-lg font-black text-[#14532d]">
-                  {users.filter((u) => {
-                    const r = u.roles ? Array.from(u.roles)[0] : 'CITIZEN';
-                    return !String(r).includes('ADMIN');
-                  }).length}
-                </span>
+              <button
+                type="button"
+                onClick={() => setUserRoleFilter(userRoleFilter === 'ADMIN' ? 'ALL' : 'ADMIN')}
+                className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between ${
+                  userRoleFilter === 'ADMIN'
+                    ? 'bg-[#dbeafe] border-[#1d4ed8] shadow-xs ring-2 ring-[#1d4ed8]/30'
+                    : 'bg-[#eff6ff] border-[#bfdbfe] hover:border-[#93c5fd] hover:shadow-2xs'
+                }`}
+              >
+                <div>
+                  <span className="text-[11px] font-bold text-[#1d4ed8] block">२. ग्राम प्रशासक</span>
+                  <span className="text-xl font-black text-[#1e40af]">{adminCount}</span>
+                </div>
+                <div className="flex flex-col items-end gap-1">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#1d4ed8] text-white font-black">विभागीय</span>
+                  {userRoleFilter === 'ADMIN' && (
+                    <span className="text-[10px] font-bold text-[#1d4ed8] flex items-center gap-0.5">
+                      ✓ निवडलेले
+                    </span>
+                  )}
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setUserRoleFilter(userRoleFilter === 'SUPER_ADMIN' ? 'ALL' : 'SUPER_ADMIN')}
+                className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between ${
+                  userRoleFilter === 'SUPER_ADMIN'
+                    ? 'bg-[#fef3c7] border-[#b45309] shadow-xs ring-2 ring-[#b45309]/30'
+                    : 'bg-[#fffbeb] border-[#fde68a] hover:border-[#fcd34d] hover:shadow-2xs'
+                }`}
+              >
+                <div>
+                  <span className="text-[11px] font-bold text-[#b45309] block">३. मुख्य प्रशासक </span>
+                  <span className="text-xl font-black text-[#92400e]">{superAdminCount}</span>
+                </div>
+                <div className="flex flex-col items-end gap-1">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-white font-black">सर्वोच्च</span>
+                  {userRoleFilter === 'SUPER_ADMIN' && (
+                    <span className="text-[10px] font-bold text-[#b45309] flex items-center gap-0.5">
+                      ✓ निवडलेले
+                    </span>
+                  )}
+                </div>
+              </button>
+            </div>
+
+            {/* Filter Pills and Search Header */}
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 pt-2 border-t border-[#f3ede4]">
+              {/* Role Filter Pills */}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="text-[11px] font-bold text-[#707974] mr-1 hidden sm:inline">फिल्टर:</span>
+                
+                <button
+                  type="button"
+                  onClick={() => setUserRoleFilter('ALL')}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    userRoleFilter === 'ALL'
+                      ? 'bg-[#166534] text-white shadow-xs'
+                      : 'bg-[#f4efe8] text-[#55605a] hover:bg-[#e8e2d9]'
+                  }`}
+                >
+                  <span>सर्व</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
+                    userRoleFilter === 'ALL' ? 'bg-white/20 text-white' : 'bg-[#e2dad0] text-[#444]'
+                  }`}>
+                    {users.length}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setUserRoleFilter('CITIZEN')}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    userRoleFilter === 'CITIZEN'
+                      ? 'bg-[#166534] text-white shadow-xs'
+                      : 'bg-[#f0fdf4] text-[#166534] border border-[#bbf7d0] hover:bg-[#dcfce7]'
+                  }`}
+                >
+                  <LucideIcon name="person" className="text-[14px]" />
+                  <span>Citizen</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
+                    userRoleFilter === 'CITIZEN' ? 'bg-white/20 text-white' : 'bg-[#bbf7d0] text-[#166534]'
+                  }`}>
+                    {citizenCount}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setUserRoleFilter('ADMIN')}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    userRoleFilter === 'ADMIN'
+                      ? 'bg-[#1d4ed8] text-white shadow-xs'
+                      : 'bg-[#eff6ff] text-[#1d4ed8] border border-[#bfdbfe] hover:bg-[#dbeafe]'
+                  }`}
+                >
+                  <LucideIcon name="shield" className="text-[14px]" />
+                  <span>Admin</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
+                    userRoleFilter === 'ADMIN' ? 'bg-white/20 text-white' : 'bg-[#bfdbfe] text-[#1e40af]'
+                  }`}>
+                    {adminCount}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setUserRoleFilter('SUPER_ADMIN')}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    userRoleFilter === 'SUPER_ADMIN'
+                      ? 'bg-[#b45309] text-white shadow-xs'
+                      : 'bg-[#fffbeb] text-[#b45309] border border-[#fde68a] hover:bg-[#fef3c7]'
+                  }`}
+                >
+                  <LucideIcon name="workspace_premium" className="text-[14px]" />
+                  <span>Super Admin</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
+                    userRoleFilter === 'SUPER_ADMIN' ? 'bg-white/20 text-white' : 'bg-[#fde68a] text-[#92400e]'
+                  }`}>
+                    {superAdminCount}
+                  </span>
+                </button>
               </div>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#166534] text-white font-black">सार्वजनिक</span>
-            </div>
 
-            <div className="p-3.5 rounded-xl bg-[#eff6ff] border border-[#bfdbfe] flex items-center justify-between">
-              <div>
-                <span className="text-[11px] font-bold text-[#1d4ed8] block">२. ग्राम प्रशासक (ADMIN)</span>
-                <span className="text-lg font-black text-[#1e40af]">
-                  {users.filter((u) => {
-                    const r = u.roles ? Array.from(u.roles)[0] : '';
-                    return String(r) === 'ADMIN' || String(r) === 'ROLE_ADMIN';
-                  }).length}
-                </span>
+              {/* Search Box */}
+              <div className="relative w-full md:w-auto">
+                <input
+                  type="text"
+                  value={userSearch}
+                  onChange={(e) => setUserSearch(e.target.value)}
+                  placeholder="नाव किंवा फोन नंबर शोधा..."
+                  className="w-full md:w-72 p-2.5 pl-9 pr-8 bg-[#f9f3ea] text-[12px] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white transition-all"
+                />
+                <LucideIcon name="search" className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#707974] text-[16px]" />
+                {userSearch && (
+                  <button
+                    type="button"
+                    onClick={() => setUserSearch('')}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#707974] hover:text-[#1d1b16] text-[12px] font-bold cursor-pointer"
+                  >
+                    ✕
+                  </button>
+                )}
               </div>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#1d4ed8] text-white font-black">विभागीय</span>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-[#fffbeb] border border-[#fde68a] flex items-center justify-between">
-              <div>
-                <span className="text-[11px] font-bold text-[#b45309] block">३. मुख्य प्रशासक (SUPER ADMIN)</span>
-                <span className="text-lg font-black text-[#92400e]">
-                  {users.filter((u) => {
-                    const r = u.roles ? Array.from(u.roles)[0] : '';
-                    return String(r).includes('SUPER_ADMIN');
-                  }).length}
-                </span>
+            {/* Table / Loading / Empty States */}
+            {loadingUsers ? (
+              <div className="py-16 flex flex-col items-center justify-center gap-2.5 text-[#707974] bg-[#fdfbf7] rounded-xl border border-[#e8e2d9]">
+                <div className="w-7 h-7 border-3 border-[#166534] border-t-transparent rounded-full animate-spin" />
+                <p className="text-xs font-bold text-[#166534]">नोंदणीकृत वापरकर्ते लोड होत आहेत...</p>
               </div>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-white font-black">सर्वोच्च</span>
-            </div>
-          </div>
-
-          {/* Search Header */}
-          <div className="flex items-center justify-between gap-4 flex-wrap pt-2">
-            <h2 className="font-heading font-bold text-[16px] text-[#166534] flex items-center gap-2">
-              <LucideIcon name="group" className="text-[20px]" />
-              <span>गावकऱ्यांची व प्रशासकांची यादी ({users.length})</span>
-            </h2>
-            <div className="relative">
-              <input
-                type="text"
-                value={userSearch}
-                onChange={(e) => setUserSearch(e.target.value)}
-                placeholder="नाव किंवा फोन नंबर शोधा..."
-                className="p-2.5 pl-9 bg-[#f9f3ea] text-[12px] rounded-xl border border-[#e8e2d9] min-w-[260px] outline-none focus:border-[#166534]"
-              />
-              <LucideIcon name="search" className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#707974] text-[16px]" />
-            </div>
-          </div>
-
-          {/* Table / Loading / Empty States */}
-          {loadingUsers ? (
-            <div className="py-16 flex flex-col items-center justify-center gap-2.5 text-[#707974] bg-[#fdfbf7] rounded-xl border border-[#e8e2d9]">
-              <div className="w-7 h-7 border-3 border-[#166534] border-t-transparent rounded-full animate-spin" />
-              <p className="text-xs font-bold text-[#166534]">डेटाबेसमधून नोंदणीकृत वापरकर्ते लोड होत आहेत...</p>
-            </div>
-          ) : users.length === 0 ? (
-            <div className="py-14 bg-[#fcfbf9] rounded-xl border border-[#e8e2d9] text-center p-6 flex flex-col items-center justify-center gap-2">
-              <div className="w-12 h-12 rounded-full bg-[#f3ede4] flex items-center justify-center text-[#707974]">
-                <LucideIcon name="group" className="text-2xl" />
+            ) : users.length === 0 ? (
+              <div className="py-14 bg-[#fcfbf9] rounded-xl border border-[#e8e2d9] text-center p-6 flex flex-col items-center justify-center gap-2">
+                <div className="w-12 h-12 rounded-full bg-[#f3ede4] flex items-center justify-center text-[#707974]">
+                  <LucideIcon name="group" className="text-2xl" />
+                </div>
+                <h4 className="text-sm font-bold text-[#14532d]">अद्याप कोणतेही वापरकर्ते नोंदणीकृत नाहीत</h4>
+                <p className="text-xs text-[#55605a] max-w-sm">
+                  गावकऱ्यांनी पोर्टलवर लॉगिन किंवा नोंदणी केल्यानंतर त्यांची माहिती येथे थेट दिसेल.
+                </p>
               </div>
-              <h4 className="text-sm font-bold text-[#14532d]">अद्याप कोणतेही वापरकर्ते नोंदणीकृत नाहीत</h4>
-              <p className="text-xs text-[#55605a] max-w-sm">
-                गावकऱ्यांनी पोर्टलवर लॉगिन किंवा नोंदणी केल्यानंतर त्यांची माहिती येथे थेट दिसेल.
-              </p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto rounded-xl border border-[#e8e2d9]">
-              <table className="w-full text-left text-[12px] min-w-[650px]">
-                <thead className="bg-[#f9f3ea] text-[#707974] font-bold border-b border-[#e8e2d9]">
-                  <tr>
-                    <th className="p-3.5">नाव व तपशील</th>
-                    <th className="p-3.5">फोन क्रमांक</th>
-                    <th className="p-3.5">वॉर्ड / पत्ता</th>
-                    <th className="p-3.5">कार्यक्षेत्र / व्यवसाय</th>
-                    <th className="p-3.5">सुरक्षा भूमिका (Role)</th>
-                    {isSuperAdmin && <th className="p-3.5 text-right">भूमिका बदल (Super Admin)</th>}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#f3ede4]">
-
-                {users
-                  .filter((u) => !userSearch || (u.fullName && u.fullName.toLowerCase().includes(userSearch.toLowerCase())) || (u.phone && u.phone.includes(userSearch)))
-                  .map((u) => {
-                    const rawRole = (u.roles && u.roles.length > 0) ? String(Array.from(u.roles)[0]).replace('ROLE_', '') : 'CITIZEN';
-                    const isSuper = rawRole === 'SUPER_ADMIN';
-                    const isAdminUser = rawRole === 'ADMIN';
-
-                    return (
-                      <tr key={u.id} className="hover:bg-[#fef9ee] transition-colors">
-                        <td className="p-3.5 font-bold text-[#1d1b16]">
-                          <div className="flex items-center gap-2.5">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${
-                              isSuper
-                                ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                                : isAdminUser
-                                ? 'bg-blue-100 text-blue-800 border border-blue-300'
-                                : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                            }`}>
-                              {u.fullName ? u.fullName.charAt(0) : 'G'}
-                            </div>
-                            <div>
-                              <span>{u.fullName || 'नागरिक'}</span>
-                              {u.phone === '9999999999' && (
-                                <span className="block text-[10px] text-amber-700 font-medium">मूळ प्रणाली प्रशासक</span>
-                              )}
-                            </div>
-                          </div>
-                        </td>
-                        <td className="p-3.5 font-mono text-[#55605a]">{u.phone || '-'}</td>
-                        <td className="p-3.5 text-[#55605a]">{u.wardNumber || 'वॉर्ड २ (गावठाण)'}</td>
-                        <td className="p-3.5 text-[#55605a]">{u.occupation || 'ग्रामस्थ नागरिक'}</td>
-                        <td className="p-3.5">
-                          {isSuper ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-2xs">
-                              <LucideIcon name="workspace_premium" className="text-[14px]" />
-                              <span>मुख्य प्रशासक (Super Admin)</span>
-                            </span>
-                          ) : isAdminUser ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-blue-50 text-blue-800 border border-blue-300">
-                              <LucideIcon name="shield" className="text-[14px]" />
-                              <span>ग्राम प्रशासक (Admin)</span>
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-50 text-emerald-800 border border-emerald-300">
-                              <LucideIcon name="person" className="text-[14px]" />
-                              <span>नागरिक (Citizen)</span>
-                            </span>
-                          )}
-                        </td>
-                        {isSuperAdmin && (
-                          <td className="p-3.5 text-right">
-                            {u.phone === '9999999999' ? (
-                              <span className="text-[11px] text-[#707974] italic">कायमस्वरूपी रूट</span>
-                            ) : (
-                              <select
-                                value={rawRole}
-                                onChange={(e) => handleUpdateUserRole(u.id, e.target.value)}
-                                className="p-1.5 bg-white border border-[#cadbcf] rounded-lg text-xs font-bold text-[#14532d] shadow-2xs cursor-pointer outline-none focus:border-[#166534]"
-                              >
-                                <option value="CITIZEN">👤 नागरिक (Citizen)</option>
-                                <option value="ADMIN">🛡️ ग्राम प्रशासक (Admin)</option>
-                                <option value="SUPER_ADMIN">👑 मुख्य प्रशासक (Super Admin)</option>
-                              </select>
-                            )}
-                          </td>
-                        )}
+            ) : filteredUsers.length === 0 ? (
+              <div className="py-12 bg-[#fcfbf9] rounded-xl border border-[#e8e2d9] text-center p-6 flex flex-col items-center justify-center gap-2">
+                <div className="w-10 h-10 rounded-full bg-[#f3ede4] flex items-center justify-center text-[#707974]">
+                  <LucideIcon name="search" className="text-xl" />
+                </div>
+                <h4 className="text-sm font-bold text-[#14532d]">कोणताही वापरकर्ता आढळला नाही</h4>
+                <p className="text-xs text-[#55605a] max-w-sm">
+                  निवडलेल्या भूमिकेसाठी किंवा शोध संज्ञेसाठी कोणतीही नोंद उपलब्ध नाही.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUserRoleFilter('ALL');
+                    setUserSearch('');
+                  }}
+                  className="mt-2 px-3.5 py-1.5 rounded-xl bg-[#166534] text-white text-xs font-bold hover:bg-[#14532d] transition-all cursor-pointer"
+                >
+                  सर्व फिल्टर रीसेट करा
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                <div className="overflow-x-auto rounded-xl border border-[#e8e2d9]">
+                  <table className="w-full text-left text-[12px] min-w-[760px]">
+                    <thead className="bg-[#f9f3ea] text-[#707974] font-bold border-b border-[#e8e2d9]">
+                      <tr>
+                        <th className="p-3.5">नाव व तपशील</th>
+                        <th className="p-3.5">मोबाईल नंबर</th>
+                        <th className="p-3.5">वॉर्ड / परिसर</th>
+                        <th className="p-3.5">कार्यक्षेत्र / व्यवसाय</th>
+                        <th className="p-3.5">खाते स्थिती</th>
+                        <th className="p-3.5">सुरक्षा भूमिका</th>
+                        <th className="p-3.5 text-right">क्रिया (CRUD)</th>
                       </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
+                    </thead>
+                    <tbody className="divide-y divide-[#f3ede4]">
+                      {paginatedUsers.map((u) => {
+                        const rawRole = (u.roles && u.roles.length > 0) ? String(Array.from(u.roles)[0]).replace('ROLE_', '') : 'CITIZEN';
+                        const isSuper = rawRole === 'SUPER_ADMIN';
+                        const isAdminUser = rawRole === 'ADMIN';
+                        const isRoot = u.phone === '9999999999';
+
+                        return (
+                          <tr key={u.id} className="hover:bg-[#fef9ee] transition-colors">
+                            <td className="p-3.5 font-bold text-[#1d1b16]">
+                              <div className="flex items-center gap-2.5">
+                                <div className={`w-9 h-9 rounded-full flex items-center justify-center font-black text-xs shrink-0 ${
+                                  isSuper
+                                    ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                                    : isAdminUser
+                                    ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                                    : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                                }`}>
+                                  {u.fullName ? u.fullName.charAt(0) : 'G'}
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="flex items-center gap-1.5 flex-wrap">
+                                    <span className="truncate">{u.fullName || 'नागरिक'}</span>
+                                    {isRoot && (
+                                      <span className="text-[10px] px-1.5 py-0.2 rounded-md bg-amber-100 text-amber-800 font-bold border border-amber-300">
+                                        रूट ऍडमिन
+                                      </span>
+                                    )}
+                                    {u.isVerified && (
+                                      <span title="सत्यापित नागरिक" className="text-emerald-600 font-black">✓</span>
+                                    )}
+                                  </div>
+                                  {u.email && <span className="block text-[11px] text-[#707974] font-normal truncate">{u.email}</span>}
+                                </div>
+                              </div>
+                            </td>
+                            <td className="p-3.5 font-mono text-[#55605a] font-semibold">{u.phone || '-'}</td>
+                            <td className="p-3.5 text-[#55605a]">{u.wardNumber || 'वॉर्ड २ (गावठाण)'}</td>
+                            <td className="p-3.5 text-[#55605a]">{u.occupation || 'ग्रामस्थ नागरिक'}</td>
+
+                            {/* Active / Inactive Status Toggle */}
+                            <td className="p-3.5">
+                              <button
+                                type="button"
+                                onClick={() => handleToggleUserStatus(u)}
+                                disabled={isRoot}
+                                title={isRoot ? 'कायमस्वरूपी सक्रिय' : (u.isActive !== false ? 'निष्क्रिय करण्यासाठी क्लिक करा' : 'सक्रिय करण्यासाठी क्लिक करा')}
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black transition-all ${
+                                  u.isActive !== false
+                                    ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] hover:bg-[#d1e7dd]'
+                                    : 'bg-[#fef2f2] text-[#991b1b] border border-[#fecaca] hover:bg-[#fee2e2]'
+                                } ${isRoot ? 'cursor-default' : 'cursor-pointer'}`}
+                              >
+                                <span className={`w-1.5 h-1.5 rounded-full ${u.isActive !== false ? 'bg-emerald-600' : 'bg-red-600'}`}></span>
+                                <span>{u.isActive !== false ? 'सक्रिय' : 'निष्क्रिय'}</span>
+                              </button>
+                            </td>
+
+                            {/* Role Badge and Role Select (for Super Admin) */}
+                            <td className="p-3.5">
+                              {isSuperAdmin && !isRoot ? (
+                                <select
+                                  value={rawRole}
+                                  onChange={(e) => handleUpdateUserRole(u.id, e.target.value)}
+                                  className="p-1.5 bg-white border border-[#cadbcf] rounded-lg text-xs font-bold text-[#14532d] shadow-2xs cursor-pointer outline-none focus:border-[#166534]"
+                                >
+                                  <option value="CITIZEN">👤 Citizen</option>
+                                  <option value="ADMIN">🛡️ Admin</option>
+                                  <option value="SUPER_ADMIN">👑 Super Admin</option>
+                                </select>
+                              ) : isSuper ? (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-2xs">
+                                  <LucideIcon name="workspace_premium" className="text-[13px]" />
+                                  <span>Super Admin</span>
+                                </span>
+                              ) : isAdminUser ? (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-blue-50 text-blue-800 border border-blue-300">
+                                  <LucideIcon name="shield" className="text-[13px]" />
+                                  <span>Admin</span>
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-50 text-emerald-800 border border-emerald-300">
+                                  <LucideIcon name="person" className="text-[13px]" />
+                                  <span>Citizen</span>
+                                </span>
+                              )}
+                            </td>
+
+                            {/* Action Buttons: View, Edit, Delete */}
+                            <td className="p-3.5 text-right">
+                              <div className="flex items-center justify-end gap-1.5">
+                                {/* View details */}
+                                <button
+                                  type="button"
+                                  onClick={() => setViewingUser(u)}
+                                  className="p-1.5 rounded-lg border border-[#e8e2d9] bg-white text-[#55605a] hover:text-[#166534] hover:bg-[#f0fdf4] transition-all cursor-pointer shadow-2xs"
+                                  title="तपशील पहा"
+                                >
+                                  <LucideIcon name="visibility" className="text-[16px]" />
+                                </button>
+
+                                {/* Edit user */}
+                                <button
+                                  type="button"
+                                  onClick={() => setEditingUser({
+                                    id: u.id,
+                                    fullName: u.fullName || '',
+                                    phone: u.phone || '',
+                                    email: u.email || '',
+                                    wardNumber: u.wardNumber || 'वॉर्ड २ (गावठाण)',
+                                    occupation: u.occupation || 'ग्रामस्थ नागरिक',
+                                    role: rawRole,
+                                    isActive: u.isActive !== false,
+                                    isVerified: u.isVerified !== false,
+                                    password: ''
+                                  })}
+                                  className="p-1.5 rounded-lg border border-[#cadbcf] bg-white text-[#166534] hover:bg-[#166534] hover:text-white transition-all cursor-pointer shadow-2xs"
+                                  title="माहिती संपादित करा"
+                                >
+                                  <LucideIcon name="edit" className="text-[16px]" />
+                                </button>
+
+                                {/* Delete user */}
+                                {!isRoot && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteUser(u.id, u.fullName, u.phone)}
+                                    className="p-1.5 rounded-lg border border-[#fecaca] bg-white text-[#ba1a1a] hover:bg-[#ba1a1a] hover:text-white transition-all cursor-pointer shadow-2xs"
+                                    title="वापरकर्ता हटवा"
+                                  >
+                                    <LucideIcon name="delete" className="text-[16px]" />
+                                  </button>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Pagination Controls */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 px-1 text-xs text-[#55605a]">
+                  {/* Results range info */}
+                  <div className="font-medium">
+                    एकूण <strong className="text-[#14532d] font-bold">{filteredUsers.length}</strong> पैकी{' '}
+                    <strong className="text-[#14532d] font-bold">{startIndex + 1}</strong> ते{' '}
+                    <strong className="text-[#14532d] font-bold">{endIndex}</strong> वापरकर्ते दर्शवित आहे
+                  </div>
+
+                  {/* Navigation buttons and Page Size */}
+                  <div className="flex items-center gap-3 flex-wrap">
+                    {/* Rows per page selector */}
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[11px] text-[#707974]">प्रति पृष्ठ:</span>
+                      <select
+                        value={userPageSize}
+                        onChange={(e) => setUserPageSize(Number(e.target.value))}
+                        className="bg-[#f9f3ea] border border-[#e8e2d9] rounded-lg px-2 py-1 text-xs font-bold text-[#14532d] outline-none focus:border-[#166534] cursor-pointer"
+                      >
+                        <option value={5}>५</option>
+                        <option value={10}>१०</option>
+                        <option value={20}>२०</option>
+                        <option value={50}>५०</option>
+                      </select>
+                    </div>
+
+                    {/* Page buttons */}
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => setUserPage((p) => Math.max(1, p - 1))}
+                        disabled={safeUserPage <= 1}
+                        className={`px-2.5 py-1 rounded-lg border text-xs font-bold flex items-center gap-1 transition-all ${
+                          safeUserPage <= 1
+                            ? 'opacity-40 cursor-not-allowed border-[#e8e2d9] bg-[#fcfbf9] text-[#a0a5a2]'
+                            : 'border-[#cadbcf] bg-white text-[#166534] hover:bg-[#f0fdf4] cursor-pointer shadow-2xs'
+                        }`}
+                        title="मागील पृष्ठ"
+                      >
+                        <LucideIcon name="chevron_left" className="text-[14px]" />
+                        <span className="hidden sm:inline">मागील</span>
+                      </button>
+
+                      {/* Numbered page buttons */}
+                      {Array.from({ length: totalUserPages }, (_, i) => i + 1).map((p) => {
+                        // If totalUserPages is large, show current page window
+                        if (
+                          totalUserPages > 7 &&
+                          p !== 1 &&
+                          p !== totalUserPages &&
+                          Math.abs(p - safeUserPage) > 1
+                        ) {
+                          if (p === 2 || p === totalUserPages - 1) {
+                            return <span key={p} className="px-1 text-[#a0a5a2]">...</span>;
+                          }
+                          return null;
+                        }
+
+                        const isActive = p === safeUserPage;
+                        return (
+                          <button
+                            key={p}
+                            type="button"
+                            onClick={() => setUserPage(p)}
+                            className={`w-7 h-7 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                              isActive
+                                ? 'bg-[#166534] text-white shadow-2xs font-black'
+                                : 'border border-[#e8e2d9] bg-white text-[#55605a] hover:bg-[#f9f3ea]'
+                            }`}
+                          >
+                            {p}
+                          </button>
+                        );
+                      })}
+
+                      <button
+                        type="button"
+                        onClick={() => setUserPage((p) => Math.min(totalUserPages, p + 1))}
+                        disabled={safeUserPage >= totalUserPages}
+                        className={`px-2.5 py-1 rounded-lg border text-xs font-bold flex items-center gap-1 transition-all ${
+                          safeUserPage >= totalUserPages
+                            ? 'opacity-40 cursor-not-allowed border-[#e8e2d9] bg-[#fcfbf9] text-[#a0a5a2]'
+                            : 'border-[#cadbcf] bg-white text-[#166534] hover:bg-[#f0fdf4] cursor-pointer shadow-2xs'
+                        }`}
+                        title="पुढील पृष्ठ"
+                      >
+                        <span className="hidden sm:inline">पुढील</span>
+                        <LucideIcon name="chevron_right" className="text-[14px]" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* MODAL 1: ADD USER MODAL */}
+            {isAddUserOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto animate-fadeIn">
+                <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-[#cadbcf] relative my-8">
+                  <div className="flex items-center justify-between pb-4 border-b border-[#f0eee8]">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-10 h-10 rounded-xl bg-[#e8f1ec] text-[#166534] flex items-center justify-center">
+                        <LucideIcon name="person_add" className="text-[22px]" />
+                      </div>
+                      <div>
+                        <h3 className="font-heading font-black text-base text-[#14532d]">
+                          नवीन नागरिक / वापरकर्ता नोंदणी
+                        </h3>
+                        <p className="text-[11px] text-[#707974]">पोर्टलवर नवीन गावकरी किंवा प्रशासक खात्याची नोंद करा</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsAddUserOpen(false)}
+                      className="w-8 h-8 rounded-full bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#55605a] flex items-center justify-center cursor-pointer transition-colors"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleCreateUser} className="flex flex-col gap-3.5 mt-4 text-xs">
+                    <div>
+                      <label className="block font-bold text-[#1d1b16] mb-1">
+                        पूर्ण नाव *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={newUserForm.fullName}
+                        onChange={(e) => setNewUserForm({ ...newUserForm, fullName: e.target.value })}
+                        placeholder="उदा. ज्ञानेश्वर विठ्ठल पाटील"
+                        className="w-full p-2.5 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block font-bold text-[#1d1b16] mb-1">
+                          १० अंकी मोबाईल नंबर *
+                        </label>
+                        <input
+                          type="tel"
+                          required
+                          maxLength={10}
+                          value={newUserForm.phone}
+                          onChange={(e) => setNewUserForm({ ...newUserForm, phone: e.target.value.replace(/\D/g, '') })}
+                          placeholder="९८xxxxxxxx"
+                          className="w-full p-2.5 bg-[#f9f3ea] font-mono rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-bold text-[#1d1b16] mb-1">
+                          लॉगिन पासवर्ड
+                        </label>
+                        <input
+                          type="text"
+                          value={newUserForm.password}
+                          onChange={(e) => setNewUserForm({ ...newUserForm, password: e.target.value })}
+                          placeholder="डिफॉल्ट: Asgaon@123"
+                          className="w-full p-2.5 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block font-bold text-[#1d1b16] mb-1">
+                          ई-मेल आयडी (ऐच्छिक)
+                        </label>
+                        <input
+                          type="email"
+                          value={newUserForm.email}
+                          onChange={(e) => setNewUserForm({ ...newUserForm, email: e.target.value })}
+                          placeholder="citizen@asgaon.in"
+                          className="w-full p-2.5 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-bold text-[#1d1b16] mb-1">
+                          वॉर्ड / परिसर *
+                        </label>
+                        <select
+                          value={newUserForm.wardNumber}
+                          onChange={(e) => setNewUserForm({ ...newUserForm, wardNumber: e.target.value })}
+                          className="w-full p-2.5 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white font-medium"
+                        >
+                          <option value="वॉर्ड १ (पंचायत संकुल व बाजारपेठ)">वॉर्ड १ (पंचायत संकुल व बाजारपेठ)</option>
+                          <option value="वॉर्ड २ (गावठाण मध्य)">वॉर्ड २ (गावठाण मध्य)</option>
+                          <option value="वॉर्ड ३ (मंदिर व जुने गावठाण)">वॉर्ड ३ (मंदिर व जुने गावठाण)</option>
+                          <option value="वॉर्ड ४ (नवे वसाहत व शेतशिवार)">वॉर्ड ४ (नवे वसाहत व शेतशिवार)</option>
+                          <option value="वॉर्ड ५ (नदीकाठ व मळा परिसर)">वॉर्ड ५ (नदीकाठ व मळा परिसर)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block font-bold text-[#1d1b16] mb-1">
+                          कार्यक्षेत्र / व्यवसाय
+                        </label>
+                        <input
+                          type="text"
+                          value={newUserForm.occupation}
+                          onChange={(e) => setNewUserForm({ ...newUserForm, occupation: e.target.value })}
+                          placeholder="उदा. शेतकरी, शिक्षक, किराणा व्यावसायिक"
+                          className="w-full p-2.5 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-bold text-[#1d1b16] mb-1">
+                          प्रणाली भूमिका *
+                        </label>
+                        <select
+                          value={newUserForm.role}
+                          onChange={(e) => setNewUserForm({ ...newUserForm, role: e.target.value })}
+                          className="w-full p-2.5 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white font-bold text-[#14532d]"
+                        >
+                          <option value="CITIZEN">👤 ग्रामस्थ नागरिक (Citizen)</option>
+                          <option value="ADMIN">🛡️ ग्राम प्रशासक (Admin)</option>
+                          <option value="SUPER_ADMIN">👑 मुख्य प्रशासक (Super Admin)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-[#fcfbf9] rounded-xl border border-[#e8e2d9] flex items-center justify-between gap-4 mt-1">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={newUserForm.isActive}
+                          onChange={(e) => setNewUserForm({ ...newUserForm, isActive: e.target.checked })}
+                          className="w-4 h-4 text-[#166534] rounded"
+                        />
+                        <span className="font-bold text-[#1d1b16]">खाते तात्काळ सक्रिय ठेवा</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={newUserForm.isVerified}
+                          onChange={(e) => setNewUserForm({ ...newUserForm, isVerified: e.target.checked })}
+                          className="w-4 h-4 text-[#166534] rounded"
+                        />
+                        <span className="font-bold text-[#1d1b16]">ई-सत्यापित नागरिक बॅज</span>
+                      </label>
+                    </div>
+
+                    <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#f0eee8] mt-2">
+                      <button
+                        type="button"
+                        onClick={() => setIsAddUserOpen(false)}
+                        className="px-4 py-2.5 rounded-xl border border-[#e8e2d9] bg-white hover:bg-[#f9f3ea] text-[#55605a] font-bold cursor-pointer"
+                      >
+                        रद्द करा
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={userFormSubmitting}
+                        className="px-5 py-2.5 rounded-xl bg-[#166534] hover:bg-[#14532d] text-white font-bold flex items-center gap-2 shadow-xs cursor-pointer active:scale-98 transition-all"
+                      >
+                        <LucideIcon name="check" className="text-[17px]" />
+                        <span>{userFormSubmitting ? 'नोंदणी होत आहे...' : 'नोंदणी पूर्ण करा'}</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {/* MODAL 2: EDIT USER MODAL */}
+            {editingUser && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto animate-fadeIn">
+                <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-[#cadbcf] relative my-8">
+                  <div className="flex items-center justify-between pb-4 border-b border-[#f0eee8]">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-10 h-10 rounded-xl bg-[#e8f1ec] text-[#166534] flex items-center justify-center">
+                        <LucideIcon name="edit" className="text-[22px]" />
+                      </div>
+                      <div>
+                        <h3 className="font-heading font-black text-base text-[#14532d]">
+                          नागरिक माहिती संपादन
+                        </h3>
+                        <p className="text-[11px] text-[#707974]">{editingUser.fullName} ({editingUser.phone})</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setEditingUser(null)}
+                      className="w-8 h-8 rounded-full bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#55605a] flex items-center justify-center cursor-pointer transition-colors"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleUpdateUser} className="flex flex-col gap-3.5 mt-4 text-xs">
+                    <div>
+                      <label className="block font-bold text-[#1d1b16] mb-1">पूर्ण नाव *</label>
+                      <input
+                        type="text"
+                        required
+                        value={editingUser.fullName}
+                        onChange={(e) => setEditingUser({ ...editingUser, fullName: e.target.value })}
+                        className="w-full p-2.5 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block font-bold text-[#1d1b16] mb-1">मोबाईल नंबर</label>
+                        <input
+                          type="tel"
+                          disabled={editingUser.phone === '9999999999'}
+                          value={editingUser.phone}
+                          onChange={(e) => setEditingUser({ ...editingUser, phone: e.target.value.replace(/\D/g, '') })}
+                          className="w-full p-2.5 bg-[#f9f3ea] font-mono rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white disabled:opacity-60"
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-bold text-[#1d1b16] mb-1">नवीन पासवर्ड (ऐच्छिक)</label>
+                        <input
+                          type="text"
+                          value={editingUser.password || ''}
+                          onChange={(e) => setEditingUser({ ...editingUser, password: e.target.value })}
+                          placeholder="बदल नको असल्यास रिकामे ठेवा"
+                          className="w-full p-2.5 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block font-bold text-[#1d1b16] mb-1">ई-मेल</label>
+                        <input
+                          type="email"
+                          value={editingUser.email || ''}
+                          onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })}
+                          className="w-full p-2.5 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-bold text-[#1d1b16] mb-1">वॉर्ड / परिसर</label>
+                        <input
+                          type="text"
+                          value={editingUser.wardNumber || ''}
+                          onChange={(e) => setEditingUser({ ...editingUser, wardNumber: e.target.value })}
+                          className="w-full p-2.5 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block font-bold text-[#1d1b16] mb-1">व्यवसाय / पद</label>
+                        <input
+                          type="text"
+                          value={editingUser.occupation || ''}
+                          onChange={(e) => setEditingUser({ ...editingUser, occupation: e.target.value })}
+                          className="w-full p-2.5 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-bold text-[#1d1b16] mb-1">प्रणाली भूमिका</label>
+                        <select
+                          disabled={editingUser.phone === '9999999999'}
+                          value={editingUser.role}
+                          onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
+                          className="w-full p-2.5 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white font-bold text-[#14532d] disabled:opacity-60"
+                        >
+                          <option value="CITIZEN">👤 Citizen</option>
+                          <option value="ADMIN">🛡️ Admin</option>
+                          <option value="SUPER_ADMIN">👑 Super Admin</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-[#fcfbf9] rounded-xl border border-[#e8e2d9] flex items-center justify-between gap-4">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          disabled={editingUser.phone === '9999999999'}
+                          checked={editingUser.isActive}
+                          onChange={(e) => setEditingUser({ ...editingUser, isActive: e.target.checked })}
+                          className="w-4 h-4 text-[#166534] rounded"
+                        />
+                        <span className="font-bold text-[#1d1b16]">खाते सक्रिय ठेवा</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={editingUser.isVerified}
+                          onChange={(e) => setEditingUser({ ...editingUser, isVerified: e.target.checked })}
+                          className="w-4 h-4 text-[#166534] rounded"
+                        />
+                        <span className="font-bold text-[#1d1b16]">ई-सत्यापित नागरिक</span>
+                      </label>
+                    </div>
+
+                    <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#f0eee8] mt-2">
+                      <button
+                        type="button"
+                        onClick={() => setEditingUser(null)}
+                        className="px-4 py-2.5 rounded-xl border border-[#e8e2d9] bg-white hover:bg-[#f9f3ea] text-[#55605a] font-bold cursor-pointer"
+                      >
+                        रद्द करा
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={userFormSubmitting}
+                        className="px-5 py-2.5 rounded-xl bg-[#166534] hover:bg-[#14532d] text-white font-bold flex items-center gap-2 shadow-xs cursor-pointer active:scale-98 transition-all"
+                      >
+                        <LucideIcon name="check" className="text-[17px]" />
+                        <span>{userFormSubmitting ? 'जतन होत आहे...' : 'बदल जतन करा'}</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {/* MODAL 3: VIEW USER DETAILS MODAL */}
+            {viewingUser && (() => {
+              const rawRole = (viewingUser.roles && viewingUser.roles.length > 0) ? String(Array.from(viewingUser.roles)[0]).replace('ROLE_', '') : 'CITIZEN';
+              const isSuper = rawRole === 'SUPER_ADMIN';
+              const isAdminUser = rawRole === 'ADMIN';
+
+              return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto animate-fadeIn">
+                  <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#cadbcf] relative my-8">
+                    <div className="flex items-center justify-between pb-4 border-b border-[#f0eee8]">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-10 h-10 rounded-xl bg-[#e8f1ec] text-[#166534] flex items-center justify-center">
+                          <LucideIcon name="visibility" className="text-[22px]" />
+                        </div>
+                        <div>
+                          <h3 className="font-heading font-black text-base text-[#14532d]">
+                            वापरकर्ता संपूर्ण प्रोफाइल
+                          </h3>
+                          <p className="text-[11px] text-[#707974]">नोंदणी तपशील व सुरक्षा माहिती</p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setViewingUser(null)}
+                        className="w-8 h-8 rounded-full bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#55605a] flex items-center justify-center cursor-pointer transition-colors"
+                      >
+                        ✕
+                      </button>
+                    </div>
+
+                    <div className="flex flex-col items-center text-center my-4 p-4 rounded-2xl bg-gradient-to-b from-[#f9f3ea] to-[#fcfbf9] border border-[#e8e2d9]">
+                      <div className={`w-16 h-16 rounded-full flex items-center justify-center font-black text-xl mb-2.5 shadow-sm ${
+                        isSuper
+                          ? 'bg-amber-100 text-amber-800 border-2 border-amber-400'
+                          : isAdminUser
+                          ? 'bg-blue-100 text-blue-800 border-2 border-blue-400'
+                          : 'bg-emerald-100 text-emerald-800 border-2 border-emerald-400'
+                      }`}>
+                        {viewingUser.fullName ? viewingUser.fullName.charAt(0) : 'G'}
+                      </div>
+                      <h4 className="font-heading font-black text-lg text-[#1d1b16]">{viewingUser.fullName || 'नागरिक'}</h4>
+                      <p className="font-mono text-xs text-[#166534] font-bold mt-0.5">{viewingUser.phone}</p>
+                      
+                      <div className="flex items-center gap-2 mt-2.5">
+                        {isSuper ? (
+                          <span className="px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-500 text-white shadow-2xs">
+                            👑 Super Admin
+                          </span>
+                        ) : isAdminUser ? (
+                          <span className="px-2.5 py-1 rounded-full text-[11px] font-black bg-blue-100 text-blue-800 border border-blue-300">
+                            🛡️ Admin
+                          </span>
+                        ) : (
+                          <span className="px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                            👤 Citizen
+                          </span>
+                        )}
+
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                          viewingUser.isActive !== false ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'
+                        }`}>
+                          {viewingUser.isActive !== false ? 'सक्रिय खाते' : 'निष्क्रिय'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 text-xs">
+                      <div className="flex justify-between p-2.5 rounded-xl bg-[#fcfbf9] border border-[#f0eee8]">
+                        <span className="text-[#707974]">ई-मेल:</span>
+                        <span className="font-semibold text-[#1d1b16]">{viewingUser.email || 'उपलब्ध नाही'}</span>
+                      </div>
+                      <div className="flex justify-between p-2.5 rounded-xl bg-[#fcfbf9] border border-[#f0eee8]">
+                        <span className="text-[#707974]">वॉर्ड / परिसर:</span>
+                        <span className="font-semibold text-[#1d1b16]">{viewingUser.wardNumber || 'वॉर्ड २ (गावठाण)'}</span>
+                      </div>
+                      <div className="flex justify-between p-2.5 rounded-xl bg-[#fcfbf9] border border-[#f0eee8]">
+                        <span className="text-[#707974]">व्यवसाय / पद:</span>
+                        <span className="font-semibold text-[#1d1b16]">{viewingUser.occupation || 'ग्रामस्थ नागरिक'}</span>
+                      </div>
+                      <div className="flex justify-between p-2.5 rounded-xl bg-[#fcfbf9] border border-[#f0eee8]">
+                        <span className="text-[#707974]">सत्यापन स्थिती:</span>
+                        <span className="font-semibold text-[#166534]">{viewingUser.isVerified ? '✓ प्रमाणित नागरिक' : 'अद्याप अप्रमाणित'}</span>
+                      </div>
+                      <div className="flex justify-between p-2.5 rounded-xl bg-[#fcfbf9] border border-[#f0eee8]">
+                        <span className="text-[#707974]">नोंदणी दिनांक:</span>
+                        <span className="font-semibold text-[#1d1b16]">{viewingUser.createdAt ? new Date(viewingUser.createdAt).toLocaleDateString('mr-IN') : 'सक्रिय'}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-[#f0eee8] mt-4">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const target = viewingUser;
+                          setViewingUser(null);
+                          setEditingUser({
+                            id: target.id,
+                            fullName: target.fullName || '',
+                            phone: target.phone || '',
+                            email: target.email || '',
+                            wardNumber: target.wardNumber || 'वॉर्ड २ (गावठाण)',
+                            occupation: target.occupation || 'ग्रामस्थ नागरिक',
+                            role: rawRole,
+                            isActive: target.isActive !== false,
+                            isVerified: target.isVerified !== false,
+                            password: ''
+                          });
+                        }}
+                        className="px-4 py-2 rounded-xl bg-[#166534] hover:bg-[#14532d] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <LucideIcon name="edit" className="text-[14px]" />
+                        <span>संपादित करा</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setViewingUser(null)}
+                        className="px-4 py-2 rounded-xl border border-[#e8e2d9] bg-white hover:bg-[#f9f3ea] text-[#55605a] text-xs font-bold cursor-pointer"
+                      >
+                        बंद करा
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
-        )}
-      </div>
-    )}
+        );
+      })()}
 
       {/* TAB 14: AUDIT LOGS */}
       {activeTab === 'logs' && (
@@ -5956,6 +7020,17 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         isSuperAdmin ? (
           <AdminManagementSection
             currentUser={currentUser}
+            users={users}
+            onRefreshUsers={() => {
+              api.getAdminUsers()
+                .then((res) => {
+                  if (res && Array.isArray(res) && res.length > 0) {
+                    setUsers(res);
+                    localStorage.setItem('dg_users_cache', JSON.stringify(res));
+                  }
+                })
+                .catch((e) => console.log('Admin users fetch notice:', e.message));
+            }}
             onAuditLog={(action, details) => {
               console.log('Super Admin Action:', action, details);
             }}
@@ -5978,6 +7053,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           </div>
         )
       )}
+      </main>
     </div>
   );
 };

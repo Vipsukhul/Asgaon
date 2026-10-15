@@ -116,6 +116,21 @@ export const AdminBannerManager: React.FC = () => {
         ...s,
         ...formData
       } : s));
+      api.updateHeroBanner(editingSlide.id, {
+        slideType: editingSlide.type || 'custom',
+        imageUrl: formData.imageUrl,
+        showTextOverlay: formData.showTextOverlay,
+        titleMarathi: formData.titleMarathi,
+        titleEnglish: formData.titleEnglish,
+        subtitleMarathi: formData.subtitleMarathi,
+        subtitleEnglish: formData.subtitleEnglish,
+        badgeMarathi: formData.badgeMarathi,
+        badgeEnglish: formData.badgeEnglish,
+        ctaTextMarathi: formData.ctaTextMarathi,
+        ctaTextEnglish: formData.ctaTextEnglish,
+        ctaLink: formData.ctaLink,
+        isActive: formData.isActive
+      }).catch(err => console.error('Failed to update banner in DB:', err));
     } else {
       const newSlide: HeroSlide = {
         id: 'slide-' + Date.now(),
@@ -124,6 +139,22 @@ export const AdminBannerManager: React.FC = () => {
         ...formData
       };
       updatedSlides = [...slides, newSlide];
+      api.createHeroBanner({
+        slideType: 'custom',
+        imageUrl: formData.imageUrl,
+        showTextOverlay: formData.showTextOverlay,
+        titleMarathi: formData.titleMarathi,
+        titleEnglish: formData.titleEnglish,
+        subtitleMarathi: formData.subtitleMarathi,
+        subtitleEnglish: formData.subtitleEnglish,
+        badgeMarathi: formData.badgeMarathi,
+        badgeEnglish: formData.badgeEnglish,
+        ctaTextMarathi: formData.ctaTextMarathi,
+        ctaTextEnglish: formData.ctaTextEnglish,
+        ctaLink: formData.ctaLink,
+        isActive: formData.isActive,
+        displayOrder: updatedSlides.length
+      }).catch(err => console.error('Failed to create banner in DB:', err));
     }
 
     setSlides(updatedSlides);
@@ -136,6 +167,7 @@ export const AdminBannerManager: React.FC = () => {
     const updated = slides.filter(s => s.id !== id);
     setSlides(updated);
     saveStoredHeroSlides(updated);
+    api.deleteHeroBanner(id).catch(err => console.error('Failed to delete banner in DB:', err));
   };
 
   const handleToggleActive = (id: string) => {
@@ -169,12 +201,7 @@ export const AdminBannerManager: React.FC = () => {
       {/* Top Banner / Actions Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-[#e8e2d9] shadow-xs">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-800">
-              Cloudinary Media CDN Active
-            </span>
-          </div>
+          
           <h2 className="font-heading font-extrabold text-xl text-[#166534]">
             हिरो स्लायडर व बॅनर व्यवस्थापन
           </h2>

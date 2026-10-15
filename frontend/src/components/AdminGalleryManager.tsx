@@ -103,6 +103,19 @@ export const AdminGalleryManager: React.FC = () => {
       );
       setItems(updated);
       saveStoredGalleryItems(updated);
+      api.updateGalleryPhoto(editingItem.id, {
+        imageUrl: formData.imageUrl,
+        titleMarathi: formData.titleMarathi,
+        titleEnglish: formData.titleEnglish,
+        category: formData.category,
+        descriptionMarathi: formData.descriptionMarathi,
+        descriptionEnglish: formData.descriptionEnglish,
+        location: formData.location,
+        eventDate: formData.date,
+        credit: formData.credit,
+        isFeatured: formData.isFeatured,
+        displayOrder: formData.order
+      }).catch(err => console.error('Failed to update photo in DB:', err));
       toast.success('छायाचित्र यशस्वीरीत्या अद्ययावत केले!', 'Updated');
     } else {
       const newItem: GalleryItem = {
@@ -112,6 +125,19 @@ export const AdminGalleryManager: React.FC = () => {
       const updated = [newItem, ...items];
       setItems(updated);
       saveStoredGalleryItems(updated);
+      api.createGalleryPhoto({
+        imageUrl: formData.imageUrl,
+        titleMarathi: formData.titleMarathi,
+        titleEnglish: formData.titleEnglish,
+        category: formData.category,
+        descriptionMarathi: formData.descriptionMarathi,
+        descriptionEnglish: formData.descriptionEnglish,
+        location: formData.location,
+        eventDate: formData.date,
+        credit: formData.credit,
+        isFeatured: formData.isFeatured,
+        displayOrder: formData.order
+      }).catch(err => console.error('Failed to create photo in DB:', err));
       toast.success('नवीन छायाचित्र दालनात जोडले गेले!', 'Added');
     }
 
@@ -123,6 +149,7 @@ export const AdminGalleryManager: React.FC = () => {
     const updated = items.filter((i) => i.id !== id);
     setItems(updated);
     saveStoredGalleryItems(updated);
+    api.deleteGalleryPhoto(id).catch(err => console.error('Failed to delete photo in DB:', err));
     toast.info('छायाचित्र हटवले गेले.', 'Deleted');
   };
 

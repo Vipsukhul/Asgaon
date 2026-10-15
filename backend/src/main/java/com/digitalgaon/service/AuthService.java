@@ -39,12 +39,12 @@ public class AuthService {
     private final SecureRandom secureRandom = new SecureRandom();
 
     public AuthService(UserRepository userRepository,
-                       RoleRepository roleRepository,
-                       PasswordEncoder passwordEncoder,
-                       AuthenticationManager authenticationManager,
-                       JwtTokenProvider tokenProvider,
-                       OtpService otpService,
-                       EmailService emailService) {
+            RoleRepository roleRepository,
+            PasswordEncoder passwordEncoder,
+            AuthenticationManager authenticationManager,
+            JwtTokenProvider tokenProvider,
+            OtpService otpService,
+            EmailService emailService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -56,8 +56,7 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getPhone(), request.getPassword())
-        );
+                new UsernamePasswordAuthenticationToken(request.getPhone(), request.getPassword()));
 
         String token = tokenProvider.generateToken(authentication);
         User user = userRepository.findByPhone(request.getPhone())
@@ -84,7 +83,8 @@ public class AuthService {
             throw new RuntimeException("Phone number is already registered: " + request.getPhone());
         }
 
-        if (request.getEmail() != null && !request.getEmail().isBlank() && userRepository.existsByEmail(request.getEmail())) {
+        if (request.getEmail() != null && !request.getEmail().isBlank()
+                && userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email is already registered: " + request.getEmail());
         }
 
@@ -101,17 +101,26 @@ public class AuthService {
         user.setCreatedAt(OffsetDateTime.now());
         user.setUpdatedAt(OffsetDateTime.now());
 
-        // Assign Role
-        String roleName = (request.getRole() != null && !request.getRole().isBlank()) ? request.getRole() : "CITIZEN";
-        Role role = roleRepository.findByName(roleName)
-                .orElseGet(() -> roleRepository.save(new Role(roleName, "Default " + roleName + " role")));
+        // Assign Role (always canonical ROLE_ prefix)
+        String roleName = (request.getRole() != null && !request.getRole().isBlank())
+                ? request.getRole().trim().toUpperCase()
+                : "ROLE_CITIZEN";
+        if (!roleName.startsWith("ROLE_")) {
+            roleName = "ROLE_" + roleName;
+        }
+        final String canonicalRoleName = roleName;
+        Role role = roleRepository.findByName(canonicalRoleName)
+                .orElseGet(() -> roleRepository
+                        .save(new Role(canonicalRoleName, "Default " + canonicalRoleName + " role")));
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
 
         user = userRepository.save(user);
 
-        String rolesString = roles.stream().map(r -> "ROLE_" + r.getName()).collect(Collectors.joining(","));
+        String rolesString = roles.stream()
+                .map(r -> r.getName().startsWith("ROLE_") ? r.getName() : "ROLE_" + r.getName())
+                .collect(Collectors.joining(","));
         String token = tokenProvider.generateTokenForUsername(user.getPhone(), rolesString);
 
         return AuthResponse.builder()
@@ -157,13 +166,14 @@ public class AuthService {
             user.setPasswordHash(passwordEncoder.encode(UUID.randomUUID().toString()));
             user.setVillageName("Asgaon");
             user.setPreferredLanguage("mr");
-            user.setOccupation("Citizen / Resident");
+            user.setOccupation("Citizen");
             user.setIsActive(true);
             user.setIsVerified(true);
             user.setCreatedAt(OffsetDateTime.now());
             user.setUpdatedAt(OffsetDateTime.now());
 
-            String roleName = (request.getRole() != null && !request.getRole().isBlank()) ? request.getRole() : "CITIZEN";
+            String roleName = (request.getRole() != null && !request.getRole().isBlank()) ? request.getRole()
+                    : "CITIZEN";
             Role role = roleRepository.findByName(roleName)
                     .orElseGet(() -> roleRepository.save(new Role(roleName, "Default " + roleName + " role")));
             user.setRoles(Collections.singleton(role));
@@ -188,7 +198,8 @@ public class AuthService {
         try {
             org.springframework.web.client.RestTemplate restTemplate = new org.springframework.web.client.RestTemplate();
             String verifyUrl = "https://oauth2.googleapis.com/tokeninfo?id_token=" + request.getIdToken().trim();
-            org.springframework.http.ResponseEntity<String> response = restTemplate.getForEntity(verifyUrl, String.class);
+            org.springframework.http.ResponseEntity<String> response = restTemplate.getForEntity(verifyUrl,
+                    String.class);
 
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 JsonNode tokenInfo = objectMapper.readTree(response.getBody());
@@ -222,7 +233,8 @@ public class AuthService {
         }
 
         if (email == null || email.isBlank()) {
-            throw new IllegalArgumentException("Google authentication failed: Email address could not be verified from Google.");
+            throw new IllegalArgumentException(
+                    "Google authentication failed: Email address could not be verified from Google.");
         }
 
         email = email.trim().toLowerCase();
@@ -240,13 +252,14 @@ public class AuthService {
             user.setPasswordHash(passwordEncoder.encode(UUID.randomUUID().toString()));
             user.setVillageName("Asgaon");
             user.setPreferredLanguage("en");
-            user.setOccupation("Citizen / Resident");
+            user.setOccupation("Citizen");
             user.setIsActive(true);
             user.setIsVerified(true);
             user.setCreatedAt(OffsetDateTime.now());
             user.setUpdatedAt(OffsetDateTime.now());
 
-            String rawRole = (request.getRole() != null && !request.getRole().isBlank()) ? request.getRole() : "CITIZEN";
+            String rawRole = (request.getRole() != null && !request.getRole().isBlank()) ? request.getRole()
+                    : "CITIZEN";
             String roleWithPrefix = rawRole.startsWith("ROLE_") ? rawRole : "ROLE_" + rawRole;
             Role role = roleRepository.findByName(roleWithPrefix)
                     .or(() -> roleRepository.findByName(rawRole))

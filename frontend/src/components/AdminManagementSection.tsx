@@ -1,6 +1,7 @@
 import { LucideIcon } from './LucideIcon';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import type { UserProfileData } from '../pages/ProfilePage';
+import { api } from '../services/api';
 
 export type AdminModuleId =
   | 'overview'
@@ -23,160 +24,131 @@ export type AdminModuleId =
   | 'logs'
   | 'transparency';
 
-export interface AdminModuleDefinition {
+export interface AdminModuleConfig {
   id: AdminModuleId;
   labelMarathi: string;
   labelEnglish: string;
   icon: string;
-  category: 'GOVERNANCE' | 'SERVICES' | 'CONTENT';
+  category: 'CORE' | 'SERVICES' | 'CONTENT' | 'SYSTEM';
   description: string;
 }
 
-export const ADMIN_MODULES_LIST: AdminModuleDefinition[] = [
-  // 1. Governance & Oversight
+export const ADMIN_MODULES_LIST: AdminModuleConfig[] = [
   {
     id: 'overview',
-    labelMarathi: 'आढावा व आकडेवारी',
-    labelEnglish: 'Dashboard Overview & KPIs',
-    icon: 'analytics',
-    category: 'GOVERNANCE',
-    description: 'ग्रामपंचायत मुख्य मेट्रिक्स, सारांश व द्रुत कृती शॉर्टकट्स'
-  },
-  {
-    id: 'broadcast',
-    labelMarathi: 'तातडीची दवंडी ',
-    labelEnglish: 'Emergency Push Alerts',
-    icon: 'cell_tower',
-    category: 'GOVERNANCE',
-    description: 'सर्व गावकऱ्यांच्या मोबाईलवर आपत्कालीन व शासकीय संदेश पाठवणे'
-  },
-  {
-    id: 'users',
-    labelMarathi: 'गावकऱ्यांची यादी',
-    labelEnglish: 'Citizen Directory',
-    icon: 'group',
-    category: 'GOVERNANCE',
-    description: 'नोंदणीकृत गावकऱ्यांची माहिती, मतदार वॉर्ड व संपर्क'
-  },
-  {
-    id: 'logs',
-    labelMarathi: 'ऑडिट नोंदी ',
-    labelEnglish: 'Audit Logs & Security',
-    icon: 'manage_history',
-    category: 'GOVERNANCE',
-    description: 'प्रशासकीय कृती, बदल व सुरक्षा नोंदींचे पुनरावलोकन'
-  },
-  {
-    id: 'transparency',
-    labelMarathi: 'ग्राम पारदर्शकता व Gemini AI',
-    labelEnglish: 'Transparency & Gemini AI Sync',
-    icon: 'account_balance',
-    category: 'GOVERNANCE',
-    description: '१५ वा वित्त आयोग, सरकारी API डेटा फेच व Gemini AI द्वारे आपोआप SEO टॅग जनरेशन'
-  },
-
-  // 2. Citizen Services & Grievances
-  {
-    id: 'complaints',
-    labelMarathi: 'गावकऱ्यांच्या तक्रारी',
-    labelEnglish: 'Citizen Grievances & Redressal',
-    icon: 'support_agent',
-    category: 'SERVICES',
-    description: 'पाणी, वीज, रस्ते विषयक तक्रारींची स्थिती बदलणे व निवारण नोंदवणे'
-  },
-  {
-    id: 'businesses',
-    labelMarathi: 'दुकाने व व्यवसाय पडताळणी',
-    labelEnglish: 'Business Directory & Verification',
-    icon: 'storefront',
-    category: 'SERVICES',
-    description: 'नोंदणीकृत दुकानांची यादी, पडताळणी स्थिती, अधिकृत ट्रस्ट बॅज व नियमन'
+    labelMarathi: 'मुख्य डॅशबोर्ड',
+    labelEnglish: 'Main Overview',
+    icon: 'dashboard',
+    category: 'CORE',
+    description: 'सर्व विभाग व गाव सांख्यिकीचा एकत्रित आढावा'
   },
   {
     id: 'schemes',
-    labelMarathi: 'योजना व्यवस्थापन',
-    labelEnglish: 'Government Schemes',
-    icon: 'description',
+    labelMarathi: 'शासकीय योजना',
+    labelEnglish: 'Govt Schemes',
+    icon: 'assignment',
     category: 'SERVICES',
-    description: 'संजय गांधी, पीएम किसान, शेतकरी व इतर योजना जोडणे व बदलणे'
+    description: 'संजय गांधी, नरेगा, आवास योजना व इतर अनुदान माहिती व्यवस्थापन'
   },
   {
     id: 'water',
     labelMarathi: 'पाणी पुरवठा वेळापत्रक',
-    labelEnglish: 'Water Supply Timings',
+    labelEnglish: 'Water Supply Schedule',
     icon: 'water_drop',
     category: 'SERVICES',
-    description: 'सर्व वॉर्डांचे पाणी पुरवठा वेळापत्रक, दाबाची स्थिती व सूचना'
+    description: 'दररोजचे पाणी पुरवठा नियोजन, टँकर नोंद व पाण्याची गुणवत्ता'
   },
   {
-    id: 'contacts',
-    labelMarathi: 'महत्त्वाचे संपर्क',
-    labelEnglish: 'Important Emergency Contacts',
-    icon: 'contacts',
+    id: 'complaints',
+    labelMarathi: 'तक्रार निवारण मंच',
+    labelEnglish: 'Grievance Redressal',
+    icon: 'support_agent',
     category: 'SERVICES',
-    description: 'सरपंच, तलाठी, आरोग्य केंद्र, पोलीस व आपत्कालीन क्रमांक'
+    description: 'गावकऱ्यांच्या ऑनलाइन तक्रारींचे निवारण व स्थिती बदल'
   },
   {
     id: 'projects',
-    labelMarathi: 'विकासकामे व निधी',
-    labelEnglish: 'Development Projects',
-    icon: 'construction',
+    labelMarathi: 'ग्राम विकास कामे',
+    labelEnglish: 'Village Projects',
+    icon: 'engineering',
     category: 'SERVICES',
-    description: 'गावातील सिमेंट रस्ते, गटारे, शाळा दुरुस्ती व निधी खर्च प्रगती'
+    description: 'रस्ते, सिमेंट काँक्रीट, दिवाबत्ती व विकास कामांची प्रगती'
   },
-
-  // 3. Public Info, Education & Content
+  {
+    id: 'broadcast',
+    labelMarathi: 'आपत्कालीन दवंडी व अलर्ट',
+    labelEnglish: 'Emergency Alerts',
+    icon: 'notifications_active',
+    category: 'SERVICES',
+    description: 'तातडीच्या सूचना, पूर/हवामान इशारा व ग्रामसभा दवंडी'
+  },
+  {
+    id: 'businesses',
+    labelMarathi: 'स्थानिक व्यवसाय व बाजार',
+    labelEnglish: 'Local Businesses',
+    icon: 'storefront',
+    category: 'SERVICES',
+    description: 'गावातील दुकाने, कृषी सेवा केंद्र व स्थानिक उद्योगांची नोंदणी'
+  },
   {
     id: 'reviews',
-    labelMarathi: 'नागरिक अभिप्राय नियंत्रण',
-    labelEnglish: 'Customer Reviews Moderation',
+    labelMarathi: 'नागरिक अभिप्राय व रेटिंग',
+    labelEnglish: 'Citizen Feedback',
     icon: 'rate_review',
-    category: 'CONTENT',
-    description: 'स्थानिक दुकानांचे ग्राहक अभिप्राय, पडताळणी बॅज व संपादन'
+    category: 'SERVICES',
+    description: 'ग्रामपंचायत सेवांवरील गावकऱ्यांच्या प्रतिक्रिया व समाधान निर्देशांक'
   },
   {
-    id: 'banners',
-    labelMarathi: 'हिरो स्लायडर व बॅनर',
-    labelEnglish: 'Hero Carousel & Banners',
-    icon: 'view_carousel',
-    category: 'CONTENT',
-    description: 'मुख्य पृष्ठावरील मुख्य फोटो, घोषणा बॅनर व स्लायडर व्यवस्थापन'
-  },
-  {
-    id: 'gallery',
-    labelMarathi: 'छायाचित्र दालन (Gallery)',
-    labelEnglish: 'Photo Gallery & Sliders',
-    icon: 'photo_library',
-    category: 'CONTENT',
-    description: 'गावातील सुंदर छायाचित्रे, कॅटेगरीनुसार फोटो अल्बम आणि स्लायडर व्यवस्थापन'
-  },
-  {
-    id: 'events',
-    labelMarathi: 'कार्यक्रम व जत्रा',
-    labelEnglish: 'Village Events & Festivals',
-    icon: 'event',
-    category: 'CONTENT',
-    description: 'खंडोबा यात्रा, ग्रामसभा, आरोग्य शिबिर व सांस्कृतिक कार्यक्रम'
-  },
-  {
-    id: 'shiksha',
-    labelMarathi: 'शिक्षण, शाळा व अभ्यासिका',
-    labelEnglish: 'Education, Library & Tutors',
-    icon: 'school',
-    category: 'CONTENT',
-    description: 'शाळा, शिष्यवृत्ती, वाचनालय डेस्क आरक्षणे व स्थानिक ट्युटर्स'
+    id: 'contacts',
+    labelMarathi: 'महत्त्वाचे संपर्क व अधिकारी',
+    labelEnglish: 'Directory & Helplines',
+    icon: 'contact_phone',
+    category: 'SERVICES',
+    description: 'तलाठी, आरोग्य सेविका, सरपंच, वीज मंडळ व पोलीस संपर्क'
   },
   {
     id: 'transport',
-    labelMarathi: 'वाहतूक व बसेस',
-    labelEnglish: 'Transport & Bus Schedules',
+    labelMarathi: 'बस व वाहतूक वेळापत्रक',
+    labelEnglish: 'Transport Schedules',
     icon: 'directions_bus',
+    category: 'SERVICES',
+    description: 'पवनी-आसगाव एसटी बसेस, ऑटो रिक्षा व रेल्वे वेळापत्रक'
+  },
+  {
+    id: 'shiksha',
+    labelMarathi: 'शिक्षण व अभ्यास दालन',
+    labelEnglish: 'Education & Library',
+    icon: 'school',
+    category: 'SERVICES',
+    description: 'शाळा, वाचनालय, स्पर्धा परीक्षा तयारी व विद्यार्थी उपक्रम'
+  },
+  {
+    id: 'gallery',
+    labelMarathi: 'ग्राम छायाचित्र दालन',
+    labelEnglish: 'Village Photo Gallery',
+    icon: 'photo_library',
     category: 'CONTENT',
-    description: 'एसटी बस वेळापत्रक, ऑटो चालक संपर्क व आगार मदत क्रमांक'
+    description: 'गावातील सण, उत्सव, विकासकामे व ऐतिहासिक क्षणचित्रे'
+  },
+  {
+    id: 'events',
+    labelMarathi: 'ग्राम दिनदर्शिका व कार्यक्रम',
+    labelEnglish: 'Events Calendar',
+    icon: 'event',
+    category: 'CONTENT',
+    description: 'ग्रामसभा, आरोग्य शिबीर, लसीकरण व सांस्कृतिक कार्यक्रम'
+  },
+  {
+    id: 'banners',
+    labelMarathi: 'मुखपृष्ठ बॅनर व जाहिराती',
+    labelEnglish: 'Home Banners',
+    icon: 'view_carousel',
+    category: 'CONTENT',
+    description: 'वेबसाईटच्या पहिल्या पानावर दिसणारे महत्त्वाचे बॅनर'
   },
   {
     id: 'blogs',
-    labelMarathi: 'ब्लॉग व यशोगाथा',
+    labelMarathi: 'ग्राम वार्ता व यशोगाथा',
     labelEnglish: 'Village Blogs & Stories',
     icon: 'menu_book',
     category: 'CONTENT',
@@ -184,11 +156,35 @@ export const ADMIN_MODULES_LIST: AdminModuleDefinition[] = [
   },
   {
     id: 'notices',
-    labelMarathi: 'सूचना फलक ',
+    labelMarathi: 'सूचना फलक व जाहीर परिपत्रके',
     labelEnglish: 'Public Announcements',
     icon: 'campaign',
     category: 'CONTENT',
     description: 'अधिकृत ग्रामपंचायत दवंडी, ग्रामसभा सूचना व परिपत्रके'
+  },
+  {
+    id: 'users',
+    labelMarathi: 'नागरिक व वापरकर्ता नोंदणी',
+    labelEnglish: 'Citizen Directory',
+    icon: 'group',
+    category: 'SYSTEM',
+    description: 'नोंदणीकृत गावकऱ्यांची खाती, आधार पडताळणी व वॉर्ड माहिती'
+  },
+  {
+    id: 'logs',
+    labelMarathi: 'ऑडिट लॉग व सुरक्षा नोंदी',
+    labelEnglish: 'System Audit Logs',
+    icon: 'security',
+    category: 'SYSTEM',
+    description: 'सर्व प्रशासकीय कृती, बदल व लॉगिन इतिहासाच्या नोंदी'
+  },
+  {
+    id: 'transparency',
+    labelMarathi: 'ग्रामपंचायत पारदर्शकता व बजेट',
+    labelEnglish: 'Panchayat Transparency',
+    icon: 'account_balance',
+    category: 'SYSTEM',
+    description: '१५ वा वित्त आयोग, ग्रामनिधी जमा-खर्च व सार्वजनिक हिशोब'
   }
 ];
 
@@ -207,110 +203,111 @@ export interface ManagedAdminUser {
   notes?: string;
 }
 
-const STORAGE_KEY = 'dg_managed_admin_users_v1';
+const PERMISSIONS_STORAGE_KEY = 'dg_admin_module_permissions_v2';
 
-export const DEFAULT_MANAGED_ADMINS: ManagedAdminUser[] = [
-  {
-    id: 'adm-super-1',
-    fullName: 'Chief Super Admin (मुख्य प्रशासक)',
-    phone: '9999999999',
-    email: 'superadmin@asgaon.in',
-    role: 'SUPER_ADMIN',
-    wardOrDept: 'ग्राम सचिवालय व मुख्य नियंत्रण कक्ष',
-    isActive: true,
-    isRoot: true,
-    allowedModules: ADMIN_MODULES_LIST.map((m) => m.id),
-    lastLogin: 'आत्ताच सक्रिय ',
-    createdDate: '०१ ऑक्टोबर २०२६',
-    notes: 'सर्वोच्च तांत्रिक व प्रशासकीय नियंत्रण अधिकार '
-  },
-  {
-    id: 'adm-sevak-2',
-    fullName: 'ग्रामसेवक एस. एन. जाधव',
-    phone: '9604331589',
-    email: 'gramsevak@asgaon.gov.in',
-    role: 'ADMIN',
-    wardOrDept: 'ग्रामपंचायत प्रशासन (नागरी सेवा व तक्रार निवारण)',
-    isActive: true,
-    allowedModules: [
-      'overview',
-      'reviews',
-      'notices',
-      'water',
-      'schemes',
-      'complaints',
-      'contacts',
-      'projects',
-      'broadcast'
-    ],
-    lastLogin: 'आज, सकाळी ०९:४०',
-    createdDate: '०५ ऑक्टोबर २०२६',
-    notes: 'प्रशासकीय योजना, तक्रार निवारण व दवंडी अधिकार'
-  },
-  {
-    id: 'adm-sahayak-3',
-    fullName: 'ग्रामपंचायत सहाय्यक व ऑपरेटर',
-    phone: '9822104500',
-    email: 'sahayak@asgaon.in',
-    role: 'ADMIN',
-    wardOrDept: 'आपले सरकार सेवा केंद्र व जनसंपर्क',
-    isActive: true,
-    allowedModules: [
-      'overview',
-      'banners',
-      'events',
-      'shiksha',
-      'transport',
-      'blogs',
-      'notices',
-      'contacts'
-    ],
-    lastLogin: 'काल, संध्याकाळी ०५:१५',
-    createdDate: '०८ ऑक्टोबर २०२६',
-    notes: 'माहिती व तंत्रज्ञान, शिक्षण मंच व बस वेळापत्रक व्यवस्थापक'
-  },
-  {
-    id: 'adm-water-4',
-    fullName: 'जल मित्र (पाणी पुरवठा ऑपरेटर)',
-    phone: '9822104501',
-    email: 'jalmitra@asgaon.in',
-    role: 'ADMIN',
-    wardOrDept: 'पाणी पुरवठा व स्वच्छता समिती',
-    isActive: true,
-    allowedModules: [
-      'overview',
-      'water',
-      'complaints',
-      'contacts'
-    ],
-    lastLogin: '२ दिवसांपूर्वी',
-    createdDate: '१० ऑक्टोबर २०२६',
-    notes: 'फक्त पाणी पुरवठा वेळ व गळती तक्रारी व्यवस्थापन अधिकार'
+export const getStoredPermissionsMap = (): Record<string, AdminModuleId[]> => {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem(PERMISSIONS_STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return {};
+};
+
+export const saveStoredPermissionsMap = (map: Record<string, AdminModuleId[]>) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(PERMISSIONS_STORAGE_KEY, JSON.stringify(map));
   }
-];
+};
 
 export const getStoredManagedAdmins = (): ManagedAdminUser[] => {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-    } catch {
-      // fallback
+  // Purge obsolete dummy key
+  if (typeof window !== 'undefined' && localStorage.getItem('dg_managed_admin_users_v1')) {
+    localStorage.removeItem('dg_managed_admin_users_v1');
+  }
+
+  const permissionsMap = getStoredPermissionsMap();
+  let userList: any[] = [];
+  if (typeof window !== 'undefined') {
+    const cached = localStorage.getItem('dg_users_cache');
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          if (parsed.some((u: any) => String(u.id).startsWith('usr-root') || String(u.id).startsWith('usr-sevak') || String(u.id).startsWith('usr-sarpanch'))) {
+            localStorage.removeItem('dg_users_cache');
+          } else {
+            userList = parsed;
+          }
+        }
+      } catch {}
     }
   }
-  return DEFAULT_MANAGED_ADMINS;
+
+  const adminUsers = userList.filter((u) => {
+    const rawRoles = Array.isArray(u.roles) ? u.roles.map(String) : [];
+    return (
+      rawRoles.some((r: string) => r.includes('ADMIN') || r.includes('SUPER_ADMIN')) ||
+      u.role === 'ADMIN' ||
+      u.role === 'SUPER_ADMIN'
+    );
+  });
+
+  if (adminUsers.length === 0) {
+    return [];
+  }
+
+  return adminUsers.map((u) => {
+    const rawRoles = Array.isArray(u.roles) ? u.roles.map(String) : [];
+    const isSuper =
+      rawRoles.some((r: string) => r.includes('SUPER_ADMIN')) ||
+      u.role === 'SUPER_ADMIN';
+    const role: 'ADMIN' | 'SUPER_ADMIN' = isSuper ? 'SUPER_ADMIN' : 'ADMIN';
+    const cleanPhone = (u.phone || '').trim();
+
+    return {
+      id: String(u.id),
+      fullName: u.fullName || (isSuper ? 'Super Admin' : 'प्रशासक'),
+      phone: u.phone,
+      email: u.email || undefined,
+      role,
+      wardOrDept: u.wardNumber || u.occupation || 'ग्रामपंचायत प्रशासन',
+      isActive: u.isActive !== false,
+      isRoot: Boolean(u.isRoot),
+      allowedModules: isSuper
+        ? ADMIN_MODULES_LIST.map((m) => m.id)
+        : permissionsMap[cleanPhone] || [
+            'overview',
+            'reviews',
+            'notices',
+            'water',
+            'schemes',
+            'complaints',
+            'contacts',
+            'projects',
+            'broadcast'
+          ],
+      createdDate: u.createdAt
+        ? new Date(u.createdAt).toLocaleDateString('mr-IN', { day: '2-digit', month: 'long', year: 'numeric' })
+        : 'नोंदणीकृत',
+      lastLogin: 'सक्रिय',
+      notes: u.occupation || undefined
+    };
+  });
 };
+
+export const DEFAULT_MANAGED_ADMINS = getStoredManagedAdmins();
 
 export const saveStoredManagedAdmins = (admins: ManagedAdminUser[]) => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(admins));
+  const map = getStoredPermissionsMap();
+  admins.forEach((a) => {
+    if (a.phone) {
+      map[a.phone.trim()] = a.allowedModules;
+    }
+  });
+  saveStoredPermissionsMap(map);
 };
 
-/**
- * Returns allowed modules for a given user phone or role.
- * Super Admins ALWAYS get ALL modules.
- * Regular Admins get their explicitly saved module access list.
- */
 export const getAllowedModulesForUser = (
   userPhone?: string,
   userRole?: string
@@ -323,16 +320,21 @@ export const getAllowedModulesForUser = (
     return ADMIN_MODULES_LIST.map((m) => m.id);
   }
 
-  const admins = getStoredManagedAdmins();
-  const matchedAdmin = admins.find(
-    (a) => a.phone === userPhone || a.phone.replace(/[^0-9]/g, '') === (userPhone || '').replace(/[^0-9]/g, '')
-  );
-
-  if (matchedAdmin && Array.isArray(matchedAdmin.allowedModules) && matchedAdmin.allowedModules.length > 0) {
-    return matchedAdmin.allowedModules;
+  const cleanPhone = (userPhone || '').trim();
+  const permissionsMap = getStoredPermissionsMap();
+  if (cleanPhone && permissionsMap[cleanPhone]) {
+    return permissionsMap[cleanPhone];
   }
 
-  // Default fallback for any newly assigned Admin
+  const admins = getStoredManagedAdmins();
+  const matched = admins.find(
+    (a) => a.phone === userPhone || a.phone.replace(/[^0-9]/g, '') === cleanPhone.replace(/[^0-9]/g, '')
+  );
+
+  if (matched && Array.isArray(matched.allowedModules) && matched.allowedModules.length > 0) {
+    return matched.allowedModules;
+  }
+
   return [
     'overview',
     'reviews',
@@ -347,19 +349,134 @@ export const getAllowedModulesForUser = (
 interface AdminManagementSectionProps {
   currentUser: UserProfileData;
   onAuditLog?: (action: string, details: string) => void;
+  users?: any[];
+  onRefreshUsers?: () => void;
 }
 
 export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
   currentUser,
-  onAuditLog
+  onAuditLog,
+  users: propUsers,
+  onRefreshUsers
 }) => {
-  const [admins, setAdmins] = useState<ManagedAdminUser[]>(() => getStoredManagedAdmins());
+  // Clean up any stale dummy storage
+  useEffect(() => {
+    if (typeof window !== 'undefined' && localStorage.getItem('dg_managed_admin_users_v1')) {
+      localStorage.removeItem('dg_managed_admin_users_v1');
+    }
+  }, []);
+
+  const [internalUsers, setInternalUsers] = useState<any[]>(() => {
+    if (propUsers && propUsers.length > 0) return propUsers;
+    if (typeof window !== 'undefined') {
+      const cached = localStorage.getItem('dg_users_cache');
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        } catch {}
+      }
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    if (propUsers && propUsers.length > 0) {
+      setInternalUsers(propUsers);
+    }
+  }, [propUsers]);
+
+  useEffect(() => {
+    if (internalUsers.length === 0) {
+      api.getAdminUsers()
+        .then((res) => {
+          if (res && Array.isArray(res) && res.length > 0) {
+            setInternalUsers(res);
+            localStorage.setItem('dg_users_cache', JSON.stringify(res));
+          }
+        })
+        .catch(() => {});
+    }
+  }, []);
+
+  const [permissionsMap, setPermissionsMap] = useState<Record<string, AdminModuleId[]>>(() => getStoredPermissionsMap());
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState<'ALL' | 'ADMIN' | 'SUPER_ADMIN'>('ALL');
   const [selectedAdmin, setSelectedAdmin] = useState<ManagedAdminUser | null>(null);
   const [isEditingPermissions, setIsEditingPermissions] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [addMode, setAddMode] = useState<'SELECT_EXISTING' | 'CREATE_NEW'>('SELECT_EXISTING');
+  const [selectedCitizenId, setSelectedCitizenId] = useState<string>('');
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
+
+  // Derived real admins from the database/user directory
+  const admins: ManagedAdminUser[] = useMemo(() => {
+    const adminUserRecords = internalUsers.filter((u) => {
+      const roles = Array.isArray(u.roles) ? u.roles.map(String) : [];
+      return (
+        roles.some((r: string) => r.includes('ADMIN') || r.includes('SUPER_ADMIN')) ||
+        u.role === 'ADMIN' ||
+        u.role === 'SUPER_ADMIN'
+      );
+    });
+
+    if (adminUserRecords.length === 0) {
+      return getStoredManagedAdmins();
+    }
+
+    return adminUserRecords.map((u) => {
+      const roles = Array.isArray(u.roles) ? u.roles.map(String) : [];
+      const isSuper =
+        roles.some((r: string) => r.includes('SUPER_ADMIN')) ||
+        u.role === 'SUPER_ADMIN';
+
+      const userRole: 'ADMIN' | 'SUPER_ADMIN' = isSuper ? 'SUPER_ADMIN' : 'ADMIN';
+      const cleanPhone = (u.phone || '').trim();
+
+      const userAllowedModules = isSuper
+        ? ADMIN_MODULES_LIST.map((m) => m.id)
+        : permissionsMap[cleanPhone] || [
+            'overview',
+            'reviews',
+            'notices',
+            'water',
+            'schemes',
+            'complaints',
+            'contacts',
+            'projects',
+            'broadcast'
+          ];
+
+      return {
+        id: String(u.id),
+        fullName: u.fullName || (isSuper ? 'Super Admin' : 'प्रशासक'),
+        phone: u.phone,
+        email: u.email || undefined,
+        role: userRole,
+        wardOrDept: u.wardNumber || u.occupation || 'ग्रामपंचायत प्रशासन',
+        isActive: u.isActive !== false,
+        isRoot: Boolean(u.isRoot),
+        allowedModules: userAllowedModules,
+        lastLogin: u.phone === currentUser?.phone ? 'आत्ताच सक्रिय (चालू सत्र)' : 'सक्रिय',
+        createdDate: u.createdAt
+          ? new Date(u.createdAt).toLocaleDateString('mr-IN', { day: '2-digit', month: 'long', year: 'numeric' })
+          : 'नोंदणीकृत',
+        notes: u.occupation || undefined
+      };
+    });
+  }, [internalUsers, permissionsMap, currentUser]);
+
+  // Citizens available for promotion (excluding existing admins)
+  const availableCitizens = useMemo(() => {
+    return internalUsers.filter((u) => {
+      const roles = Array.isArray(u.roles) ? u.roles.map(String) : [];
+      const isAlreadyAdmin =
+        roles.some((r: string) => r.includes('ADMIN') || r.includes('SUPER_ADMIN')) ||
+        u.role === 'ADMIN' ||
+        u.role === 'SUPER_ADMIN';
+      return !isAlreadyAdmin;
+    });
+  }, [internalUsers]);
 
   // New Admin Form State
   const [newAdminForm, setNewAdminForm] = useState({
@@ -384,15 +501,6 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
   const showFeedback = (msg: string) => {
     setFeedbackMsg(msg);
     setTimeout(() => setFeedbackMsg(null), 4000);
-  };
-
-  // Sync with localStorage
-  const updateAdminsList = (updated: ManagedAdminUser[], logAction?: string, logDetails?: string) => {
-    setAdmins(updated);
-    saveStoredManagedAdmins(updated);
-    if (logAction && onAuditLog) {
-      onAuditLog(logAction, logDetails || '');
-    }
   };
 
   // Open Permission Editor for an admin
@@ -429,7 +537,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
     } else if (preset === 'emergency') {
       targetModules = ['overview', 'broadcast', 'notices', 'water', 'contacts'];
     } else if (preset === 'clear') {
-      targetModules = ['overview']; // Always keep overview at least
+      targetModules = ['overview'];
     }
 
     setSelectedAdmin({
@@ -442,80 +550,155 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
   const handleSavePermissions = () => {
     if (!selectedAdmin) return;
 
-    const updated = admins.map((a) =>
-      a.id === selectedAdmin.id ? { ...selectedAdmin } : a
-    );
-    updateAdminsList(
-      updated,
-      'अधिकार बदलले ',
-      `${selectedAdmin.fullName} (${selectedAdmin.phone}) यांचे पृष्ठ अधिकार (${selectedAdmin.allowedModules.length} मॉड्यूल्स) अद्ययावत केले.`
-    );
+    const cleanPhone = (selectedAdmin.phone || '').trim();
+    const newMap = {
+      ...permissionsMap,
+      [cleanPhone]: selectedAdmin.allowedModules
+    };
+    setPermissionsMap(newMap);
+    saveStoredPermissionsMap(newMap);
+
+    if (onAuditLog) {
+      onAuditLog(
+        'अधिकार बदलले',
+        `${currentUser?.fullName || 'सुपर अॅडमिन'} यांनी ${selectedAdmin.fullName} (${selectedAdmin.phone}) यांचे पृष्ठ अधिकार (${selectedAdmin.allowedModules.length} मॉड्यूल्स) अद्ययावत केले.`
+      );
+    }
     setIsEditingPermissions(false);
     showFeedback(`✅ ${selectedAdmin.fullName} यांचे प्रवेश अधिकार यशस्वीरीत्या जतन केले!`);
   };
 
   // Toggle Active/Inactive
-  const handleToggleStatus = (admin: ManagedAdminUser) => {
-    if (admin.isRoot || admin.id === 'adm-super-1') {
-      alert('मुख्य सुपर अॅडमिन खाते निष्क्रिय केले जाऊ शकत नाही.');
+  const handleToggleStatus = async (admin: ManagedAdminUser) => {
+    if (admin.phone === currentUser?.phone) {
+      alert('चालू सत्रात स्वतःचे खाते निष्क्रिय करता येत नाही.');
       return;
     }
     const updatedStatus = !admin.isActive;
-    const updated = admins.map((a) =>
-      a.id === admin.id ? { ...a, isActive: updatedStatus } : a
+    try {
+      await api.updateAdminUser(admin.id, { isActive: updatedStatus });
+    } catch {}
+
+    setInternalUsers((prev) =>
+      prev.map((u) => (String(u.id) === admin.id ? { ...u, isActive: updatedStatus } : u))
     );
-    updateAdminsList(
-      updated,
-      `खाते ${updatedStatus ? 'सक्रिय' : 'निष्क्रिय'} केले`,
-      `${admin.fullName} यांचे अॅडमिन खाते ${updatedStatus ? 'सक्रिय ' : 'निष्क्रिय '} केले.`
-    );
+    if (onAuditLog) {
+      onAuditLog(
+        `खाते ${updatedStatus ? 'सक्रिय' : 'निष्क्रिय'} केले`,
+        `${currentUser?.fullName || 'सुपर अॅडमिन'} यांनी ${admin.fullName} यांचे अॅडमिन खाते ${updatedStatus ? 'सक्रिय' : 'निष्क्रिय'} केले.`
+      );
+    }
     showFeedback(`खाते ${updatedStatus ? 'सक्रिय' : 'निष्क्रिय'} करण्यात आले.`);
+    onRefreshUsers?.();
   };
 
   // Toggle Role (ADMIN ⇄ SUPER_ADMIN)
-  const handleToggleRole = (admin: ManagedAdminUser) => {
-    if (admin.isRoot || admin.id === 'adm-super-1') {
-      alert('मूळ सुपर अॅडमिनची भूमिका बदलता येत नाही.');
+  const handleToggleRole = async (admin: ManagedAdminUser) => {
+    if (admin.phone === currentUser?.phone) {
+      alert('चालू सत्रात स्वतःची भूमिका बदलता येत नाही.');
       return;
     }
     const newRole: 'ADMIN' | 'SUPER_ADMIN' = admin.role === 'ADMIN' ? 'SUPER_ADMIN' : 'ADMIN';
-    const updatedModules =
-      newRole === 'SUPER_ADMIN'
-        ? ADMIN_MODULES_LIST.map((m) => m.id)
-        : admin.allowedModules;
+    try {
+      await api.updateUserRole(admin.id, newRole);
+    } catch {}
 
-    const updated = admins.map((a) =>
-      a.id === admin.id ? { ...a, role: newRole, allowedModules: updatedModules } : a
+    setInternalUsers((prev) =>
+      prev.map((u) => (String(u.id) === admin.id ? { ...u, role: newRole, roles: [newRole] } : u))
     );
-    updateAdminsList(
-      updated,
-      'अॅडमिन भूमिका बदलली',
-      `${admin.fullName} यांची भूमिका ${newRole} करण्यात आली.`
-    );
+    if (onAuditLog) {
+      onAuditLog(
+        'अॅडमिन भूमिका बदलली',
+        `${currentUser?.fullName || 'सुपर अॅडमिन'} यांनी ${admin.fullName} यांची भूमिका ${newRole} केली.`
+      );
+    }
     showFeedback(`भूमिका ${newRole === 'SUPER_ADMIN' ? 'सुपर अॅडमिन' : 'नियमित अॅडमिन'} मध्ये बदलली.`);
+    onRefreshUsers?.();
   };
 
-  // Delete Admin
-  const handleDeleteAdmin = (admin: ManagedAdminUser) => {
-    if (admin.isRoot || admin.id === 'adm-super-1') {
-      alert('मुख्य सुपर अॅडमिन काढता येत नाही.');
+  // Delete Admin (Demote to CITIZEN)
+  const handleDeleteAdmin = async (admin: ManagedAdminUser) => {
+    if (admin.phone === currentUser?.phone) {
+      alert('चालू सत्रात स्वतःचे खाते काढता येत नाही.');
       return;
     }
-    if (!window.confirm(`तुम्हाला खात्री आहे की "${admin.fullName}" यांचे अॅडमिन अधिकार पूर्णपणे काढायचे आहेत?`)) {
+    if (!window.confirm(`तुम्हाला खात्री आहे की "${admin.fullName}" यांचे अॅडमिन अधिकार काढायचे आहेत? (हे खाते नियमित नागरिक स्तरावर बदलले जाईल)`)) {
       return;
     }
-    const updated = admins.filter((a) => a.id !== admin.id);
-    updateAdminsList(
-      updated,
-      'अॅडमिन हटवला',
-      `${admin.fullName} (${admin.phone}) यांचे अॅडमिन अधिकार प्रणालीतून काढले.`
+    try {
+      await api.updateUserRole(admin.id, 'CITIZEN');
+    } catch {}
+
+    setInternalUsers((prev) =>
+      prev.map((u) => (String(u.id) === admin.id ? { ...u, role: 'CITIZEN', roles: ['CITIZEN'] } : u))
     );
-    showFeedback(`🗑️ ${admin.fullName} यांचे अॅडमिन खाते काढण्यात आले.`);
+
+    const cleanPhone = (admin.phone || '').trim();
+    if (permissionsMap[cleanPhone]) {
+      const copy = { ...permissionsMap };
+      delete copy[cleanPhone];
+      setPermissionsMap(copy);
+      saveStoredPermissionsMap(copy);
+    }
+
+    if (onAuditLog) {
+      onAuditLog(
+        'अॅडमिन अधिकार काढले',
+        `${currentUser?.fullName || 'सुपर अॅडमिन'} यांनी ${admin.fullName} (${admin.phone}) यांचे अॅडमिन अधिकार काढले.`
+      );
+    }
+    showFeedback(`🗑️ ${admin.fullName} यांचे अॅडमिन अधिकार काढण्यात आले.`);
+    onRefreshUsers?.();
   };
 
-  // Add New Admin Submit
-  const handleCreateAdminSubmit = (e: React.FormEvent) => {
+  // Add Admin Submit (Promote citizen OR Create new)
+  const handleCreateAdminSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (addMode === 'SELECT_EXISTING') {
+      const citizen = availableCitizens.find((c) => String(c.id) === selectedCitizenId);
+      if (!citizen) {
+        alert('कृपया नोंदणीकृत नागरिकांमधून एकाची निवड करा.');
+        return;
+      }
+
+      try {
+        await api.updateUserRole(citizen.id, newAdminForm.role);
+      } catch {}
+
+      const cleanPhone = (citizen.phone || '').trim();
+      const updatedModules =
+        newAdminForm.role === 'SUPER_ADMIN'
+          ? ADMIN_MODULES_LIST.map((m) => m.id)
+          : newAdminForm.selectedModules;
+
+      const newMap = { ...permissionsMap, [cleanPhone]: updatedModules };
+      setPermissionsMap(newMap);
+      saveStoredPermissionsMap(newMap);
+
+      setInternalUsers((prev) =>
+        prev.map((u) =>
+          String(u.id) === String(citizen.id)
+            ? { ...u, role: newAdminForm.role, roles: [newAdminForm.role] }
+            : u
+        )
+      );
+
+      if (onAuditLog) {
+        onAuditLog(
+          'नागरिकाला अॅडमिन बनवले',
+          `${currentUser?.fullName || 'सुपर अॅडमिन'} यांनी ${citizen.fullName} (${citizen.phone}) यांना ${newAdminForm.role} अधिकार बहाल केले.`
+        );
+      }
+
+      setIsAddModalOpen(false);
+      setSelectedCitizenId('');
+      showFeedback(`🎉 "${citizen.fullName}" यांना यशस्वीरीत्या प्रशासक अधिकार देण्यात आले!`);
+      onRefreshUsers?.();
+      return;
+    }
+
+    // CREATE_NEW Mode
     if (!newAdminForm.fullName.trim() || !newAdminForm.phone.trim()) {
       alert('कृपया नाव व मोबाईल नंबर प्रविष्ट करा.');
       return;
@@ -527,30 +710,53 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
       return;
     }
 
-    const newAdmin: ManagedAdminUser = {
+    let createdUser: any = null;
+    try {
+      const res = await api.createAdminUser({
+        fullName: newAdminForm.fullName.trim(),
+        phone: cleanPhone,
+        email: newAdminForm.email.trim() || undefined,
+        role: newAdminForm.role,
+        wardNumber: newAdminForm.wardOrDept.trim() || 'वॉर्ड २ (गावठाण)',
+        occupation: 'प्रशासकीय अधिकारी',
+        isActive: true,
+        isVerified: true
+      });
+      createdUser = res?.data || res;
+    } catch {}
+
+    const updatedModules: AdminModuleId[] =
+      newAdminForm.role === 'SUPER_ADMIN'
+        ? ADMIN_MODULES_LIST.map((m) => m.id)
+        : newAdminForm.selectedModules.length > 0
+          ? newAdminForm.selectedModules
+          : ['overview', 'schemes', 'complaints', 'contacts'];
+
+    const newMap = { ...permissionsMap, [cleanPhone]: updatedModules };
+    setPermissionsMap(newMap);
+    saveStoredPermissionsMap(newMap);
+
+    const newUserObj = createdUser || {
       id: `adm-${Date.now()}`,
       fullName: newAdminForm.fullName.trim(),
       phone: cleanPhone,
       email: newAdminForm.email.trim() || undefined,
       role: newAdminForm.role,
-      wardOrDept: newAdminForm.wardOrDept.trim() || 'ग्रामपंचायत प्रशासन',
+      roles: [newAdminForm.role],
+      wardNumber: newAdminForm.wardOrDept.trim() || 'ग्रामपंचायत प्रशासन',
+      occupation: 'प्रशासकीय अधिकारी',
       isActive: true,
-      allowedModules:
-        newAdminForm.role === 'SUPER_ADMIN'
-          ? ADMIN_MODULES_LIST.map((m) => m.id)
-          : newAdminForm.selectedModules.length > 0
-            ? newAdminForm.selectedModules
-            : ['overview', 'schemes', 'complaints', 'contacts'],
-      createdDate: new Date().toLocaleDateString('mr-IN', { day: '2-digit', month: 'long', year: 'numeric' }),
-      notes: newAdminForm.notes.trim() || undefined
+      createdAt: new Date().toISOString()
     };
 
-    const updated = [...admins, newAdmin];
-    updateAdminsList(
-      updated,
-      'नवीन अॅडमिन जोडला',
-      `${newAdmin.fullName} (${newAdmin.phone}) यांना ${newAdmin.role} म्हणून नियुक्त केले.`
-    );
+    setInternalUsers((prev) => [newUserObj, ...prev]);
+
+    if (onAuditLog) {
+      onAuditLog(
+        'नवीन अॅडमिन जोडला',
+        `${currentUser?.fullName || 'सुपर अॅडमिन'} यांनी ${newUserObj.fullName} (${newUserObj.phone}) यांना ${newUserObj.role} म्हणून नियुक्त केले.`
+      );
+    }
 
     setIsAddModalOpen(false);
     setNewAdminForm({
@@ -563,7 +769,8 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
       preset: 'services',
       selectedModules: ['overview', 'reviews', 'notices', 'water', 'schemes', 'complaints', 'contacts']
     });
-    showFeedback(`🎉 नवीन व्यवस्थापक "${newAdmin.fullName}" यशस्वीरीत्या जोडले गेले!`);
+    showFeedback(`🎉 नवीन व्यवस्थापक "${newUserObj.fullName}" यशस्वीरीत्या जोडले गेले!`);
+    onRefreshUsers?.();
   };
 
   // Filtered List
@@ -593,19 +800,22 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
               Super Admin
             </span>
             <span className="text-xs text-[#707974] font-medium">
-              व्यवस्थापक व पृष्ठ अधिकार • {currentUser.fullName || 'Chief Super Admin'}
+              व्यवस्थापक व पृष्ठ अधिकार • {currentUser?.fullName || 'प्रशासक'} {currentUser?.phone ? `(${currentUser.phone})` : ''}
             </span>
           </div>
           <h2 className="font-heading font-black text-xl sm:text-2xl text-[#1d1b16] mt-1">
             प्रशासक व्यवस्थापन 
           </h2>
           <p className="text-xs text-[#55605a] mt-1">
-            इतर अॅडमिन्सची खाती आणि त्यांना उपलब्ध असलेली पाने नियंत्रित करा.
+            नोंदणीकृत प्रशासकांची खाती, भूमिका व त्यांना उपलब्ध असलेले पृष्ठ अधिकार नियंत्रित करा.
           </p>
         </div>
 
         <button
-          onClick={() => setIsAddModalOpen(true)}
+          onClick={() => {
+            setSelectedCitizenId('');
+            setIsAddModalOpen(true);
+          }}
           className="px-4 py-2.5 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer shrink-0"
         >
           <LucideIcon name="person_add" className="text-[18px]" />
@@ -613,130 +823,159 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
         </button>
       </div>
 
-      {/* Feedback Toast */}
+      {/* Real-time Feedback Banner */}
       {feedbackMsg && (
-        <div className="bg-[#a7f3d0] border border-[#006a4e] text-[#002117] p-3 rounded-xl text-xs font-bold flex items-center justify-between shadow-xs transition-all animate-fade-in">
-          <div className="flex items-center gap-2">
-            <LucideIcon name="check_circle" className="text-[18px] text-[#006a4e]" />
-            <span>{feedbackMsg}</span>
-          </div>
-          <button onClick={() => setFeedbackMsg(null)} className="text-[#002117]/60 hover:text-[#002117] cursor-pointer">
-            ✕
-          </button>
+        <div className="p-3.5 rounded-2xl bg-[#ecfdf5] border border-[#a7f3d0] text-[#065f46] text-xs font-bold flex items-center gap-2 shadow-xs animate-fade-in">
+          <LucideIcon name="check_circle" className="text-[18px] text-[#059669]" />
+          <span>{feedbackMsg}</span>
         </div>
       )}
 
-      {/* KPI Stats Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#166534]/10 text-[#166534] flex items-center justify-center shrink-0">
-            <LucideIcon name="groups" className="text-[20px]" />
+      {/* Stats Cards Row */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+        <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3.5">
+          <div className="w-11 h-11 rounded-xl bg-[#e8f1ec] text-[#006a4e] flex items-center justify-center shrink-0">
+            <LucideIcon name="manage_accounts" className="text-[22px]" />
           </div>
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#707974] block">एकूण अॅडमिन</span>
-            <span className="font-heading font-black text-xl text-[#166534]">{totalAdminsCount}</span>
+            <div className="text-[11px] font-bold text-[#707974] uppercase tracking-wider">
+              एकूण व्यवस्थापक
+            </div>
+            <div className="font-heading font-black text-xl text-[#1d1b16]">
+              {totalAdminsCount}
+            </div>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#ef9f27]/15 text-[#c2410c] flex items-center justify-center shrink-0">
-            <LucideIcon name="shield_person" className="text-[20px]" />
+        <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3.5">
+          <div className="w-11 h-11 rounded-xl bg-[#fff8e1] text-[#7c4d00] flex items-center justify-center shrink-0">
+            <LucideIcon name="military_tech" className="text-[22px]" />
           </div>
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#707974] block">सुपर अॅडमिन</span>
-            <span className="font-heading font-black text-xl text-[#c2410c]">{superAdminsCount}</span>
+            <div className="text-[11px] font-bold text-[#707974] uppercase tracking-wider">
+              सुपर अॅडमिन
+            </div>
+            <div className="font-heading font-black text-xl text-[#1d1b16]">
+              {superAdminsCount}
+            </div>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#e8f1ec] text-[#006a4e] flex items-center justify-center shrink-0">
-            <LucideIcon name="check_circle" className="text-[20px]" />
+        <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3.5">
+          <div className="w-11 h-11 rounded-xl bg-[#e0f2fe] text-[#0369a1] flex items-center justify-center shrink-0">
+            <LucideIcon name="verified_user" className="text-[22px]" />
           </div>
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#707974] block">सक्रिय खाती</span>
-            <span className="font-heading font-black text-xl text-[#006a4e]">{activeAdminsCount}</span>
-          </div>
-        </div>
-
-        <div className="bg-white p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#002873]/10 text-[#002873] flex items-center justify-center shrink-0">
-            <LucideIcon name="grid_view" className="text-[20px]" />
-          </div>
-          <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#707974] block">एकूण मॉड्यूल्स</span>
-            <span className="font-heading font-black text-xl text-[#002873]">{ADMIN_MODULES_LIST.length}</span>
+            <div className="text-[11px] font-bold text-[#707974] uppercase tracking-wider">
+              सक्रिय खाती
+            </div>
+            <div className="font-heading font-black text-xl text-[#1d1b16]">
+              {activeAdminsCount}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Admin Users Filter Toolbar */}
-      <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-        {/* Search */}
+      {/* Filter & Search Bar */}
+      <div className="bg-white p-3.5 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        {/* Search Input */}
         <div className="relative flex-1">
-          <LucideIcon name="search" className=" absolute left-3 top-1/2 -translate-y-1/2 text-[#707974] text-[18px]" />
+          <LucideIcon
+            name="search"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-[#707974]"
+          />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="नाव, मोबाईल क्र., किंवा विभाग शोधा..."
-            className="w-full pl-9 pr-3 py-2 bg-[#fcfbf9] rounded-xl text-xs text-[#1d1b16] border border-[#e8e2d9] focus:border-[#166534] outline-none"
+            placeholder="नाव, मोबाईल, विभाग किंवा ईमेलने शोधा..."
+            className="w-full pl-9 pr-4 py-2 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#707974] hover:text-[#1d1b16]"
+            >
+              ✕
+            </button>
+          )}
         </div>
 
-        {/* Role Filters */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-          {[
-            { id: 'ALL', label: `सर्व (${admins.length})` },
-            { id: 'SUPER_ADMIN', label: `सुपर अॅडमिन (${superAdminsCount})` },
-            { id: 'ADMIN', label: `नियमित अॅडमिन (${admins.length - superAdminsCount})` }
-          ].map((f) => (
-            <button
-              key={f.id}
-              onClick={() => setRoleFilter(f.id as any)}
-              className={`px-3 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
-                roleFilter === f.id
-                  ? 'bg-[#166534] text-white shadow-xs'
-                  : 'bg-[#f5ede3] text-[#55605a] hover:bg-[#e8ded3]'
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
+        {/* Role Filter Tabs */}
+        <div className="flex items-center gap-1 bg-[#f3ede4] p-1 rounded-xl shrink-0">
+          <button
+            onClick={() => setRoleFilter('ALL')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              roleFilter === 'ALL'
+                ? 'bg-white text-[#166534] shadow-xs'
+                : 'text-[#55605a] hover:text-[#1d1b16]'
+            }`}
+          >
+            सर्व ({totalAdminsCount})
+          </button>
+          <button
+            onClick={() => setRoleFilter('SUPER_ADMIN')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              roleFilter === 'SUPER_ADMIN'
+                ? 'bg-white text-[#166534] shadow-xs'
+                : 'text-[#55605a] hover:text-[#1d1b16]'
+            }`}
+          >
+            सुपर अॅडमिन ({superAdminsCount})
+          </button>
+          <button
+            onClick={() => setRoleFilter('ADMIN')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              roleFilter === 'ADMIN'
+                ? 'bg-white text-[#166534] shadow-xs'
+                : 'text-[#55605a] hover:text-[#1d1b16]'
+            }`}
+          >
+            नियमित ({totalAdminsCount - superAdminsCount})
+          </button>
         </div>
       </div>
 
-      {/* Admin Cards Grid (Responsive Mobile + Desktop) */}
+      {/* Admin Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {filteredAdmins.length === 0 && (
+          <div className="col-span-full bg-white p-8 rounded-2xl border border-[#e8e2d9] text-center text-[#707974] text-xs">
+            कोणतेही व्यवस्थापक सापडले नाहीत.
+          </div>
+        )}
+
         {filteredAdmins.map((admin) => {
           const isSuper = admin.role === 'SUPER_ADMIN';
-          const allowedCount = isSuper ? ADMIN_MODULES_LIST.length : admin.allowedModules.length;
+          const allowedCount = admin.allowedModules.length;
 
           return (
             <div
               key={admin.id}
-              className={`bg-white rounded-2xl p-4 sm:p-5 border transition-all shadow-xs flex flex-col justify-between gap-4 ${
-                !admin.isActive
-                  ? 'opacity-65 border-[#e8e2d9] bg-[#faf8f5]'
-                  : isSuper
-                    ? 'border-[#ef9f27]/40 ring-1 ring-[#ef9f27]/20'
-                    : 'border-[#e8e2d9] hover:border-[#166534]/40'
+              className={`bg-white rounded-2xl border p-4 sm:p-5 flex flex-col justify-between transition-all hover:shadow-md ${
+                isSuper
+                  ? 'border-[#ffecb3] bg-gradient-to-br from-white via-white to-[#fffdf5]'
+                  : 'border-[#e8e2d9]'
               }`}
             >
               <div>
                 {/* Header Row */}
-                <div className="flex items-start justify-between gap-2">
+                <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3 min-w-0">
                     <div
-                      className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 font-black text-sm ${
+                      className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shrink-0 relative ${
                         isSuper
-                          ? 'bg-gradient-to-br from-[#ef9f27] to-[#ba7200] text-white shadow-sm'
-                          : 'bg-[#166534] text-[#a7f3d0]'
+                          ? 'bg-[#166534] text-white shadow-xs'
+                          : 'bg-[#e8f1ec] text-[#006a4e]'
                       }`}
                     >
-                      {isSuper ? (
-                        <LucideIcon name="shield_person" className="text-[22px]" />
-                      ) : (
-                        admin.fullName.charAt(0) || 'A'
+                      {admin.fullName.charAt(0) || 'अ'}
+                      {admin.isRoot && (
+                        <span
+                          title="मूळ सुपर अॅडमिन"
+                          className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#eab308] text-white flex items-center justify-center text-[10px]"
+                        >
+                          ★
+                        </span>
                       )}
                     </div>
                     <div className="min-w-0">
@@ -821,7 +1060,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
               </div>
 
               {/* Action Buttons Toolbar */}
-              <div className="pt-3 border-t border-[#f0eee8] flex items-center justify-between gap-2 flex-wrap">
+              <div className="pt-3 border-t border-[#f0eee8] flex items-center justify-between gap-2 flex-wrap mt-3">
                 <div className="flex items-center gap-1.5 flex-wrap">
                   {/* Configure Permissions Button */}
                   <button
@@ -860,11 +1099,11 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                     <LucideIcon name={admin.isActive ? 'block' : 'check_circle'} className=" text-[17px]" />
                   </button>
 
-                  {/* Delete Admin */}
+                  {/* Delete / Demote Admin */}
                   <button
                     type="button"
                     onClick={() => handleDeleteAdmin(admin)}
-                    title="खाते काढून टाका"
+                    title="अॅडमिन अधिकार काढून टाका"
                     className="p-1.5 rounded-xl text-[#ba1a1a] hover:bg-[#fef3c7]/40 transition-all cursor-pointer"
                   >
                     <LucideIcon name="delete" className="text-[17px]" />
@@ -976,7 +1215,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                         <input
                           type="checkbox"
                           checked={isChecked}
-                          onChange={() => {}} // handled by parent label
+                          onChange={() => {}}
                           className="w-4 h-4 rounded-md accent-[#166534] cursor-pointer"
                         />
                       </div>
@@ -1049,86 +1288,131 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
               </button>
             </div>
 
+            {/* Mode Toggle */}
+            <div className="flex items-center gap-2 p-1 bg-[#f0eee8] rounded-xl">
+              <button
+                type="button"
+                onClick={() => setAddMode('SELECT_EXISTING')}
+                className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  addMode === 'SELECT_EXISTING'
+                    ? 'bg-white text-[#166534] shadow-xs'
+                    : 'text-[#55605a] hover:text-[#1d1b16]'
+                }`}
+              >
+                गावकऱ्यांमधून निवडा ({availableCitizens.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setAddMode('CREATE_NEW')}
+                className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  addMode === 'CREATE_NEW'
+                    ? 'bg-white text-[#166534] shadow-xs'
+                    : 'text-[#55605a] hover:text-[#1d1b16]'
+                }`}
+              >
+                नवीन ऍडमिन थेट जोडा
+              </button>
+            </div>
+
             {/* Form */}
             <form onSubmit={handleCreateAdminSubmit} className="flex flex-col gap-3">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-bold text-[#166534]">पूर्ण नाव *</label>
-                  <input
-                    type="text"
-                    required
-                    value={newAdminForm.fullName}
-                    onChange={(e) => setNewAdminForm({ ...newAdminForm, fullName: e.target.value })}
-                    placeholder="उदा. राहुल देशमुख"
-                    className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none"
-                  />
+              {addMode === 'SELECT_EXISTING' ? (
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[11px] font-bold text-[#166534]">
+                    नोंदणीकृत नागरिक निवडा *
+                  </label>
+                  {availableCitizens.length === 0 ? (
+                    <p className="text-xs text-amber-800 bg-amber-50 p-3 rounded-xl border border-amber-200">
+                      सध्या सर्व नागरिक आधीच प्रशासक आहेत किंवा नागरिक यादी उपलब्ध नाही. &apos;नवीन ऍडमिन थेट जोडा&apos; पर्याय वापरा.
+                    </p>
+                  ) : (
+                    <select
+                      required
+                      value={selectedCitizenId}
+                      onChange={(e) => setSelectedCitizenId(e.target.value)}
+                      className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs font-bold text-[#1d1b16] border border-[#e8e2d9] focus:border-[#166534] outline-none"
+                    >
+                      <option value="">-- नागरिक निवडा --</option>
+                      {availableCitizens.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.fullName} - {c.phone} ({c.wardNumber || c.occupation || 'गावकरी'})
+                        </option>
+                      ))}
+                    </select>
+                  )}
                 </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[11px] font-bold text-[#166534]">पूर्ण नाव *</label>
+                      <input
+                        type="text"
+                        required
+                        value={newAdminForm.fullName}
+                        onChange={(e) => setNewAdminForm({ ...newAdminForm, fullName: e.target.value })}
+                        placeholder="उदा. राहुल देशमुख"
+                        className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none"
+                      />
+                    </div>
 
-                <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-bold text-[#166534]">मोबाईल नंबर *</label>
-                  <input
-                    type="tel"
-                    required
-                    value={newAdminForm.phone}
-                    onChange={(e) => setNewAdminForm({ ...newAdminForm, phone: e.target.value })}
-                    placeholder="उदा. 9823456789"
-                    className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none"
-                  />
-                </div>
-              </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[11px] font-bold text-[#166534]">मोबाईल नंबर *</label>
+                      <input
+                        type="tel"
+                        required
+                        value={newAdminForm.phone}
+                        onChange={(e) => setNewAdminForm({ ...newAdminForm, phone: e.target.value })}
+                        placeholder="उदा. 9823456789"
+                        className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none"
+                      />
+                    </div>
+                  </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-bold text-[#166534]">ईमेल (ऐच्छिक)</label>
-                  <input
-                    type="email"
-                    value={newAdminForm.email}
-                    onChange={(e) => setNewAdminForm({ ...newAdminForm, email: e.target.value })}
-                    placeholder="उदा. rahul@asgaon.in"
-                    className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none"
-                  />
-                </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[11px] font-bold text-[#166534]">ईमेल (ऐच्छिक)</label>
+                      <input
+                        type="email"
+                        value={newAdminForm.email}
+                        onChange={(e) => setNewAdminForm({ ...newAdminForm, email: e.target.value })}
+                        placeholder="उदा. rahul@asgaon.in"
+                        className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none"
+                      />
+                    </div>
 
-                <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-bold text-[#166534]">भूमिका</label>
-                  <select
-                    value={newAdminForm.role}
-                    onChange={(e) => setNewAdminForm({ ...newAdminForm, role: e.target.value as any })}
-                    className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs font-bold text-[#166534] border border-[#e8e2d9] focus:border-[#166534] outline-none"
-                  >
-                    <option value="ADMIN">नियमित अॅडमिन </option>
-                    <option value="SUPER_ADMIN">सुपर अॅडमिन </option>
-                  </select>
-                </div>
-              </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[11px] font-bold text-[#166534]">विभाग / जबाबदारी</label>
+                      <input
+                        type="text"
+                        value={newAdminForm.wardOrDept}
+                        onChange={(e) => setNewAdminForm({ ...newAdminForm, wardOrDept: e.target.value })}
+                        placeholder="उदा. पाणी पुरवठा / नागरी सेवा"
+                        className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
 
+              {/* Role Select */}
               <div className="flex flex-col gap-1">
-                <label className="text-[11px] font-bold text-[#166534]">विभाग / जबाबदारी</label>
-                <input
-                  type="text"
-                  value={newAdminForm.wardOrDept}
-                  onChange={(e) => setNewAdminForm({ ...newAdminForm, wardOrDept: e.target.value })}
-                  placeholder="उदा. पाणी पुरवठा / आरोग्य समिती"
-                  className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="text-[11px] font-bold text-[#166534]">शेरा (ऐच्छिक)</label>
-                <textarea
-                  rows={2}
-                  value={newAdminForm.notes}
-                  onChange={(e) => setNewAdminForm({ ...newAdminForm, notes: e.target.value })}
-                  placeholder="काही नोंद असल्यास..."
-                  className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs border border-[#e8e2d9] focus:border-[#166534] outline-none resize-none"
-                />
+                <label className="text-[11px] font-bold text-[#166534]">भूमिका निवडा *</label>
+                <select
+                  value={newAdminForm.role}
+                  onChange={(e) => setNewAdminForm({ ...newAdminForm, role: e.target.value as any })}
+                  className="p-2.5 bg-[#fcfbf9] rounded-xl text-xs font-bold text-[#166534] border border-[#e8e2d9] focus:border-[#166534] outline-none"
+                >
+                  <option value="ADMIN">नियमित अॅडमिन (विशिष्ट पृष्ठ अधिकार)</option>
+                  <option value="SUPER_ADMIN">सुपर अॅडमिन (सर्व पानांचा पूर्ण अधिकार)</option>
+                </select>
               </div>
 
               {/* Initial Permissions Info */}
               <div className="p-3 rounded-xl bg-[#f0fdf4] border border-[#cadbcf] text-[11px] text-[#166534]">
                 {newAdminForm.role === 'SUPER_ADMIN'
-                  ? 'सुपर अॅडमिनला सर्व पानांचे अधिकार मिळतील.'
-                  : 'नियमित अॅडमिनचे अधिकार खाते तयार झाल्यानंतर कधीही बदलता येतील.'}
+                  ? '✨ सुपर अॅडमिनला मुख्य डॅशबोर्ड, पारदर्शकता, वॉर्ड व इतर सर्व पानांचे सर्वोच्च अधिकार मिळतील.'
+                  : 'ℹ️ नियमित अॅडमिनची नियुक्ती झाल्यावर आपण \'अधिकार बदला\' बटणावरून त्यांना नेमकी कोणती पाने दिसावीत ते ठरवू शकता.'}
               </div>
 
               {/* Submit Buttons */}
@@ -1142,10 +1426,11 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-98 cursor-pointer"
+                  disabled={addMode === 'SELECT_EXISTING' && !selectedCitizenId}
+                  className="px-5 py-2 rounded-xl bg-[#166534] hover:bg-[#052e16] disabled:bg-gray-400 text-white font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-98 cursor-pointer"
                 >
                   <LucideIcon name="check" className="text-[16px]" />
-                  <span>अॅडमिन जोडा</span>
+                  <span>{addMode === 'SELECT_EXISTING' ? 'अधिकार प्रदान करा' : 'अॅडमिन जोडा'}</span>
                 </button>
               </div>
             </form>

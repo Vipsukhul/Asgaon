@@ -62,9 +62,10 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
   useEffect(() => {
     const fetchBlogs = () => {
       api.getBlogs()
-        .then((res) => {
-          if (res && res.length > 0) {
-            const mapped: BlogPost[] = res.map((b: any) => ({
+        .then((res: any) => {
+          const list = res?.data || (Array.isArray(res) ? res : []);
+          if (list && list.length > 0) {
+            const mapped: BlogPost[] = list.map((b: any) => ({
               id: b.id,
               slug: b.slug,
               title: b.title,

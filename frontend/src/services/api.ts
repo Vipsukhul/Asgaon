@@ -301,6 +301,23 @@ export const api = {
   getAdminUsers: () => {
     return request<any[]>('/admin/users');
   },
+  createAdminUser: (userData: any) => {
+    return request<any>('/admin/users', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+    });
+  },
+  updateAdminUser: (userId: string, userData: any) => {
+    return request<any>(`/admin/users/${userId}`, {
+      method: 'PUT',
+      body: JSON.stringify(userData),
+    });
+  },
+  deleteAdminUser: (userId: string) => {
+    return request<any>(`/admin/users/${userId}`, {
+      method: 'DELETE',
+    });
+  },
   updateUserRole: (userId: string, role: string) => {
     return request<any>(`/admin/users/${userId}/role`, {
       method: 'PATCH',
@@ -392,4 +409,61 @@ export const api = {
     const json = await res.json();
     return json.data?.url || json.url;
   },
+
+  // --- Education / Shiksha ---
+  getSchools: () => request<any[]>('/education/schools'),
+  createSchool: (payload: any) => request<any>('/education/schools', { method: 'POST', body: JSON.stringify(payload) }),
+  updateSchool: (id: string, payload: any) => request<any>(`/education/schools/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
+  deleteSchool: (id: string) => request<any>(`/education/schools/${id}`, { method: 'DELETE' }),
+
+  getScholarships: () => request<any[]>('/education/scholarships'),
+  createScholarship: (payload: any) => request<any>('/education/scholarships', { method: 'POST', body: JSON.stringify(payload) }),
+  updateScholarship: (id: string, payload: any) => request<any>(`/education/scholarships/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
+  deleteScholarship: (id: string) => request<any>(`/education/scholarships/${id}`, { method: 'DELETE' }),
+
+  getStudyCenters: (type?: string) => request<any[]>(`/education/study-centers${type ? `?type=${type}` : ''}`),
+  createStudyCenter: (payload: any) => request<any>('/education/study-centers', { method: 'POST', body: JSON.stringify(payload) }),
+  updateStudyCenter: (id: string, payload: any) => request<any>(`/education/study-centers/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
+  deleteStudyCenter: (id: string) => request<any>(`/education/study-centers/${id}`, { method: 'DELETE' }),
+
+  // --- Transport ---
+  getBuses: () => request<any[]>('/transport/buses'),
+  createBus: (payload: any) => request<any>('/transport/buses', { method: 'POST', body: JSON.stringify(payload) }),
+  updateBus: (id: string, payload: any) => request<any>(`/transport/buses/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
+  deleteBus: (id: string) => request<any>(`/transport/buses/${id}`, { method: 'DELETE' }),
+
+  getAutos: () => request<any[]>('/transport/autos'),
+  createAuto: (payload: any) => request<any>('/transport/autos', { method: 'POST', body: JSON.stringify(payload) }),
+  updateAuto: (id: string, payload: any) => request<any>(`/transport/autos/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
+  deleteAuto: (id: string) => request<any>(`/transport/autos/${id}`, { method: 'DELETE' }),
+
+  getDepots: () => request<any[]>('/transport/depots'),
+
+  // --- Hero Banners ---
+  getHeroBanners: () => request<any[]>('/banners'),
+  getAllHeroBanners: () => request<any[]>('/banners/all'),
+  createHeroBanner: (payload: any) => request<any>('/banners', { method: 'POST', body: JSON.stringify(payload) }),
+  updateHeroBanner: (id: string, payload: any) => request<any>(`/banners/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
+  deleteHeroBanner: (id: string) => request<any>(`/banners/${id}`, { method: 'DELETE' }),
+
+  // --- Village Photo Gallery ---
+  getGalleryImages: (category?: string) => request<any[]>(`/gallery${category ? `?category=${category}` : ''}`),
+  createGalleryPhoto: (payload: any) => request<any>('/gallery', { method: 'POST', body: JSON.stringify(payload) }),
+  updateGalleryPhoto: (id: string, payload: any) => request<any>(`/gallery/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
+  deleteGalleryPhoto: (id: string) => request<any>(`/gallery/${id}`, { method: 'DELETE' }),
+
+  // --- Village Directory & Water Schedule ---
+  getWaterSchedules: () => request<any[]>('/directory/water-schedules'),
+  updateWaterSchedule: (id: string, payload: any) => request<any>(`/directory/water-schedules/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
+
+  getVillageContacts: (category?: string) => request<any[]>(`/directory/contacts${category ? `?category=${category}` : ''}`),
+  createVillageContact: (payload: any) => request<any>('/directory/contacts', { method: 'POST', body: JSON.stringify(payload) }),
+  updateVillageContact: (id: string, payload: any) => request<any>(`/directory/contacts/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
+  deleteVillageContact: (id: string) => request<any>(`/directory/contacts/${id}`, { method: 'DELETE' }),
+
+  // --- Citizen Reviews ---
+  getReviews: () => request<any[]>('/reviews'),
+  getBusinessReviews: (businessId: string) => request<any[]>(`/reviews/business/${businessId}`),
+  submitReview: (payload: any) => request<any>('/reviews', { method: 'POST', body: JSON.stringify(payload) }),
+  deleteReview: (id: string) => request<any>(`/reviews/${id}`, { method: 'DELETE' }),
 };
