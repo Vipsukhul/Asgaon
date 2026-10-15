@@ -3,7 +3,7 @@ import { Breadcrumb } from '../components/Breadcrumb';
 import { SEOHead } from '../components/SEOHead';
 import { useLanguage } from '../context/LanguageContext';
 import { useToast } from '../context/ToastContext';
-import { CheckCircle2, Clock, ExternalLink, ThumbsUp, RefreshCw } from 'lucide-react';
+import { CheckCircle2, Clock, ExternalLink, ThumbsUp, RefreshCw, Sparkles } from 'lucide-react';
 import { dataGovService } from '../services/dataGovApi';
 
 interface WorkItem {
@@ -56,6 +56,27 @@ export const TransparencyPage: React.FC<TransparencyPageProps> = ({ onNavigateHo
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
   const [votedWorks, setVotedWorks] = useState<Record<string, boolean>>({});
+
+  // Gemini AI Published Summary & SEO State
+  const [aiSeoData, setAiSeoData] = useState<{
+    title?: string;
+    description?: string;
+    marathiSummary?: string;
+  } | null>(() => {
+    try {
+      const saved = localStorage.getItem('dg_transparency_ai_seo');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return null;
+  });
+
+  useEffect(() => {
+    const handleAiUpdate = (e: any) => {
+      if (e.detail) setAiSeoData(e.detail);
+    };
+    window.addEventListener('dg:transparency-seo-updated', handleAiUpdate);
+    return () => window.removeEventListener('dg:transparency-seo-updated', handleAiUpdate);
+  }, []);
 
   const loadData = async (showNotification = false) => {
     try {
@@ -216,6 +237,28 @@ export const TransparencyPage: React.FC<TransparencyPageProps> = ({ onNavigateHo
           </div>
         </div>
       </header>
+
+      {/* Published Gemini AI Citizen Summary (from Admin Transparency Manager) */}
+      {aiSeoData?.marathiSummary && (
+        <section className="bg-gradient-to-r from-emerald-50 via-[#f0f9f4] to-emerald-50 rounded-2xl p-4 sm:p-5 border border-emerald-200/80 shadow-xs flex items-start gap-3.5">
+          <div className="w-9 h-9 rounded-xl bg-emerald-800 text-white flex items-center justify-center shrink-0 shadow-2xs mt-0.5">
+            <Sparkles className="w-5 h-5 text-amber-300" />
+          </div>
+          <div className="flex-1 space-y-1 text-xs">
+            <div className="flex items-center gap-2">
+              <span className="font-heading font-extrabold text-sm text-emerald-950">
+                {isMr ? 'नागरिकांसाठी सोप्या भाषेतील सारांश (Gemini AI सत्यापित)' : 'Civic AI Overview (Gemini Verified)'}
+              </span>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase">
+                AI Summary
+              </span>
+            </div>
+            <p className="text-stone-700 leading-relaxed whitespace-pre-line text-[13px]">
+              {aiSeoData.marathiSummary}
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* 4. Essential Fund Overview Cards (३ मुख्य आकडे) */}
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">

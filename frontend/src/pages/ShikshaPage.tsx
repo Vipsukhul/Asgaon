@@ -88,7 +88,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
     api.getSchools().then((res: any) => {
       const list = Array.isArray(res) ? res : (res?.data || []);
       if (isMounted && list.length > 0) {
-        setSchools(list.map((s: any) => ({
+        const mapped = list.map((s: any) => ({
           id: s.id,
           name: s.name,
           badge: s.badge || '',
@@ -103,7 +103,9 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
           imageUrl: s.imageUrl || '',
           latitude: s.latitude,
           longitude: s.longitude,
-        })));
+        }));
+        setSchools(mapped);
+        localStorage.setItem('dg_shiksha_schools', JSON.stringify(mapped));
       }
     }).catch(err => console.error('Failed to load schools from DB:', err));
 
@@ -111,6 +113,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
       const list = Array.isArray(res) ? res : (res?.data || []);
       if (isMounted && list.length > 0) {
         setScholarships(list);
+        localStorage.setItem('dg_shiksha_scholarships', JSON.stringify(list));
       }
     }).catch(err => console.error('Failed to load scholarships from DB:', err));
 
@@ -119,7 +122,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
       if (isMounted && list.length > 0) {
         const lib = list.find((c: any) => c.type === 'LIBRARY');
         if (lib) {
-          setAbhyasika({
+          const abhy = {
             title: lib.name,
             totalDesks: lib.totalDesks || 40,
             availableDesks: lib.availableDesks || 15,
@@ -129,11 +132,13 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             wifiSpeed: lib.wifiSpeed || '',
             bookCount: lib.bookCount || '',
             noticeText: lib.noticeText || '',
-          });
+          };
+          setAbhyasika(abhy);
+          localStorage.setItem('dg_shiksha_abhyasika', JSON.stringify(abhy));
         }
         const tuts = list.filter((c: any) => c.type === 'TUTOR');
         if (tuts.length > 0) {
-          setTutors(tuts.map((t: any) => ({
+          const mappedTutors = tuts.map((t: any) => ({
             id: t.id,
             name: t.name,
             category: t.category,
@@ -142,7 +147,9 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             phone: t.phone,
             address: t.address,
             feesInfo: t.feesInfo,
-          })));
+          }));
+          setTutors(mappedTutors);
+          localStorage.setItem('dg_shiksha_tutors', JSON.stringify(mappedTutors));
         }
       }
     }).catch(err => console.error('Failed to load study centers from DB:', err));
