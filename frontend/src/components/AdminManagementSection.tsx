@@ -20,7 +20,8 @@ export type AdminModuleId =
   | 'complaints'
   | 'broadcast'
   | 'users'
-  | 'logs';
+  | 'logs'
+  | 'transparency';
 
 export interface AdminModuleDefinition {
   id: AdminModuleId;
@@ -64,6 +65,14 @@ export const ADMIN_MODULES_LIST: AdminModuleDefinition[] = [
     icon: 'manage_history',
     category: 'GOVERNANCE',
     description: 'प्रशासकीय कृती, बदल व सुरक्षा नोंदींचे पुनरावलोकन'
+  },
+  {
+    id: 'transparency',
+    labelMarathi: 'ग्राम पारदर्शकता व Gemini AI',
+    labelEnglish: 'Transparency & Gemini AI Sync',
+    icon: 'account_balance',
+    category: 'GOVERNANCE',
+    description: '१५ वा वित्त आयोग, सरकारी API डेटा फेच व Gemini AI द्वारे आपोआप SEO टॅग जनरेशन'
   },
 
   // 2. Citizen Services & Grievances

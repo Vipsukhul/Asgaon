@@ -83,6 +83,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/notifications", "/api/v1/notifications/**").permitAll()
                         // Village Blogs & Guides
                         .requestMatchers("/api/v1/blogs", "/api/v1/blogs/**").permitAll()
+                        // Panchayat Transparency & eGramSwaraj Open Data
+                        .requestMatchers("/api/v1/transparency", "/api/v1/transparency/**").permitAll()
                         // All other endpoints require authentication
                         .anyRequest().authenticated()
                 );

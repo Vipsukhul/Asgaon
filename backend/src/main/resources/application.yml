@@ -82,6 +82,14 @@ vapid:
   private-key: ${VAPID_PRIVATE_KEY:}
   subject: ${VAPID_SUBJECT:mailto:admin@asgaon.digitalgaon.in}
 
+datagov:
+  api-key: ${DATA_GOV_API_KEY:}
+  lgd-code: ${ASGAON_LGD_CODE:537407}
+
+gemini:
+  api-key: ${GEMINI_API_KEY:}
+
+
 logging:
   level:
     org.springframework.security: DEBUG

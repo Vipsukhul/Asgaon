@@ -8,6 +8,7 @@ import { sendTestPushNotification } from '../services/pushNotifications';
 import { AdminLogsSection } from '../components/AdminLogsSection';
 import { AdminBannerManager } from '../components/AdminBannerManager';
 import { AdminGalleryManager } from '../components/AdminGalleryManager';
+import { AdminTransparencyManager } from '../components/AdminTransparencyManager';
 import {
   AdminManagementSection,
   getAllowedModulesForUser,
@@ -57,7 +58,7 @@ interface AdminPageProps {
 export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmin, onExit, onLogout }) => {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'businesses' | 'reviews' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users' | 'logs' | 'banners' | 'gallery' | 'admin_management'
+    'overview' | 'businesses' | 'reviews' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users' | 'logs' | 'banners' | 'gallery' | 'transparency' | 'admin_management'
   >('overview');
 
   // Customer Reviews Moderation State
@@ -684,9 +685,23 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
   const [pushSending, setPushSending] = useState(false);
   const [pushFeedback, setPushFeedback] = useState<string | null>(null);
 
-  // 8. Users
+  // 8. Users (Dynamic from backend API /admin/users)
   const [users, setUsers] = useState<any[]>([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
   const [userSearch, setUserSearch] = useState('');
+
+  const handleUpdateUserRole = async (userId: string, newRole: string) => {
+    try {
+      await api.updateUserRole(userId, newRole);
+      setUsers((prev) =>
+        prev.map((u) => (u.id === userId ? { ...u, roles: [newRole] } : u))
+      );
+      alert(`वापरकर्ता भूमिका बदलली: ${newRole}`);
+    } catch (e: any) {
+      alert(`भूमिका बदलताना त्रुटी आली: ${e.message || 'Error'}`);
+    }
+  };
+
 
   // Login form state
   const [adminPhone, setAdminPhone] = useState('');
@@ -742,9 +757,15 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       })
       .catch((e) => console.log('Schemes fetch notice:', e.message));
 
+    setLoadingUsers(true);
     api.getAdminUsers()
-      .then((res) => { if (res) setUsers(res); })
-      .catch((e) => console.log('Admin users fetch notice:', e.message));
+      .then((res) => {
+        if (res && Array.isArray(res)) {
+          setUsers(res);
+        }
+      })
+      .catch((e) => console.log('Admin users fetch notice:', e.message))
+      .finally(() => setLoadingUsers(false));
 
     setLoadingEvents(true);
     api.getEvents()
@@ -1560,7 +1581,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             <span>व्यवस्थापन विभाग निवडा:</span>
           </label>
           <span className="text-[10px] font-bold text-[#006a4e] bg-[#e8f1ec] px-2 py-0.5 rounded-full">
-            {isSuperAdmin ? 'सर्व १६ मॉड्यूल्स' : `${allowedModules.length} मॉड्यूल्स अधिकार`}
+            {isSuperAdmin ? 'सर्व १७ मॉड्यूल्स' : `${allowedModules.length} मॉड्यूल्स अधिकार`}
           </span>
         </div>
 
@@ -1579,6 +1600,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
               { id: 'reviews', label: `⭐ नागरिक अभिप्राय (${adminReviews.length})` },
               { id: 'banners', label: '🖼️ हिरो स्लायडर व बॅनर' },
               { id: 'gallery', label: '📸 छायाचित्र दालन (Gallery)' },
+              { id: 'transparency', label: '🏛️ ग्राम पारदर्शकता व Gemini AI' },
               { id: 'events', label: `🎪 कार्यक्रम व जत्रा (${events.length})` },
               { id: 'shiksha', label: `🏫 शिक्षण व शाळा (${shikshaSchools.length})` },
               { id: 'transport', label: `🚌 वाहतूक व बसेस (${transportBuses.length})` },
@@ -1620,6 +1642,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
           { id: 'reviews', icon: 'rate_review', label: `नागरिक अभिप्राय (${adminReviews.length})` },
           { id: 'banners', icon: 'view_carousel', label: 'हिरो स्लायडर व बॅनर' },
           { id: 'gallery', icon: 'photo_library', label: 'छायाचित्र दालन' },
+          { id: 'transparency', icon: 'account_balance', label: 'ग्राम पारदर्शकता व Gemini AI' },
           { id: 'events', icon: 'event', label: `कार्यक्रम व जत्रा (${events.length})` },
           { id: 'shiksha', icon: 'school', label: `शिक्षण व शाळा (${shikshaSchools.length})` },
           { id: 'transport', icon: 'directions_bus', label: `वाहतूक व बसेस (${transportBuses.length})` },
@@ -1859,6 +1882,24 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   </p>
                 </button>
               )}
+
+              {isTabAllowed('transparency') && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('transparency')}
+                  className="p-4 rounded-2xl bg-[#fffdfa] hover:bg-[#166534] hover:text-white transition-all text-left group border border-[#e7dec8] hover:border-[#166534] shadow-[0_2px_8px_rgba(20,40,30,0.03)] hover:shadow-[0_8px_20px_rgba(20,40,30,0.08)] hover:-translate-y-0.5"
+                >
+                  <LucideIcon name="account_balance" className=" text-[24px] text-[#006a4e] group-hover:text-[#a7f3d0] mb-2 block" />
+                  <strong className="block text-[13px] mb-1 flex items-center gap-1.5">
+                    <span>ग्राम पारदर्शकता व Gemini AI</span>
+                    <span className="px-1.5 py-0.2 rounded-full bg-[#166534] text-white text-[9px] font-black">AI</span>
+                  </strong>
+                  <p className="text-[11px] text-[#707974] group-hover:text-white/80">
+                    १५ वा वित्त आयोग, eGramSwaraj API व Gemini AI द्वारे ऑटो SEO
+                  </p>
+                </button>
+              )}
+
             </div>
           </div>
         </div>
@@ -5692,52 +5733,203 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         </div>
       )}
 
-      {/* TAB 9: USERS DIRECTORY */}
+      {/* TAB 9: USERS DIRECTORY (UNIFIED CITIZEN & ADMIN HIERARCHY) */}
       {activeTab === 'users' && (
-        <div className="bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col gap-4">
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            <h2 className="font-heading font-bold text-[16px] text-[#166534]">
-              नोंदणीकृत नागरिक ({users.length})
-            </h2>
-            <input
-              type="text"
-              value={userSearch}
-              onChange={(e) => setUserSearch(e.target.value)}
-              placeholder="नाव किंवा फोन नंबर शोधा..."
-              className="p-2 bg-[#f9f3ea] text-[12px] rounded-xl border border-[#e8e2d9] min-w-[220px]"
-            />
+        <div className="bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
+          {/* Informative Architecture Banner */}
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-[#e8f1ec] via-[#f0fdf4] to-[#fef9ee] border border-[#cadbcf] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#166534] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <LucideIcon name="badge" className="text-[22px]" />
+              </div>
+              <div>
+                <h3 className="font-heading font-black text-sm text-[#14532d] flex items-center gap-2">
+                  <span>नागरी व प्रशासकीय युनिक लॉगिन रचना (3-Tier Unified Architecture)</span>
+                </h3>
+                <p className="text-[12px] text-[#55605a] mt-0.5 max-w-2xl leading-relaxed">
+                  सर्व गावकऱ्यांसाठी <strong>एकच युनिक नागरी लॉगिन (CITIZEN)</strong> आहे — शेतकरी, विद्यार्थी, व्यापारी हे त्यांचे कार्यक्षेत्र आहे, स्वतंत्र भूमिका नव्हे. केवळ प्रशासकीय कामकाजासाठी <strong>ADMIN</strong> (विभागीय अधिकार) व <strong>SUPER_ADMIN</strong> (सर्वोच्च अधिकार) असे २ स्तर आहेत.
+                </p>
+              </div>
+            </div>
+
+            {isSuperAdmin && (
+              <button
+                type="button"
+                onClick={() => setActiveTab('admin_management')}
+                className="px-3.5 py-2 rounded-xl bg-[#166534] hover:bg-[#14532d] text-white text-xs font-bold shrink-0 flex items-center gap-1.5 shadow-xs cursor-pointer transition-all"
+              >
+                <LucideIcon name="admin_panel_settings" className="text-[16px]" />
+                <span>अॅडमिन मॉड्युल अधिकार नियंत्रित करा</span>
+              </button>
+            )}
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-[12px] min-w-[500px]">
-              <thead className="bg-[#f9f3ea] text-[#707974] font-bold">
-                <tr>
-                  <th className="p-3 rounded-l-xl">नाव</th>
-                  <th className="p-3">फोन</th>
-                  <th className="p-3">वॉर्ड</th>
-                  <th className="p-3 rounded-r-xl">भूमिका</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#f3ede4]">
+          {/* Quick Metrics Bar */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="p-3.5 rounded-xl bg-[#f0fdf4] border border-[#bbf7d0] flex items-center justify-between">
+              <div>
+                <span className="text-[11px] font-bold text-[#166534] block">१. ग्रामस्थ नागरिक (CITIZEN)</span>
+                <span className="text-lg font-black text-[#14532d]">
+                  {users.filter((u) => {
+                    const r = u.roles ? Array.from(u.roles)[0] : 'CITIZEN';
+                    return !String(r).includes('ADMIN');
+                  }).length}
+                </span>
+              </div>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#166534] text-white font-black">सार्वजनिक</span>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-[#eff6ff] border border-[#bfdbfe] flex items-center justify-between">
+              <div>
+                <span className="text-[11px] font-bold text-[#1d4ed8] block">२. ग्राम प्रशासक (ADMIN)</span>
+                <span className="text-lg font-black text-[#1e40af]">
+                  {users.filter((u) => {
+                    const r = u.roles ? Array.from(u.roles)[0] : '';
+                    return String(r) === 'ADMIN' || String(r) === 'ROLE_ADMIN';
+                  }).length}
+                </span>
+              </div>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#1d4ed8] text-white font-black">विभागीय</span>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-[#fffbeb] border border-[#fde68a] flex items-center justify-between">
+              <div>
+                <span className="text-[11px] font-bold text-[#b45309] block">३. मुख्य प्रशासक (SUPER ADMIN)</span>
+                <span className="text-lg font-black text-[#92400e]">
+                  {users.filter((u) => {
+                    const r = u.roles ? Array.from(u.roles)[0] : '';
+                    return String(r).includes('SUPER_ADMIN');
+                  }).length}
+                </span>
+              </div>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-white font-black">सर्वोच्च</span>
+            </div>
+          </div>
+
+          {/* Search Header */}
+          <div className="flex items-center justify-between gap-4 flex-wrap pt-2">
+            <h2 className="font-heading font-bold text-[16px] text-[#166534] flex items-center gap-2">
+              <LucideIcon name="group" className="text-[20px]" />
+              <span>गावकऱ्यांची व प्रशासकांची यादी ({users.length})</span>
+            </h2>
+            <div className="relative">
+              <input
+                type="text"
+                value={userSearch}
+                onChange={(e) => setUserSearch(e.target.value)}
+                placeholder="नाव किंवा फोन नंबर शोधा..."
+                className="p-2.5 pl-9 bg-[#f9f3ea] text-[12px] rounded-xl border border-[#e8e2d9] min-w-[260px] outline-none focus:border-[#166534]"
+              />
+              <LucideIcon name="search" className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#707974] text-[16px]" />
+            </div>
+          </div>
+
+          {/* Table / Loading / Empty States */}
+          {loadingUsers ? (
+            <div className="py-16 flex flex-col items-center justify-center gap-2.5 text-[#707974] bg-[#fdfbf7] rounded-xl border border-[#e8e2d9]">
+              <div className="w-7 h-7 border-3 border-[#166534] border-t-transparent rounded-full animate-spin" />
+              <p className="text-xs font-bold text-[#166534]">डेटाबेसमधून नोंदणीकृत वापरकर्ते लोड होत आहेत...</p>
+            </div>
+          ) : users.length === 0 ? (
+            <div className="py-14 bg-[#fcfbf9] rounded-xl border border-[#e8e2d9] text-center p-6 flex flex-col items-center justify-center gap-2">
+              <div className="w-12 h-12 rounded-full bg-[#f3ede4] flex items-center justify-center text-[#707974]">
+                <LucideIcon name="group" className="text-2xl" />
+              </div>
+              <h4 className="text-sm font-bold text-[#14532d]">अद्याप कोणतेही वापरकर्ते नोंदणीकृत नाहीत</h4>
+              <p className="text-xs text-[#55605a] max-w-sm">
+                गावकऱ्यांनी पोर्टलवर लॉगिन किंवा नोंदणी केल्यानंतर त्यांची माहिती येथे थेट दिसेल.
+              </p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto rounded-xl border border-[#e8e2d9]">
+              <table className="w-full text-left text-[12px] min-w-[650px]">
+                <thead className="bg-[#f9f3ea] text-[#707974] font-bold border-b border-[#e8e2d9]">
+                  <tr>
+                    <th className="p-3.5">नाव व तपशील</th>
+                    <th className="p-3.5">फोन क्रमांक</th>
+                    <th className="p-3.5">वॉर्ड / पत्ता</th>
+                    <th className="p-3.5">कार्यक्षेत्र / व्यवसाय</th>
+                    <th className="p-3.5">सुरक्षा भूमिका (Role)</th>
+                    {isSuperAdmin && <th className="p-3.5 text-right">भूमिका बदल (Super Admin)</th>}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#f3ede4]">
+
                 {users
                   .filter((u) => !userSearch || (u.fullName && u.fullName.toLowerCase().includes(userSearch.toLowerCase())) || (u.phone && u.phone.includes(userSearch)))
-                  .map((u) => (
-                    <tr key={u.id} className="hover:bg-[#fef9ee]">
-                      <td className="p-3 font-semibold text-[#1d1b16]">{u.fullName || 'नागरिक'}</td>
-                      <td className="p-3 text-[#55605a]">{u.phone || '-'}</td>
-                      <td className="p-3 text-[#55605a]">{u.wardNumber || 'वॉर्ड २'}</td>
-                      <td className="p-3">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]">
-                          {u.roles ? Array.from(u.roles).join(', ') : 'CITIZEN'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
+                  .map((u) => {
+                    const rawRole = (u.roles && u.roles.length > 0) ? String(Array.from(u.roles)[0]).replace('ROLE_', '') : 'CITIZEN';
+                    const isSuper = rawRole === 'SUPER_ADMIN';
+                    const isAdminUser = rawRole === 'ADMIN';
+
+                    return (
+                      <tr key={u.id} className="hover:bg-[#fef9ee] transition-colors">
+                        <td className="p-3.5 font-bold text-[#1d1b16]">
+                          <div className="flex items-center gap-2.5">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${
+                              isSuper
+                                ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                                : isAdminUser
+                                ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                                : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                            }`}>
+                              {u.fullName ? u.fullName.charAt(0) : 'G'}
+                            </div>
+                            <div>
+                              <span>{u.fullName || 'नागरिक'}</span>
+                              {u.phone === '9999999999' && (
+                                <span className="block text-[10px] text-amber-700 font-medium">मूळ प्रणाली प्रशासक</span>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="p-3.5 font-mono text-[#55605a]">{u.phone || '-'}</td>
+                        <td className="p-3.5 text-[#55605a]">{u.wardNumber || 'वॉर्ड २ (गावठाण)'}</td>
+                        <td className="p-3.5 text-[#55605a]">{u.occupation || 'ग्रामस्थ नागरिक'}</td>
+                        <td className="p-3.5">
+                          {isSuper ? (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-2xs">
+                              <LucideIcon name="workspace_premium" className="text-[14px]" />
+                              <span>मुख्य प्रशासक (Super Admin)</span>
+                            </span>
+                          ) : isAdminUser ? (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-blue-50 text-blue-800 border border-blue-300">
+                              <LucideIcon name="shield" className="text-[14px]" />
+                              <span>ग्राम प्रशासक (Admin)</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-50 text-emerald-800 border border-emerald-300">
+                              <LucideIcon name="person" className="text-[14px]" />
+                              <span>नागरिक (Citizen)</span>
+                            </span>
+                          )}
+                        </td>
+                        {isSuperAdmin && (
+                          <td className="p-3.5 text-right">
+                            {u.phone === '9999999999' ? (
+                              <span className="text-[11px] text-[#707974] italic">कायमस्वरूपी रूट</span>
+                            ) : (
+                              <select
+                                value={rawRole}
+                                onChange={(e) => handleUpdateUserRole(u.id, e.target.value)}
+                                className="p-1.5 bg-white border border-[#cadbcf] rounded-lg text-xs font-bold text-[#14532d] shadow-2xs cursor-pointer outline-none focus:border-[#166534]"
+                              >
+                                <option value="CITIZEN">👤 नागरिक (Citizen)</option>
+                                <option value="ADMIN">🛡️ ग्राम प्रशासक (Admin)</option>
+                                <option value="SUPER_ADMIN">👑 मुख्य प्रशासक (Super Admin)</option>
+                              </select>
+                            )}
+                          </td>
+                        )}
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+    )}
 
       {/* TAB 14: AUDIT LOGS */}
       {activeTab === 'logs' && (
@@ -5752,6 +5944,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {/* TAB 15B: VILLAGE PHOTO GALLERY & SLIDERS */}
       {activeTab === 'gallery' && (
         <AdminGalleryManager />
+      )}
+
+      {/* TAB 15C: PANCHAYAT TRANSPARENCY & GEMINI AI SYNC */}
+      {activeTab === 'transparency' && (
+        <AdminTransparencyManager />
       )}
 
       {/* TAB 16: SUPER ADMIN ACCESS CONTROL & ADMIN MANAGEMENT */}

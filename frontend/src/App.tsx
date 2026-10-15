@@ -34,6 +34,7 @@ import { GalleryPage } from './pages/GalleryPage';
 import { EmergencyPage } from './pages/EmergencyPage';
 import { ReviewsPage } from './pages/ReviewsPage';
 import { AdminPage } from './pages/AdminPage';
+import { TransparencyPage } from './pages/TransparencyPage';
 
 // Modals
 import { LoginModal } from './components/LoginModal';
@@ -42,9 +43,12 @@ import { RegisterShopModal } from './components/RegisterShopModal';
 import { PostJobModal } from './components/PostJobModal';
 import { DetailModal } from './components/DetailModal';
 import { VillageMasterMapModal } from './components/VillageMasterMapModal';
+import { SuprabhatCard } from './components/SuprabhatCard';
+import { SchemeEligibilityModal } from './components/SchemeEligibilityModal';
 import type { Business, Job, Scheme, MandiPrice } from './types';
 import { api } from './services/api';
 import { useSEO } from './hooks/useSEO';
+import { useLanguage } from './context/LanguageContext';
 
 const DEFAULT_GUEST_USER: UserProfileData = {
   fullName: 'Guest Visitor',
@@ -58,10 +62,12 @@ const DEFAULT_GUEST_USER: UserProfileData = {
 };
 
 export function App() {
+  const { lang } = useLanguage();
   // URL-driven navigation support (e.g. /admin, /krishi, /schemes/:slug, /businesses/:slug, /shiksha/:slug, etc.)
   const getInitialNav = () => {
     const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
     if (path === 'admin' || window.location.hash === '#admin') return 'admin';
+    if (path === 'transparency' || path === 'panchayat-transparency') return 'transparency';
     if (path.startsWith('schemes/')) return 'scheme-detail';
     if (path.startsWith('businesses/')) return 'business-detail';
     if (path.startsWith('shiksha/')) return 'shiksha-detail';
@@ -178,6 +184,12 @@ export function App() {
           title: 'प्रशासन पॅनेल — आसगाव',
           description: 'आसगाव ग्राम माहिती मंच प्रशासकीय व्यवस्थापन कक्ष.',
           canonicalPath: '/admin'
+        };
+      case 'transparency':
+        return {
+          title: 'ग्राम पारदर्शकता व १५ वा वित्त आयोग निधी — आसगाव ग्रामपंचायत',
+          description: 'आसगाव ग्रामपंचायत १५ वा वित्त आयोग विकास निधी वाटप, ई-ग्रामस्वराज मंजूर कामे (GPDP) व नागरी सामाजिक अंकेक्षण (Social Audit) पारदर्शकता मंच.',
+          canonicalPath: '/transparency'
         };
       default:
         return {
@@ -362,6 +374,7 @@ export function App() {
   const [registerShopOpen, setRegisterShopOpen] = useState(false);
   const [postJobOpen, setPostJobOpen] = useState(false);
   const [villageMapModalOpen, setVillageMapModalOpen] = useState(false);
+  const [eligibilityModalOpen, setEligibilityModalOpen] = useState(false);
 
   // Detail Modal state
   const [detailModalOpen, setDetailModalOpen] = useState(false);
@@ -806,8 +819,14 @@ export function App() {
           />
         )}
 
+        {activeNav === 'transparency' && (
+          <TransparencyPage
+            onNavigateHome={() => navigateTo('home')}
+          />
+        )}
+
         {(activeNav === 'home' || activeNav === 'all') && (
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-8 sm:gap-10">
             {/* Hero & Universal Discovery Hub Slider */}
             <HeroSection
               onSearch={handleSearch}
@@ -815,6 +834,15 @@ export function App() {
               onNavigate={(destination) => {
                 setActiveNav(destination);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+
+            {/* Daily Morning Village Card & WhatsApp Status Generator */}
+            <SuprabhatCard
+              onExploreMandi={() => {
+                const el = document.getElementById('krishi');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+                else setActiveNav('krishi');
               }}
             />
 
@@ -865,6 +893,7 @@ export function App() {
               onOpenCSC={() => navigateTo('schemes')}
               onSaveScheme={handleBookmark}
               onSelectScheme={navigateToScheme}
+              onOpenEligibilityFinder={() => setEligibilityModalOpen(true)}
             />
 
             {/* Official Notice Strip */}
@@ -919,23 +948,35 @@ export function App() {
         onBookmark={handleBookmark}
       />
 
-      {/* Floating Action Button: Village GIS Master Map (Homepage Only) */}
-      {(activeNav === 'home' || activeNav === 'all') && (
-        <button
-          type="button"
-          onClick={() => setVillageMapModalOpen(true)}
-          className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-[#166534] via-[#14532d] to-[#166534] hover:from-[#052e16] hover:to-[#166534] text-white px-4 sm:px-5 py-3 rounded-full shadow-2xl hover:shadow-[#166534]/50 flex items-center gap-2.5 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-[#cadbcf]/50 group cursor-pointer"
-          title="गाव नकाशा पहा"
-          aria-label="Open village GIS map"
-        >
-          {/* Pulsing Beacon Indicator */}
-         
+      {/* 3-Step Scheme Eligibility Finder Modal */}
+      <SchemeEligibilityModal
+        isOpen={eligibilityModalOpen}
+        onClose={() => setEligibilityModalOpen(false)}
+        onSelectSchemeSlug={(slug) => {
+          setEligibilityModalOpen(false);
+          navigateToScheme(slug);
+        }}
+      />
 
-          <LucideIcon name="explore" className=" text-[22px] text-[#a7f3d0] group-hover:rotate-12 transition-transform" />
-          <span className="font-heading font-extrabold text-[13px] sm:text-[14px] tracking-wide whitespace-nowrap drop-shadow-xs">
-            नकाशा
+      {/* Circular Theme-Colored Floating Action Button: Village GIS Master Map (Homepage Only) */}
+      {(activeNav === 'home' || activeNav === 'all') && (
+        <div className="fixed bottom-6 right-5 sm:right-6 z-40 flex flex-col items-center gap-1.5 pointer-events-none">
+          {/* Text floating above the button without background */}
+          <span className="text-[11px] font-extrabold text-emerald-950 tracking-tight whitespace-nowrap select-none drop-shadow-[0_1px_3px_rgba(255,255,255,0.95)]">
+            {lang === 'MR' ? 'गाव नकाशा 🗺️' : 'Village Map 🗺️'}
           </span>
-        </button>
+
+          {/* Circular Button matching Theme Color */}
+          <button
+            type="button"
+            onClick={() => setVillageMapModalOpen(true)}
+            className="w-13 h-13 rounded-full bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white shadow-xl shadow-emerald-950/25 border-2 border-white flex items-center justify-center transition-all cursor-pointer select-none group pointer-events-auto"
+            aria-label={lang === 'MR' ? 'गाव नकाशा पहा' : 'View Village Map'}
+            title={lang === 'MR' ? 'गाव नकाशा पहा' : 'View Village Map'}
+          >
+            <LucideIcon name="location_on" className="text-[22px] text-white group-hover:scale-110 group-hover:-translate-y-0.5 transition-transform" />
+          </button>
+        </div>
       )}
 
       {/* Master Village GIS Map Modal */}

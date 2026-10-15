@@ -83,7 +83,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                   className="px-4 py-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[13px] font-bold flex items-center gap-1.5"
                 >
                   <LucideIcon name="bookmark_border" className="text-[18px] text-[#166534]" />
-                  <span>Save</span>
+                  
                 </button>
                 <div className="flex items-center gap-2">
                   <a
@@ -93,14 +93,14 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                     className="px-3 py-2 rounded-xl bg-[#fef9ee] text-[#c2410c] hover:bg-[#c2410c] hover:text-white text-[13px] font-bold flex items-center gap-1.5 border border-[#fed7aa] transition-colors"
                   >
                     <LucideIcon name="place" className="text-[17px]" />
-                    <span>दुकान स्थान</span>
+                       <span>दुकान</span>
                   </a>
                   <a
                     href={`tel:${b.phone}`}
                     className="px-4 py-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#1d1b16] text-[13px] font-bold flex items-center gap-1.5 border border-[#e8e2d9]"
                   >
                     <LucideIcon name="call" className="text-[18px] text-[#166534]" />
-                    <span>Call Shop</span>
+                    <span>Call</span>
                   </a>
                   <a
                     href={`https://wa.me/91${b.whatsapp}`}
@@ -109,7 +109,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                     className="px-4 py-2 rounded-xl bg-[#166534] text-white text-[13px] font-bold hover:bg-[#052e16] flex items-center gap-1.5 shadow-xs"
                   >
                     <LucideIcon name="chat" className="text-[18px] text-[#a7f3d0]" />
-                    <span>WhatsApp</span>
+                    <span>Whatsapp</span>
                   </a>
                 </div>
               </div>

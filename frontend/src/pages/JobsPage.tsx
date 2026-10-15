@@ -32,8 +32,8 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
     const titleLower = (j.title || '').toLowerCase();
     const typeLower = (j.employmentType || '').toLowerCase();
     const categoryKey = (typeLower.includes('staff') || titleLower.includes('clerk') || titleLower.includes('billing')) ? 'staff' :
-                        (titleLower.includes('tech') || titleLower.includes('wireman') || titleLower.includes('solar') || titleLower.includes('electric')) ? 'tech' :
-                        (titleLower.includes('teacher') || titleLower.includes('shiksha') || titleLower.includes('women')) ? 'women' : 'farm';
+      (titleLower.includes('tech') || titleLower.includes('wireman') || titleLower.includes('solar') || titleLower.includes('electric')) ? 'tech' :
+        (titleLower.includes('teacher') || titleLower.includes('shiksha') || titleLower.includes('women')) ? 'women' : 'farm';
 
     return {
       id: j.id || `dyn-job-${idx}`,
@@ -86,7 +86,7 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
           { label: t('nav_home'), onClick: onNavigateHome },
           { label: t('nav_jobs'), active: true }
         ]}
-        
+
       />
 
       {/* 2. Hero Header Banner */}
@@ -101,21 +101,21 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
         </div>
 
         {/* Right Action Box */}
-        <div className="flex flex-col gap-2.5 w-full lg:w-72 shrink-0">
+        <div className="flex flex-row items-center gap-2.5 w-full sm:w-auto shrink-0">
           <button
             onClick={onPostJob}
-            className="w-full py-2.5 px-4 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-2 transition-colors shadow-xs"
+            className="flex-1 sm:flex-initial py-2.5 px-3.5 sm:px-4 rounded-xl bg-[#166534] hover:bg-[#052e16] text-white text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs whitespace-nowrap cursor-pointer"
           >
             <LucideIcon name="post_add" className="text-[18px]" />
-            <span>{lang === 'MR' ? 'नोकरीची जाहिरात करा' : 'Post a Job Vacancy'}</span>
+            <span>{lang === 'MR' ? 'जाहिरात करा' : 'Post a Job'}</span>
           </button>
 
           <button
             onClick={() => alert(lang === 'MR' ? 'उमेदवार नोंदणी फॉर्म उघडला आहे.' : 'Candidate registration modal opened.')}
-            className="w-full py-2.5 px-4 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] text-[#1d1b16] text-[13px] font-bold flex items-center justify-center gap-2 transition-colors border border-[#e8e2d9]"
+            className="flex-1 sm:flex-initial py-2.5 px-3.5 sm:px-4 rounded-xl bg-[#f9f3ea] hover:bg-[#f3ede4] text-[#1d1b16] text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors border border-[#e8e2d9] whitespace-nowrap cursor-pointer"
           >
             <LucideIcon name="how_to_reg" className="text-[18px]" />
-            <span>{lang === 'MR' ? 'उमेदवार नोंदणी करा' : 'Register as Job Seeker'}</span>
+            <span>{lang === 'MR' ? 'नोंदणी करा' : 'Register'}</span>
           </button>
         </div>
       </div>
@@ -200,11 +200,10 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
           <button
             type="button"
             onClick={() => setIsFilterOpen(true)}
-            className={`relative shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all shadow-xs ${
-              (filterType !== 'All' || payRange !== 'All')
+            className={`relative shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all shadow-xs ${(filterType !== 'All' || payRange !== 'All')
                 ? 'bg-[#166534] text-white border-[#166534] ring-2 ring-[#166534]/20'
                 : 'bg-[#f4efe8] text-[#1d1b16] border-[#e8e2d9] hover:bg-[#eae2d7]'
-            }`}
+              }`}
             aria-label="Filter Jobs"
           >
             <SlidersHorizontal className="w-4 h-4" />
@@ -311,11 +310,10 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                       <button
                         key={cat.id}
                         onClick={() => { setFilterType(cat.id); setCurrentPage(1); }}
-                        className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
-                          isSelected
+                        className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${isSelected
                             ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
                             : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
-                        }`}
+                          }`}
                       >
                         <span className="truncate">{cat.label}</span>
                         {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
@@ -351,11 +349,10 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                       <button
                         key={p.id}
                         onClick={() => { setPayRange(p.id); setCurrentPage(1); }}
-                        className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${
-                          isSelected
+                        className={`px-3 py-2.5 rounded-xl text-xs font-bold text-left transition-all flex items-center justify-between border ${isSelected
                             ? 'bg-[#166534] text-white border-[#166534] shadow-xs'
                             : 'bg-[#fdfbf7] text-[#404945] border-[#e8e2d9] hover:bg-[#f4efe8]'
-                        }`}
+                          }`}
                       >
                         <span>{p.label}</span>
                         {isSelected && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-300" />}
@@ -375,11 +372,10 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                   setCurrentPage(1);
                 }}
                 disabled={filterType === 'All' && payRange === 'All'}
-                className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-                  (filterType !== 'All' || payRange !== 'All')
+                className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${(filterType !== 'All' || payRange !== 'All')
                     ? 'text-[#c2410c] hover:bg-orange-100/60'
                     : 'text-stone-400 cursor-not-allowed'
-                }`}
+                  }`}
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>{lang === 'MR' ? 'सर्व रीसेट' : 'Clear All'}</span>
@@ -513,21 +509,21 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                 </div>
 
                 {/* Bottom Action Bar */}
-                <div className="pt-3 border-t border-[#f3ede4] flex flex-wrap items-center justify-between gap-2 mt-2">
-                  <div className="flex items-center gap-2">
+                <div className="pt-3 border-t border-[#f3ede4] flex items-center justify-between gap-2 mt-2">
+                  <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                     <a
                       href={`tel:${job.phone}`}
-                      className="px-3.5 py-1.5 rounded-lg bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold flex items-center gap-1 shadow-xs transition-colors"
+                      className="px-2.5 sm:px-3.5 py-1.5 rounded-lg bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold flex items-center gap-1 shadow-xs transition-colors shrink-0"
                     >
                       <LucideIcon name="call" className="text-[14px]" />
-                      <span>{lang === 'MR' ? 'थेट फोन करा' : 'Direct Call Employer'}</span>
+                      <span>{lang === 'MR' ? 'फोन करा' : 'Call'}</span>
                     </a>
 
                     <a
                       href={`https://wa.me/91${job.phone}?text=Hello,%20I%20saw%20your%20job%20posting%20for%20${encodeURIComponent(job.title)}%20on%20Digital%20Gaon.`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-3 py-1.5 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#166534] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9]"
+                      className="px-2 sm:px-3 py-1.5 rounded-lg bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#166534] text-[12px] font-bold flex items-center gap-1 border border-[#e8e2d9] shrink-0"
                     >
                       <LucideIcon name="chat" className="text-[14px] text-[#25D366]" />
                       <span>WhatsApp</span>
@@ -536,9 +532,9 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
 
                   <button
                     onClick={() => onApplyJob(job)}
-                    className="text-[12px] font-bold text-[#c2410c] hover:underline flex items-center gap-0.5"
+                    className="text-[12px] font-bold text-[#c2410c] hover:underline flex items-center gap-0.5 shrink-0 whitespace-nowrap cursor-pointer ml-auto"
                   >
-                    <span>{lang === 'MR' ? 'प्रोफाइलद्वारे अर्ज करा' : 'Apply via Village Profile'}</span>
+                    <span>{lang === 'MR' ? 'अर्ज करा' : 'Apply'}</span>
                     <LucideIcon name="arrow_forward" className="text-[14px]" />
                   </button>
                 </div>
@@ -569,11 +565,10 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
                     <button
                       key={pageNum}
                       onClick={() => setCurrentPage(pageNum)}
-                      className={`w-7 h-7 rounded-lg font-bold flex items-center justify-center transition-colors ${
-                        validCurrentPage === pageNum
+                      className={`w-7 h-7 rounded-lg font-bold flex items-center justify-center transition-colors ${validCurrentPage === pageNum
                           ? 'bg-[#166534] text-white shadow-xs'
                           : 'bg-[#f3ede4] text-[#1d1b16] hover:bg-[#e8e2d9]'
-                      }`}
+                        }`}
                     >
                       {pageNum}
                     </button>

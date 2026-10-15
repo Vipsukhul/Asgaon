@@ -11,6 +11,7 @@ public class UserAdminDto {
     private String email;
     private String villageName;
     private String wardNumber;
+    private String occupation;
     private Boolean isVerified;
     private Boolean isActive;
     private Set<String> roles;
@@ -19,13 +20,14 @@ public class UserAdminDto {
     public UserAdminDto() {}
 
     public UserAdminDto(UUID id, String fullName, String phone, String email, String villageName,
-                        String wardNumber, Boolean isVerified, Boolean isActive, Set<String> roles, OffsetDateTime createdAt) {
+                        String wardNumber, String occupation, Boolean isVerified, Boolean isActive, Set<String> roles, OffsetDateTime createdAt) {
         this.id = id;
         this.fullName = fullName;
         this.phone = phone;
         this.email = email;
         this.villageName = villageName;
         this.wardNumber = wardNumber;
+        this.occupation = occupation;
         this.isVerified = isVerified;
         this.isActive = isActive;
         this.roles = roles;
@@ -49,6 +51,9 @@ public class UserAdminDto {
 
     public String getWardNumber() { return wardNumber; }
     public void setWardNumber(String wardNumber) { this.wardNumber = wardNumber; }
+
+    public String getOccupation() { return occupation; }
+    public void setOccupation(String occupation) { this.occupation = occupation; }
 
     public Boolean getIsVerified() { return isVerified; }
     public void setIsVerified(Boolean isVerified) { this.isVerified = isVerified; }

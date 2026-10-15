@@ -65,7 +65,7 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
     return DEFAULT_TUTORS;
   });
 
-  const [notice, setNotice] = useState<ShikshaNotice>(() => {
+  const [_notice, setNotice] = useState<ShikshaNotice>(() => {
     const saved = localStorage.getItem('dg_shiksha_notice');
     if (saved) {
       try { return JSON.parse(saved); } catch { /* ignore */ }
@@ -163,44 +163,12 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
         keywords="Asgaon schools, ZP High school, Pauni colleges, अभ्यासिका, स्पर्धा परीक्षा, महाडीबीटी, शिष्यवृत्ती, शिक्षण, Asgaon Shiksha"
         canonicalUrl={`${window.location.origin}/shiksha`}
       />
-
-      {/* 1. TOP LIVE NOTICE STRIP (Dynamic) */}
-      {notice.isActive && (
-        <div className="bg-[#c2410c] text-white px-4 py-2.5 rounded-xl shadow-xs flex flex-col md:flex-row items-center justify-between gap-3 text-[12px] font-medium">
-          <div className="flex items-center gap-2">
-            <span className="bg-white/20 text-[#fef9ee] font-black px-2 py-0.5 rounded text-[10px] uppercase tracking-wider">
-              {lang === 'MR' ? 'महत्त्वाची सूचना' : 'LIVE NOTICE'}
-            </span>
-            <span>
-              <strong>{notice.headline}</strong> • {notice.subtext}
-            </span>
-          </div>
-          <button
-            onClick={() => setShowDeskModal(true)}
-            className="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-md text-[11px] font-bold transition-all shrink-0 flex items-center gap-1 border border-white/30"
-          >
-            <span>{notice.actionLabel || (lang === 'MR' ? 'सविस्तर पहा' : 'View Details')}</span>
-            <LucideIcon name="arrow_forward" className="text-[14px]" />
-          </button>
-        </div>
-      )}
-
       {/* 2. BREADCRUMBS & TALUKA CONTACTS */}
       <Breadcrumb
         items={[
           { label: t('nav_home'), onClick: onNavigateHome },
           { label: t('nav_education'), active: true }
         ]}
-        rightBadge={
-          <div className="flex items-center gap-3 text-[11px]">
-            <span className="text-[#006a4e] flex items-center gap-1 font-medium">
-              <LucideIcon name="call" className="text-[14px]" />
-              <span>{lang === 'MR' ? 'शिक्षण हेल्पलाईन: ०७१८५-२२४४१० (पवनी)' : 'Education Helpline: 07185-224410 (Pauni)'}</span>
-            </span>
-            <span className="text-[#707974] hidden md:inline">|</span>
-            <span className="text-[#c2410c] font-semibold hidden md:inline">{lang === 'MR' ? 'जि.प. शिक्षण संचिका' : 'ZP Education Directory'}</span>
-          </div>
-        }
       />
 
       {/* 3. HERO BANNER */}

@@ -157,6 +157,7 @@ public class AuthService {
             user.setPasswordHash(passwordEncoder.encode(UUID.randomUUID().toString()));
             user.setVillageName("Asgaon");
             user.setPreferredLanguage("mr");
+            user.setOccupation("Citizen / Resident");
             user.setIsActive(true);
             user.setIsVerified(true);
             user.setCreatedAt(OffsetDateTime.now());
@@ -239,6 +240,7 @@ public class AuthService {
             user.setPasswordHash(passwordEncoder.encode(UUID.randomUUID().toString()));
             user.setVillageName("Asgaon");
             user.setPreferredLanguage("en");
+            user.setOccupation("Citizen / Resident");
             user.setIsActive(true);
             user.setIsVerified(true);
             user.setCreatedAt(OffsetDateTime.now());

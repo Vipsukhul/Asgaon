@@ -37,7 +37,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   currentUser = {
     fullName: 'Asgaon Citizen',
     phone: '9822104500',
-    role: 'FARMER',
+    role: 'CITIZEN',
     ward: 'Gandhi Ward',
     village: 'Asgaon, Pauni (PIN 441910)',
     isLoggedIn: false,
@@ -260,7 +260,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       ...extra,
       fullName: editName,
       phone: editPhone,
-      roles: ['ROLE_' + editRole],
+      roles: currentUser.role ? [currentUser.role.startsWith('ROLE_') ? currentUser.role : 'ROLE_' + currentUser.role] : ['ROLE_CITIZEN'],
       ward: editWard,
       occupation: editOccupation,
       profileImage: currentUser?.profileImage,
@@ -282,19 +282,15 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   };
 
   const getRoleLabel = (role: string) => {
-    switch (role) {
-      case 'FARMER':
-        return isMr ? 'शेतकरी' : 'Farmer';
-      case 'BUSINESS_OWNER':
-        return isMr ? 'स्थानिक व्यापारी' : 'Business Owner';
+    const clean = (role || 'CITIZEN').replace('ROLE_', '');
+    switch (clean) {
+      case 'SUPER_ADMIN':
+        return isMr ? 'मुख्य प्रशासक (Super Admin)' : 'Super Administrator';
       case 'ADMIN':
-        return isMr ? 'ग्राम प्रशासक' : 'Portal Admin';
-      case 'STUDENT':
-        return isMr ? 'विद्यार्थी' : 'Student';
-      case 'SELLER':
-        return isMr ? 'विक्रेता' : 'Vendor';
+        return isMr ? 'ग्राम प्रशासक (Admin)' : 'Portal Administrator';
+      case 'CITIZEN':
       default:
-        return isMr ? 'नागरिक' : 'Citizen';
+        return isMr ? 'नागरिक (Citizen)' : 'Citizen Resident';
     }
   };
 
@@ -1057,18 +1053,20 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
 
                 <div>
                   <label className="font-bold text-[#166534] block mb-1">
-                    {isMr ? 'नागरी भूमिका' : 'Role'}
+                    {isMr ? 'व्यवसाय / कार्यक्षेत्र' : 'Occupation / Profession'}
                   </label>
                   <select
-                    value={editRole}
-                    onChange={(e) => setEditRole(e.target.value)}
-                    className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none bg-white"
+                    value={editOccupation}
+                    onChange={(e) => setEditOccupation(e.target.value)}
+                    className="w-full p-2.5 rounded-lg border border-[#e8e2d9] focus:border-[#006a4e] outline-none bg-white text-xs font-semibold"
                   >
-                    <option value="FARMER">{isMr ? 'शेतकरी' : 'Farmer'}</option>
-                    <option value="BUSINESS_OWNER">{isMr ? 'व्यापारी' : 'Business Owner'}</option>
-                    <option value="STUDENT">{isMr ? 'विद्यार्थी' : 'Student'}</option>
-                    <option value="SELLER">{isMr ? 'विक्रेता' : 'Seller / Vendor'}</option>
-                    <option value="CITIZEN">{isMr ? 'ग्रामस्थ नागरिक' : 'General Resident'}</option>
+                    <option value="Farmer / Cultivator">{isMr ? 'शेतकरी / कास्तकार' : 'Farmer / Cultivator'}</option>
+                    <option value="Student / Scholar">{isMr ? 'विद्यार्थी / स्पर्धा परीक्षा' : 'Student / Scholar'}</option>
+                    <option value="Local Merchant / Business">{isMr ? 'स्थानिक व्यापारी / दुकानदार' : 'Local Merchant / Business'}</option>
+                    <option value="Artisan / Skilled Worker">{isMr ? 'कारागीर / तांत्रिक कामगार' : 'Artisan / Skilled Worker'}</option>
+                    <option value="Self Help Group / Entrepreneur">{isMr ? 'महिला बचत गट / उद्योजिका' : 'Self Help Group / Entrepreneur'}</option>
+                    <option value="Salaried / Professional">{isMr ? 'नोकरदार / कर्मचारी' : 'Salaried / Professional'}</option>
+                    <option value="General Resident">{isMr ? 'इतर स्थानिक नागरिक' : 'General Resident'}</option>
                   </select>
                 </div>
               </div>

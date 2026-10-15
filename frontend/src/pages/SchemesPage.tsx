@@ -5,6 +5,7 @@ import type { Scheme } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { SEOHead } from '../components/SEOHead';
 import { useLanguage } from '../context/LanguageContext';
+import { SchemeEligibilityModal } from '../components/SchemeEligibilityModal';
 
 interface SchemesPageProps {
   schemes?: Scheme[];
@@ -20,6 +21,7 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
   onSelectScheme
 }) => {
   const { lang, t } = useLanguage();
+  const [eligibilityModalOpen, setEligibilityModalOpen] = useState(false);
 
   // Read initial category/search from URL params if present
   const getInitialParam = (key: string, fallback: string) => {
@@ -1218,6 +1220,37 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
           </div>
         </div>
       )}
+
+      {/* Circular Theme-Colored Floating Action Button: Scheme Eligibility Checker */}
+      <div className="fixed bottom-6 right-5 sm:right-6 z-40 flex flex-col items-center gap-1.5 pointer-events-none">
+        {/* Text floating above the button without background */}
+        <span className="text-[11px] font-extrabold text-emerald-950 tracking-tight whitespace-nowrap select-none drop-shadow-[0_1px_3px_rgba(255,255,255,0.95)]">
+          {lang === 'MR' ? 'पात्रता तपासा ✨' : 'Check Eligibility ✨'}
+        </span>
+
+        {/* Circular Button matching Theme Color */}
+        <button
+          type="button"
+          onClick={() => setEligibilityModalOpen(true)}
+          className="w-13 h-13 rounded-full bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white shadow-xl shadow-emerald-950/25 border-2 border-white flex items-center justify-center transition-all cursor-pointer select-none group pointer-events-auto"
+          aria-label={lang === 'MR' ? 'योजना पात्रता तपासा' : 'Check Scheme Eligibility'}
+          title={lang === 'MR' ? 'योजना पात्रता तपासा' : 'Check Scheme Eligibility'}
+        >
+          <LucideIcon name="stars" className="text-[22px] text-amber-300 group-hover:scale-110 transition-transform" />
+        </button>
+      </div>
+
+      {/* 3-Step Scheme Eligibility Modal */}
+      <SchemeEligibilityModal
+        isOpen={eligibilityModalOpen}
+        onClose={() => setEligibilityModalOpen(false)}
+        onSelectSchemeSlug={(slug) => {
+          setEligibilityModalOpen(false);
+          if (onSelectScheme) {
+            onSelectScheme(slug);
+          }
+        }}
+      />
     </div>
   );
 };

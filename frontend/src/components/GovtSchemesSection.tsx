@@ -8,13 +8,15 @@ interface GovtSchemesSectionProps {
   onOpenCSC: () => void;
   onSaveScheme: (scheme: Scheme) => void;
   onSelectScheme?: (slug: string) => void;
+  onOpenEligibilityFinder?: () => void;
 }
 
 export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
   schemes,
   onOpenCSC,
   onSaveScheme,
-  onSelectScheme
+  onSelectScheme,
+  onOpenEligibilityFinder
 }) => {
   const { lang } = useLanguage();
 
@@ -34,14 +36,27 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={onOpenCSC}
-          className="px-4 py-2 rounded-xl bg-indigo-800 hover:bg-indigo-900 text-white text-[13px] font-extrabold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
-        >
-          <LucideIcon name="contact_support" className="text-[18px]" />
-          <span>{lang === 'MR' ? 'सीएससी / आपले सरकार केंद्र' : 'Visit CSC Kiosk'}</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          {onOpenEligibilityFinder && (
+            <button
+              type="button"
+              onClick={onOpenEligibilityFinder}
+              className="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-stone-950 text-[13px] font-extrabold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            >
+              <LucideIcon name="stars" className="text-[17px] text-stone-950" />
+              <span>{lang === 'MR' ? 'पात्र योजना शोधा' : 'Check Eligibility'}</span>
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={onOpenCSC}
+            className="px-3.5 py-2 rounded-xl bg-indigo-800 hover:bg-indigo-900 text-white text-[13px] font-extrabold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+          >
+            <LucideIcon name="contact_support" className="text-[17px]" />
+            <span>{lang === 'MR' ? 'सीएससी केंद्र' : 'CSC Kiosk'}</span>
+          </button>
+        </div>
       </div>
 
       {/* 3 Scheme Cards */}

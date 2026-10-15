@@ -32,6 +32,9 @@ public class User {
     @Column(name = "ward_number", length = 50)
     private String wardNumber;
 
+    @Column(name = "occupation", length = 100)
+    private String occupation = "Citizen / Resident";
+
     @Column(name = "preferred_language", length = 10)
     private String preferredLanguage = "en";
 
@@ -85,6 +88,9 @@ public class User {
 
     public String getWardNumber() { return wardNumber; }
     public void setWardNumber(String wardNumber) { this.wardNumber = wardNumber; }
+
+    public String getOccupation() { return occupation; }
+    public void setOccupation(String occupation) { this.occupation = occupation; }
 
     public String getPreferredLanguage() { return preferredLanguage; }
     public void setPreferredLanguage(String preferredLanguage) { this.preferredLanguage = preferredLanguage; }

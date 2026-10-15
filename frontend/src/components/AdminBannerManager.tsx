@@ -203,24 +203,6 @@ export const AdminBannerManager: React.FC = () => {
         </div>
       </div>
 
-      {/* Cloudinary Integration Status Card */}
-      <div className="bg-gradient-to-r from-emerald-950 to-[#166534] rounded-2xl p-4 text-white text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
-            <LucideIcon name="cloud_upload" className="text-amber-300 text-xl" />
-          </div>
-          <div>
-            <div className="font-bold text-sm text-white">क्लाउड इमेज होस्टिंग जोडलेले आहे</div>
-            <div className="text-emerald-200/80 text-[11px]">
-              Cloud: <code className="bg-black/20 px-1 py-0.5 rounded text-amber-300">dl5bq3ejh</code> • थेट हाय-डेफिनिशन फोटो अपलोड करा
-            </div>
-          </div>
-        </div>
-        <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-400/30 text-[11px]">
-          १००% मोफत व अमर्याद बँडविड्थ
-        </span>
-      </div>
-
       {/* List of Slides */}
       <div className="grid grid-cols-1 gap-3">
         {slides.map((slide, index) => (

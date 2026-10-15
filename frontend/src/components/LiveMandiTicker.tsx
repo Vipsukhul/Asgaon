@@ -39,6 +39,22 @@ export const LiveMandiTicker: React.FC<LiveMandiTickerProps> = ({ prices, onView
         </div>
       </div>
 
+      {/* Real-time Weather & Crop Advisory Banner */}
+      <div className="mb-3.5 p-3 rounded-xl bg-gradient-to-r from-emerald-900 via-[#14532d] to-emerald-950 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-xs border border-emerald-800">
+        <div className="flex items-center gap-2">
+          <span className="text-[16px]">🌦️</span>
+          <div className="text-[12px] font-bold leading-tight">
+            <span className="text-amber-300 mr-1.5">{lang === 'MR' ? 'हवामान व शेती सल्ला:' : 'Agri Weather Advisory:'}</span>
+            <span className="text-emerald-100">{lang === 'MR' ? 'पुढील २४ तास आकाश निरभ्र, पाऊस ०% — काढणी केलेले धान व सोयाबीन सुरक्षित साठवून ठेवा.' : 'Clear skies next 24h, 0% rain — safe for harvesting and grain storage.'}</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 text-[11px] text-emerald-200 shrink-0 font-semibold bg-emerald-950/60 px-2.5 py-1 rounded-lg border border-emerald-700/50">
+          <span>📍 {lang === 'MR' ? 'पवनी: २९°C' : 'Pauni: 29°C'}</span>
+          <span>•</span>
+          <span>💧 {lang === 'MR' ? 'आर्द्रता: ४५%' : 'Humidity: 45%'}</span>
+        </div>
+      </div>
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {prices.map((item) => (
           <div

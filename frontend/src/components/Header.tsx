@@ -95,6 +95,7 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'businesses', label: t('nav_businesses'), icon: 'storefront' },
     { id: 'jobs', label: t('nav_jobs'), icon: 'work' },
     { id: 'schemes', label: t('nav_schemes'), icon: 'assured_workload' },
+    { id: 'transparency', label: lang === 'MR' ? 'ग्राम पारदर्शकता' : 'Transparency', icon: 'account_balance' },
     { id: 'krishi', label: t('nav_krishi'), icon: 'agriculture' },
     { id: 'shiksha', label: t('nav_education'), icon: 'school' },
     { id: 'transport', label: t('nav_transport'), icon: 'directions_bus' },
@@ -518,6 +519,7 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 {t('nav_home')}
               </button>
+
               {navItems.map((item) => (
                 <button
                   key={item.id}

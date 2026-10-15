@@ -81,6 +81,7 @@ public class AdminService {
                         u.getEmail(),
                         u.getVillageName(),
                         u.getWardNumber(),
+                        u.getOccupation(),
                         u.getIsVerified(),
                         u.getIsActive(),
                         u.getRoles().stream().map(Role::getName).collect(Collectors.toSet()),
@@ -95,9 +96,16 @@ public class AdminService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found: " + userId));
 
-        Role role = roleRepository.findByName(newRoleName)
-                .or(() -> roleRepository.findByName("ROLE_" + newRoleName))
-                .orElseGet(() -> roleRepository.save(new Role("ROLE_" + newRoleName, "Dynamic " + newRoleName + " role")));
+        // Enforce canonical role format
+        String normalizedRole = newRoleName.trim().toUpperCase();
+        if (!normalizedRole.startsWith("ROLE_")) {
+            normalizedRole = "ROLE_" + normalizedRole;
+        }
+
+        final String targetRole = normalizedRole;
+        Role role = roleRepository.findByName(targetRole)
+                .or(() -> roleRepository.findByName(targetRole.replace("ROLE_", "")))
+                .orElseGet(() -> roleRepository.save(new Role(targetRole, "System assigned " + targetRole + " role")));
 
         Set<Role> roles = new HashSet<>();
         roles.add(role);
@@ -112,6 +120,7 @@ public class AdminService {
                 saved.getEmail(),
                 saved.getVillageName(),
                 saved.getWardNumber(),
+                saved.getOccupation(),
                 saved.getIsVerified(),
                 saved.getIsActive(),
                 saved.getRoles().stream().map(Role::getName).collect(Collectors.toSet()),

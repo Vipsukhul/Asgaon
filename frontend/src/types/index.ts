@@ -79,11 +79,14 @@ export interface Grievance {
   isVerifiedClosed?: boolean;
 }
 
+export type UserRole = 'CITIZEN' | 'ADMIN' | 'SUPER_ADMIN';
+
 export interface User {
   id: string;
   fullName: string;
   phone: string;
-  role: 'CITIZEN' | 'FARMER' | 'STUDENT' | 'BUSINESS_OWNER' | 'SELLER' | 'ADMIN' | 'SUPER_ADMIN';
+  role: UserRole;
+  occupation?: string;
   village: string;
   token?: string;
 }
