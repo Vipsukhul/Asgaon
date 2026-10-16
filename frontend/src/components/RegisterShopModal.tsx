@@ -178,25 +178,34 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-      <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-[#e8e2d9] overflow-hidden p-6 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between pb-3 border-b border-[#f3ede4] mb-4">
-          <div className="flex items-center gap-2">
-            <LucideIcon name="storefront" className="text-[#c2410c] text-[24px]" />
+      <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-[#e8e2d9] overflow-hidden flex flex-col max-h-[90vh]">
+        {/* Pinned Sticky Header */}
+        <div className="flex items-center justify-between p-5 sm:p-6 pb-4 border-b border-[#f3ede4] shrink-0 bg-white">
+          <div className="flex items-center gap-2.5">
+            <div className="w-10 h-10 rounded-2xl bg-[#fef3c7] text-[#c2410c] flex items-center justify-center shrink-0 border border-[#fed7aa]">
+              <LucideIcon name="storefront" className="text-[22px]" />
+            </div>
             <div>
-              <h3 className="font-heading font-bold text-[18px] text-[#1d1b16]">
-                {isMr ? 'आपल्या दुकानाची मोफत नोंदणी करा' : 'Register Your Business for Free'}
+              <h3 className="font-heading font-extrabold text-[17px] sm:text-[18px] text-[#1d1b16] leading-tight">
+                {isMr ? 'आपल्या दुकानाची मोफत नोंदणी करा' : 'Register Your Business Free'}
               </h3>
-              <p className="text-[11px] text-[#707974]">
-                {isMr ? 'आसगावमधील १४,२८०+ नागरिकांपर्यंत थेट पोहोचा' : 'Connect directly with 14,280+ village residents'}
+              <p className="text-[11px] text-[#707974] mt-0.5">
+                {isMr ? 'आसगावमधील १४,२८०+ नागरिकांपर्यंत थेट पोहोचा' : 'Connect with 8,000+ villagers'}
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="text-[#707974] hover:text-[#1d1b16]">
-            <LucideIcon name="close" className="text-[20px]" />
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-8 h-8 rounded-full bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#707974] hover:text-[#1d1b16] flex items-center justify-center transition-colors cursor-pointer"
+          >
+            <LucideIcon name="close" className="text-[18px]" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        {/* Form Container with scrollable body & pinned footer */}
+        <form onSubmit={handleSubmit} className="flex-1 flex flex-col min-h-0">
+          <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-3.5 modal-scrollbar">
           <div>
             <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">
               {isMr ? 'दुकानाचे / व्यवसायाचे नाव *' : 'Shop / Enterprise Name *'}
@@ -419,18 +428,21 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
             />
           </div>
 
-          <div className="mt-2 flex items-center justify-end gap-2 pt-2 border-t border-[#f3ede4]">
+          </div>
+
+          {/* Pinned Sticky Footer */}
+          <div className="p-4 sm:p-5 border-t border-[#f3ede4] bg-[#faf6ee] shrink-0 flex items-center justify-end gap-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl bg-[#f3ede4] text-[#1d1b16] text-[13px] font-bold hover:bg-[#e8e2d9] transition-colors"
+              className="px-4 py-2.5 rounded-xl bg-white border border-[#e8e2d9] text-[#1d1b16] text-[13px] font-bold hover:bg-[#f3ede4] transition-colors cursor-pointer"
             >
               {isMr ? 'रद्द करा' : 'Cancel'}
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-5 py-2 rounded-xl bg-[#c2410c] text-white text-[13px] font-bold hover:bg-[#852f00] transition-colors shadow-xs disabled:opacity-50"
+              className="px-5 py-2.5 rounded-xl bg-[#c2410c] hover:bg-[#9a3412] active:scale-95 text-white text-[13px] font-bold transition-all shadow-md hover:shadow-lg disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
             >
               {loading
                 ? (isMr ? 'नोंदणी होत आहे...' : 'Registering...')

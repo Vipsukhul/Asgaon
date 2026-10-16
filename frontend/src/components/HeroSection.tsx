@@ -315,33 +315,37 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
             <LucideIcon name="chevron_right" className="text-[22px]" />
           </button>
 
-          {/* Bottom Floating Minimalist Capsule Indicators */}
-          <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 shadow-lg">
-            {slides.map((_, idx) => {
+          {/* Bottom Ultra-Refined Frosted Glass Pill */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-black/15 hover:bg-black/25 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15 shadow-md shadow-black/10 transition-all">
+            {slides.map((slide, idx) => {
               const isSelected = currentIndex === idx;
               return (
                 <button
-                  key={idx}
+                  key={slide.id || idx}
                   type="button"
                   onClick={() => setCurrentIndex(idx)}
                   aria-label={`Go to slide ${idx + 1}`}
-                  className={`transition-all duration-300 rounded-full cursor-pointer ${
+                  title={(isMr ? slide.titleMarathi : slide.titleEnglish) || `Slide ${idx + 1}`}
+                  className={`transition-all duration-300 rounded-full cursor-pointer focus:outline-none ${
                     isSelected
-                      ? 'w-7 h-2 bg-emerald-400 shadow-sm shadow-emerald-400/50'
-                      : 'w-2 h-2 bg-white/50 hover:bg-white/80'
+                      ? 'w-5 h-1.5 bg-gradient-to-r from-emerald-400 to-teal-300 shadow-xs shadow-emerald-400/50'
+                      : 'w-1.5 h-1.5 bg-white/40 hover:bg-white/80 hover:scale-125'
                   }`}
                 />
               );
             })}
 
-            {/* Play/Pause Minimal Toggle */}
+            {/* Subtle Vertical Divider */}
+            <div className="w-[1px] h-2 bg-white/15 mx-0.5" />
+
+            {/* Play/Pause Minimal Transparent Toggle */}
             <button
               type="button"
               onClick={() => setIsPaused((p) => !p)}
-              className="text-white/75 hover:text-white ml-0.5 text-xs cursor-pointer flex items-center justify-center"
+              className="w-4.5 h-4.5 rounded-full bg-transparent hover:bg-white/15 text-white/70 hover:text-white flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
               title={isPaused ? (isMr ? 'प्ले करा' : 'Resume') : (isMr ? 'पॉज करा' : 'Pause')}
             >
-              <LucideIcon name={isPaused ? 'play_arrow' : 'pause'} className="text-[13px]" />
+              <LucideIcon name={isPaused ? 'play' : 'pause'} className="text-[10px]" />
             </button>
           </div>
         </>
