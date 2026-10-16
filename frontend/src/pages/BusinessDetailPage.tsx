@@ -35,11 +35,24 @@ export const BusinessDetailPage: React.FC<BusinessDetailPageProps> = ({
   if (!business) {
     if (businesses.length === 0) {
       return (
-        <div className="w-full py-28 text-center flex flex-col items-center justify-center gap-3">
-          <div className="w-9 h-9 border-3 border-[#166534] border-t-transparent rounded-full animate-spin" />
-          <p className="text-[13px] font-bold text-[#166534]">
-            {lang === 'MR' ? 'माहिती लोड होत आहे...' : 'Loading shop details...'}
-          </p>
+        <div className="w-full max-w-5xl mx-auto px-4 py-8 space-y-6 animate-pulse">
+          <div className="w-32 h-5 bg-stone-200 rounded" />
+          <div className="h-56 sm:h-72 w-full bg-stone-200 rounded-3xl" />
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#e8e2d9] shadow-xs space-y-4">
+            <div className="flex justify-between items-start gap-4">
+              <div className="space-y-2 flex-1">
+                <div className="w-24 h-5 bg-stone-200 rounded-full" />
+                <div className="w-2/3 h-8 bg-stone-200 rounded" />
+                <div className="w-1/2 h-4 bg-stone-100 rounded" />
+              </div>
+              <div className="w-24 h-10 bg-stone-100 rounded-2xl" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-[#f3ede4]">
+              <div className="h-16 bg-stone-100 rounded-xl" />
+              <div className="h-16 bg-stone-100 rounded-xl" />
+              <div className="h-16 bg-stone-100 rounded-xl" />
+            </div>
+          </div>
         </div>
       );
     }

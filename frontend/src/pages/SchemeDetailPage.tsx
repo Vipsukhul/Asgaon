@@ -32,11 +32,22 @@ export const SchemeDetailPage: React.FC<SchemeDetailPageProps> = ({
   if (!scheme) {
     if (schemes.length === 0) {
       return (
-        <div className="w-full py-28 text-center flex flex-col items-center justify-center gap-3">
-          <div className="w-9 h-9 border-3 border-[#166534] border-t-transparent rounded-full animate-spin" />
-          <p className="text-[13px] font-bold text-[#166534]">
-            {lang === 'MR' ? 'माहिती लोड होत आहे, कृपया प्रतीक्षा करा...' : 'Loading scheme details...'}
-          </p>
+        <div className="w-full max-w-5xl mx-auto px-4 py-8 space-y-6 animate-pulse">
+          <div className="w-36 h-5 bg-stone-200 rounded" />
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#e8e2d9] shadow-xs space-y-4">
+            <div className="w-28 h-6 bg-stone-200 rounded-full" />
+            <div className="w-3/4 h-8 bg-stone-200 rounded" />
+            <div className="w-1/2 h-4 bg-stone-100 rounded" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-[#f3ede4]">
+              <div className="h-20 bg-stone-100 rounded-2xl" />
+              <div className="h-20 bg-stone-100 rounded-2xl" />
+            </div>
+          </div>
+          <div className="bg-white rounded-3xl p-6 border border-[#e8e2d9] space-y-4">
+            <div className="w-48 h-6 bg-stone-200 rounded" />
+            <div className="w-full h-24 bg-stone-100 rounded-xl" />
+            <div className="w-full h-24 bg-stone-100 rounded-xl" />
+          </div>
         </div>
       );
     }

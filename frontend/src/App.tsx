@@ -1,5 +1,5 @@
 import { LucideIcon } from './components/LucideIcon';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Header } from './components/Header';
 import { OfficialAlertTicker } from './components/OfficialAlertTicker';
 import { HeroSection } from './components/HeroSection';
@@ -12,29 +12,43 @@ import { PanchayatNoticeStrip } from './components/PanchayatNoticeStrip';
 import { VillageGallerySlider } from './components/VillageGallerySlider';
 import { Footer } from './components/Footer';
 import { VillageGraffitiBackdrop } from './components/WarliWallGraffiti';
+import { InstallPwaBanner } from './components/InstallPwaBanner';
 
-// Independent Pages
-import { ProfilePage, type UserProfileData } from './pages/ProfilePage';
-import { BusinessesPage } from './pages/BusinessesPage';
-import { BusinessDetailPage } from './pages/BusinessDetailPage';
-import { JobsPage } from './pages/JobsPage';
-import { SchemesPage } from './pages/SchemesPage';
-import { SchemeDetailPage } from './pages/SchemeDetailPage';
-import { KrishiPage } from './pages/KrishiPage';
-import { ShikshaPage } from './pages/ShikshaPage';
-import { ShikshaDetailPage } from './pages/ShikshaDetailPage';
-import { TransportPage } from './pages/TransportPage';
-import { BlogsPage } from './pages/BlogsPage';
-import { BlogDetailPage } from './pages/BlogDetailPage';
-import { WriteBlogPage } from './pages/WriteBlogPage';
-import { MarketplacePage } from './pages/MarketplacePage';
-import { AnnouncementsPage } from './pages/AnnouncementsPage';
-import { EventsPage } from './pages/EventsPage';
-import { GalleryPage } from './pages/GalleryPage';
-import { EmergencyPage } from './pages/EmergencyPage';
-import { ReviewsPage } from './pages/ReviewsPage';
-import { AdminPage } from './pages/AdminPage';
-import { TransparencyPage } from './pages/TransparencyPage';
+// Route-Based Code Splitting via React.lazy
+import type { UserProfileData } from './pages/ProfilePage';
+const ProfilePage = lazy(() => import('./pages/ProfilePage').then(m => ({ default: m.ProfilePage })));
+const BusinessesPage = lazy(() => import('./pages/BusinessesPage').then(m => ({ default: m.BusinessesPage })));
+const BusinessDetailPage = lazy(() => import('./pages/BusinessDetailPage').then(m => ({ default: m.BusinessDetailPage })));
+const JobsPage = lazy(() => import('./pages/JobsPage').then(m => ({ default: m.JobsPage })));
+const SchemesPage = lazy(() => import('./pages/SchemesPage').then(m => ({ default: m.SchemesPage })));
+const SchemeDetailPage = lazy(() => import('./pages/SchemeDetailPage').then(m => ({ default: m.SchemeDetailPage })));
+const KrishiPage = lazy(() => import('./pages/KrishiPage').then(m => ({ default: m.KrishiPage })));
+const ShikshaPage = lazy(() => import('./pages/ShikshaPage').then(m => ({ default: m.ShikshaPage })));
+const ShikshaDetailPage = lazy(() => import('./pages/ShikshaDetailPage').then(m => ({ default: m.ShikshaDetailPage })));
+const TransportPage = lazy(() => import('./pages/TransportPage').then(m => ({ default: m.TransportPage })));
+const BlogsPage = lazy(() => import('./pages/BlogsPage').then(m => ({ default: m.BlogsPage })));
+const BlogDetailPage = lazy(() => import('./pages/BlogDetailPage').then(m => ({ default: m.BlogDetailPage })));
+const WriteBlogPage = lazy(() => import('./pages/WriteBlogPage').then(m => ({ default: m.WriteBlogPage })));
+const MarketplacePage = lazy(() => import('./pages/MarketplacePage').then(m => ({ default: m.MarketplacePage })));
+const AnnouncementsPage = lazy(() => import('./pages/AnnouncementsPage').then(m => ({ default: m.AnnouncementsPage })));
+const EventsPage = lazy(() => import('./pages/EventsPage').then(m => ({ default: m.EventsPage })));
+const GalleryPage = lazy(() => import('./pages/GalleryPage').then(m => ({ default: m.GalleryPage })));
+const EmergencyPage = lazy(() => import('./pages/EmergencyPage').then(m => ({ default: m.EmergencyPage })));
+const ReviewsPage = lazy(() => import('./pages/ReviewsPage').then(m => ({ default: m.ReviewsPage })));
+const AdminPage = lazy(() => import('./pages/AdminPage').then(m => ({ default: m.AdminPage })));
+const TransparencyPage = lazy(() => import('./pages/TransparencyPage').then(m => ({ default: m.TransparencyPage })));
+
+const PageSuspenseFallback: React.FC = () => (
+  <div className="min-h-[60vh] max-w-7xl mx-auto px-4 py-8 space-y-6 animate-pulse">
+    <div className="w-48 h-6 bg-stone-200 rounded-lg" />
+    <div className="w-full h-44 sm:h-64 bg-stone-100 rounded-3xl" />
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="h-36 bg-stone-100 rounded-2xl" />
+      <div className="h-36 bg-stone-100 rounded-2xl" />
+      <div className="h-36 bg-stone-100 rounded-2xl" />
+    </div>
+  </div>
+);
 
 // Modals
 import { LoginModal } from './components/LoginModal';
@@ -629,8 +643,9 @@ export function App() {
           />
         )}
 
-        {/* 3. Page Router */}
-        {activeNav === 'profile' && (
+        {/* 3. Page Router with Code Splitting */}
+        <Suspense fallback={<PageSuspenseFallback />}>
+          {activeNav === 'profile' && (
           <ProfilePage
             currentUser={currentUser}
             onUpdateUser={(updated) => {
@@ -833,6 +848,7 @@ export function App() {
             onNavigateHome={() => navigateTo('home')}
           />
         )}
+        </Suspense>
 
         {(activeNav === 'home' || activeNav === 'all') && (
           <div className="flex flex-col gap-8 sm:gap-10">
@@ -987,6 +1003,9 @@ export function App() {
           </button>
         </div>
       )}
+
+      {/* Installable PWA Prompt Banner for Android / iOS */}
+      <InstallPwaBanner />
 
       {/* Master Village GIS Map Modal */}
       <VillageMasterMapModal

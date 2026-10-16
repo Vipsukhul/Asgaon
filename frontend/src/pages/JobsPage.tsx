@@ -412,11 +412,30 @@ export const JobsPage: React.FC<JobsPageProps> = ({ jobs = [], onApplyJob, onPos
           </div>
 
           {allJobs.length === 0 ? (
-            <div className="bg-white rounded-2xl p-12 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-              <div className="w-8 h-8 border-3 border-[#166534] border-t-transparent rounded-full animate-spin mb-1" />
-              <p className="text-[13px] font-bold text-[#166534]">
-                {lang === 'MR' ? 'नोकरी माहिती लोड होत आहे, कृपया प्रतीक्षा करा...' : 'Loading job vacancies...'}
-              </p>
+            <div className="space-y-4">
+              {[1, 2, 3].map((n) => (
+                <div
+                  key={n}
+                  className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs animate-pulse flex flex-col gap-3"
+                >
+                  <div className="flex flex-wrap items-center gap-2">
+                    <div className="w-16 h-5 bg-stone-200 rounded" />
+                    <div className="w-24 h-5 bg-stone-100 rounded" />
+                  </div>
+                  <div className="w-2/3 h-6 bg-stone-200 rounded" />
+                  <div className="w-1/3 h-4 bg-stone-100 rounded" />
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 bg-[#f9f3ea]/50 p-3 rounded-xl border border-[#e8e2d9]">
+                    <div className="h-12 bg-stone-100 rounded" />
+                    <div className="h-12 bg-stone-100 rounded" />
+                    <div className="h-12 bg-stone-100 rounded" />
+                  </div>
+                  <div className="w-full h-10 bg-stone-100 rounded" />
+                  <div className="pt-2 flex items-center justify-between">
+                    <div className="w-28 h-4 bg-stone-100 rounded" />
+                    <div className="w-28 h-9 bg-stone-200 rounded-xl" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : filtered.length === 0 ? (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">

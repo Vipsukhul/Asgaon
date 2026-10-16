@@ -169,6 +169,28 @@ public class EducationController {
         return ResponseEntity.ok(ApiResponse.ok(studyCenterRepository.findAll()));
     }
 
+    @GetMapping("/study-centers/{id}")
+    @Operation(summary = "Get study center by ID or slug")
+    public ResponseEntity<ApiResponse<StudyCenter>> getStudyCenterById(@PathVariable String id) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            return studyCenterRepository.findById(uuid)
+                    .map(s -> ResponseEntity.ok(ApiResponse.ok(s)))
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (IllegalArgumentException e) {
+            String clean = id.toLowerCase().trim();
+            return studyCenterRepository.findAll().stream()
+                    .filter(s -> {
+                        String name = s.getName().toLowerCase();
+                        String slug = name.replaceAll("[^a-z0-9]+", "-");
+                        return slug.equals(clean) || name.contains(clean) || clean.contains(slug);
+                    })
+                    .findFirst()
+                    .map(s -> ResponseEntity.ok(ApiResponse.ok(s)))
+                    .orElse(ResponseEntity.notFound().build());
+        }
+    }
+
     @PostMapping("/study-centers")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Add study center or tutor (Admin only)")
@@ -180,36 +202,46 @@ public class EducationController {
     @PutMapping("/study-centers/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update study center or tutor (Admin only)")
-    public ResponseEntity<ApiResponse<StudyCenter>> updateStudyCenter(@PathVariable UUID id, @RequestBody StudyCenter updated) {
-        return studyCenterRepository.findById(id).map(existing -> {
-            existing.setName(updated.getName());
-            existing.setType(updated.getType());
-            existing.setCategory(updated.getCategory());
-            existing.setSubjects(updated.getSubjects());
-            existing.setTiming(updated.getTiming());
-            existing.setPhone(updated.getPhone());
-            existing.setAddress(updated.getAddress());
-            existing.setFeesInfo(updated.getFeesInfo());
-            existing.setTotalDesks(updated.getTotalDesks());
-            existing.setAvailableDesks(updated.getAvailableDesks());
-            existing.setWifiSpeed(updated.getWifiSpeed());
-            existing.setBookCount(updated.getBookCount());
-            existing.setCaretakerName(updated.getCaretakerName());
-            existing.setCaretakerRole(updated.getCaretakerRole());
-            existing.setNoticeText(updated.getNoticeText());
-            StudyCenter saved = studyCenterRepository.save(existing);
-            return ResponseEntity.ok(ApiResponse.ok("Study center updated successfully", saved));
-        }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<ApiResponse<StudyCenter>> updateStudyCenter(@PathVariable String id, @RequestBody StudyCenter updated) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            return studyCenterRepository.findById(uuid).map(existing -> {
+                existing.setName(updated.getName());
+                existing.setType(updated.getType());
+                existing.setCategory(updated.getCategory());
+                existing.setSubjects(updated.getSubjects());
+                existing.setTiming(updated.getTiming());
+                existing.setPhone(updated.getPhone());
+                existing.setAddress(updated.getAddress());
+                existing.setFeesInfo(updated.getFeesInfo());
+                existing.setTotalDesks(updated.getTotalDesks());
+                existing.setAvailableDesks(updated.getAvailableDesks());
+                existing.setWifiSpeed(updated.getWifiSpeed());
+                existing.setBookCount(updated.getBookCount());
+                existing.setCaretakerName(updated.getCaretakerName());
+                existing.setCaretakerRole(updated.getCaretakerRole());
+                existing.setNoticeText(updated.getNoticeText());
+                StudyCenter saved = studyCenterRepository.save(existing);
+                return ResponseEntity.ok(ApiResponse.ok("Study center updated successfully", saved));
+            }).orElse(ResponseEntity.notFound().build());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping("/study-centers/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete study center or tutor (Admin only)")
-    public ResponseEntity<ApiResponse<String>> deleteStudyCenter(@PathVariable UUID id) {
-        if (!studyCenterRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<ApiResponse<String>> deleteStudyCenter(@PathVariable String id) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            if (!studyCenterRepository.existsById(uuid)) {
+                return ResponseEntity.notFound().build();
+            }
+            studyCenterRepository.deleteById(uuid);
+            return ResponseEntity.ok(ApiResponse.ok("Study center deleted successfully", id));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
         }
-        studyCenterRepository.deleteById(id);
-        return ResponseEntity.ok(ApiResponse.ok("Study center deleted successfully", id.toString()));
     }
 }

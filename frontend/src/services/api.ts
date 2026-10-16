@@ -430,6 +430,7 @@ export const api = {
   deleteScholarship: (id: string) => request<any>(`/education/scholarships/${id}`, { method: 'DELETE' }),
 
   getStudyCenters: (type?: string) => request<any[]>(`/education/study-centers${type ? `?type=${type}` : ''}`),
+  getStudyCenterById: (id: string) => request<any>(`/education/study-centers/${id}`),
   createStudyCenter: (payload: any) => request<any>('/education/study-centers', { method: 'POST', body: JSON.stringify(payload) }),
   updateStudyCenter: (id: string, payload: any) => request<any>(`/education/study-centers/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
   deleteStudyCenter: (id: string) => request<any>(`/education/study-centers/${id}`, { method: 'DELETE' }),

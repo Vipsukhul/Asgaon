@@ -43,6 +43,8 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
     return [];
   });
   const [isLoadingSchools, setIsLoadingSchools] = useState<boolean>(true);
+  const [isLoadingScholarships, setIsLoadingScholarships] = useState<boolean>(true);
+  const [isLoadingStudyCenters, setIsLoadingStudyCenters] = useState<boolean>(true);
 
   const [scholarships, setScholarships] = useState<ScholarshipItem[]>(() => {
     const saved = localStorage.getItem('dg_shiksha_scholarships');
@@ -119,14 +121,19 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
       if (isMounted) setIsLoadingSchools(false);
     });
 
+    setIsLoadingScholarships(true);
     api.getScholarships().then((res: any) => {
       const list = Array.isArray(res) ? res : (res?.data || []);
       if (isMounted && list.length > 0) {
         setScholarships(list);
         localStorage.setItem('dg_shiksha_scholarships', JSON.stringify(list));
       }
-    }).catch(err => console.error('Failed to load scholarships from DB:', err));
+    }).catch(err => console.error('Failed to load scholarships from DB:', err))
+      .finally(() => {
+        if (isMounted) setIsLoadingScholarships(false);
+      });
 
+    setIsLoadingStudyCenters(true);
     api.getStudyCenters().then((res: any) => {
       const list = Array.isArray(res) ? res : (res?.data || []);
       if (isMounted && list.length > 0) {
@@ -162,7 +169,10 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
           localStorage.setItem('dg_shiksha_tutors', JSON.stringify(mappedTutors));
         }
       }
-    }).catch(err => console.error('Failed to load study centers from DB:', err));
+    }).catch(err => console.error('Failed to load study centers from DB:', err))
+      .finally(() => {
+        if (isMounted) setIsLoadingStudyCenters(false);
+      });
 
     const handleStorageChange = () => {
       try {
@@ -838,26 +848,41 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
               </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {scholarships
-                .filter(sch => {
-                  if (scholarshipSearch.trim()) {
-                    const q = scholarshipSearch.toLowerCase();
+            {isLoadingScholarships && scholarships.length === 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[1, 2, 3, 4].map((n) => (
+                  <div key={n} className="border border-[#e8e2d9] rounded-xl p-4 bg-white animate-pulse space-y-3">
+                    <div className="flex justify-between items-center">
+                      <div className="w-24 h-4 bg-stone-200 rounded" />
+                      <div className="w-20 h-3 bg-stone-200 rounded" />
+                    </div>
+                    <div className="w-3/4 h-5 bg-stone-200 rounded" />
+                    <div className="w-full h-10 bg-stone-100 rounded" />
+                    <div className="w-full h-14 bg-stone-100 rounded-lg" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {scholarships
+                  .filter(sch => {
+                    if (scholarshipSearch.trim()) {
+                      const q = scholarshipSearch.toLowerCase();
+                      const title = (sch.title || '').toLowerCase();
+                      const badge = (sch.badge || '').toLowerCase();
+                      const desc = (sch.description || '').toLowerCase();
+                      if (!title.includes(q) && !badge.includes(q) && !desc.includes(q)) return false;
+                    }
+                    if (scholarshipFilter === 'all') return true;
                     const title = (sch.title || '').toLowerCase();
                     const badge = (sch.badge || '').toLowerCase();
-                    const desc = (sch.description || '').toLowerCase();
-                    if (!title.includes(q) && !badge.includes(q) && !desc.includes(q)) return false;
-                  }
-                  if (scholarshipFilter === 'all') return true;
-                  const title = (sch.title || '').toLowerCase();
-                  const badge = (sch.badge || '').toLowerCase();
-                  if (scholarshipFilter === 'matric') return title.includes('post') || badge.includes('post');
-                  if (scholarshipFilter === 'open') return title.includes('shahu') || badge.includes('open') || badge.includes('ews');
-                  if (scholarshipFilter === 'girls') return title.includes('phule') || title.includes('kanya') || badge.includes('girls');
-                  if (scholarshipFilter === 'merit') return title.includes('nmms') || badge.includes('merit');
-                  return true;
-                })
-                .map((sch) => (
+                    if (scholarshipFilter === 'matric') return title.includes('post') || badge.includes('post');
+                    if (scholarshipFilter === 'open') return title.includes('shahu') || badge.includes('open') || badge.includes('ews');
+                    if (scholarshipFilter === 'girls') return title.includes('phule') || title.includes('kanya') || badge.includes('girls');
+                    if (scholarshipFilter === 'merit') return title.includes('nmms') || badge.includes('merit');
+                    return true;
+                  })
+                  .map((sch) => (
                   <div key={sch.id} className="border border-[#e8e2d9] rounded-xl p-4 bg-white flex flex-col justify-between hover:shadow-md transition-all">
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
@@ -913,7 +938,8 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                     </div>
                   </div>
                 ))}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* SECTION 3: DOCUMENT CHECKLIST FOR MAHADBT */}
@@ -981,87 +1007,109 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
           </div>
 
           {/* SECTION 4: DR. APJ ABDUL KALAM ABHYASIKA (Dynamic) */}
-          <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-4">
-              <div className="flex items-center gap-2.5">
-                <LucideIcon name="local_library" className="text-[#006a4e] text-[26px]" />
-                <div>
-                  <h2 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#166534]">
-                    {abhyasika.title}
-                  </h2>
-                  <p className="text-[12px] text-[#707974]">
-                    {lang === 'MR' ? 'डिजिटल अभ्यासिका व स्पर्धा परीक्षा केंद्र — मोफत अभ्यास सुविधा' : 'Dedicated Free Digital Public Study Facility'}
-                  </p>
+          {isLoadingStudyCenters && !abhyasika.title ? (
+            <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-5 animate-pulse">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-stone-200" />
+                  <div className="space-y-2">
+                    <div className="w-48 sm:w-64 h-6 bg-stone-200 rounded" />
+                    <div className="w-40 sm:w-80 h-4 bg-stone-100 rounded" />
+                  </div>
                 </div>
+                <div className="w-32 h-6 bg-stone-200 rounded-full" />
               </div>
-              <span className="text-[11px] font-bold text-[#006a4e] bg-[#e8f1ec] px-3 py-1 rounded-full border border-[#cadbcf] self-start sm:self-auto">
-                {abhyasika.availableDesks} {lang === 'MR' ? 'जागा उपलब्ध (मोफत प्रवेश)' : 'Desks Available (Free)'}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div className="bg-[#f3ede4]/40 p-3.5 rounded-xl border border-[#e8e2d9] flex items-start gap-2.5">
-                <LucideIcon name="desk" className="text-[#006a4e] text-[22px] shrink-0" />
-                <div>
-                  <h4 className="font-bold text-[12px] text-[#166534]">
-                    {abhyasika.totalDesks} {lang === 'MR' ? 'रीडिंग डेस्क' : 'Reading Desks'}
-                  </h4>
-                  <p className="text-[11px] text-[#404945] mt-0.5">
-                    {lang === 'MR' ? 'शांत वातावरण, एर्गोनॉमिक चेअर्स व स्वतंत्र चार्जिंग पॉईंट्स.' : 'Quiet environment with dedicated power sockets.'}
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-[#f3ede4]/40 p-3.5 rounded-xl border border-[#e8e2d9] flex items-start gap-2.5">
-                <LucideIcon name="wifi" className="text-[#006a4e] text-[22px] shrink-0" />
-                <div>
-                  <h4 className="font-bold text-[12px] text-[#166534]">{abhyasika.wifiSpeed}</h4>
-                  <p className="text-[11px] text-[#404945] mt-0.5">
-                    {lang === 'MR' ? 'ऑनलाइन लेक्चर्स आणि मॉक टेस्टसाठी मोफत हाय-स्पीड इंटरनेट.' : 'Free high-speed internet for online lectures.'}
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-[#f3ede4]/40 p-3.5 rounded-xl border border-[#e8e2d9] flex items-start gap-2.5">
-                <LucideIcon name="menu_book" className="text-[#006a4e] text-[22px] shrink-0" />
-                <div>
-                  <h4 className="font-bold text-[12px] text-[#166534]">{abhyasika.bookCount}</h4>
-                  <p className="text-[11px] text-[#404945] mt-0.5">
-                    {lang === 'MR' ? 'MPSC, UPSC, पोलिस भरती, बँकिंग व संदर्भ पुस्तके.' : 'MPSC, UPSC, Police Bharti & competitive books.'}
-                  </p>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {[1, 2, 3].map((n) => (
+                  <div key={n} className="p-3.5 rounded-xl border border-[#e8e2d9] h-20 bg-stone-100" />
+                ))}
               </div>
             </div>
-
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-[#f3ede4]">
-              <div>
-                <span className="text-[10px] text-[#707974] block">{lang === 'MR' ? 'अभ्यासिका दैनंदिन वेळ:' : 'Daily Timings:'}</span>
-                <strong className="text-[12px] text-[#166534]">{abhyasika.timings}</strong>
-                <span className="text-[10px] text-[#55605a] block mt-0.5">
-                  {lang === 'MR' ? 'व्यवस्थापक:' : 'Caretaker:'} {abhyasika.caretakerName} ({abhyasika.caretakerRole})
+          ) : (
+            <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-4">
+                <div className="flex items-center gap-2.5">
+                  <LucideIcon name="local_library" className="text-[#006a4e] text-[26px]" />
+                  <div>
+                    <h2 className="font-heading font-extrabold text-[18px] sm:text-[20px] text-[#166534]">
+                      {abhyasika.title || (lang === 'MR' ? 'अभ्यासिका' : 'Study Center')}
+                    </h2>
+                    <p className="text-[12px] text-[#707974]">
+                      {lang === 'MR' ? 'डिजिटल अभ्यासिका व स्पर्धा परीक्षा केंद्र — मोफत अभ्यास सुविधा' : 'Dedicated Free Digital Public Study Facility'}
+                    </p>
+                  </div>
+                </div>
+                <span className="text-[11px] font-bold text-[#006a4e] bg-[#e8f1ec] px-3 py-1 rounded-full border border-[#cadbcf] self-start sm:self-auto">
+                  {abhyasika.availableDesks} {lang === 'MR' ? 'जागा उपलब्ध (मोफत प्रवेश)' : 'Desks Available (Free)'}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                {onSelectShikshaSlug && (
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="bg-[#f3ede4]/40 p-3.5 rounded-xl border border-[#e8e2d9] flex items-start gap-2.5">
+                  <LucideIcon name="desk" className="text-[#006a4e] text-[22px] shrink-0" />
+                  <div>
+                    <h4 className="font-bold text-[12px] text-[#166534]">
+                      {abhyasika.totalDesks} {lang === 'MR' ? 'रीडिंग डेस्क' : 'Reading Desks'}
+                    </h4>
+                    <p className="text-[11px] text-[#404945] mt-0.5">
+                      {lang === 'MR' ? 'शांत वातावरण, एर्गोनॉमिक चेअर्स व स्वतंत्र चार्जिंग पॉईंट्स.' : 'Quiet environment with dedicated power sockets.'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-[#f3ede4]/40 p-3.5 rounded-xl border border-[#e8e2d9] flex items-start gap-2.5">
+                  <LucideIcon name="wifi" className="text-[#006a4e] text-[22px] shrink-0" />
+                  <div>
+                    <h4 className="font-bold text-[12px] text-[#166534]">{abhyasika.wifiSpeed || '100 Mbps WiFi'}</h4>
+                    <p className="text-[11px] text-[#404945] mt-0.5">
+                      {lang === 'MR' ? 'ऑनलाइन लेक्चर्स आणि मॉक टेस्टसाठी मोफत हाय-स्पीड इंटरनेट.' : 'Free high-speed internet for online lectures.'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-[#f3ede4]/40 p-3.5 rounded-xl border border-[#e8e2d9] flex items-start gap-2.5">
+                  <LucideIcon name="menu_book" className="text-[#006a4e] text-[22px] shrink-0" />
+                  <div>
+                    <h4 className="font-bold text-[12px] text-[#166534]">{abhyasika.bookCount || '2,000+ Books'}</h4>
+                    <p className="text-[11px] text-[#404945] mt-0.5">
+                      {lang === 'MR' ? 'MPSC, UPSC, पोलिस भरती, बँकिंग व संदर्भ पुस्तके.' : 'MPSC, UPSC, Police Bharti & competitive books.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-[#f3ede4]">
+                <div>
+                  <span className="text-[10px] text-[#707974] block">{lang === 'MR' ? 'अभ्यासिका दैनंदिन वेळ:' : 'Daily Timings:'}</span>
+                  <strong className="text-[12px] text-[#166534]">{abhyasika.timings || '06:00 AM – 11:00 PM'}</strong>
+                  {abhyasika.caretakerName && (
+                    <span className="text-[10px] text-[#55605a] block mt-0.5">
+                      {lang === 'MR' ? 'व्यवस्थापक:' : 'Caretaker:'} {abhyasika.caretakerName} {abhyasika.caretakerRole ? `(${abhyasika.caretakerRole})` : ''}
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  {onSelectShikshaSlug && (
+                    <button
+                      type="button"
+                      onClick={() => onSelectShikshaSlug('abhyasika')}
+                      className="py-2.5 px-3.5 bg-[#002873] hover:bg-[#00174b] text-white text-[12px] font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto shrink-0"
+                    >
+                      <span>{lang === 'MR' ? 'अभ्यासिका संपूर्ण माहिती' : 'Full Study Hall Page'}</span>
+                      <LucideIcon name="arrow_forward" className="text-[15px]" />
+                    </button>
+                  )}
                   <button
-                    type="button"
-                    onClick={() => onSelectShikshaSlug('abhyasika')}
-                    className="py-2.5 px-3.5 bg-[#002873] hover:bg-[#00174b] text-white text-[12px] font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto shrink-0"
+                    onClick={() => setShowDeskModal(true)}
+                    className="py-2.5 px-4 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto shrink-0"
                   >
-                    <span>{lang === 'MR' ? 'अभ्यासिका संपूर्ण माहिती' : 'Full Study Hall Page'}</span>
-                    <LucideIcon name="arrow_forward" className="text-[15px]" />
+                    <LucideIcon name="how_to_reg" className="text-[16px]" />
+                    <span>{lang === 'MR' ? 'मोफत जागा आरक्षित करा' : 'Book Free Desk'}</span>
                   </button>
-                )}
-                <button
-                  onClick={() => setShowDeskModal(true)}
-                  className="py-2.5 px-4 bg-[#166534] hover:bg-[#052e16] text-white text-[12px] font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5 self-start sm:self-auto shrink-0"
-                >
-                  <LucideIcon name="how_to_reg" className="text-[16px]" />
-                  <span>{lang === 'MR' ? 'मोफत जागा आरक्षित करा' : 'Book Free Desk'}</span>
-                </button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* SECTION 5: LOCAL TUTORS, COACHING & SKILL CENTERS (Dynamic) */}
           <div className="bg-white rounded-2xl p-5 sm:p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
@@ -1079,37 +1127,54 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {tutors.map((tutor) => (
-                <div key={tutor.id} className="border border-[#e8e2d9] rounded-xl p-4 bg-white flex flex-col justify-between hover:shadow-xs transition-all">
-                  <div>
-                    <span className="bg-[#f3ede4] text-[#404945] text-[9px] font-bold px-2 py-0.5 rounded">
-                      {tutor.category}
-                    </span>
-                    <h3 className="font-heading font-bold text-[14px] text-[#166534] leading-snug mt-1.5">
-                      {tutor.name}
-                    </h3>
-                    <p className="text-[11px] text-[#404945] leading-relaxed mt-1">
-                      {tutor.subjects}
-                    </p>
-                    <p className="text-[10px] text-[#707974] bg-[#f3ede4]/50 p-1.5 rounded mt-2.5 truncate">
-                      {tutor.address} {tutor.timing ? `• ${tutor.timing}` : ''}
-                    </p>
+            {isLoadingStudyCenters && tutors.length === 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[1, 2, 3].map((n) => (
+                  <div key={n} className="border border-[#e8e2d9] rounded-xl p-4 bg-white animate-pulse space-y-3">
+                    <div className="w-20 h-4 bg-stone-200 rounded" />
+                    <div className="w-32 h-5 bg-stone-200 rounded" />
+                    <div className="w-full h-4 bg-stone-100 rounded" />
+                    <div className="w-24 h-4 bg-stone-100 rounded mt-4" />
                   </div>
-                  <div className="pt-3 mt-3 border-t border-[#f3ede4] flex items-center justify-between text-[11px]">
-                    <span className="text-[#006a4e] font-bold">{tutor.feesInfo || (lang === 'MR' ? 'सवलत दर' : 'Affordable')}</span>
-                    {tutor.phone ? (
-                      <a href={`tel:${tutor.phone}`} className="text-[#166534] font-bold hover:underline flex items-center gap-1">
-                        <LucideIcon name="call" className="text-[14px]" />
-                        <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
-                      </a>
-                    ) : (
-                      <span className="text-[#707974]">{lang === 'MR' ? 'माहिती उपलब्ध' : 'Verified'}</span>
-                    )}
+                ))}
+              </div>
+            ) : tutors.length === 0 ? (
+              <div className="py-6 text-center text-[13px] text-[#707974] bg-[#f9f7f4] rounded-xl border border-dashed border-[#e8e2d9]">
+                {lang === 'MR' ? 'सध्या कोणतीही नोंदणीकृत शिकवणी वर्ग उपलब्ध नाही.' : 'No registered tutors or coaching centers found.'}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {tutors.map((tutor) => (
+                  <div key={tutor.id} className="border border-[#e8e2d9] rounded-xl p-4 bg-white flex flex-col justify-between hover:shadow-xs transition-all">
+                    <div>
+                      <span className="bg-[#f3ede4] text-[#404945] text-[9px] font-bold px-2 py-0.5 rounded">
+                        {tutor.category}
+                      </span>
+                      <h3 className="font-heading font-bold text-[14px] text-[#166534] leading-snug mt-1.5">
+                        {tutor.name}
+                      </h3>
+                      <p className="text-[11px] text-[#404945] leading-relaxed mt-1">
+                        {tutor.subjects}
+                      </p>
+                      <p className="text-[10px] text-[#707974] bg-[#f3ede4]/50 p-1.5 rounded mt-2.5 truncate">
+                        {tutor.address} {tutor.timing ? `• ${tutor.timing}` : ''}
+                      </p>
+                    </div>
+                    <div className="pt-3 mt-3 border-t border-[#f3ede4] flex items-center justify-between text-[11px]">
+                      <span className="text-[#006a4e] font-bold">{tutor.feesInfo || (lang === 'MR' ? 'सवलत दर' : 'Affordable')}</span>
+                      {tutor.phone ? (
+                        <a href={`tel:${tutor.phone}`} className="text-[#166534] font-bold hover:underline flex items-center gap-1">
+                          <LucideIcon name="call" className="text-[14px]" />
+                          <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
+                        </a>
+                      ) : (
+                        <span className="text-[#707974]">{lang === 'MR' ? 'माहिती उपलब्ध' : 'Verified'}</span>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

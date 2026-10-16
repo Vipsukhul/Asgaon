@@ -410,11 +410,29 @@ export const TransparencyPage: React.FC<TransparencyPageProps> = ({ onNavigateHo
         {/* Works Cards */}
         <div className="space-y-3">
           {isLoading ? (
-            <div className="p-8 text-center bg-white rounded-2xl border border-stone-200 shadow-2xs">
-              <RefreshCw className="w-6 h-6 text-emerald-700 animate-spin mx-auto mb-2" />
-              <p className="text-xs font-bold text-stone-600">
-                {isMr ? 'ई-ग्रामस्वराज व सरकारी API वरून विकासकामे लोड होत आहेत...' : 'Loading approved works from Government API...'}
-              </p>
+            <div className="space-y-3">
+              {[1, 2, 3].map((n) => (
+                <div
+                  key={n}
+                  className="bg-white rounded-2xl p-4 sm:p-5 border border-stone-200 shadow-2xs animate-pulse flex flex-col gap-3"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-16 h-5 rounded-md bg-stone-200" />
+                      <div className="w-24 h-5 rounded-md bg-stone-100" />
+                    </div>
+                    <div className="w-28 h-6 rounded-full bg-stone-200" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="w-3/4 h-5 rounded bg-stone-200" />
+                    <div className="w-full h-3.5 rounded bg-stone-100" />
+                  </div>
+                  <div className="pt-3 border-t border-stone-100 flex items-center justify-between">
+                    <div className="w-32 h-4 rounded bg-stone-200" />
+                    <div className="w-20 h-4 rounded bg-stone-100" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : filteredWorks.length === 0 ? (
             <div className="p-8 text-center bg-white rounded-2xl border border-stone-200 text-stone-500 text-xs shadow-2xs">

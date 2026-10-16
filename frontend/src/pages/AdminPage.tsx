@@ -661,6 +661,46 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       })
       .catch((err) => console.error('Error fetching admin scholarships:', err));
 
+    api.getStudyCenters()
+      .then((res: any) => {
+        const list = Array.isArray(res) ? res : (res?.data || []);
+        if (list.length > 0) {
+          const lib = list.find((c: any) => c.type === 'LIBRARY');
+          if (lib) {
+            const abhy = {
+              id: lib.id,
+              title: lib.name,
+              totalDesks: lib.totalDesks || 40,
+              availableDesks: lib.availableDesks || 15,
+              timings: lib.timing || '06:00 AM – 11:00 PM',
+              caretakerName: lib.caretakerName || '',
+              caretakerRole: lib.caretakerRole || '',
+              wifiSpeed: lib.wifiSpeed || '',
+              bookCount: lib.bookCount || '',
+              noticeText: lib.noticeText || '',
+            };
+            setShikshaAbhyasika(abhy);
+            localStorage.setItem('dg_shiksha_abhyasika', JSON.stringify(abhy));
+          }
+          const tuts = list.filter((c: any) => c.type === 'TUTOR');
+          if (tuts.length > 0) {
+            const mappedTutors = tuts.map((t: any) => ({
+              id: t.id,
+              name: t.name,
+              category: t.category,
+              subjects: t.subjects,
+              timing: t.timing,
+              phone: t.phone,
+              address: t.address,
+              feesInfo: t.feesInfo,
+            }));
+            setShikshaTutors(mappedTutors);
+            localStorage.setItem('dg_shiksha_tutors', JSON.stringify(mappedTutors));
+          }
+        }
+      })
+      .catch((err) => console.error('Error fetching admin study centers:', err));
+
     api.getBuses()
       .then((res: any) => {
         const list = Array.isArray(res) ? res : (res?.data || []);
@@ -1518,18 +1558,48 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
     alert('शिष्यवृत्ती हटवली गेली!');
   };
 
-  const handleSaveAbhyasikaConfig = (e: React.FormEvent) => {
+  const handleSaveAbhyasikaConfig = async (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem('dg_shiksha_abhyasika', JSON.stringify(shikshaAbhyasika));
-    alert('अभ्यासिका संरचना यशस्वीरीत्या जतन केली!');
+    const payload = {
+      name: shikshaAbhyasika.title || 'डॉ. ए. पी. जे. अब्दुल कलाम अभ्यासिका',
+      type: 'LIBRARY',
+      category: 'अभ्यासिका',
+      totalDesks: Number(shikshaAbhyasika.totalDesks) || 40,
+      availableDesks: Number(shikshaAbhyasika.availableDesks) || 0,
+      timing: shikshaAbhyasika.timings || '',
+      caretakerName: shikshaAbhyasika.caretakerName || '',
+      caretakerRole: shikshaAbhyasika.caretakerRole || '',
+      wifiSpeed: shikshaAbhyasika.wifiSpeed || '',
+      bookCount: shikshaAbhyasika.bookCount || '',
+      noticeText: shikshaAbhyasika.noticeText || '',
+    };
+
+    try {
+      if (shikshaAbhyasika.id) {
+        const saved = await api.updateStudyCenter(shikshaAbhyasika.id, payload);
+        const updated = { ...shikshaAbhyasika, id: saved?.id || shikshaAbhyasika.id };
+        setShikshaAbhyasika(updated);
+        localStorage.setItem('dg_shiksha_abhyasika', JSON.stringify(updated));
+      } else {
+        const saved = await api.createStudyCenter(payload);
+        const updated = { ...shikshaAbhyasika, id: saved?.id };
+        setShikshaAbhyasika(updated);
+        localStorage.setItem('dg_shiksha_abhyasika', JSON.stringify(updated));
+      }
+      alert('अभ्यासिका संरचना डेटाबेसमध्ये यशस्वीरीत्या जतन केली!');
+    } catch (err) {
+      console.error('Failed to save abhyasika to DB:', err);
+      localStorage.setItem('dg_shiksha_abhyasika', JSON.stringify(shikshaAbhyasika));
+      alert('अभ्यासिका संरचना जतन झाली!');
+    }
   };
 
-  const handleSaveTutor = (e: React.FormEvent) => {
+  const handleSaveTutor = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!tutorForm.name.trim()) return;
-    const payload: TutorCenterItem = {
-      id: editingTutor ? editingTutor.id : 'tut-' + Date.now(),
+    const payload = {
       name: tutorForm.name.trim(),
+      type: 'TUTOR',
       category: tutorForm.category || 'खाजगी शिकवणी',
       subjects: tutorForm.subjects || '',
       timing: tutorForm.timing || '',
@@ -1538,16 +1608,60 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       feesInfo: tutorForm.feesInfo || '',
     };
 
-    let updated: TutorCenterItem[];
-    if (editingTutor) {
-      updated = shikshaTutors.map(t => t.id === editingTutor.id ? payload : t);
-      alert('शिकवणी वर्ग माहिती अद्ययावत केली!');
-    } else {
-      updated = [payload, ...shikshaTutors];
-      alert('नवीन शिकवणी वर्ग जोडला!');
+    try {
+      if (editingTutor && editingTutor.id && !editingTutor.id.startsWith('tut-')) {
+        const saved = await api.updateStudyCenter(editingTutor.id, payload);
+        const updatedItem: TutorCenterItem = {
+          id: saved?.id || editingTutor.id,
+          name: payload.name,
+          category: payload.category,
+          subjects: payload.subjects,
+          timing: payload.timing,
+          phone: payload.phone,
+          address: payload.address,
+          feesInfo: payload.feesInfo,
+        };
+        const updated = shikshaTutors.map(t => t.id === editingTutor.id ? updatedItem : t);
+        setShikshaTutors(updated);
+        localStorage.setItem('dg_shiksha_tutors', JSON.stringify(updated));
+        alert('शिकवणी वर्ग माहिती डेटाबेसमध्ये अद्ययावत केली!');
+      } else {
+        const saved = await api.createStudyCenter(payload);
+        const newItem: TutorCenterItem = {
+          id: saved?.id || ('tut-' + Date.now()),
+          name: payload.name,
+          category: payload.category,
+          subjects: payload.subjects,
+          timing: payload.timing,
+          phone: payload.phone,
+          address: payload.address,
+          feesInfo: payload.feesInfo,
+        };
+        const updated = [newItem, ...shikshaTutors.filter(t => t.id !== editingTutor?.id)];
+        setShikshaTutors(updated);
+        localStorage.setItem('dg_shiksha_tutors', JSON.stringify(updated));
+        alert('नवीन शिकवणी वर्ग डेटाबेसमध्ये जोडला!');
+      }
+    } catch (err) {
+      console.error('Failed to save tutor to DB:', err);
+      const fallbackItem: TutorCenterItem = {
+        id: editingTutor ? editingTutor.id : ('tut-' + Date.now()),
+        name: payload.name,
+        category: payload.category,
+        subjects: payload.subjects,
+        timing: payload.timing,
+        phone: payload.phone,
+        address: payload.address,
+        feesInfo: payload.feesInfo,
+      };
+      const updated = editingTutor
+        ? shikshaTutors.map(t => t.id === editingTutor.id ? fallbackItem : t)
+        : [fallbackItem, ...shikshaTutors];
+      setShikshaTutors(updated);
+      localStorage.setItem('dg_shiksha_tutors', JSON.stringify(updated));
+      alert('शिकवणी वर्ग जतन केला!');
     }
-    setShikshaTutors(updated);
-    localStorage.setItem('dg_shiksha_tutors', JSON.stringify(updated));
+
     setEditingTutor(null);
     setTutorForm({
       name: '',
@@ -1560,8 +1674,15 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
     });
   };
 
-  const handleDeleteTutor = (id: string) => {
+  const handleDeleteTutor = async (id: string) => {
     if (!window.confirm('हा वर्ग काढायचा आहे का?')) return;
+    try {
+      if (!id.startsWith('tut-')) {
+        await api.deleteStudyCenter(id);
+      }
+    } catch (err) {
+      console.error('Failed to delete study center from DB:', err);
+    }
     const filtered = shikshaTutors.filter(t => t.id !== id);
     setShikshaTutors(filtered);
     localStorage.setItem('dg_shiksha_tutors', JSON.stringify(filtered));

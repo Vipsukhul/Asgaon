@@ -581,9 +581,30 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
             <>
           {/* Cards List or Empty State */}
           {allBusinesses.length === 0 ? (
-            <div className="bg-white rounded-2xl p-12 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
-              <div className="w-8 h-8 border-3 border-[#166534] border-t-transparent rounded-full animate-spin mb-1" />
-              <p className="text-[13px] font-bold text-[#166534]">{lang === 'MR' ? 'दुकानांची माहिती लोड होत आहे...' : 'Loading local businesses...'}</p>
+            <div className="space-y-3">
+              {[1, 2, 3].map((n) => (
+                <div
+                  key={n}
+                  className="bg-white rounded-2xl p-4 sm:p-5 border border-[#e8e2d9] shadow-xs animate-pulse flex flex-col gap-3"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                    <div className="space-y-2 flex-1">
+                      <div className="w-16 h-4 bg-stone-200 rounded" />
+                      <div className="w-1/2 h-6 bg-stone-200 rounded" />
+                      <div className="w-1/3 h-4 bg-stone-100 rounded" />
+                    </div>
+                    <div className="w-16 h-6 bg-stone-100 rounded" />
+                  </div>
+                  <div className="w-3/4 h-3.5 bg-stone-100 rounded" />
+                  <div className="pt-3 border-t border-[#f3ede4] flex items-center justify-between">
+                    <div className="w-24 h-4 bg-stone-100 rounded" />
+                    <div className="flex gap-2">
+                      <div className="w-20 h-8 bg-stone-200 rounded-xl" />
+                      <div className="w-20 h-8 bg-stone-200 rounded-xl" />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : filtered.length === 0 ? (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
