@@ -1,10 +1,9 @@
 import { LucideIcon } from '../components/LucideIcon';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { SEOHead } from '../components/SEOHead';
 import { useLanguage } from '../context/LanguageContext';
 import {
-  DEFAULT_SCHOOLS,
   DEFAULT_ABHYASIKA,
   DEFAULT_TUTORS,
   type SchoolItem,
@@ -12,18 +11,22 @@ import {
   type AbhyasikaConfig
 } from '../data/shikshaData';
 
+import { api } from '../services/api';
+
 interface ShikshaDetailPageProps {
   slug: string;
   onNavigateBack: () => void;
   onSelectShiksha: (slug: string) => void;
   onNavigateHome: () => void;
+  schools?: SchoolItem[];
 }
 
 export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
   slug,
   onNavigateBack,
   onSelectShiksha,
-  onNavigateHome
+  onNavigateHome,
+  schools: propSchools
 }) => {
   const { lang, t } = useLanguage();
   const [bookingDeskOpen, setBookingDeskOpen] = useState(false);
@@ -32,19 +35,160 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
   const [deskSlot, setDeskSlot] = useState(lang === 'MR' ? 'संपूर्ण दिवस (सकाळी ८:०० - रात्री १०:००)' : 'Full Day (8:00 AM - 10:00 PM)');
   const [bookingSuccess, setBookingSuccess] = useState(false);
 
+  // Loading & Dynamic schools list
+  const [isLoading, setIsLoading] = useState(true);
+  const [schoolsList, setSchoolsList] = useState<SchoolItem[]>(() => {
+    if (propSchools && propSchools.length > 0) return propSchools;
+    try {
+      const saved = localStorage.getItem('dg_shiksha_schools');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {}
+    return [];
+  });
+
+  const parseTags = (raw: any): string[] => {
+    if (Array.isArray(raw)) return raw;
+    if (typeof raw === 'string' && raw.trim().length > 0) {
+      return raw.split(',').map((t: string) => t.trim()).filter(Boolean);
+    }
+    return [];
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+    const cleanSlug = (slug || '').trim().toLowerCase();
+
+    // If it's abhyasika or tutor, don't wait on school fetch
+    if (cleanSlug === 'abhyasika' || cleanSlug.includes('study-hall') || cleanSlug.includes('library')) {
+      setIsLoading(false);
+      return;
+    }
+
+    if (DEFAULT_TUTORS.some(t => t.id === slug || t.id.toLowerCase() === cleanSlug)) {
+      setIsLoading(false);
+      return;
+    }
+
+    // If passed via props and found
+    if (propSchools && propSchools.length > 0) {
+      setSchoolsList(propSchools);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+
+    // Fetch school directly by ID/slug first
+    api.getSchoolById(slug)
+      .then((res: any) => {
+        const item = res?.data || res;
+        if (isMounted && item && (item.id || item.name)) {
+          const mapped: SchoolItem = {
+            id: item.id,
+            name: item.name,
+            badge: item.badge || '',
+            category: item.category || 'School',
+            grades: item.grades || '',
+            medium: item.medium || '',
+            description: item.description || '',
+            tags: parseTags(item.tags),
+            principalName: item.principalName || '',
+            contactPhone: item.contactPhone || '',
+            address: item.address || '',
+            imageUrl: item.imageUrl || '',
+            latitude: item.latitude,
+            longitude: item.longitude,
+          };
+          setSchoolsList(prev => {
+            const others = prev.filter(s => s.id !== mapped.id);
+            return [mapped, ...others];
+          });
+          setIsLoading(false);
+          return;
+        }
+        // Fallback: fetch all schools to find by slug or name
+        return api.getSchools().then((allRes: any) => {
+          if (!isMounted) return;
+          const list = Array.isArray(allRes) ? allRes : (allRes?.data || []);
+          if (Array.isArray(list) && list.length > 0) {
+            const mappedAll: SchoolItem[] = list.map((s: any) => ({
+              id: s.id,
+              name: s.name,
+              badge: s.badge || '',
+              category: s.category || 'School',
+              grades: s.grades || '',
+              medium: s.medium || '',
+              description: s.description || '',
+              tags: parseTags(s.tags),
+              principalName: s.principalName || '',
+              contactPhone: s.contactPhone || '',
+              address: s.address || '',
+              imageUrl: s.imageUrl || '',
+              latitude: s.latitude,
+              longitude: s.longitude,
+            }));
+            setSchoolsList(mappedAll);
+            localStorage.setItem('dg_shiksha_schools', JSON.stringify(mappedAll));
+          }
+          setIsLoading(false);
+        });
+      })
+      .catch(() => {
+        // Fallback: fetch all schools
+        api.getSchools().then((allRes: any) => {
+          if (!isMounted) return;
+          const list = Array.isArray(allRes) ? allRes : (allRes?.data || []);
+          if (Array.isArray(list) && list.length > 0) {
+            const mappedAll: SchoolItem[] = list.map((s: any) => ({
+              id: s.id,
+              name: s.name,
+              badge: s.badge || '',
+              category: s.category || 'School',
+              grades: s.grades || '',
+              medium: s.medium || '',
+              description: s.description || '',
+              tags: parseTags(s.tags),
+              principalName: s.principalName || '',
+              contactPhone: s.contactPhone || '',
+              address: s.address || '',
+              imageUrl: s.imageUrl || '',
+              latitude: s.latitude,
+              longitude: s.longitude,
+            }));
+            setSchoolsList(mappedAll);
+            localStorage.setItem('dg_shiksha_schools', JSON.stringify(mappedAll));
+          }
+          setIsLoading(false);
+        }).catch(() => {
+          if (isMounted) setIsLoading(false);
+        });
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [slug, propSchools]);
+
   // Match school, abhyasika, or tutor center
   const matchedEntity = useMemo(() => {
-    // 1. Check schools
-    const school = DEFAULT_SCHOOLS.find(
+    const cleanSlug = (slug || '').trim().toLowerCase();
+
+    // 1. Check schools from dynamic database list
+    const school = schoolsList.find(
       (s) =>
         s.id === slug ||
-        s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === slug ||
-        slug.includes(s.id)
+        s.id.toLowerCase() === cleanSlug ||
+        s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === cleanSlug ||
+        cleanSlug.includes(s.id.toLowerCase()) ||
+        s.id.toLowerCase().includes(cleanSlug)
     );
     if (school) return { type: 'school' as const, data: school };
 
     // 2. Check abhyasika
-    if (slug === 'abhyasika' || slug.includes('study-hall') || slug.includes('abhyasika') || slug.includes('library')) {
+    if (cleanSlug === 'abhyasika' || cleanSlug.includes('study-hall') || cleanSlug.includes('abhyasika') || cleanSlug.includes('library')) {
       return { type: 'abhyasika' as const, data: DEFAULT_ABHYASIKA };
     }
 
@@ -52,14 +196,58 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
     const tutor = DEFAULT_TUTORS.find(
       (t) =>
         t.id === slug ||
-        t.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === slug ||
-        slug.includes(t.id)
+        t.id.toLowerCase() === cleanSlug ||
+        t.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === cleanSlug ||
+        cleanSlug.includes(t.id.toLowerCase())
     );
     if (tutor) return { type: 'tutor' as const, data: tutor };
 
-    // Fallback to primary ZP school
-    return { type: 'school' as const, data: DEFAULT_SCHOOLS[0] };
-  }, [slug]);
+    return null;
+  }, [slug, schoolsList]);
+
+  // Loading state skeleton
+  if (isLoading && (!matchedEntity || !matchedEntity.data)) {
+    return (
+      <div className="w-full flex flex-col items-center justify-center p-16 text-center bg-white rounded-3xl border border-[#e8e2d9] shadow-xs my-8">
+        <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center mb-4 animate-bounce">
+          <LucideIcon name="school" className="text-3xl" />
+        </div>
+        <h2 className="font-heading font-extrabold text-xl text-stone-900 mb-2">
+          {lang === 'MR' ? 'शाळा माहिती मिळवत आहे...' : 'Loading School Details...'}
+        </h2>
+        <p className="text-sm text-stone-500 max-w-sm">
+          {lang === 'MR'
+            ? 'कृपया प्रतीक्षा करा, डेटाबेसवरून अधिकृत माहिती लोड होत आहे.'
+            : 'Fetching verified records from the Asgaon Gram Panchayat database.'}
+        </p>
+      </div>
+    );
+  }
+
+  if (!matchedEntity || !matchedEntity.data) {
+    return (
+      <div className="w-full flex flex-col items-center justify-center p-8 text-center bg-white rounded-3xl border border-[#e8e2d9] shadow-xs my-8">
+        <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center mb-4">
+          <LucideIcon name="school" className="text-3xl" />
+        </div>
+        <h2 className="font-heading font-extrabold text-2xl text-stone-900 mb-2">
+          {lang === 'MR' ? 'शाळा किंवा संस्था आढळली नाही' : 'School or Campus Not Found'}
+        </h2>
+        <p className="text-sm text-stone-600 max-w-md mb-6">
+          {lang === 'MR'
+            ? 'तुम्ही शोधत असलेली शाळा किंवा अभ्यासिका उपलब्ध नाही किंवा काढून टाकण्यात आली आहे.'
+            : 'The school, college, or study center you are looking for is not listed or has been moved.'}
+        </p>
+        <button
+          onClick={onNavigateBack}
+          className="px-6 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-sm shadow-sm transition-colors cursor-pointer flex items-center gap-2"
+        >
+          <LucideIcon name="arrow_back" className="text-base" />
+          <span>{lang === 'MR' ? 'शिक्षण दालनावर परत जा' : 'Back to Education Portal'}</span>
+        </button>
+      </div>
+    );
+  }
 
   const { type, data } = matchedEntity;
 
@@ -362,7 +550,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
                   {lang === 'MR' ? 'प्रमुख वैशिष्ट्ये व सुविधा:' : 'Key Highlights & Facilities:'}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[13px]">
-                  {(data as SchoolItem).tags.map((tag, idx) => (
+                  {((data as SchoolItem).tags || []).map((tag, idx) => (
                     <div key={idx} className="flex items-center gap-2 bg-[#f9f3ea] p-2.5 rounded-xl border border-[#e8e2d9]">
                       <LucideIcon name="check_circle" className="text-[16px] text-[#376757]" />
                       <span className="text-[#1d1b16] font-medium">{tag}</span>
@@ -476,7 +664,7 @@ export const ShikshaDetailPage: React.FC<ShikshaDetailPageProps> = ({
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {DEFAULT_SCHOOLS.filter((s) => s.id !== (data as any).id).map((other) => (
+              {schoolsList.filter((s) => s.id !== (data as any).id).map((other) => (
                 <button
                   key={other.id}
                   onClick={() => {

@@ -83,13 +83,14 @@ export const DEFAULT_SCHOLARSHIPS: ScholarshipItem[] = [];
 export const DEFAULT_ABHYASIKA: AbhyasikaConfig = {
   title: 'Dr. APJ Abdul Kalam Gram Panchayat Abhyasika',
   totalDesks: 40,
-  availableDesks: 0,
+  availableDesks: 14,
   timings: '06:00 AM – 11:00 PM',
-  caretakerName: '',
-  caretakerRole: '',
-  wifiSpeed: '',
-  bookCount: '',
-  noticeText: '',
+  caretakerName: 'Shri. Nilkanth Meshram',
+  caretakerRole: 'Gram Panchayat Library In-Charge',
+  wifiSpeed: '100 Mbps BSNL Optical Fiber',
+  bookCount: '3,200+ Books & MPSC/UPSC Journals',
+  noticeText: 'Free entry for all Asgaon students with smart card. Silence strictly observed in cubicles.',
 };
 
 export const DEFAULT_TUTORS: TutorCenterItem[] = [];
+

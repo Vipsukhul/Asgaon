@@ -41,11 +41,25 @@ public class EducationController {
     }
 
     @GetMapping("/schools/{id}")
-    @Operation(summary = "Get school by ID")
-    public ResponseEntity<ApiResponse<School>> getSchoolById(@PathVariable UUID id) {
-        return schoolRepository.findById(id)
-                .map(s -> ResponseEntity.ok(ApiResponse.ok(s)))
-                .orElse(ResponseEntity.notFound().build());
+    @Operation(summary = "Get school by ID or slug")
+    public ResponseEntity<ApiResponse<School>> getSchoolById(@PathVariable String id) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            return schoolRepository.findById(uuid)
+                    .map(s -> ResponseEntity.ok(ApiResponse.ok(s)))
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (IllegalArgumentException e) {
+            String clean = id.toLowerCase().trim();
+            return schoolRepository.findAll().stream()
+                    .filter(s -> {
+                        String name = s.getName().toLowerCase();
+                        String slug = name.replaceAll("[^a-z0-9]+", "-");
+                        return slug.equals(clean) || name.contains(clean) || clean.contains(slug);
+                    })
+                    .findFirst()
+                    .map(s -> ResponseEntity.ok(ApiResponse.ok(s)))
+                    .orElse(ResponseEntity.notFound().build());
+        }
     }
 
     @PostMapping("/schools")
@@ -59,35 +73,45 @@ public class EducationController {
     @PutMapping("/schools/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update school information (Admin only)")
-    public ResponseEntity<ApiResponse<School>> updateSchool(@PathVariable UUID id, @RequestBody School updated) {
-        return schoolRepository.findById(id).map(existing -> {
-            existing.setName(updated.getName());
-            existing.setBadge(updated.getBadge());
-            existing.setCategory(updated.getCategory());
-            existing.setGrades(updated.getGrades());
-            existing.setMedium(updated.getMedium());
-            existing.setDescription(updated.getDescription());
-            existing.setTags(updated.getTags());
-            existing.setPrincipalName(updated.getPrincipalName());
-            existing.setContactPhone(updated.getContactPhone());
-            existing.setAddress(updated.getAddress());
-            existing.setImageUrl(updated.getImageUrl());
-            existing.setLatitude(updated.getLatitude());
-            existing.setLongitude(updated.getLongitude());
-            School saved = schoolRepository.save(existing);
-            return ResponseEntity.ok(ApiResponse.ok("School updated successfully", saved));
-        }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<ApiResponse<School>> updateSchool(@PathVariable String id, @RequestBody School updated) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            return schoolRepository.findById(uuid).map(existing -> {
+                existing.setName(updated.getName());
+                existing.setBadge(updated.getBadge());
+                existing.setCategory(updated.getCategory());
+                existing.setGrades(updated.getGrades());
+                existing.setMedium(updated.getMedium());
+                existing.setDescription(updated.getDescription());
+                existing.setTags(updated.getTags());
+                existing.setPrincipalName(updated.getPrincipalName());
+                existing.setContactPhone(updated.getContactPhone());
+                existing.setAddress(updated.getAddress());
+                existing.setImageUrl(updated.getImageUrl());
+                existing.setLatitude(updated.getLatitude());
+                existing.setLongitude(updated.getLongitude());
+                School saved = schoolRepository.save(existing);
+                return ResponseEntity.ok(ApiResponse.ok("School updated successfully", saved));
+            }).orElse(ResponseEntity.notFound().build());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping("/schools/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a school (Admin only)")
-    public ResponseEntity<ApiResponse<String>> deleteSchool(@PathVariable UUID id) {
-        if (!schoolRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<ApiResponse<String>> deleteSchool(@PathVariable String id) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            if (!schoolRepository.existsById(uuid)) {
+                return ResponseEntity.notFound().build();
+            }
+            schoolRepository.deleteById(uuid);
+            return ResponseEntity.ok(ApiResponse.ok("School deleted successfully", id));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
         }
-        schoolRepository.deleteById(id);
-        return ResponseEntity.ok(ApiResponse.ok("School deleted successfully", id.toString()));
     }
 
     // --- Scholarships ---

@@ -168,6 +168,7 @@ import {
   Images,
   Newspaper,
   Contact,
+  Video,
   type LucideProps
 } from 'lucide-react';
 
@@ -184,6 +185,15 @@ const ICON_MAP: Record<string, React.ComponentType<LucideProps>> = {
   contact: Contact,
   add: Plus,
   add_a_photo: Camera,
+  camera: Camera,
+  photo_camera: Camera,
+  camera_alt: Camera,
+  camera_enhance: Camera,
+  camera_front: Camera,
+  camera_rear: Camera,
+  video: Video,
+  video_camera: Video,
+  videocam: Video,
   add_business: Store,
   add_circle: PlusCircle,
   add_photo_alternate: ImagePlus,

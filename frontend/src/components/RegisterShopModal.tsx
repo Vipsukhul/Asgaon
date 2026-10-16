@@ -52,30 +52,24 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleDetectGps = () => {
-    if (!navigator.geolocation) {
-      setGpsStatus('ब्राउझरमध्ये GPS सेवा उपलब्ध नाही.');
-      return;
-    }
+  const handleDetectGps = async () => {
     setLocatingGps(true);
-    setGpsStatus('थेट GPS स्थान शोधत आहे...');
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const lat = Number(pos.coords.latitude.toFixed(6));
-        const lng = Number(pos.coords.longitude.toFixed(6));
-        setLatitude(lat);
-        setLongitude(lng);
-        setLocatingGps(false);
-        setGpsStatus(`✓ अचूक GPS स्थान मिळाले! (${lat}, ${lng})`);
-        setShowMapPicker(true);
-      },
-      (err) => {
-        setLocatingGps(false);
-        setGpsStatus(`GPS त्रुटी (${err.message}). कृपया खालील नकाशावर जागा निवडा.`);
-        setShowMapPicker(true);
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-    );
+    setGpsStatus('थेट GPS स्थान व पत्ता शोधत आहे...');
+    try {
+      const loc = await api.detectLocationWithAddress();
+      setLatitude(loc.latitude);
+      setLongitude(loc.longitude);
+      setLocatingGps(false);
+      setGpsStatus(`✓ अचूक GPS स्थान मिळाले! (${loc.latitude}, ${loc.longitude})`);
+      if (loc.formattedAddress && !landmark) {
+        setLandmark(loc.formattedAddress);
+      }
+      setShowMapPicker(true);
+    } catch (err: any) {
+      setLocatingGps(false);
+      setGpsStatus(`GPS त्रुटी (${err.message || 'स्थान शोधण्यात अडचण'}). कृपया खालील पर्यायांमधून जागा निवडा.`);
+      setShowMapPicker(true);
+    }
   };
 
   const handlePresetChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

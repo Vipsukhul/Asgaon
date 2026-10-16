@@ -14,7 +14,6 @@ import type {
   ShikshaNotice
 } from '../data/shikshaData';
 import {
-  DEFAULT_SCHOOLS,
   DEFAULT_SCHOLARSHIPS,
   DEFAULT_ABHYASIKA,
   DEFAULT_TUTORS,
@@ -36,10 +35,14 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
   const [schools, setSchools] = useState<SchoolItem[]>(() => {
     const saved = localStorage.getItem('dg_shiksha_schools');
     if (saved) {
-      try { return JSON.parse(saved); } catch { /* ignore */ }
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch { /* ignore */ }
     }
-    return DEFAULT_SCHOOLS;
+    return [];
   });
+  const [isLoadingSchools, setIsLoadingSchools] = useState<boolean>(true);
 
   const [scholarships, setScholarships] = useState<ScholarshipItem[]>(() => {
     const saved = localStorage.getItem('dg_shiksha_scholarships');
@@ -85,29 +88,36 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
   // Fetch directly from PostgreSQL database on load
   useEffect(() => {
     let isMounted = true;
+    setIsLoadingSchools(true);
     api.getSchools().then((res: any) => {
       const list = Array.isArray(res) ? res : (res?.data || []);
-      if (isMounted && list.length > 0) {
-        const mapped = list.map((s: any) => ({
-          id: s.id,
-          name: s.name,
-          badge: s.badge || '',
-          category: s.category,
-          grades: s.grades || '',
-          medium: s.medium || '',
-          description: s.description || '',
-          tags: s.tags ? s.tags.split(',').map((t: string) => t.trim()) : [],
-          principalName: s.principalName || '',
-          contactPhone: s.contactPhone || '',
-          address: s.address || '',
-          imageUrl: s.imageUrl || '',
-          latitude: s.latitude,
-          longitude: s.longitude,
-        }));
-        setSchools(mapped);
-        localStorage.setItem('dg_shiksha_schools', JSON.stringify(mapped));
+      if (isMounted) {
+        if (list.length > 0) {
+          const mapped = list.map((s: any) => ({
+            id: s.id,
+            name: s.name,
+            badge: s.badge || '',
+            category: s.category,
+            grades: s.grades || '',
+            medium: s.medium || '',
+            description: s.description || '',
+            tags: typeof s.tags === 'string' ? s.tags.split(',').map((t: string) => t.trim()).filter(Boolean) : (Array.isArray(s.tags) ? s.tags : []),
+            principalName: s.principalName || '',
+            contactPhone: s.contactPhone || '',
+            address: s.address || '',
+            imageUrl: s.imageUrl || '',
+            latitude: s.latitude,
+            longitude: s.longitude,
+          }));
+          setSchools(mapped);
+          localStorage.setItem('dg_shiksha_schools', JSON.stringify(mapped));
+        }
+        setIsLoadingSchools(false);
       }
-    }).catch(err => console.error('Failed to load schools from DB:', err));
+    }).catch(err => {
+      console.error('Failed to load schools from DB:', err);
+      if (isMounted) setIsLoadingSchools(false);
+    });
 
     api.getScholarships().then((res: any) => {
       const list = Array.isArray(res) ? res : (res?.data || []);
@@ -492,8 +502,23 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
             )}
 
             <div className="flex flex-col gap-4">
-              {schools
-                .filter(s => {
+              {isLoadingSchools && schools.length === 0 ? (
+                <div className="flex flex-col gap-3 py-2">
+                  {[1, 2].map((n) => (
+                    <div key={n} className="border border-[#e8e2d9] rounded-2xl p-4 bg-white flex flex-col md:flex-row gap-4 animate-pulse">
+                      <div className="w-full md:w-44 h-36 rounded-xl bg-stone-200 shrink-0" />
+                      <div className="flex-1 flex flex-col justify-between py-1">
+                        <div className="space-y-2">
+                          <div className="w-32 h-5 bg-stone-200 rounded" />
+                          <div className="w-3/4 h-6 bg-stone-200 rounded" />
+                          <div className="w-full h-4 bg-stone-200 rounded" />
+                        </div>
+                        <div className="w-48 h-4 bg-stone-200 rounded mt-4" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : schools.filter(s => {
                   if (schoolSearch.trim()) {
                     const q = schoolSearch.toLowerCase();
                     const name = (s.name || '').toLowerCase();
@@ -509,100 +534,125 @@ export const ShikshaPage: React.FC<ShikshaPageProps> = ({ onNavigateHome, onSele
                   if (schoolCategoryFilter === 'technical') return cat.includes('tech') || cat.includes('iti') || name.includes('iti');
                   if (schoolCategoryFilter === 'hostel') return cat.includes('hostel') || name.includes('hostel');
                   return true;
-                })
-                .map((school) => (
-                  <div key={school.id} className="border border-[#e8e2d9] rounded-xl p-4 hover:shadow-md transition-all bg-white flex flex-col md:flex-row gap-4">
-                    <div className="w-full md:w-44 h-36 rounded-lg overflow-hidden bg-[#f3ede4] shrink-0">
-                      <img
-                        src={school.imageUrl || "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80"}
-                        alt={school.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                        <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
-                          <span className="bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[10px] font-extrabold px-2 py-0.5 rounded">
-                            {school.badge}
-                          </span>
-                          <span className="bg-[#f3ede4] text-[#404945] text-[10px] font-bold px-2 py-0.5 rounded">
-                            {school.medium}
-                          </span>
-                          <span className="bg-[#fef9ee] text-[#c2410c] text-[10px] font-bold px-2 py-0.5 rounded border border-[#fde68a]">
-                            {lang === 'MR' ? 'इयत्ता:' : 'Grades:'} {school.grades}
-                          </span>
-                        </div>
-                        <h3 className="font-heading font-bold text-[16px] text-[#166534] leading-snug hover:text-[#c2410c] transition-colors">
-                          {onSelectShikshaSlug ? (
-                            <a
-                              href={`/shiksha/${school.id}`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                onSelectShikshaSlug(school.id);
-                              }}
-                              className="hover:underline"
-                            >
-                              {school.name}
-                            </a>
-                          ) : (
-                            school.name
-                          )}
-                        </h3>
-                        <p className="text-[12px] text-[#404945] leading-relaxed mt-1">
-                          {school.description}
-                        </p>
-                        {school.tags && school.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 text-[11px] text-[#55605a] mt-2">
-                            {school.tags.map((tag, i) => (
-                              <span key={i} className="bg-[#f3ede4]/60 px-2 py-0.5 rounded">
-                                {tag}
-                              </span>
-                            ))}
+                }).length === 0 ? (
+                <div className="border border-[#e8e2d9] rounded-2xl p-8 bg-white text-center text-stone-500 text-sm">
+                  {lang === 'MR' ? 'कोणतीही शाळा आढळली नाही.' : 'No schools found matching your search.'}
+                </div>
+              ) : (
+                schools
+                  .filter(s => {
+                    if (schoolSearch.trim()) {
+                      const q = schoolSearch.toLowerCase();
+                      const name = (s.name || '').toLowerCase();
+                      const cat = (s.category || '').toLowerCase();
+                      const badge = (s.badge || '').toLowerCase();
+                      if (!name.includes(q) && !cat.includes(q) && !badge.includes(q)) return false;
+                    }
+                    if (schoolCategoryFilter === 'all') return true;
+                    const cat = (s.category || '').toLowerCase();
+                    const name = (s.name || '').toLowerCase();
+                    if (schoolCategoryFilter === 'highschool') return cat.includes('high') || cat.includes('college') || name.includes('high');
+                    if (schoolCategoryFilter === 'primary') return cat.includes('primary') || name.includes('primary');
+                    if (schoolCategoryFilter === 'technical') return cat.includes('tech') || cat.includes('iti') || name.includes('iti');
+                    if (schoolCategoryFilter === 'hostel') return cat.includes('hostel') || name.includes('hostel');
+                    return true;
+                  })
+                  .map((school) => (
+                    <div
+                      key={school.id}
+                      onClick={() => onSelectShikshaSlug?.(school.id)}
+                      className="border border-[#e8e2d9] rounded-2xl p-4 hover:shadow-md hover:border-emerald-600/40 transition-all bg-white flex flex-col md:flex-row gap-4 cursor-pointer group"
+                    >
+                      <div className="w-full md:w-44 h-36 rounded-xl overflow-hidden bg-[#f3ede4] shrink-0">
+                        <img
+                          src={school.imageUrl || "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80"}
+                          alt={school.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="flex-1 flex flex-col justify-between">
+                        <div>
+                          <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+                            <span className="bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[10px] font-extrabold px-2 py-0.5 rounded">
+                              {school.badge}
+                            </span>
+                            <span className="bg-[#f3ede4] text-[#404945] text-[10px] font-bold px-2 py-0.5 rounded">
+                              {school.medium}
+                            </span>
+                            <span className="bg-[#fef9ee] text-[#c2410c] text-[10px] font-bold px-2 py-0.5 rounded border border-[#fde68a]">
+                              {lang === 'MR' ? 'इयत्ता:' : 'Grades:'} {school.grades}
+                            </span>
                           </div>
-                        )}
-                      </div>
-
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-3 mt-3 border-t border-[#f3ede4]">
-                        <span className="text-[11px] text-[#707974]">
-                          {school.principalName ? `${lang === 'MR' ? 'मुख्याध्यापक:' : 'Headmaster:'} ${school.principalName}` : school.address} {school.contactPhone ? `(${school.contactPhone})` : ''}
-                        </span>
-                        <div className="flex items-center gap-2">
-                          {onSelectShikshaSlug && (
-                            <button
-                              type="button"
-                              onClick={() => onSelectShikshaSlug(school.id)}
-                              className="py-1.5 px-3 bg-[#002873] hover:bg-[#00174b] text-white text-[11px] font-bold rounded-lg transition-colors inline-flex items-center gap-1 shadow-xs"
-                            >
-                              <span>{lang === 'MR' ? 'माहिती पहा' : 'Campus Page'}</span>
-                              <LucideIcon name="arrow_forward" className="text-[13px]" />
-                            </button>
+                          <h3 className="font-heading font-bold text-[16px] text-[#166534] leading-snug group-hover:text-[#c2410c] transition-colors">
+                            {onSelectShikshaSlug ? (
+                              <span className="hover:underline">
+                                {school.name}
+                              </span>
+                            ) : (
+                              school.name
+                            )}
+                          </h3>
+                          <p className="text-[12px] text-[#404945] leading-relaxed mt-1">
+                            {school.description}
+                          </p>
+                          {school.tags && school.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 text-[11px] text-[#55605a] mt-2">
+                              {school.tags.map((tag, i) => (
+                                <span key={i} className="bg-[#f3ede4]/60 px-2 py-0.5 rounded">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
                           )}
-                          {school.contactPhone ? (
-                            <a
-                              href={`tel:${school.contactPhone}`}
-                              className="py-1.5 px-3 bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold rounded-lg transition-colors inline-flex items-center gap-1"
-                            >
-                              <LucideIcon name="call" className="text-[14px]" />
-                              <span>{lang === 'MR' ? 'संपर्क साधा' : 'Call School'}</span>
-                            </a>
-                          ) : null}
-                          {school.latitude && school.longitude ? (
-                            <a
-                              href={`https://www.google.com/maps/dir/?api=1&destination=${school.latitude},${school.longitude}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="py-1.5 px-3 bg-[#e8f1ec] hover:bg-[#cadbcf] text-[#14532d] text-[11px] font-bold rounded-lg transition-colors inline-flex items-center gap-1"
-                              title={lang === 'MR' ? 'गुगल मॅपवर दिशा पहा' : 'View on Google Maps'}
-                            >
-                              <LucideIcon name="navigation" className="text-[13px]" />
-                              <span>{lang === 'MR' ? 'दिशा / नकाशा' : 'Directions'}</span>
-                            </a>
-                          ) : null}
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-3 mt-3 border-t border-[#f3ede4]">
+                          <span className="text-[11px] text-[#707974]">
+                            {school.principalName ? `${lang === 'MR' ? 'मुख्याध्यापक:' : 'Headmaster:'} ${school.principalName}` : school.address} {school.contactPhone ? `(${school.contactPhone})` : ''}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            {onSelectShikshaSlug && (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onSelectShikshaSlug(school.id);
+                                }}
+                                className="py-1.5 px-3 bg-[#002873] hover:bg-[#00174b] text-white text-[11px] font-bold rounded-lg transition-colors inline-flex items-center gap-1 shadow-xs cursor-pointer"
+                              >
+                                <span>{lang === 'MR' ? 'माहिती पहा' : 'Campus Page'}</span>
+                                <LucideIcon name="arrow_forward" className="text-[13px]" />
+                              </button>
+                            )}
+                            {school.contactPhone ? (
+                              <a
+                                href={`tel:${school.contactPhone}`}
+                                onClick={(e) => e.stopPropagation()}
+                                className="py-1.5 px-3 bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold rounded-lg transition-colors inline-flex items-center gap-1 cursor-pointer"
+                              >
+                                <LucideIcon name="call" className="text-[14px]" />
+                                <span>{lang === 'MR' ? 'संपर्क साधा' : 'Call School'}</span>
+                              </a>
+                            ) : null}
+                            {school.latitude && school.longitude ? (
+                              <a
+                                href={`https://www.google.com/maps/dir/?api=1&destination=${school.latitude},${school.longitude}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="py-1.5 px-3 bg-[#e8f1ec] hover:bg-[#cadbcf] text-[#14532d] text-[11px] font-bold rounded-lg transition-colors inline-flex items-center gap-1 cursor-pointer"
+                                title={lang === 'MR' ? 'गुगल मॅपवर दिशा पहा' : 'View on Google Maps'}
+                              >
+                                <LucideIcon name="navigation" className="text-[13px]" />
+                                <span>{lang === 'MR' ? 'दिशा / नकाशा' : 'Directions'}</span>
+                              </a>
+                            ) : null}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+              )}
             </div>
           </div>
 

@@ -1,5 +1,12 @@
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
 
+import {
+  getCurrentCoordinates,
+  reverseGeocodeLocation,
+  detectCurrentLocationWithAddress,
+  ASGAON_VILLAGE_LANDMARKS
+} from './locationService';
+
 export interface ApiResponse<T> {
   success: boolean;
   message: string;
@@ -412,6 +419,7 @@ export const api = {
 
   // --- Education / Shiksha ---
   getSchools: () => request<any[]>('/education/schools'),
+  getSchoolById: (id: string) => request<any>(`/education/schools/${id}`),
   createSchool: (payload: any) => request<any>('/education/schools', { method: 'POST', body: JSON.stringify(payload) }),
   updateSchool: (id: string, payload: any) => request<any>(`/education/schools/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
   deleteSchool: (id: string) => request<any>(`/education/schools/${id}`, { method: 'DELETE' }),
@@ -466,4 +474,18 @@ export const api = {
   getBusinessReviews: (businessId: string) => request<any[]>(`/reviews/business/${businessId}`),
   submitReview: (payload: any) => request<any>('/reviews', { method: 'POST', body: JSON.stringify(payload) }),
   deleteReview: (id: string) => request<any>(`/reviews/${id}`, { method: 'DELETE' }),
+
+  // --- Location & Geocoding API ---
+  getCurrentLocation: () => getCurrentCoordinates(),
+  reverseGeocode: (lat: number, lon: number) => reverseGeocodeLocation(lat, lon),
+  detectLocationWithAddress: () => detectCurrentLocationWithAddress(),
+  getVillageLandmarks: () => ASGAON_VILLAGE_LANDMARKS,
 };
+
+export {
+  getCurrentCoordinates,
+  reverseGeocodeLocation,
+  detectCurrentLocationWithAddress,
+  ASGAON_VILLAGE_LANDMARKS
+} from './locationService';
+export type { LocationAddressResult, VillageLandmark } from './locationService';

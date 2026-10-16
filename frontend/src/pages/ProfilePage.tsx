@@ -5,7 +5,7 @@ import type { Scheme, Business, Job } from '../types';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { useLanguage } from '../context/LanguageContext';
 import { useToast } from '../context/ToastContext';
-import { isPushSubscribed, subscribeUserToPush, unsubscribeUserFromPush } from '../services/pushNotifications';
+import { isPushSubscribed, subscribeUserToPush, unsubscribeUserFromPush, sendTestPushNotification } from '../services/pushNotifications';
 
 export interface UserProfileData {
   fullName: string;
@@ -125,6 +125,30 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       toast.error(errorMsg || (isMr ? 'पुश सूचना बदलताना त्रुटी आली' : 'Failed to update push notifications'));
     } finally {
       setPushToggling(false);
+    }
+  };
+
+  const [sendingTestPush, setSendingTestPush] = useState(false);
+
+  const handleSendTestPush = async () => {
+    setSendingTestPush(true);
+    try {
+      const res = await sendTestPushNotification(
+        isMr ? '🔔 आसगाव ग्राम सूचना चाचणी' : '🔔 Asgaon Civic Alert Test',
+        isMr
+          ? 'पुश नोटिफिकेशन्स तुमच्या डिव्हाइसवर उत्तमरीत्या सक्रिय आहेत. (बाजारभाव व ग्रामसभा सूचना)'
+          : 'Push notifications are working smoothly on your device! (APMC rates & Village notices)',
+        '/announcements'
+      );
+      toast.success(
+        res.message || (isMr ? 'चाचणी सूचना पाठवली' : 'Test Alert Dispatched'),
+        isMr ? 'यशस्वी' : 'Success'
+      );
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(msg || (isMr ? 'चाचणी पाठवता आली नाही' : 'Failed to send test push'));
+    } finally {
+      setSendingTestPush(false);
     }
   };
 
@@ -629,152 +653,311 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
       {/* 5. Main Content Tabs */}
       {activeTab === 'overview' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
-            <div>
-              <h3 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2">
-                <LucideIcon name="badge" className="text-[#c2410c]" />
-                <span>{isMr ? 'आसगाव नागरिक अभिलेख' : 'Asgaon Citizen Record & Profile'}</span>
-              </h3>
-              <p className="text-[12px] text-[#707974]">
-                {isMr ? 'सत्यापित गाव नागरिक माहिती' : 'Verified village resident profile'}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
-                <div className="text-[11px] uppercase font-bold text-[#707974]">
-                  {isMr ? 'पूर्ण नाव' : 'Full Name'}
-                </div>
-                <div className="font-heading font-extrabold text-[15px] text-[#166534] mt-0.5">
-                  {currentUser.fullName}
-                </div>
-                <div className="text-[11px] text-[#707974] mt-0.5">
-                  {isMr ? 'आसगाव ग्रामस्थ नोंद' : 'Asgaon Village Resident'}
-                </div>
-              </div>
-
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
-                <div className="text-[11px] uppercase font-bold text-[#707974]">
-                  {isMr ? 'संपर्क मोबाईल' : 'Contact Phone'}
-                </div>
-                <div className="font-heading font-extrabold text-[15px] text-[#166534] mt-0.5">
-                  +91 {currentUser.phone || '9822104500'}
-                </div>
-                <div className="text-[11px] text-[#376757] font-semibold mt-0.5">
-                  {isMr ? 'एसएमएस सूचना जोडल्या आहेत' : 'SMS Notification Subscribed'}
-                </div>
-              </div>
-
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
-                <div className="text-[11px] uppercase font-bold text-[#707974]">
-                  {isMr ? 'प्रभाग व वस्ती' : 'Ward & Settlement'}
-                </div>
-                <div className="font-heading font-extrabold text-[15px] text-[#166534] mt-0.5">
-                  {currentUser.ward || (isMr ? 'प्रभाग २ (गावठाण)' : 'Ward 2 (Gaothan)')}
-                </div>
-                <div className="text-[11px] text-[#707974] mt-0.5">
-                  {isMr ? 'ग्रामसेवक कार्यक्षेत्र: झोन ब' : 'Gram Sevak Sector: Zone B'}
-                </div>
-              </div>
-
-              <div className="bg-[#f9f3ea] p-4 rounded-xl border border-[#e8e2d9]">
-                <div className="text-[11px] uppercase font-bold text-[#707974]">
-                  {isMr ? 'नागरी भूमिका / प्रोफाइल' : 'Civic Role / Profile'}
-                </div>
-                <div className="font-heading font-extrabold text-[15px] text-[#c2410c] mt-0.5">
-                  {getRoleLabel(currentUser.role)}
-                </div>
-                <div className="text-[11px] text-[#707974] mt-0.5">
-                  {isMr ? 'सक्रिय नागरिक पोर्टल सदस्य' : 'Active Civic Portal User'}
-                </div>
-              </div>
-            </div>
-
-            <div className="p-4 bg-[#e8f1ec] border border-[#006a4e]/30 rounded-xl flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <LucideIcon name="verified_user" className="text-[24px] text-[#006a4e]" />
+          {/* Left 2 Columns: Personal Details & Language Preference */}
+          <div className="lg:col-span-2 flex flex-col gap-6">
+            <div className="bg-white rounded-3xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs flex flex-col gap-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f3ede4] pb-4">
                 <div>
-                  <h4 className="font-bold text-[13px] text-[#166534]">
-                    {isMr ? 'डीबीटी थेट बँक खात्याशी जोडणी सक्रिय' : 'DBT Direct-to-Bank Enrolment Active'}
-                  </h4>
-                  <p className="text-[11px] text-[#404945]">
-                    {isMr
-                      ? 'पीएम-किसान व शासकीय अनुदानासाठी आधार जोडणी प्रमाणित.'
-                      : 'NPCI Aadhaar mapping linked for PM-Kisan & State Subsidies.'}
+                  <h3 className="font-heading font-extrabold text-[18px] text-[#166534] flex items-center gap-2">
+                    <LucideIcon name="badge" className="text-[#c2410c]" />
+                    <span>{isMr ? 'आसगाव नागरिक अभिलेख' : 'Asgaon Citizen Record & Profile'}</span>
+                  </h3>
+                  <p className="text-[12px] text-[#707974] mt-0.5">
+                    {isMr ? 'ग्रामपंचायत आसगाव अधिकृत नागरिक नोंदणी माहिती' : 'Gram Panchayat Asgaon verified resident profile record'}
                   </p>
                 </div>
+                <span className="self-start sm:self-auto text-[11px] font-extrabold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                  {isMr ? 'नोंदणीकृत नागरिक' : 'Registered Citizen'}
+                </span>
               </div>
-              <span className="text-[11px] font-bold text-[#006a4e] bg-white px-2.5 py-1 rounded-lg border border-[#006a4e]/20 shrink-0">
-                {isMr ? 'सक्रिय' : 'ACTIVE'}
-              </span>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="bg-[#f9f3ea] p-4 rounded-2xl border border-[#e8e2d9]">
+                  <div className="text-[11px] uppercase font-bold text-[#707974]">
+                    {isMr ? 'पूर्ण नाव' : 'Full Name'}
+                  </div>
+                  <div className="font-heading font-extrabold text-[15px] text-[#166534] mt-0.5">
+                    {currentUser.fullName}
+                  </div>
+                  <div className="text-[11px] text-[#707974] mt-0.5">
+                    {isMr ? 'आसगाव अधिकृत ग्रामस्थ नोंद' : 'Asgaon Official Resident Entry'}
+                  </div>
+                </div>
+
+                <div className="bg-[#f9f3ea] p-4 rounded-2xl border border-[#e8e2d9]">
+                  <div className="text-[11px] uppercase font-bold text-[#707974]">
+                    {isMr ? 'संपर्क मोबाईल' : 'Contact Phone'}
+                  </div>
+                  <div className="font-heading font-extrabold text-[15px] text-[#166534] mt-0.5">
+                    +91 {currentUser.phone || '9822104500'}
+                  </div>
+                  <div className="text-[11px] text-[#376757] font-semibold mt-0.5 flex items-center gap-1">
+                    <LucideIcon name="check" className="text-[13px]" />
+                    <span>{isMr ? 'एसएमएस व थेट सूचना सक्रिय' : 'SMS & Direct Alerts Linked'}</span>
+                  </div>
+                </div>
+
+                <div className="bg-[#f9f3ea] p-4 rounded-2xl border border-[#e8e2d9]">
+                  <div className="text-[11px] uppercase font-bold text-[#707974]">
+                    {isMr ? 'प्रभाग व वस्ती' : 'Ward & Settlement'}
+                  </div>
+                  <div className="font-heading font-extrabold text-[15px] text-[#166534] mt-0.5">
+                    {currentUser.ward || (isMr ? 'प्रभाग २ (गावठाण)' : 'Ward 2 (Gaothan)')}
+                  </div>
+                  <div className="text-[11px] text-[#707974] mt-0.5">
+                    {isMr ? 'ग्रामसेवक कार्यक्षेत्र: झोन ब (४४१९१०)' : 'Gram Sevak Sector: Zone B (PIN 441910)'}
+                  </div>
+                </div>
+
+                <div className="bg-[#f9f3ea] p-4 rounded-2xl border border-[#e8e2d9]">
+                  <div className="text-[11px] uppercase font-bold text-[#707974]">
+                    {isMr ? 'व्यवसाय / कार्यक्षेत्र' : 'Occupation / Profession'}
+                  </div>
+                  <div className="font-heading font-extrabold text-[15px] text-[#c2410c] mt-0.5">
+                    {currentUser.occupation || (isMr ? 'शेतकरी / कास्तकार' : 'Farmer / Cultivator')}
+                  </div>
+                  <div className="text-[11px] text-[#707974] mt-0.5">
+                    {isMr ? 'स्थानिक आर्थिक क्षेत्र' : 'Primary Village Trade'}
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 bg-[#e8f1ec] border border-[#006a4e]/30 rounded-2xl flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <LucideIcon name="verified_user" className="text-[24px] text-[#006a4e] shrink-0" />
+                  <div>
+                    <h4 className="font-bold text-[13px] text-[#166534]">
+                      {isMr ? 'डीबीटी थेट बँक खात्याशी जोडणी सक्रिय' : 'DBT Direct-to-Bank Enrolment Active'}
+                    </h4>
+                    <p className="text-[11px] text-[#404945]">
+                      {isMr
+                        ? 'पीएम-किसान, घरकुल व लाडकी बहीण अनुदानासाठी आधार जोडणी प्रमाणित.'
+                        : 'NPCI Aadhaar mapping linked for PM-Kisan & State Subsidies.'}
+                    </p>
+                  </div>
+                </div>
+                <span className="text-[11px] font-bold text-[#006a4e] bg-white px-2.5 py-1 rounded-lg border border-[#006a4e]/20 shrink-0">
+                  {isMr ? 'सक्रिय' : 'ACTIVE'}
+                </span>
+              </div>
+            </div>
+
+            {/* Default Language Setting Section */}
+            <div className="bg-white rounded-3xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div>
+                  <h3 className="font-heading font-extrabold text-[17px] text-[#166534] flex items-center gap-2">
+                    <LucideIcon name="globe" className="text-[#006a4e]" />
+                    <span>{isMr ? 'पोर्टलची डीफॉल्ट भाषा (Default Language)' : 'Portal Default Language'}</span>
+                  </h3>
+                  <p className="text-[12px] text-[#707974] mt-0.5">
+                    {isMr
+                      ? 'गावातील पोर्टल वापरण्यासाठी तुमची पसंतीची भाषा निवडा. ही निवड तुमच्या प्रोफाइलमध्ये कायम सेव्ह केली जाईल.'
+                      : 'Choose your default language for browsing the village portal. This is saved to your profile and device.'}
+                  </p>
+                </div>
+                <span className="px-3 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 self-start sm:self-auto">
+                  {lang === 'MR' ? 'सध्याची भाषा: मराठी' : 'Current: English'}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <button
+                  type="button"
+                  onClick={() => handleSetDefaultLanguage('MR')}
+                  className={`p-4 rounded-xl border flex items-center justify-between transition-all cursor-pointer text-left ${
+                    lang === 'MR'
+                      ? 'border-emerald-600 bg-emerald-50/80 text-emerald-950 ring-2 ring-emerald-600/20 shadow-xs'
+                      : 'border-[#e8e2d9] bg-white text-stone-700 hover:bg-[#faf6ee]'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${lang === 'MR' ? 'bg-emerald-800 text-white' : 'bg-stone-100 text-stone-600'}`}>
+                      <LucideIcon name="globe" className="text-[20px]" />
+                    </div>
+                    <div>
+                      <div className="font-heading font-extrabold text-[15px] text-emerald-950">मराठी (Default)</div>
+                      <div className="text-[11px] text-stone-500 font-medium">स्थानिक बोली व शासकीय परिभाषा</div>
+                    </div>
+                  </div>
+                  {lang === 'MR' && (
+                    <LucideIcon name="check_circle" className="text-[22px] text-emerald-800 shrink-0" />
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleSetDefaultLanguage('EN')}
+                  className={`p-4 rounded-xl border flex items-center justify-between transition-all cursor-pointer text-left ${
+                    lang === 'EN'
+                      ? 'border-emerald-600 bg-emerald-50/80 text-emerald-950 ring-2 ring-emerald-600/20 shadow-xs'
+                      : 'border-[#e8e2d9] bg-white text-stone-700 hover:bg-[#faf6ee]'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${lang === 'EN' ? 'bg-emerald-800 text-white' : 'bg-stone-100 text-stone-600'}`}>
+                      <LucideIcon name="globe" className="text-[20px]" />
+                    </div>
+                    <div>
+                      <div className="font-heading font-extrabold text-[15px] text-emerald-950">English</div>
+                      <div className="text-[11px] text-stone-500 font-medium">Standard civic portal layout</div>
+                    </div>
+                  </div>
+                  {lang === 'EN' && (
+                    <LucideIcon name="check_circle" className="text-[22px] text-emerald-800 shrink-0" />
+                  )}
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Default Language Setting Section in Profile */}
-          <div className="bg-white rounded-2xl p-6 border border-[#e8e2d9] shadow-xs md:col-span-2">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          {/* Right Column: Digital Citizen Smart Card & Quick Action Hub */}
+          <div className="lg:col-span-1 flex flex-col gap-6">
+            {/* 1. Digital Asgaon Citizen ID Card */}
+            <div className="rounded-3xl p-6 bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 text-white shadow-md border border-emerald-700/50 relative overflow-hidden flex flex-col justify-between min-h-[300px]">
+              <div className="absolute top-0 right-0 -mr-8 -mt-8 w-36 h-36 bg-emerald-700/30 rounded-full blur-2xl pointer-events-none" />
+
               <div>
-                <h3 className="font-heading font-extrabold text-[17px] text-[#166534] flex items-center gap-2">
-                  <LucideIcon name="globe" className="text-[#006a4e]" />
-                  <span>{isMr ? 'पोर्टलची डीफॉल्ट भाषा (Default Language)' : 'Portal Default Language'}</span>
-                </h3>
-                <p className="text-[12px] text-[#707974] mt-0.5">
-                  {isMr
-                    ? 'गावातील पोर्टल वापरण्यासाठी तुमची पसंतीची भाषा निवडा. ही निवड तुमच्या प्रोफाइलमध्ये कायम सेव्ह केली जाईल.'
-                    : 'Choose your default language for browsing the village portal. This is saved to your profile and device.'}
-                </p>
+                <div className="flex items-center justify-between mb-4 border-b border-emerald-700/50 pb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-[11px] font-extrabold uppercase tracking-widest text-emerald-200">
+                      {isMr ? 'डिजिटल गावकरी कार्ड' : 'Citizen Smart Pass'}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-800 text-emerald-200 border border-emerald-600/40">
+                    आसगाव ४४१९१०
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3.5 mb-4">
+                  <div className="w-13 h-13 rounded-2xl overflow-hidden bg-emerald-950 border-2 border-emerald-400/40 flex items-center justify-center font-black text-xl text-emerald-200 shrink-0 shadow-sm">
+                    {currentUser.profileImage ? (
+                      <img src={currentUser.profileImage} alt={currentUser.fullName} className="w-full h-full object-cover" />
+                    ) : (
+                      <span>{currentUser.avatarInitials}</span>
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="font-heading font-extrabold text-base text-white truncate">
+                      {currentUser.fullName}
+                    </h4>
+                    <p className="text-[12px] text-emerald-200/90 truncate">
+                      {currentUser.ward || 'Ward 2 (Gaothan)'}
+                    </p>
+                    <p className="text-[11px] text-emerald-300/80 font-medium truncate">
+                      {currentUser.occupation || 'Farmer / Cultivator'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-emerald-950/70 p-3 rounded-2xl border border-emerald-700/40 space-y-1.5 text-xs mb-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-emerald-300/80">{isMr ? 'नागरिक नोंदणी क्र.:' : 'Citizen ID:'}</span>
+                    <span className="font-mono font-extrabold text-white">
+                      #ASG-CIT-{userPhoneDigits ? userPhoneDigits.slice(-4) : '4500'}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-emerald-300/80">{isMr ? 'स्थानीय अधिकार क्षेत्र:' : 'Jurisdiction:'}</span>
+                    <span className="font-semibold text-emerald-100">पवनी, भंडारा</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-emerald-300/80">{isMr ? 'सत्यापन स्थिती:' : 'Status:'}</span>
+                    <span className="text-[11px] font-extrabold text-emerald-300 bg-emerald-900/80 px-2 py-0.2 rounded border border-emerald-700/60">
+                      ✓ {isMr ? 'प्रमाणित' : 'Verified'}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <span className="px-3 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 self-start sm:self-auto">
-                {lang === 'MR' ? 'सध्याची भाषा: मराठी' : 'Current: English'}
-              </span>
+
+              <div className="pt-2 flex items-center justify-between gap-2 border-t border-emerald-700/50">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const id = `#ASG-CIT-${userPhoneDigits ? userPhoneDigits.slice(-4) : '4500'}`;
+                    navigator.clipboard.writeText(id);
+                    toast.success(
+                      isMr ? `नागरिक आयडी ${id} क्लिपबोर्डवर कॉपी झाला!` : `Citizen ID ${id} copied to clipboard!`,
+                      isMr ? 'कॉपी केले' : 'Copied'
+                    );
+                  }}
+                  className="w-full py-2 px-3 rounded-xl bg-emerald-700/60 hover:bg-emerald-700 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 border border-emerald-500/30 cursor-pointer"
+                >
+                  <LucideIcon name="share" className="text-sm" />
+                  <span>{isMr ? 'नागरिक आयडी कॉपी करा' : 'Copy Citizen ID'}</span>
+                </button>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              <button
-                type="button"
-                onClick={() => handleSetDefaultLanguage('MR')}
-                className={`p-4 rounded-xl border flex items-center justify-between transition-all cursor-pointer text-left ${
-                  lang === 'MR'
-                    ? 'border-emerald-600 bg-emerald-50/80 text-emerald-950 ring-2 ring-emerald-600/20 shadow-xs'
-                    : 'border-[#e8e2d9] bg-white text-stone-700 hover:bg-[#faf6ee]'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${lang === 'MR' ? 'bg-emerald-800 text-white' : 'bg-stone-100 text-stone-600'}`}>
-                    <LucideIcon name="globe" className="text-[20px]" />
-                  </div>
-                  <div>
-                    <div className="font-heading font-extrabold text-[15px] text-emerald-950">मराठी (Default)</div>
-                    <div className="text-[11px] text-stone-500 font-medium">स्थानिक बोली व शासकीय परिभाषा</div>
-                  </div>
-                </div>
-                {lang === 'MR' && (
-                  <LucideIcon name="check_circle" className="text-[22px] text-emerald-800 shrink-0" />
-                )}
-              </button>
+            {/* 2. Quick Action Hub */}
+            <div className="bg-white rounded-3xl p-6 border border-[#e8e2d9] shadow-xs flex flex-col gap-3">
+              <h4 className="font-heading font-extrabold text-[16px] text-stone-900 flex items-center gap-2">
+                <LucideIcon name="bolt" className="text-amber-600 text-lg" />
+                <span>{isMr ? 'नागरिक जलद कृती' : 'Citizen Quick Actions'}</span>
+              </h4>
 
-              <button
-                type="button"
-                onClick={() => handleSetDefaultLanguage('EN')}
-                className={`p-4 rounded-xl border flex items-center justify-between transition-all cursor-pointer text-left ${
-                  lang === 'EN'
-                    ? 'border-emerald-600 bg-emerald-50/80 text-emerald-950 ring-2 ring-emerald-600/20 shadow-xs'
-                    : 'border-[#e8e2d9] bg-white text-stone-700 hover:bg-[#faf6ee]'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${lang === 'EN' ? 'bg-emerald-800 text-white' : 'bg-stone-100 text-stone-600'}`}>
-                    <LucideIcon name="globe" className="text-[20px]" />
-                  </div>
-                  <div>
-                    <div className="font-heading font-extrabold text-[15px] text-emerald-950">English</div>
-                    <div className="text-[11px] text-stone-500 font-medium">Standard civic portal layout</div>
-                  </div>
-                </div>
-                {lang === 'EN' && (
-                  <LucideIcon name="check_circle" className="text-[22px] text-emerald-800 shrink-0" />
+              <div className="flex flex-col gap-2 pt-1 text-xs font-bold">
+                {onOpenRegisterShop && (
+                  <button
+                    type="button"
+                    onClick={onOpenRegisterShop}
+                    className="w-full p-3 rounded-xl border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50/50 text-stone-800 hover:text-emerald-950 flex items-center justify-between transition-all cursor-pointer shadow-2xs"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center border border-emerald-200">
+                        <LucideIcon name="storefront" className="text-base" />
+                      </div>
+                      <span>{isMr ? 'दुकान / व्यवसाय नोंदवा' : 'Register Shop / Enterprise'}</span>
+                    </div>
+                    <LucideIcon name="arrow_forward" className="text-stone-400 text-sm" />
+                  </button>
                 )}
-              </button>
+
+                {onOpenPostJob && (
+                  <button
+                    type="button"
+                    onClick={onOpenPostJob}
+                    className="w-full p-3 rounded-xl border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50/50 text-stone-800 hover:text-emerald-950 flex items-center justify-between transition-all cursor-pointer shadow-2xs"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-800 flex items-center justify-center border border-indigo-200">
+                        <LucideIcon name="work" className="text-base" />
+                      </div>
+                      <span>{isMr ? 'कामगार / रोजगाराची जाहिरात द्या' : 'Post Local Job Vacancy'}</span>
+                    </div>
+                    <LucideIcon name="arrow_forward" className="text-stone-400 text-sm" />
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleSendTestPush}
+                  disabled={sendingTestPush}
+                  className="w-full p-3 rounded-xl border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50/50 text-stone-800 hover:text-emerald-950 flex items-center justify-between transition-all cursor-pointer shadow-2xs"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-800 flex items-center justify-center border border-purple-200">
+                      <LucideIcon name="cell_tower" className="text-base" />
+                    </div>
+                    <span>{isMr ? 'पुश सूचना चाचणी घ्या' : 'Test Device Push Alerts'}</span>
+                  </div>
+                  <LucideIcon name="arrow_forward" className="text-stone-400 text-sm" />
+                </button>
+
+                <a
+                  href="tel:9822104500"
+                  className="w-full p-3 rounded-xl border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50/50 text-stone-800 hover:text-emerald-950 flex items-center justify-between transition-all cursor-pointer shadow-2xs"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-800 flex items-center justify-center border border-rose-200">
+                      <LucideIcon name="phone" className="text-base" />
+                    </div>
+                    <span>{isMr ? 'ग्रामसेवक कार्यालय थेट फोन' : 'Call Gram Sevak Desk'}</span>
+                  </div>
+                  <span className="text-[11px] text-stone-500 font-mono">9822104500</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -1121,25 +1304,44 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={handleToggleWebPush}
-              disabled={pushToggling}
-              className={`px-4 py-2 rounded-xl text-[12px] font-bold transition-all shrink-0 shadow-xs flex items-center gap-1.5 cursor-pointer ${
-                pushEnabled
-                  ? 'bg-white hover:bg-[#fef3c7] text-[#ba1a1a] border border-[#fef3c7]'
-                  : 'bg-[#166534] hover:bg-[#052e16] text-white'
-              }`}
-            >
-              <LucideIcon name={pushToggling ? 'sync' : pushEnabled ? 'notifications_off' : 'notifications_active'} className=" text-[16px]" />
-              <span>
-                {pushToggling
-                  ? (isMr ? 'अद्ययावत करत आहे...' : 'Updating...')
-                  : pushEnabled
-                  ? (isMr ? 'सूचना बंद करा' : 'Turn Off Alerts')
-                  : (isMr ? 'पुश सूचना सुरू करा' : 'Enable Device Push')}
-              </span>
-            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              {pushEnabled && (
+                <button
+                  type="button"
+                  onClick={handleSendTestPush}
+                  disabled={sendingTestPush}
+                  className="px-3.5 py-2 rounded-xl text-[12px] font-bold bg-[#e8f1ec] hover:bg-[#cadbcf] text-[#14532d] border border-[#cadbcf] transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                  title={isMr ? "डिव्हाइसवर तात्काळ चाचणी सूचना पाठवून खात्री करा" : "Send an instant test notification to this device"}
+                >
+                  <LucideIcon name={sendingTestPush ? 'sync' : 'cell_tower'} className={`text-[15px] ${sendingTestPush ? 'animate-spin' : ''}`} />
+                  <span>
+                    {sendingTestPush
+                      ? (isMr ? 'पाठवत आहे...' : 'Testing...')
+                      : (isMr ? 'चाचणी सूचना पाठवा' : 'Send Test Alert')}
+                  </span>
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={handleToggleWebPush}
+                disabled={pushToggling}
+                className={`px-4 py-2 rounded-xl text-[12px] font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer ${
+                  pushEnabled
+                    ? 'bg-white hover:bg-[#fef3c7] text-[#ba1a1a] border border-stone-200 hover:border-[#fde68a]'
+                    : 'bg-[#166534] hover:bg-[#052e16] text-white'
+                }`}
+              >
+                <LucideIcon name={pushToggling ? 'sync' : pushEnabled ? 'notifications_off' : 'notifications_active'} className={`text-[16px] ${pushToggling ? 'animate-spin' : ''}`} />
+                <span>
+                  {pushToggling
+                    ? (isMr ? 'अद्ययावत करत आहे...' : 'Updating...')
+                    : pushEnabled
+                    ? (isMr ? 'सूचना बंद करा' : 'Turn Off Alerts')
+                    : (isMr ? 'पुश सूचना सुरू करा' : 'Enable Device Push')}
+                </span>
+              </button>
+            </div>
           </div>
 
           <div className="space-y-3 text-[13px]">

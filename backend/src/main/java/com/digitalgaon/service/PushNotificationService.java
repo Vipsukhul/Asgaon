@@ -58,16 +58,39 @@ public class PushNotificationService {
                 this.activePrivateKey = configuredPrivateKey.trim();
                 log.info("VAPID Keys loaded from configuration.");
             } else {
-                // Generate a valid ephemeral VAPID keypair if none supplied
-                java.security.KeyPairGenerator kpg = java.security.KeyPairGenerator.getInstance("ECDSA", BouncyCastleProvider.PROVIDER_NAME);
-                org.bouncycastle.jce.spec.ECParameterSpec ecSpec = org.bouncycastle.jce.ECNamedCurveTable.getParameterSpec("prime256v1");
-                kpg.initialize(ecSpec);
-                KeyPair keyPair = kpg.generateKeyPair();
-                byte[] pubBytes = Utils.encode((org.bouncycastle.jce.interfaces.ECPublicKey) keyPair.getPublic());
-                byte[] privBytes = Utils.encode((org.bouncycastle.jce.interfaces.ECPrivateKey) keyPair.getPrivate());
-                this.activePublicKey = Base64.getUrlEncoder().withoutPadding().encodeToString(pubBytes);
-                this.activePrivateKey = Base64.getUrlEncoder().withoutPadding().encodeToString(privBytes);
-                log.info("Generated active VAPID keypair for Web Push.");
+                java.io.File keyFile = new java.io.File(".vapid_keys");
+                if (keyFile.exists()) {
+                    java.util.Properties props = new java.util.Properties();
+                    try (java.io.FileInputStream fis = new java.io.FileInputStream(keyFile)) {
+                        props.load(fis);
+                        this.activePublicKey = props.getProperty("publicKey");
+                        this.activePrivateKey = props.getProperty("privateKey");
+                        log.info("Loaded persistent VAPID keypair from .vapid_keys file.");
+                    } catch (Exception ex) {
+                        log.warn("Failed reading .vapid_keys, regenerating: {}", ex.getMessage());
+                    }
+                }
+
+                if (this.activePublicKey == null || this.activePrivateKey == null) {
+                    java.security.KeyPairGenerator kpg = java.security.KeyPairGenerator.getInstance("ECDSA", BouncyCastleProvider.PROVIDER_NAME);
+                    org.bouncycastle.jce.spec.ECParameterSpec ecSpec = org.bouncycastle.jce.ECNamedCurveTable.getParameterSpec("prime256v1");
+                    kpg.initialize(ecSpec);
+                    KeyPair keyPair = kpg.generateKeyPair();
+                    byte[] pubBytes = Utils.encode((org.bouncycastle.jce.interfaces.ECPublicKey) keyPair.getPublic());
+                    byte[] privBytes = Utils.encode((org.bouncycastle.jce.interfaces.ECPrivateKey) keyPair.getPrivate());
+                    this.activePublicKey = Base64.getUrlEncoder().withoutPadding().encodeToString(pubBytes);
+                    this.activePrivateKey = Base64.getUrlEncoder().withoutPadding().encodeToString(privBytes);
+
+                    try (java.io.FileOutputStream fos = new java.io.FileOutputStream(keyFile)) {
+                        java.util.Properties props = new java.util.Properties();
+                        props.setProperty("publicKey", this.activePublicKey);
+                        props.setProperty("privateKey", this.activePrivateKey);
+                        props.store(fos, "Persistent DigitalGaon Asgaon VAPID Keys");
+                        log.info("Saved generated VAPID keypair to .vapid_keys file.");
+                    } catch (Exception ex) {
+                        log.warn("Could not write .vapid_keys file: {}", ex.getMessage());
+                    }
+                }
             }
 
             this.pushService = new PushService();
