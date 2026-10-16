@@ -6,9 +6,12 @@ import { Breadcrumb } from '../components/Breadcrumb';
 import { SEOHead } from '../components/SEOHead';
 import { useLanguage } from '../context/LanguageContext';
 import { SchemeEligibilityModal } from '../components/SchemeEligibilityModal';
+import { SchemeGridSkeleton } from '../components/SkeletonLoaders';
+import { useOptimisticBookmarks } from '../hooks/useOptimisticState';
 
 interface SchemesPageProps {
   schemes?: Scheme[];
+  isLoading?: boolean;
   onBookmarkScheme?: (scheme: any) => void;
   onNavigateHome?: () => void;
   onSelectScheme?: (slug: string) => void;
@@ -16,11 +19,13 @@ interface SchemesPageProps {
 
 export const SchemesPage: React.FC<SchemesPageProps> = ({
   schemes = [],
+  isLoading = false,
   onBookmarkScheme,
   onNavigateHome,
   onSelectScheme
 }) => {
   const { lang, t } = useLanguage();
+  const { isBookmarked, toggleBookmark } = useOptimisticBookmarks();
   const [eligibilityModalOpen, setEligibilityModalOpen] = useState(false);
 
   // Read initial category/search from URL params if present
@@ -638,34 +643,9 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
             </h2>
           </div>
 
-          {allSchemes.length === 0 ? (
+          {isLoading || allSchemes.length === 0 ? (
             <div className="space-y-4">
-              {[1, 2, 3].map((n) => (
-                <div
-                  key={n}
-                  className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs animate-pulse flex flex-col gap-3"
-                >
-                  <div className="flex flex-wrap items-center gap-2">
-                    <div className="w-20 h-5 bg-stone-200 rounded" />
-                    <div className="w-28 h-5 bg-stone-100 rounded" />
-                  </div>
-                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                    <div className="space-y-2 flex-1">
-                      <div className="w-3/4 h-6 bg-stone-200 rounded" />
-                      <div className="w-1/2 h-4 bg-stone-100 rounded" />
-                    </div>
-                    <div className="w-28 h-12 bg-stone-100 rounded-xl shrink-0" />
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-[#f9f3ea]/50 p-3.5 rounded-xl border border-[#e8e2d9]">
-                    <div className="h-12 bg-stone-100 rounded" />
-                    <div className="h-12 bg-stone-100 rounded" />
-                  </div>
-                  <div className="pt-2 flex items-center justify-between">
-                    <div className="w-32 h-4 bg-stone-100 rounded" />
-                    <div className="w-24 h-8 bg-stone-200 rounded-xl" />
-                  </div>
-                </div>
-              ))}
+              <SchemeGridSkeleton count={3} />
             </div>
           ) : filtered.length === 0 ? (
             <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-3">
@@ -828,15 +808,24 @@ export const SchemesPage: React.FC<SchemesPageProps> = ({
                       </button>
                     )} */}
 
-                    {onBookmarkScheme && (
-                      <button
-                        onClick={() => onBookmarkScheme(item)}
-                        title={lang === 'MR' ? 'योजना सेव्ह करा' : 'Bookmark Scheme'}
-                        className="p-2 rounded-xl bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#707974] hover:text-[#166534] transition-colors"
-                      >
-                        <LucideIcon name="bookmark_border" className="text-[18px]" />
-                      </button>
-                    )}
+                    {/* Optimistic Bookmark Button */}
+                    <button
+                      onClick={() => {
+                        toggleBookmark({ id: item.id, title: item.title });
+                        if (onBookmarkScheme) onBookmarkScheme(item);
+                      }}
+                      title={isBookmarked(item.id) ? (lang === 'MR' ? 'जतन केले आहे' : 'Bookmarked') : (lang === 'MR' ? 'योजना सेव्ह करा' : 'Bookmark Scheme')}
+                      className={`p-2 rounded-xl transition-all cursor-pointer ${
+                        isBookmarked(item.id)
+                          ? 'bg-indigo-100 text-indigo-800 shadow-xs animate-optimistic-pop'
+                          : 'bg-[#f3ede4] hover:bg-[#e8e2d9] text-[#707974] hover:text-[#166534]'
+                      }`}
+                    >
+                      <LucideIcon
+                        name={isBookmarked(item.id) ? 'bookmark' : 'bookmark_border'}
+                        className={`text-[18px] transition-transform ${isBookmarked(item.id) ? 'scale-110 text-indigo-800' : ''}`}
+                      />
+                    </button>
                   </div>
 
                   <a

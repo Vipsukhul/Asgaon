@@ -38,17 +38,7 @@ const ReviewsPage = lazy(() => import('./pages/ReviewsPage').then(m => ({ defaul
 const AdminPage = lazy(() => import('./pages/AdminPage').then(m => ({ default: m.AdminPage })));
 const TransparencyPage = lazy(() => import('./pages/TransparencyPage').then(m => ({ default: m.TransparencyPage })));
 
-const PageSuspenseFallback: React.FC = () => (
-  <div className="min-h-[60vh] max-w-7xl mx-auto px-4 py-8 space-y-6 animate-pulse">
-    <div className="w-48 h-6 bg-stone-200 rounded-lg" />
-    <div className="w-full h-44 sm:h-64 bg-stone-100 rounded-3xl" />
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div className="h-36 bg-stone-100 rounded-2xl" />
-      <div className="h-36 bg-stone-100 rounded-2xl" />
-      <div className="h-36 bg-stone-100 rounded-2xl" />
-    </div>
-  </div>
-);
+import { PageSuspenseFallback } from './components/SkeletonLoaders';
 
 // Modals
 import { LoginModal } from './components/LoginModal';
@@ -63,6 +53,7 @@ import type { Business, Job, Scheme, MandiPrice } from './types';
 import { api } from './services/api';
 import { useSEO } from './hooks/useSEO';
 import { useLanguage } from './context/LanguageContext';
+import { getHomeSeoMetadata } from './utils/homeSeoData';
 
 const DEFAULT_GUEST_USER: UserProfileData = {
   fullName: 'Guest Visitor',
@@ -205,12 +196,18 @@ export function App() {
           description: 'आसगाव ग्रामपंचायत १५ वा वित्त आयोग विकास निधी वाटप, ई-ग्रामस्वराज मंजूर कामे (GPDP) व नागरी सामाजिक अंकेक्षण (Social Audit) पारदर्शकता मंच.',
           canonicalPath: '/transparency'
         };
-      default:
+      default: {
+        const meta = getHomeSeoMetadata(lang === 'MR');
         return {
-          title: 'मुख्यपृष्ठ - ग्राम माहिती व सेवा',
-          description: 'आसगाव गावकऱ्यांसाठी स्वतंत्र माहिती व जनजागृती मंच (पवनी, जि. भंडारा - ४४१९१०). शासकीय योजना, कृषी बाजारभाव, एसटी बस वेळापत्रक व नागरी सेवा एकाच ठिकाणी.',
-          canonicalPath: '/'
+          title: meta.title,
+          description: meta.description,
+          keywords: meta.keywords,
+          canonicalPath: '/',
+          ogImage: meta.ogImage,
+          ogImageAlt: meta.ogImageAlt,
+          structuredData: meta.structuredData
         };
+      }
     }
   };
 
@@ -262,6 +259,7 @@ export function App() {
   const [mandiPrices, setMandiPrices] = useState<MandiPrice[]>([]);
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [isServerWaking, setIsServerWaking] = useState(false);
+  const [isLoadingData, setIsLoadingData] = useState(true);
 
   useEffect(() => {
     const handleWaking = () => setIsServerWaking(true);
@@ -274,10 +272,12 @@ export function App() {
     };
   }, []);
 
-  // Fetch live data exclusively from PostgreSQL backend
+  // Fetch live data exclusively from PostgreSQL backend with Skeleton loading state
   useEffect(() => {
+    setIsLoadingData(true);
+
     // 1. Fetch businesses
-    api.getBusinesses()
+    const pBiz = api.getBusinesses()
       .then((backendBiz) => {
         if (backendBiz && backendBiz.length > 0) {
           const mapped: Business[] = backendBiz.map((b: any, index: number) => ({
@@ -307,7 +307,7 @@ export function App() {
       .catch((err) => console.error('Failed to load businesses from database API:', err.message));
 
     // 2. Fetch jobs
-    api.getJobs()
+    const pJobs = api.getJobs()
       .then((backendJobs) => {
         if (backendJobs && backendJobs.length > 0) {
           const mapped: Job[] = backendJobs.map((j: any, index: number) => ({
@@ -331,7 +331,7 @@ export function App() {
       .catch((err) => console.error('Failed to load jobs from database API:', err.message));
 
     // 3. Fetch schemes
-    api.getSchemes()
+    const pSchemes = api.getSchemes()
       .then((backendSchemes) => {
         if (backendSchemes && backendSchemes.length > 0) {
           const mapped: Scheme[] = backendSchemes.map((s: any, index: number) => ({
@@ -352,7 +352,7 @@ export function App() {
       .catch((err) => console.error('Failed to load schemes from database API:', err.message));
 
     // 4. Fetch mandi prices
-    api.getMandiPrices()
+    const pMandi = api.getMandiPrices()
       .then((prices) => {
         if (prices && prices.length > 0) {
           const mapped: MandiPrice[] = prices.map((p: any, index: number) => ({
@@ -371,7 +371,7 @@ export function App() {
       .catch((err) => console.error('Failed to load mandi prices from database API:', err.message));
 
     // 5. Fetch announcements
-    api.getAnnouncements()
+    const pAnnouncements = api.getAnnouncements()
       .then((notices) => {
         if (notices && notices.length > 0) {
           setAnnouncements(notices);
@@ -379,6 +379,9 @@ export function App() {
       })
       .catch((err) => console.error('Failed to load announcements from database API:', err.message));
 
+    Promise.allSettled([pBiz, pJobs, pSchemes, pMandi, pAnnouncements]).finally(() => {
+      setIsLoadingData(false);
+    });
   }, []);
 
   // Modals state
@@ -442,16 +445,15 @@ export function App() {
     }
   };
 
-  const handleBookmark = (item: any) => {
-    requireAuth('bookmark items to your profile', () => {
-      alert(`Item "${item.name || item.title}" bookmarked to your profile!`);
-    });
+  const handleBookmark = (_item: any) => {
+    // optimistic feedback is handled immediately within the component hook
   };
 
   const handleApplyJob = (job: Job) => {
-    requireAuth(`apply directly for "${job.title}"`, () => {
-      alert(`Application submitted for "${job.title}". The employer at ${job.employerName} will review your application.`);
-    });
+    // If citizen is a guest, prompt them to save their profile so employer can reach them
+    if (!userRole) {
+      requireAuth(`save your citizen profile for "${job.title}"`, () => {});
+    }
   };
 
   const handleSelectBusiness = (biz: Business) => {
@@ -696,6 +698,7 @@ export function App() {
         {activeNav === 'schemes' && (
           <SchemesPage
             schemes={schemes}
+            isLoading={isLoadingData}
             onBookmarkScheme={handleBookmark}
             onNavigateHome={() => navigateTo('home')}
             onSelectScheme={navigateToScheme}
@@ -894,6 +897,7 @@ export function App() {
             <div id="krishi" className="scroll-mt-28">
               <LiveMandiTicker
                 prices={mandiPrices}
+                isLoading={isLoadingData}
                 onViewAllMandi={() => setActiveNav('krishi')}
               />
             </div>
@@ -901,6 +905,7 @@ export function App() {
             {/* Featured Village Enterprises */}
             <FeaturedEnterprises
               businesses={businesses}
+              isLoading={isLoadingData}
               onRegisterShop={() => setRegisterShopOpen(true)}
               onSelectBusiness={(biz) => navigateToBusiness(biz.slug || biz.id)}
             />
@@ -908,6 +913,7 @@ export function App() {
             {/* Gramin Rojgar Manch */}
             <JobsBoardSection
               jobs={jobs}
+              isLoading={isLoadingData}
               onPostJob={() => setPostJobOpen(true)}
               onApplyJob={handleApplyJob}
             />
@@ -915,6 +921,7 @@ export function App() {
             {/* Sarkari Yojana Guidance Desk */}
             <GovtSchemesSection
               schemes={schemes}
+              isLoading={isLoadingData}
               onOpenCSC={() => navigateTo('schemes')}
               onSaveScheme={handleBookmark}
               onSelectScheme={navigateToScheme}

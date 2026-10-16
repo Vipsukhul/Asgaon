@@ -2,19 +2,24 @@ import { LucideIcon } from './LucideIcon';
 import React from 'react';
 import type { Business } from '../types';
 import { useLanguage } from '../context/LanguageContext';
+import { EnterpriseGridSkeleton } from './SkeletonLoaders';
+import { useOptimisticBookmarks } from '../hooks/useOptimisticState';
 
 interface FeaturedEnterprisesProps {
   businesses: Business[];
+  isLoading?: boolean;
   onRegisterShop: () => void;
   onSelectBusiness: (biz: Business) => void;
 }
 
 export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
   businesses,
+  isLoading = false,
   onRegisterShop,
   onSelectBusiness
 }) => {
-  const { lang  } = useLanguage();
+  const { lang } = useLanguage();
+  const { isBookmarked, toggleBookmark } = useOptimisticBookmarks();
 
   return (
     <section id="businesses" className="w-full mb-12 scroll-mt-28">
@@ -42,100 +47,135 @@ export const FeaturedEnterprises: React.FC<FeaturedEnterprisesProps> = ({
         </button>
       </div>
 
-      {/* Grid of Enterprise Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {businesses.map((biz) => (
-          <div
-            key={biz.id}
-            onClick={() => onSelectBusiness(biz)}
-            className="group bg-white rounded-2xl overflow-hidden shadow-xs hover:shadow-xl hover:shadow-orange-900/10 border border-stone-200/80 hover:border-orange-500 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer"
-          >
-            {/* Image Thumbnail with Floating Tags */}
-            <div className="relative h-44 w-full overflow-hidden bg-[#faf6ee]">
-              <img
-                src={biz.imageUrl}
-                alt={biz.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+      {/* Loading Skeleton State */}
+      {isLoading ? (
+        <EnterpriseGridSkeleton count={4} />
+      ) : businesses.length === 0 ? (
+        <div className="bg-white rounded-2xl p-8 border border-stone-200 text-center flex flex-col items-center justify-center gap-2">
+          <LucideIcon name="store" className="text-[36px] text-stone-400" />
+          <p className="text-stone-700 font-bold text-sm">
+            {lang === 'MR' ? 'सध्या कोणतेही दुकान नोंदणीकृत नाही' : 'No enterprises listed currently'}
+          </p>
+        </div>
+      ) : (
+        /* Grid of Enterprise Cards */
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {businesses.map((biz) => {
+            const saved = isBookmarked(biz.id);
 
-              {/* Landmark location pill with direct map navigation */}
-              <a
-                href={`https://www.google.com/maps/dir/?api=1&destination=${biz.latitude || 20.7850},${biz.longitude || 79.6350}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="absolute bottom-2.5 left-2.5 bg-black/75 hover:bg-emerald-800 backdrop-blur-xs text-white text-[11px] font-medium px-2.5 py-1 rounded-md flex items-center gap-1 transition-colors border border-white/20"
-                title={lang === 'MR' ? 'नकाशावर ठिकाण पहा' : 'View on Map / Directions'}
+            return (
+              <div
+                key={biz.id}
+                onClick={() => onSelectBusiness(biz)}
+                className="group bg-white rounded-2xl overflow-hidden shadow-xs hover:shadow-xl hover:shadow-orange-900/10 border border-stone-200/80 hover:border-orange-500 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer"
               >
-                <LucideIcon name="location_on" className="text-[13px] text-amber-400" />
-                <span>{biz.landmark} • {lang === 'MR' ? 'नकाशा ↗' : 'Map ↗'}</span>
-              </a>
+                {/* Image Thumbnail with Floating Tags */}
+                <div className="relative h-44 w-full overflow-hidden bg-[#faf6ee]">
+                  <img
+                    src={biz.imageUrl}
+                    alt={`${biz.name} - ${biz.category}, आसगाव (पवनी, भंडारा)`}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
-              {/* Verification badge pill */}
-              {biz.isVerified && (
-                <div className="absolute top-2.5 right-2.5 bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs transition-colors">
-                  <LucideIcon name="verified" className="text-[12px] text-emerald-700" />
-                  <span>{lang === 'MR' && biz.verificationBadge === 'VERIFIED MERCHANT' ? 'प्रमाणित व्यावसायिक' : (biz.verificationBadge || 'VERIFIED')}</span>
+                  {/* Bookmark Button */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleBookmark({ id: biz.id, title: biz.name });
+                    }}
+                    title={saved ? (lang === 'MR' ? 'जतन केले आहे' : 'Saved') : (lang === 'MR' ? 'दुकान जतन करा' : 'Save business')}
+                    className={`absolute top-2.5 left-2.5 p-1.5 rounded-full backdrop-blur-md transition-all ${
+                      saved
+                        ? 'bg-amber-400 text-stone-950 shadow-md animate-optimistic-pop'
+                        : 'bg-black/40 text-white/90 hover:bg-black/60'
+                    }`}
+                  >
+                    <LucideIcon name={saved ? 'bookmark' : 'bookmark_border'} className="text-[17px]" />
+                  </button>
+
+                  {/* Landmark location pill with direct map navigation */}
+                  <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${biz.latitude || 20.7850},${biz.longitude || 79.6350}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="absolute bottom-2.5 left-2.5 bg-black/75 hover:bg-emerald-800 backdrop-blur-xs text-white text-[11px] font-medium px-2.5 py-1 rounded-md flex items-center gap-1 transition-colors border border-white/20"
+                    title={lang === 'MR' ? 'नकाशावर ठिकाण पहा' : 'View on Map / Directions'}
+                  >
+                    <LucideIcon name="location_on" className="text-[13px] text-amber-400" />
+                    <span>{biz.landmark} • {lang === 'MR' ? 'नकाशा ↗' : 'Map ↗'}</span>
+                  </a>
+
+                  {/* Verification badge pill */}
+                  {biz.isVerified && (
+                    <div className="absolute top-2.5 right-2.5 bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs transition-colors">
+                      <LucideIcon name="verified" className="text-[12px] text-emerald-700" />
+                      <span>{lang === 'MR' && biz.verificationBadge === 'VERIFIED MERCHANT' ? 'प्रमाणित व्यावसायिक' : (biz.verificationBadge || 'VERIFIED')}</span>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
 
-            {/* Content Body */}
-            <div className="p-4 flex-1 flex flex-col">
-              <span className="text-[10px] uppercase font-extrabold tracking-wider text-orange-700 mb-1 transition-colors">
-                {biz.category}
-              </span>
-              <h3
-                className="font-heading font-extrabold text-[16px] text-stone-900 group-hover:text-orange-800 transition-colors leading-snug line-clamp-1"
-              >
-                {biz.name}
-              </h3>
-              <p className="text-[12px] text-stone-600 mt-1.5 line-clamp-2 leading-relaxed flex-1">
-                {biz.description}
-              </p>
+                {/* Content Body */}
+                <div className="p-4 flex-1 flex flex-col">
+                  <span className="text-[10px] uppercase font-extrabold tracking-wider text-orange-700 mb-1 transition-colors">
+                    {biz.category}
+                  </span>
+                  <h3
+                    className="font-heading font-extrabold text-[16px] text-stone-900 group-hover:text-orange-800 transition-colors leading-snug line-clamp-1"
+                  >
+                    {biz.name}
+                  </h3>
+                  <p className="text-[12px] text-stone-600 mt-1.5 line-clamp-2 leading-relaxed flex-1">
+                    {biz.description}
+                  </p>
 
-              {/* Timing */}
-              <div className="mt-3 flex items-center gap-1.5 text-[11px] text-stone-600 bg-[#faf6ee] px-2.5 py-1.5 rounded-lg border border-[#efe7dc]">
-                <LucideIcon name="schedule" className="text-[14px] text-emerald-700" />
-                <span className="truncate">{biz.openingHours}</span>
+                  {/* Timing */}
+                  <div className="mt-3 flex items-center gap-1.5 text-[11px] text-stone-600 bg-[#faf6ee] px-2.5 py-1.5 rounded-lg border border-[#efe7dc]">
+                    <LucideIcon name="schedule" className="text-[14px] text-emerald-700" />
+                    <span className="truncate">{biz.openingHours}</span>
+                  </div>
+
+                  {/* Action Buttons: Call, WhatsApp & Map Location */}
+                  <div className="mt-4 pt-3 border-t border-[#efe7dc] flex items-center gap-2">
+                    <a
+                      href={`tel:${biz.phone}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex-1 flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-[#faf6ee] text-stone-800 hover:bg-[#f3ede4] transition-all text-[12px] font-bold border border-[#efe7dc] shadow-2xs"
+                    >
+                      <LucideIcon name="call" className="text-[15px] text-emerald-800" />
+                      <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
+                    </a>
+                    <a
+                      href={`https://wa.me/91${biz.whatsapp}?text=Hello%20${encodeURIComponent(biz.name)},%20I%20saw%20your%20listing%20on%20Digital%20Gaon%20Asgaon.`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex-1 flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-emerald-800 text-white hover:bg-emerald-900 transition-colors text-[12px] font-extrabold shadow-2xs"
+                    >
+                      <LucideIcon name="chat" className="text-[15px] text-emerald-200" />
+                      <span>{lang === 'MR' ? 'व्हॉट्सॲप' : 'WhatsApp'}</span>
+                    </a>
+                    <a
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${biz.latitude || 20.7850},${biz.longitude || 79.6350}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-2 rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors border border-amber-200"
+                      title={lang === 'MR' ? 'Google Maps वर ठिकाण पहा' : 'View on Map'}
+                    >
+                      <LucideIcon name="location_on" className="text-[17px]" />
+                    </a>
+                  </div>
+                </div>
               </div>
-
-              {/* Action Buttons: Call, WhatsApp & Map Location */}
-              <div className="mt-4 pt-3 border-t border-[#efe7dc] flex items-center gap-2">
-                <a
-                  href={`tel:${biz.phone}`}
-                  onClick={(e) => e.stopPropagation()}
-                  className="flex-1 flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-[#faf6ee] text-stone-800 hover:bg-[#f3ede4] transition-all text-[12px] font-bold border border-[#efe7dc] shadow-2xs"
-                >
-                  <LucideIcon name="call" className="text-[15px] text-emerald-800" />
-                  <span>{lang === 'MR' ? 'कॉल करा' : 'Call'}</span>
-                </a>
-                <a
-                  href={`https://wa.me/91${biz.whatsapp}?text=Hello%20${encodeURIComponent(biz.name)},%20I%20saw%20your%20listing%20on%20Digital%20Gaon%20Asgaon.`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="flex-1 flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-emerald-800 text-white hover:bg-emerald-900 transition-colors text-[12px] font-extrabold shadow-2xs"
-                >
-                  <LucideIcon name="chat" className="text-[15px] text-emerald-200" />
-                  <span>{lang === 'MR' ? 'व्हॉट्सॲप' : 'WhatsApp'}</span>
-                </a>
-                <a
-                  href={`https://www.google.com/maps/dir/?api=1&destination=${biz.latitude || 20.7850},${biz.longitude || 79.6350}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="p-2 rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors border border-amber-200"
-                  title={lang === 'MR' ? 'Google Maps वर ठिकाण पहा' : 'View on Map'}
-                >
-                  <LucideIcon name="location_on" className="text-[17px]" />
-                </a>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 };

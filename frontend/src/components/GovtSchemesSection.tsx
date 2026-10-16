@@ -2,23 +2,28 @@ import { LucideIcon } from './LucideIcon';
 import React from 'react';
 import type { Scheme } from '../types';
 import { useLanguage } from '../context/LanguageContext';
+import { SchemeGridSkeleton } from './SkeletonLoaders';
+import { useOptimisticBookmarks } from '../hooks/useOptimisticState';
 
 interface GovtSchemesSectionProps {
   schemes: Scheme[];
+  isLoading?: boolean;
   onOpenCSC: () => void;
-  onSaveScheme: (scheme: Scheme) => void;
+  onSaveScheme?: (scheme: Scheme) => void;
   onSelectScheme?: (slug: string) => void;
   onOpenEligibilityFinder?: () => void;
 }
 
 export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
   schemes,
+  isLoading = false,
   onOpenCSC,
   onSaveScheme,
   onSelectScheme,
   onOpenEligibilityFinder
 }) => {
   const { lang } = useLanguage();
+  const { isBookmarked, toggleBookmark } = useOptimisticBookmarks();
 
   return (
     <section id="govt-schemes" className="w-full mb-12 scroll-mt-28">
@@ -59,77 +64,101 @@ export const GovtSchemesSection: React.FC<GovtSchemesSectionProps> = ({
         </div>
       </div>
 
-      {/* 3 Scheme Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {schemes.map((scheme) => (
-          <div
-            key={scheme.id}
-            onClick={() => onSelectScheme && onSelectScheme(scheme.slug)}
-            className="group bg-white rounded-2xl p-5 shadow-xs hover:shadow-xl hover:shadow-indigo-900/10 border border-stone-200/80 hover:border-indigo-500 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer"
-          >
-            <div>
-              {/* Title */}
-              <h3 className="font-heading font-extrabold text-[17px] text-stone-900 group-hover:text-indigo-900 mb-2 transition-colors">
-                {scheme.title}
-              </h3>
+      {/* Loading Skeleton State */}
+      {isLoading ? (
+        <SchemeGridSkeleton count={3} />
+      ) : schemes.length === 0 ? (
+        <div className="bg-white rounded-2xl p-8 border border-stone-200 text-center flex flex-col items-center justify-center gap-2">
+          <LucideIcon name="policy" className="text-[36px] text-stone-400" />
+          <p className="text-stone-700 font-bold text-sm">
+            {lang === 'MR' ? 'सध्या कोणतीही योजना उपलब्ध नाही' : 'No schemes available at the moment'}
+          </p>
+        </div>
+      ) : (
+        /* Scheme Cards */
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {schemes.map((scheme) => {
+            const bookmarked = isBookmarked(scheme.id);
 
-              {/* Description */}
-              <p className="text-[12px] text-stone-600 mb-4 leading-relaxed">
-                {scheme.description}
-              </p>
-
-              {/* Documents Required Checklist */}
-              <div className="bg-[#faf6ee] p-3 rounded-xl border border-[#efe7dc] mb-4 shadow-2xs">
-                <div className="text-[11px] font-extrabold uppercase tracking-wider text-indigo-900 mb-2 flex items-center gap-1">
-                  <LucideIcon name="task_alt" className="text-[16px] text-indigo-700" />
-                  <span>{lang === 'MR' ? 'आवश्यक कागदपत्रे' : 'Required Documents'}</span>
-                </div>
-                <ul className="space-y-1.5">
-                  {scheme.documentsRequired.map((doc, idx) => (
-                    <li key={idx} className="text-[12px] text-stone-800 flex items-center gap-1.5">
-                      <span className="h-1.5 w-1.5 rounded-full bg-indigo-600 shrink-0"></span>
-                      <span>{doc}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Bottom Actions */}
-            <div className="mt-2 pt-3 border-t border-[#efe7dc] flex items-center justify-between gap-2">
-              <a
-                href={scheme.officialUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="text-[12px] text-indigo-800 font-extrabold hover:underline flex items-center gap-0.5"
+            return (
+              <div
+                key={scheme.id}
+                onClick={() => onSelectScheme && onSelectScheme(scheme.slug)}
+                className="group bg-white rounded-2xl p-5 shadow-xs hover:shadow-xl hover:shadow-indigo-900/10 border border-stone-200/80 hover:border-indigo-500 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer"
               >
-                <span>{scheme.actionLabel || (lang === 'MR' ? 'अधिकृत पोर्टलवर अर्ज करा' : 'Apply on Portal')}</span>
-                <LucideIcon name="open_in_new" className="text-[14px]" />
-              </a>
+                <div>
+                  {/* Title */}
+                  <h3 className="font-heading font-extrabold text-[17px] text-stone-900 group-hover:text-indigo-900 mb-2 transition-colors">
+                    {scheme.title}
+                  </h3>
 
-              <div className="flex items-center gap-2">
-                {scheme.badgeText && (
-                  <span className="text-[11px] font-bold text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-300">
-                    {scheme.badgeText}
-                  </span>
-                )}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onSaveScheme(scheme);
-                  }}
-                  title={lang === 'MR' ? 'योजना जतन करा' : 'Bookmark this Scheme'}
-                  className="p-1 rounded-lg text-stone-500 hover:text-indigo-900 hover:bg-[#faf6ee] transition-colors cursor-pointer"
-                >
-                  <LucideIcon name="bookmark_border" className="text-[20px]" />
-                </button>
+                  {/* Description */}
+                  <p className="text-[12px] text-stone-600 mb-4 leading-relaxed line-clamp-3">
+                    {scheme.description}
+                  </p>
+
+                  {/* Documents Required Checklist */}
+                  <div className="bg-[#faf6ee] p-3 rounded-xl border border-[#efe7dc] mb-4 shadow-2xs">
+                    <div className="text-[11px] font-extrabold uppercase tracking-wider text-indigo-900 mb-2 flex items-center gap-1">
+                      <LucideIcon name="task_alt" className="text-[16px] text-indigo-700" />
+                      <span>{lang === 'MR' ? 'आवश्यक कागदपत्रे' : 'Required Documents'}</span>
+                    </div>
+                    <ul className="space-y-1.5">
+                      {(scheme.documentsRequired || []).slice(0, 3).map((doc, idx) => (
+                        <li key={idx} className="text-[12px] text-stone-800 flex items-center gap-1.5">
+                          <span className="h-1.5 w-1.5 rounded-full bg-indigo-600 shrink-0"></span>
+                          <span className="truncate">{doc}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Bottom Actions */}
+                <div className="mt-2 pt-3 border-t border-[#efe7dc] flex items-center justify-between gap-2">
+                  <a
+                    href={scheme.officialUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-[12px] text-indigo-800 font-extrabold hover:underline flex items-center gap-0.5"
+                  >
+                    <span>{scheme.actionLabel || (lang === 'MR' ? 'अधिकृत पोर्टलवर अर्ज करा' : 'Apply on Portal')}</span>
+                    <LucideIcon name="open_in_new" className="text-[14px]" />
+                  </a>
+
+                  <div className="flex items-center gap-2">
+                    {scheme.badgeText && (
+                      <span className="text-[11px] font-bold text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-300">
+                        {scheme.badgeText}
+                      </span>
+                    )}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleBookmark({ id: scheme.id, title: scheme.title });
+                        if (onSaveScheme) onSaveScheme(scheme);
+                      }}
+                      title={bookmarked ? (lang === 'MR' ? 'जतन केले आहे' : 'Bookmarked') : (lang === 'MR' ? 'योजना जतन करा' : 'Bookmark this Scheme')}
+                      className={`p-1.5 rounded-xl transition-all duration-200 cursor-pointer ${
+                        bookmarked
+                          ? 'bg-indigo-50 text-indigo-700 shadow-xs animate-optimistic-pop'
+                          : 'text-stone-400 hover:text-indigo-900 hover:bg-[#faf6ee]'
+                      }`}
+                    >
+                      <LucideIcon
+                        name={bookmarked ? 'bookmark' : 'bookmark_border'}
+                        className={`text-[20px] transition-transform ${bookmarked ? 'scale-110 text-indigo-700' : ''}`}
+                      />
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 };

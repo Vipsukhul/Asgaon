@@ -13,6 +13,7 @@ export interface SEOHeadProps {
   articleSection?: string;
   articleTags?: string[];
   structuredData?: Record<string, any> | Array<Record<string, any>>;
+  lang?: string;
 }
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
@@ -27,12 +28,16 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
   articlePublishedTime,
   articleSection,
   articleTags,
-  structuredData
+  structuredData,
+  lang
 }) => {
   useEffect(() => {
-    // 1. Update document title
+    // 1. Update document title & HTML lang
     const prevTitle = document.title;
     document.title = title;
+    if (lang) {
+      document.documentElement.lang = lang.toLowerCase();
+    }
 
     // Helper to get or create meta tag
     const setMetaTag = (attributeName: string, attributeValue: string, content: string) => {

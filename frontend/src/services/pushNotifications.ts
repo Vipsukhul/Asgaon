@@ -2,8 +2,9 @@
 import { API_BASE_URL } from './api';
 
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding)
+  const cleanStr = (base64String || '').trim().replace(/^["']|["']$/g, '');
+  const padding = '='.repeat((4 - (cleanStr.length % 4)) % 4);
+  const base64 = (cleanStr + padding)
     .replace(/-/g, '+')
     .replace(/_/g, '/');
 
@@ -52,23 +53,20 @@ export async function subscribeUserToPush(phone?: string, role?: string): Promis
   try {
     const perm = await Notification.requestPermission();
     if (perm !== 'granted') {
-      return { success: false, message: 'सूचना सुरू करण्यासाठी ब्राऊझर परवानगी आवश्यक आहे.' };
+      return { success: false, message: 'सूचना सुरू करण्यासाठी ब्राऊझर परवानगी (Notification Permission) आवश्यक आहे.' };
     }
 
-    // 1. Ensure Service Worker registration
-    let reg = await navigator.serviceWorker.getRegistration();
-    if (!reg) {
-      reg = (await registerServiceWorker()) || undefined;
-    }
-    const swReg = reg || (await navigator.serviceWorker.ready);
+    // 1. Ensure Service Worker is registered & fully active
+    await registerServiceWorker();
+    const swReg = await navigator.serviceWorker.ready;
 
     // 2. Fetch public key from environment or backend
-    let publicKey = (import.meta as any).env?.VITE_VAPID_PUBLIC_KEY || '';
+    let publicKey = ((import.meta as any).env?.VITE_VAPID_PUBLIC_KEY || '').trim().replace(/^["']|["']$/g, '');
     if (!publicKey) {
       try {
         const res = await fetch(`${API_BASE_URL}/notifications/vapid-key`);
         const json = await res.json();
-        publicKey = json.data?.publicKey;
+        publicKey = (json.data?.publicKey || '').trim().replace(/^["']|["']$/g, '');
       } catch (e) {
         console.warn('Could not fetch notification key from server:', e);
       }
@@ -80,28 +78,49 @@ export async function subscribeUserToPush(phone?: string, role?: string): Promis
 
     const convertedVapidKey = urlBase64ToUint8Array(publicKey);
 
-    // 3. Clean up any existing mismatched subscription
-    const existingSub = await swReg.pushManager.getSubscription();
-    if (existingSub) {
+    // 3. Check for existing subscription or create a fresh one
+    let subscription = await swReg.pushManager.getSubscription();
+
+    if (!subscription) {
       try {
-        await existingSub.unsubscribe();
-      } catch (e) {
-        console.warn('Could not clean up existing sub:', e);
+        subscription = await swReg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: convertedVapidKey as unknown as BufferSource
+        });
+      } catch (subErr: any) {
+        console.warn('First subscription attempt failed, clearing stale subscription if any...', subErr);
+        const staleSub = await swReg.pushManager.getSubscription();
+        if (staleSub) {
+          await staleSub.unsubscribe().catch(() => {});
+          await new Promise((resolve) => setTimeout(resolve, 400));
+        }
+
+        try {
+          subscription = await swReg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: convertedVapidKey as unknown as BufferSource
+          });
+        } catch (secondErr: any) {
+          const errStr = (secondErr?.message || '').toLowerCase();
+          // Provide clear actionable guidance for push service errors
+          if (errStr.includes('push service error') || errStr.includes('registration failed')) {
+            const isBrave = (navigator as any).brave !== undefined;
+            if (isBrave) {
+              throw new Error('Brave ब्राऊझरमध्ये Push Messaging बंद असते. कृपया Settings -> Privacy -> "Use Google services for push messaging" सुरू करा.');
+            }
+            throw new Error('Google Push Service शी संपर्क होऊ शकला नाही. कृपया AdBlocker/VPN बंद करून पहा किंवा खाजगी (Incognito) मोड बंद करा.');
+          }
+          throw secondErr;
+        }
       }
     }
-
-    // 4. Create fresh subscription with active server key
-    const subscription = await swReg.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: convertedVapidKey as unknown as BufferSource
-    });
 
     const subJson = subscription.toJSON();
     const endpoint = subscription.endpoint;
     const p256dh = subJson.keys?.p256dh || '';
     const auth = subJson.keys?.auth || '';
 
-    // 5. Register subscription with Spring Boot backend
+    // 4. Register subscription with Spring Boot backend
     const regRes = await fetch(`${API_BASE_URL}/notifications/subscribe`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -115,10 +134,10 @@ export async function subscribeUserToPush(phone?: string, role?: string): Promis
     });
 
     if (!regRes.ok) {
-      throw new Error('सूचना नोंदणी पूर्ण होऊ शकली नाही.');
+      throw new Error('सूचना सर्व्हर नोंदणी पूर्ण होऊ शकली नाही.');
     }
 
-    // 6. Deliver an immediate welcome notification to confirm it works
+    // 5. Deliver an immediate welcome notification to confirm it works
     try {
       await swReg.showNotification('आसगाव थेट सूचना सुरू झाल्या', {
         body: 'आसगाव ग्रामपंचायत थेट सूचना आता तुमच्या मोबाईलवर सुरू झाल्या आहेत.',

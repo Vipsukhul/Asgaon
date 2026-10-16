@@ -159,9 +159,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
                       </span>
                     </div>
 
-                    {/* Main Headline */}
+                    {/* Main Headline (Primary H1 for SEO) */}
                     <h1 className="font-heading font-black text-[28px] sm:text-[40px] md:text-[46px] text-emerald-950 tracking-tight mb-2 leading-tight">
-                      {isMr ? 'आपलं डिजिटल आसगाव' : 'Digital Asgaon Village Portal'}
+                      {isMr
+                        ? 'आपलं डिजिटल आसगाव — ग्रामपंचायत, योजना व बाजारभाव'
+                        : 'Digital Asgaon — Village Civic Portal, Schemes & Mandi Rates'}
                     </h1>
 
                     <p className="font-heading font-bold text-[15px] sm:text-[19px] text-emerald-800 mb-2 leading-snug max-w-2xl">
@@ -213,7 +215,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onNavigate }
                   {/* Background Photo with smooth Ken Burns zoom */}
                   <img
                     src={slide.imageUrl}
-                    alt={slide.titleEnglish || 'Asgaon Village Banner'}
+                    alt={isMr ? (slide.titleMarathi || 'आसगाव ग्राम दालन') : (slide.titleEnglish || 'Asgaon Village Banner')}
+                    fetchPriority={idx === 0 ? 'high' : 'auto'}
+                    decoding="async"
+                    loading={idx === 0 ? 'eager' : 'lazy'}
                     className={`absolute inset-0 w-full h-full object-cover object-center transition-transform duration-7000 ease-out ${
                       isActive ? 'scale-106' : 'scale-100'
                     }`}

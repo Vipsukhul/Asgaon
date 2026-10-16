@@ -10,6 +10,8 @@ import { AdminBannerManager } from '../components/AdminBannerManager';
 import { AdminGalleryManager } from '../components/AdminGalleryManager';
 import { AdminTransparencyManager } from '../components/AdminTransparencyManager';
 import { AdminBroadcastPanel } from '../components/AdminBroadcastPanel';
+import { useToast } from '../context/ToastContext';
+import { AnnouncementListSkeleton, TableSkeleton, EnterpriseCardSkeleton } from '../components/SkeletonLoaders';
 import {
   AdminManagementSection,
   getAllowedModulesForUser,
@@ -60,6 +62,7 @@ interface AdminPageProps {
 
 export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmin, onExit, onLogout }) => {
   const { t } = useLanguage();
+  const toast = useToast();
   const [activeTab, setActiveTab] = useState<
     'overview' | 'businesses' | 'reviews' | 'events' | 'shiksha' | 'transport' | 'blogs' | 'notices' | 'water' | 'schemes' | 'contacts' | 'projects' | 'complaints' | 'broadcast' | 'users' | 'logs' | 'banners' | 'gallery' | 'transparency' | 'admin_management'
   >('overview');
@@ -1155,23 +1158,32 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       .finally(() => setLoadingBusinesses(false));
   };
 
-  // --- BUSINESS VERIFICATION HANDLERS ---
+  // --- BUSINESS VERIFICATION HANDLERS (OPTIMISTIC UI) ---
   const handleToggleBusinessVerify = async (biz: any) => {
     const newStatus = !biz.isVerified;
     const badge = biz.verificationBadge || 'Verified Merchant';
+    const previous = adminBusinesses;
+    
+    // 1. Instant optimistic state update
+    const updated = adminBusinesses.map((b) =>
+      b.id === biz.id ? { ...b, isVerified: newStatus, verificationBadge: badge } : b
+    );
+    setAdminBusinesses(updated);
+    localStorage.setItem('dg_asgaon_businesses_cache', JSON.stringify(updated));
+    toast.success(
+      `दुकान "${biz.name}" ची पडताळणी ${newStatus ? 'यशस्वीरीत्या मंजूर केली!' : 'रद्द केली.'}`,
+      newStatus ? 'पडताळणी मंजूर' : 'पडताळणी रद्द'
+    );
+
+    // 2. Background sync with rollback on failure
     try {
       if (biz.id && !String(biz.id).startsWith('b-')) {
         await api.adminVerifyBusiness(biz.id, newStatus, badge);
       }
-      const updated = adminBusinesses.map((b) =>
-        b.id === biz.id ? { ...b, isVerified: newStatus, verificationBadge: badge } : b
-      );
-      setAdminBusinesses(updated);
-      localStorage.setItem('dg_asgaon_businesses_cache', JSON.stringify(updated));
-      setBizFeedbackMsg(`दुकान "${biz.name}" ची पडताळणी ${newStatus ? 'यशस्वीरीत्या मंजूर केली!' : 'रद्द केली.'}`);
-      setTimeout(() => setBizFeedbackMsg(null), 4000);
     } catch (err: any) {
-      alert('पडताळणी बदलण्यात अडचण आली: ' + err.message);
+      setAdminBusinesses(previous);
+      localStorage.setItem('dg_asgaon_businesses_cache', JSON.stringify(previous));
+      toast.error('पडताळणी बदलण्यात अडचण आली: ' + err.message, 'त्रुटी');
     }
   };
 
@@ -1306,11 +1318,17 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
   const handleDeleteNotice = async (id: string) => {
     if (!window.confirm('ही सूचना हटवायची आहे का?')) return;
+    const previous = announcements;
+    // 1. Instant optimistic delete
+    setAnnouncements((prev) => prev.filter((a) => a.id !== id));
+    toast.success('सूचना यशस्वीरीत्या हटवली.', 'हटवले');
+
+    // 2. Background API sync with rollback
     try {
       await api.deleteAnnouncement(id);
-      loadData();
     } catch (err: any) {
-      alert('Delete failed: ' + err.message);
+      setAnnouncements(previous);
+      toast.error('हटवता आले नाही: ' + err.message, 'त्रुटी');
     }
   };
 
@@ -2330,7 +2348,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             </div>
 
             {/* Businesses List */}
-            {adminBusinesses.length === 0 ? (
+            {loadingBusinesses ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <EnterpriseCardSkeleton />
+                <EnterpriseCardSkeleton />
+                <EnterpriseCardSkeleton />
+                <EnterpriseCardSkeleton />
+              </div>
+            ) : adminBusinesses.length === 0 ? (
               <div className="text-center py-12 text-[#707974]">
                 <LucideIcon name="storefront" className=" text-[48px] text-[#ccc] mb-2 block" />
                 <p className="font-bold text-[14px]">अद्याप कोणतीही दुकाने आढळली नाहीत</p>
@@ -2729,10 +2754,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             </div>
 
             {loadingEvents ? (
-              <div className="p-8 text-center text-[#707974] bg-white rounded-2xl border border-[#e8e2d9]">
-                <div className="w-8 h-8 border-3 border-[#006a4e] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-                कार्यक्रम लोड होत आहेत...
-              </div>
+              <AnnouncementListSkeleton count={3} />
             ) : events.length === 0 ? (
               <div className="bg-white rounded-2xl p-8 border border-[#e8e2d9] text-center flex flex-col items-center justify-center gap-2">
                 <LucideIcon name="event_busy" className="text-[42px] text-[#707974]" />
@@ -5226,9 +5248,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             </div>
 
             {loadingAnnouncements ? (
-              <div className="p-8 text-center text-[#707974] bg-white rounded-2xl border border-[#e8e2d9]">
-                माहिती लोड होत आहे...
-              </div>
+              <AnnouncementListSkeleton count={3} />
             ) : announcements.length === 0 ? (
               <div className="p-8 text-center text-[#707974] bg-white rounded-2xl border border-[#e8e2d9]">
                 अद्याप कोणत्याही सूचना प्रसिद्ध केलेल्या नाहीत. डावीकडील फॉर्म वापरून पहिली सूचना जोडा.
@@ -6284,10 +6304,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
 
             {/* Table / Loading / Empty States */}
             {loadingUsers ? (
-              <div className="py-16 flex flex-col items-center justify-center gap-2.5 text-[#707974] bg-[#fdfbf7] rounded-xl border border-[#e8e2d9]">
-                <div className="w-7 h-7 border-3 border-[#166534] border-t-transparent rounded-full animate-spin" />
-                <p className="text-xs font-bold text-[#166534]">नोंदणीकृत वापरकर्ते लोड होत आहेत...</p>
-              </div>
+              <TableSkeleton rows={5} columns={4} />
             ) : users.length === 0 ? (
               <div className="py-14 bg-[#fcfbf9] rounded-xl border border-[#e8e2d9] text-center p-6 flex flex-col items-center justify-center gap-2">
                 <div className="w-12 h-12 rounded-full bg-[#f3ede4] flex items-center justify-center text-[#707974]">
