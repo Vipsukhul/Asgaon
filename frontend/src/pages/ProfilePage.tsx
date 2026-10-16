@@ -1281,66 +1281,72 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               : `Automated alerts sent directly to +91 ${currentUser.phone || '9822104500'}`}
           </p>
 
-          {/* Web Push Notification Device Card */}
-          <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-[#166534]/10 via-[#a7f3d0]/20 to-[#166534]/5 border border-[#006a4e]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          {/* Web Push Notification Device Card - Modern & Jargon-free */}
+          <div className="mb-4 p-4 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-emerald-50 to-emerald-500/5 border border-emerald-600/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#166534] text-[#a7f3d0] flex items-center justify-center shrink-0 shadow-xs">
-                <LucideIcon name={pushEnabled ? 'notifications_active' : 'notifications'} className=" text-[22px]" />
+              <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-xs transition-colors ${
+                pushEnabled ? 'bg-emerald-700 text-white' : 'bg-stone-200 text-stone-600'
+              }`}>
+                <LucideIcon name={pushEnabled ? 'notifications_active' : 'notifications_off'} className="text-[22px]" />
               </div>
               <div>
-                <div className="font-heading font-extrabold text-[14px] text-[#166534] flex items-center gap-1.5">
-                  <span>{isMr ? 'मोबाईल/डेस्कटॉप थेट पुश नोटिफिकेशन्स' : 'Device Push Notifications'}</span>
-                  <span className={`px-2 py-0.2 rounded-full text-[10px] font-bold ${
-                    pushEnabled ? 'bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf]' : 'bg-[#f3ede4] text-[#707974]'
+                <div className="font-heading font-extrabold text-[14px] text-emerald-950 flex items-center gap-2">
+                  <span>{isMr ? 'गाव थेट सूचना व अलर्ट' : 'Village Live Alerts'}</span>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                    pushEnabled ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-stone-100 text-stone-600'
                   }`}>
-                    {pushEnabled ? (isMr ? 'सक्रिय' : 'Active') : (isMr ? 'बंद' : 'Disabled')}
+                    {pushEnabled ? (isMr ? 'चालू' : 'Active') : (isMr ? 'बंद' : 'Off')}
                   </span>
                 </div>
-                <div className="text-[11px] text-[#55605a]">
+                <div className="text-[11px] text-stone-600 mt-0.5">
                   {isMr
-                    ? 'बाजारभाव, कालवा पाणी सोडणे व वीज वेळापत्रकाच्या तात्काळ स्क्रीन सूचना.'
-                    : 'Instant lock-screen alerts for APMC rates, canal water release, and power rosters.'}
+                    ? 'पाणी पुरवठा, वीज वेळापत्रक व महत्त्वाच्या सूचना थेट तुमच्या मोबाईलवर.'
+                    : 'Get water schedules, power rosters, and important village notices right on your screen.'}
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-3 shrink-0 self-end sm:self-center">
               {pushEnabled && (
                 <button
                   type="button"
                   onClick={handleSendTestPush}
                   disabled={sendingTestPush}
-                  className="px-3.5 py-2 rounded-xl text-[12px] font-bold bg-[#e8f1ec] hover:bg-[#cadbcf] text-[#14532d] border border-[#cadbcf] transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl text-[11px] font-bold bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-200 transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer touch-manipulation"
                   title={isMr ? "डिव्हाइसवर तात्काळ चाचणी सूचना पाठवून खात्री करा" : "Send an instant test notification to this device"}
                 >
-                  <LucideIcon name={sendingTestPush ? 'sync' : 'cell_tower'} className={`text-[15px] ${sendingTestPush ? 'animate-spin' : ''}`} />
+                  <LucideIcon name={sendingTestPush ? 'sync' : 'cell_tower'} className={`text-[14px] ${sendingTestPush ? 'animate-spin' : ''}`} />
                   <span>
                     {sendingTestPush
                       ? (isMr ? 'पाठवत आहे...' : 'Testing...')
-                      : (isMr ? 'चाचणी सूचना पाठवा' : 'Send Test Alert')}
+                      : (isMr ? 'चाचणी सूचना' : 'Test Alert')}
                   </span>
                 </button>
               )}
 
-              <button
-                type="button"
-                onClick={handleToggleWebPush}
-                disabled={pushToggling}
-                className={`px-4 py-2 rounded-xl text-[12px] font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer ${
-                  pushEnabled
-                    ? 'bg-white hover:bg-[#fef3c7] text-[#ba1a1a] border border-stone-200 hover:border-[#fde68a]'
-                    : 'bg-[#166534] hover:bg-[#052e16] text-white'
-                }`}
-              >
-                <LucideIcon name={pushToggling ? 'sync' : pushEnabled ? 'notifications_off' : 'notifications_active'} className={`text-[16px] ${pushToggling ? 'animate-spin' : ''}`} />
-                <span>
-                  {pushToggling
-                    ? (isMr ? 'अद्ययावत करत आहे...' : 'Updating...')
-                    : pushEnabled
-                    ? (isMr ? 'सूचना बंद करा' : 'Turn Off Alerts')
-                    : (isMr ? 'पुश सूचना सुरू करा' : 'Enable Device Push')}
+              {/* On-Touch Switch for Start & Stop */}
+              <div className="flex items-center gap-2">
+                <span className="text-[12px] font-bold text-stone-700 select-none">
+                  {pushEnabled ? (isMr ? 'सुरू' : 'On') : (isMr ? 'बंद' : 'Off')}
                 </span>
-              </button>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={pushEnabled}
+                  disabled={pushToggling}
+                  onClick={handleToggleWebPush}
+                  aria-label={pushEnabled ? 'Disable notifications' : 'Enable notifications'}
+                  className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden touch-manipulation ${
+                    pushEnabled ? 'bg-emerald-600' : 'bg-stone-300'
+                  } ${pushToggling ? 'opacity-50 cursor-wait' : ''}`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                      pushEnabled ? 'translate-x-5' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
             </div>
           </div>
 

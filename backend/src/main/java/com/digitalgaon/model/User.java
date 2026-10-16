@@ -35,7 +35,7 @@ public class User {
     private String wardNumber;
 
     @Column(name = "occupation", length = 100)
-    private String occupation = "Citizen / Resident";
+    private String occupation = "Citizen";
 
     @Column(name = "preferred_language", length = 10)
     private String preferredLanguage = "en";

@@ -46,13 +46,13 @@ export async function isPushSubscribed(): Promise<boolean> {
 
 export async function subscribeUserToPush(phone?: string, role?: string): Promise<{ success: boolean; message: string }> {
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-    return { success: false, message: 'Web Push is not supported in this browser.' };
+    return { success: false, message: 'तुमच्या ब्राऊझरमध्ये थेट सूचना सुविधा उपलब्ध नाही.' };
   }
 
   try {
     const perm = await Notification.requestPermission();
     if (perm !== 'granted') {
-      return { success: false, message: 'Notification permission was denied.' };
+      return { success: false, message: 'सूचना सुरू करण्यासाठी ब्राऊझर परवानगी आवश्यक आहे.' };
     }
 
     // 1. Ensure Service Worker registration
@@ -62,13 +62,20 @@ export async function subscribeUserToPush(phone?: string, role?: string): Promis
     }
     const swReg = reg || (await navigator.serviceWorker.ready);
 
-    // 2. Fetch public key from backend
-    const res = await fetch(`${API_BASE_URL}/notifications/vapid-key`);
-    const json = await res.json();
-    const publicKey = json.data?.publicKey;
+    // 2. Fetch public key from environment or backend
+    let publicKey = (import.meta as any).env?.VITE_VAPID_PUBLIC_KEY || '';
+    if (!publicKey) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/notifications/vapid-key`);
+        const json = await res.json();
+        publicKey = json.data?.publicKey;
+      } catch (e) {
+        console.warn('Could not fetch notification key from server:', e);
+      }
+    }
 
     if (!publicKey) {
-      throw new Error('VAPID public key could not be retrieved from server.');
+      throw new Error('सूचना सर्व्हरशी संपर्क होऊ शकला नाही. कृपया थोड्या वेळाने प्रयत्न करा.');
     }
 
     const convertedVapidKey = urlBase64ToUint8Array(publicKey);
@@ -108,22 +115,21 @@ export async function subscribeUserToPush(phone?: string, role?: string): Promis
     });
 
     if (!regRes.ok) {
-      throw new Error('Failed to register subscription on server.');
+      throw new Error('सूचना नोंदणी पूर्ण होऊ शकली नाही.');
     }
 
-    // 6. Deliver an immediate test/welcome notification to confirm it works
+    // 6. Deliver an immediate welcome notification to confirm it works
     try {
-      await swReg.showNotification('आसगाव थेट सूचना सक्रिय (Push Alerts Active)', {
-        body: 'आसगाव ग्रामपंचायत थेट सूचना आता तुमच्या डिव्हाइसवर सक्रिय झाल्या आहेत.',
+      await swReg.showNotification('आसगाव थेट सूचना सुरू झाल्या', {
+        body: 'आसगाव ग्रामपंचायत थेट सूचना आता तुमच्या मोबाईलवर सुरू झाल्या आहेत.',
         icon: '/asgaon-logo.png',
         badge: '/asgaon-logo.png',
         data: { url: '/' }
       });
     } catch {
-      // Local notification fallback if service worker notification triggers error
       if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification('आसगाव थेट सूचना सक्रिय', {
-          body: 'आसगाव ग्रामपंचायत थेट सूचना आता सक्रिय झाल्या आहेत.',
+        new Notification('आसगाव थेट सूचना सुरू झाल्या', {
+          body: 'आसगाव ग्रामपंचायत थेट सूचना आता सक्रिय आहेत.',
           icon: '/asgaon-logo.png'
         });
       }
@@ -131,12 +137,12 @@ export async function subscribeUserToPush(phone?: string, role?: string): Promis
 
     return {
       success: true,
-      message: 'Subscribed to Asgaon Alerts! You will receive live Mandi rates, water rosters, and circulars.'
+      message: 'थेट सूचना सुरू झाल्या! पाणी पुरवठा व महत्त्वाच्या सूचना वेळेवर मिळतील.'
     };
   } catch (err: any) {
     return {
       success: false,
-      message: err.message || 'Subscription failed.'
+      message: err.message || 'सूचना सुरू करताना अडचण आली. कृपया पुन्हा प्रयत्न करा.'
     };
   }
 }
@@ -155,9 +161,9 @@ export async function unsubscribeUserFromPush(): Promise<{ success: boolean; mes
         body: JSON.stringify({ endpoint })
       });
     }
-    return { success: true, message: 'Unsubscribed from Asgaon Alerts.' };
+    return { success: true, message: 'थेट सूचना बंद केल्या आहेत.' };
   } catch (err: any) {
-    return { success: false, message: err.message || 'Unsubscribe failed.' };
+    return { success: false, message: err.message || 'सूचना बंद करताना अडचण आली.' };
   }
 }
 

@@ -28,7 +28,7 @@ export const translations = {
   header_voice_search_title: { MR: 'व्हॉइस सर्च (मराठी / हिंदी / इंग्रजी)', EN: 'Voice Search (Marathi / Hindi / English)' },
   header_all: { MR: 'सर्व', EN: 'All' },
   header_alerts_title: { MR: 'गाव पातळीवरील थेट सूचना व अलर्ट', EN: 'Village Level Direct Notices & Alerts' },
-  header_view_all_alerts: { MR: 'सर्व सूचना व परिपत्रके पहा', EN: 'View All Notices & Circulars' },
+  header_view_all_alerts: { MR: 'सर्व पहा', EN: 'View All' },
   header_no_alerts: { MR: 'सध्या कोणतीही नवीन तातडीची सूचना नाही.', EN: 'No urgent alerts at this moment.' },
   header_urgent: { MR: 'तातडीची', EN: 'Urgent' },
   header_close: { MR: 'बंद करा', EN: 'Close' },

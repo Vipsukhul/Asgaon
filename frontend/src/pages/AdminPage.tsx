@@ -5,11 +5,11 @@ import type { UserProfileData } from './ProfilePage';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { AdminNavSystem } from '../components/AdminNavSystem';
 import { useLanguage } from '../context/LanguageContext';
-import { sendTestPushNotification } from '../services/pushNotifications';
 import { AdminLogsSection } from '../components/AdminLogsSection';
 import { AdminBannerManager } from '../components/AdminBannerManager';
 import { AdminGalleryManager } from '../components/AdminGalleryManager';
 import { AdminTransparencyManager } from '../components/AdminTransparencyManager';
+import { AdminBroadcastPanel } from '../components/AdminBroadcastPanel';
 import {
   AdminManagementSection,
   getAllowedModulesForUser,
@@ -824,13 +824,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
   const [resolutionStatus, setResolutionStatus] = useState('IN_PROGRESS');
   const [resolutionNote, setResolutionNote] = useState('');
   const [updatingComplaint, setUpdatingComplaint] = useState(false);
-
-  // 7. Push Broadcast Alert
-  const [broadcastTitle, setBroadcastTitle] = useState('🚨 आसगाव तातडीची सूचना: उद्या पाणी पुरवठा वेळ बदल');
-  const [broadcastBody, setBroadcastBody] = useState('मुख्य पाईपलाईन दुरुस्ती कामामुळे उद्या सकाळी पाणी पुरवठा ७:०० ऐवजी ८:३० वाजता होईल. गावकऱ्यांनी नोंद घ्यावी.');
-  const [broadcastCategory, setBroadcastCategory] = useState('पाणी पुरवठा');
-  const [pushSending, setPushSending] = useState(false);
-  const [pushFeedback, setPushFeedback] = useState<string | null>(null);
 
   // 8. Users (Dynamic from backend API /admin/users + CRUD Management)
   const [users, setUsers] = useState<any[]>(() => {
@@ -1763,22 +1756,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
     saveWaterSchedule(updated);
     setEditingWaterWard(null);
     alert('पाणी पुरवठा वेळापत्रक अद्ययावत केले!');
-  };
-
-  // --- BROADCAST PUSH ---
-  const handleSendBroadcast = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!broadcastTitle.trim() || !broadcastBody.trim()) return;
-    setPushSending(true);
-    setPushFeedback(null);
-    try {
-      const res = await sendTestPushNotification(broadcastTitle.trim(), broadcastBody.trim(), '/announcements');
-      setPushFeedback(res.message || 'सर्व गावकऱ्यांच्या मोबाईलवर तात्काळ सूचना पाठवली गेली!');
-    } catch (err: any) {
-      setPushFeedback('Broadcast notice: ' + (err.message || 'Notification triggered.'));
-    } finally {
-      setPushSending(false);
-    }
   };
 
   // --- COMPLAINT STATUS ---
@@ -6046,81 +6023,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         </div>
       )}
 
-      {/* TAB 8: URGENT BROADCAST (PUSH ALERT) */}
+      {/* TAB 8: URGENT BROADCAST (PUSH ALERT & EMAIL BROADCAST) */}
       {activeTab === 'broadcast' && (
-        <div className="max-w-2xl bg-white p-6 rounded-2xl border border-[#e8e2d9] shadow-xs mx-auto w-full">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-xl bg-[#fef3c7] text-[#ba1a1a] flex items-center justify-center shrink-0">
-              <LucideIcon name="cell_tower" className="text-[28px]" />
-            </div>
-            <div>
-              <h2 className="font-heading font-extrabold text-[18px] text-[#166534]">
-                तातडीची दवंडी 
-              </h2>
-              <p className="text-[12px] text-[#707974]">
-                सर्व नोंदणीकृत गावकऱ्यांच्या मोबाईल स्क्रीनवर तात्काळ पॉप-अप सूचना पाठवा.
-              </p>
-            </div>
-          </div>
-
-          {pushFeedback && (
-            <div className="mb-4 p-3 rounded-xl bg-[#e8f1ec] text-[#14532d] border border-[#cadbcf] text-[12px] font-bold flex items-center gap-2">
-              <LucideIcon name="campaign" className="text-[18px]" />
-              <span>{pushFeedback}</span>
-            </div>
-          )}
-
-          <form onSubmit={handleSendBroadcast} className="flex flex-col gap-3">
-            <div>
-              <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">अलर्टचे शीर्षक *</label>
-              <input
-                type="text"
-                required
-                value={broadcastTitle}
-                onChange={(e) => setBroadcastTitle(e.target.value)}
-                placeholder="🚨 आसगाव तातडीची सूचना..."
-                className="w-full p-2.5 bg-[#f9f3ea] text-[13px] rounded-xl border border-[#e8e2d9]"
-              />
-            </div>
-
-            <div>
-              <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">अलर्ट वर्गवारी </label>
-              <select
-                value={broadcastCategory}
-                onChange={(e) => setBroadcastCategory(e.target.value)}
-                className="w-full p-2.5 bg-[#f9f3ea] text-[13px] rounded-xl border border-[#e8e2d9]"
-              >
-                <option value="पाणी पुरवठा">पाणी पुरवठा </option>
-                <option value="ग्रामसभा">ग्रामसभा बैठक </option>
-                <option value="वीज पुरवठा">वीज पुरवठा </option>
-                <option value="कृषी सल्ला">कृषी सल्ला व हवामान </option>
-                <option value="आरोग्य">आरोग्य शिबीर </option>
-                <option value="आपत्कालीन">आपत्कालीन सूचना </option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-[12px] font-bold text-[#1d1b16] mb-1">अलर्ट मजकूर *</label>
-              <textarea
-                required
-                rows={4}
-                value={broadcastBody}
-                onChange={(e) => setBroadcastBody(e.target.value)}
-                placeholder="गावकऱ्यांना तात्काळ समजण्यासाठी मोजका व स्पष्ट मजकूर लिहा..."
-                className="w-full p-2.5 bg-[#f9f3ea] text-[13px] rounded-xl border border-[#e8e2d9]"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={pushSending}
-              className="py-3.5 px-4 rounded-xl bg-[#ba1a1a] hover:bg-[#93000a] text-white font-bold text-[14px] flex items-center justify-center gap-2 shadow-md transition-all mt-2"
-            >
-              <LucideIcon name="send" className="text-[20px]" />
-              <span>{pushSending ? 'अलर्ट पाठवला जात आहे...' : 'सर्व गावकऱ्यांच्या मोबाईलवर पाठवा'}</span>
-            </button>
-          </form>
-        </div>
+        <AdminBroadcastPanel currentUser={currentUser} />
       )}
 
       {/* TAB 9: USERS DIRECTORY (UNIFIED CITIZEN & ADMIN HIERARCHY) */}
@@ -6176,9 +6081,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 </div>
                 <div>
                   <h3 className="font-heading font-black text-lg text-[#14532d]">
-                    <span>नागरी व प्रशासकीय युनिक लॉगिन रचना</span>
+                    <span>नागरी युनिक लॉगिन रचना</span>
                   </h3>
-                  <p className="text-xs text-[#55605a]">गावकरी व प्रशासकीय खात्यांचे व्यवस्थापन, नोंदणी व सुरक्षित अधिकार वाटप</p>
+                  <p className="text-xs text-[#55605a]">गावकरी खात्यांचे नोंदणी व व्यवस्थापन </p>
                 </div>
               </div>
 
@@ -6189,7 +6094,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                   className="px-4 py-2.5 rounded-xl bg-[#166534] hover:bg-[#14532d] text-white text-xs font-black shrink-0 flex items-center gap-2 shadow-sm cursor-pointer transition-all active:scale-98"
                 >
                   <LucideIcon name="person_add" className="text-[17px]" />
-                  <span>नवीन नागरिक / वापरकर्ता जोडा</span>
+                  <span>नवीन नागरिक</span>
                 </button>
 
                 {isSuperAdmin && (
@@ -6199,7 +6104,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                     className="px-3.5 py-2.5 rounded-xl bg-white hover:bg-[#f0fdf4] text-[#166534] border border-[#cadbcf] text-xs font-bold shrink-0 flex items-center gap-1.5 shadow-2xs cursor-pointer transition-all"
                   >
                     <LucideIcon name="admin_panel_settings" className="text-[16px]" />
-                    <span>अॅडमिन मॉड्युल अधिकार</span>
+                    <span>Admin Managment</span>
                   </button>
                 )}
               </div>
@@ -6217,7 +6122,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 }`}
               >
                 <div>
-                  <span className="text-[11px] font-bold text-[#166534] block">१. ग्रामस्थ नागरिक (CITIZEN)</span>
+                  <span className="text-[11px] font-bold text-[#166534] block">१. ग्रामस्थ नागरिक</span>
                   <span className="text-xl font-black text-[#14532d]">{citizenCount}</span>
                 </div>
                 <div className="flex flex-col items-end gap-1">
@@ -7135,6 +7040,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       {activeTab === 'transparency' && (
         <AdminTransparencyManager />
       )}
+
 
       {/* TAB 16: SUPER ADMIN ACCESS CONTROL & ADMIN MANAGEMENT */}
       {activeTab === 'admin_management' && (

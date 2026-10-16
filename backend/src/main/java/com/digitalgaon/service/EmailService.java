@@ -68,4 +68,57 @@ public class EmailService {
                     e.getMessage(), otpCode);
         }
     }
+
+    public int sendBroadcastEmail(String subject, String contentHtml, String bannerImageUrl, String actionUrl, java.util.List<String> targetEmails) {
+        log.info(">> Broadcasting email: {} to {} recipients", subject, targetEmails != null ? targetEmails.size() : 0);
+        if (targetEmails == null || targetEmails.isEmpty()) return 0;
+        int sentCount = 0;
+        for (String to : targetEmails) {
+            if (to == null || to.isBlank() || !to.contains("@")) continue;
+            try {
+                if (mailSender == null || fromEmail == null || fromEmail.isBlank()) {
+                    log.info("Simulated broadcast email to {}: {}", to, subject);
+                    sentCount++;
+                    continue;
+                }
+                MimeMessage message = mailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+                helper.setFrom(fromEmail, "आसगाव ग्रामपंचायत (Asgaon Panchayat)");
+                helper.setTo(to.trim());
+                helper.setSubject(subject);
+
+                String bannerHtml = (bannerImageUrl != null && !bannerImageUrl.isBlank())
+                    ? String.format("<div style=\"margin: 16px 0; text-align: center;\"><img src=\"%s\" alt=\"Notice Banner\" style=\"max-width: 100%%; max-height: 280px; object-fit: cover; border-radius: 12px;\" /></div>", bannerImageUrl)
+                    : "";
+
+                String ctaHtml = (actionUrl != null && !actionUrl.isBlank())
+                    ? String.format("<div style=\"text-align: center; margin: 24px 0;\"><a href=\"%s\" style=\"background-color: #166534; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;\">सविस्तर पहा (View Details)</a></div>", actionUrl.startsWith("http") ? actionUrl : "https://asgaon.vercel.app" + actionUrl)
+                    : "";
+
+                String html = """
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e8e2d9; border-radius: 16px; background-color: #ffffff;">
+                        <div style="text-align: center; border-bottom: 2px solid #166534; padding-bottom: 16px; margin-bottom: 20px;">
+                            <h2 style="color: #166534; margin: 0; font-size: 22px;">🏛️ ग्रामपंचायत आसगाव</h2>
+                            <p style="color: #707974; font-size: 13px; margin: 4px 0 0 0;">अधिकृत नागरिक सूचना व प्रसिद्धी पत्रक</p>
+                        </div>
+                        <h3 style="color: #1d1b16; font-size: 18px; margin-top: 0;">%s</h3>
+                        %s
+                        <div style="font-size: 14px; color: #374151; line-height: 1.6; white-space: pre-wrap; margin: 16px 0;">%s</div>
+                        %s
+                        <div style="border-top: 1px solid #f3ede4; margin-top: 30px; padding-top: 14px; text-align: center; font-size: 11px; color: #9ca3af;">
+                            ग्रामपंचायत कार्यालय आसगाव, ता. पवनी, जि. भंडारा - ४४१९१०<br/>
+                            हे स्वयंचलित ई-मेल पत्रक आहे.
+                        </div>
+                    </div>
+                """.formatted(subject, bannerHtml, contentHtml, ctaHtml);
+
+                helper.setText(html, true);
+                mailSender.send(message);
+                sentCount++;
+            } catch (Exception e) {
+                log.warn("Failed sending email to {}: {}", to, e.getMessage());
+            }
+        }
+        return sentCount;
+    }
 }

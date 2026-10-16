@@ -19,7 +19,7 @@ export const JobsBoardSection: React.FC<JobsBoardSectionProps> = ({ jobs, onPost
         <div>
           <h2 className="font-heading font-extrabold text-[24px] text-emerald-950 flex items-center gap-2">
             <LucideIcon name="work" className="text-blue-700 text-[28px]" />
-            <span>{lang === 'MR' ? 'ग्रामीण रोजगार मंच • स्थानिक काम व नोकऱ्या' : 'Gramin Rojgar Manch • Village Jobs Board'}</span>
+            <span>{lang === 'MR' ? 'ग्रामीण रोजगार • स्थानिक नोकऱ्या' : 'Gramin Rojgar • Local Jobs'}</span>
           </h2>
           <p className="text-[13px] text-stone-600">
             {lang === 'MR'

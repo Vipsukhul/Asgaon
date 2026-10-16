@@ -163,6 +163,14 @@ export const ADMIN_MODULES_LIST: AdminModuleConfig[] = [
     description: 'अधिकृत ग्रामपंचायत दवंडी, ग्रामसभा सूचना व परिपत्रके'
   },
   {
+    id: 'broadcast',
+    labelMarathi: 'तातडीची दवंडी (Push Alert & Email)',
+    labelEnglish: 'Emergency Broadcast',
+    icon: 'cell_tower',
+    category: 'CONTENT',
+    description: 'नागरिकांच्या मोबाईलवर थेट पुश नोटिफिकेशन्स व ई-मेल परिपत्रके पाठवणे'
+  },
+  {
     id: 'users',
     labelMarathi: 'नागरिक व वापरकर्ता नोंदणी',
     labelEnglish: 'Citizen Directory',

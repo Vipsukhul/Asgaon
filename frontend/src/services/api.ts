@@ -476,6 +476,26 @@ export const api = {
   submitReview: (payload: any) => request<any>('/reviews', { method: 'POST', body: JSON.stringify(payload) }),
   deleteReview: (id: string) => request<any>(`/reviews/${id}`, { method: 'DELETE' }),
 
+  // --- Notifications & Broadcasts ---
+  broadcastNotification: (payload: {
+    title: string;
+    message: string;
+    url?: string;
+    category?: string;
+    imageUrl?: string;
+    sendEmail?: boolean;
+    emailSubject?: string;
+    recipients?: string[];
+  }) => request<any>('/notifications/broadcast', { method: 'POST', body: JSON.stringify(payload) }),
+
+  broadcastEmail: (payload: {
+    subject: string;
+    body: string;
+    imageUrl?: string;
+    actionUrl?: string;
+    recipients?: string[];
+  }) => request<any>('/notifications/broadcast-email', { method: 'POST', body: JSON.stringify(payload) }),
+
   // --- Location & Geocoding API ---
   getCurrentLocation: () => getCurrentCoordinates(),
   reverseGeocode: (lat: number, lon: number) => reverseGeocodeLocation(lat, lon),

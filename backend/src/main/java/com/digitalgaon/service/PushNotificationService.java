@@ -125,6 +125,10 @@ public class PushNotificationService {
     }
 
     public int broadcast(String title, String message, String actionUrl, String category) {
+        return broadcast(title, message, actionUrl, category, null);
+    }
+
+    public int broadcast(String title, String message, String actionUrl, String category, String imageUrl) {
         List<PushSubscription> subscribers = subscriptionRepository.findAll();
         if (subscribers.isEmpty()) {
             log.info("No active web push subscriptions found to broadcast.");
@@ -132,11 +136,12 @@ public class PushNotificationService {
         }
 
         String jsonPayload = String.format(
-            "{\"title\":\"%s\",\"body\":\"%s\",\"url\":\"%s\",\"category\":\"%s\",\"icon\":\"/asgaon-logo.png\",\"badge\":\"/asgaon-logo.png\"}",
+            "{\"title\":\"%s\",\"body\":\"%s\",\"url\":\"%s\",\"category\":\"%s\",\"image\":\"%s\",\"icon\":\"/asgaon-logo.png\",\"badge\":\"/asgaon-logo.png\"}",
             escapeJson(title),
             escapeJson(message),
             escapeJson(actionUrl != null ? actionUrl : "/"),
-            escapeJson(category != null ? category : "all")
+            escapeJson(category != null ? category : "all"),
+            escapeJson(imageUrl != null ? imageUrl : "")
         );
 
         int sentCount = 0;

@@ -5,6 +5,7 @@ import { AsgaonLogo } from './AsgaonLogo';
 import { isPushSubscribed, subscribeUserToPush, unsubscribeUserFromPush } from '../services/pushNotifications';
 import { api } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
+import { useToast } from '../context/ToastContext';
 
 interface HeaderProps {
   onOpenLogin: () => void;
@@ -35,6 +36,7 @@ export const Header: React.FC<HeaderProps> = ({
   onLogout
 }) => {
   const { lang, toggleLang, t } = useLanguage();
+  const toast = useToast();
   const [searchVal, setSearchVal] = useState('');
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -79,13 +81,19 @@ export const Header: React.FC<HeaderProps> = ({
     try {
       if (pushActive) {
         const res = await unsubscribeUserFromPush();
-        alert(res.message);
+        toast.info(res.message, lang === 'MR' ? 'सूचना बंद' : 'Alerts Disabled');
         setPushActive(false);
       } else {
         const res = await subscribeUserToPush(currentUser?.phone, userRole || undefined);
-        alert(res.message);
-        if (res.success) setPushActive(true);
+        if (res.success) {
+          toast.success(res.message, lang === 'MR' ? 'सूचना सुरू' : 'Alerts Enabled');
+          setPushActive(true);
+        } else {
+          toast.warning(res.message, lang === 'MR' ? 'सूचना' : 'Notification');
+        }
       }
+    } catch {
+      toast.error(lang === 'MR' ? 'सूचना बदलताना त्रुटी आली' : 'Failed to toggle notifications');
     } finally {
       setPushLoading(false);
     }
@@ -324,46 +332,24 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="fixed sm:absolute top-[54px] sm:top-full left-3 right-3 sm:left-auto sm:right-6 md:right-8 sm:mt-2 w-auto sm:w-96 max-w-[calc(100vw-1.5rem)] bg-white rounded-2xl shadow-2xl border border-[#e7dece] p-3 z-50 animate-fadeIn text-[12px]">
               {/* Header */}
               <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#efe7dc]">
-                <div className="flex items-center gap-1.5 font-extrabold text-emerald-900">
-                  <LucideIcon name="campaign" className="text-[18px] text-emerald-700" />
-                  <span>गाव सूचना व थेट अलर्ट</span>
-                </div>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-900">
-                  {recentAlerts.length} ताज्या सूचना
-                </span>
-              </div>
-
-              {/* Web Push Subscription Action Box */}
-              <div
-                className={`p-2.5 rounded-xl border mb-3 flex items-center justify-between gap-2 ${
-                  pushActive ? 'bg-emerald-50 border-emerald-200' : 'bg-[#faf6ee] border-[#efe7dc]'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <LucideIcon
-                    name={pushActive ? 'check_circle' : 'notifications_paused'}
-                    className={`text-[20px] ${pushActive ? 'text-emerald-700' : 'text-[#c2410c]'}`}
-                  />
-                  <div>
-                    <div className="font-bold text-stone-900 text-[11px] leading-tight">
-                      {pushActive ? 'मोबाईल सूचना चालू आहेत' : 'थेट सूचना सुरू करा'}
-                    </div>
-                    <div className="text-[10px] text-stone-500 leading-tight mt-0.5">
-                      {pushActive ? 'पाणी, वीज, APMC दर व तक्रार अपडेट्स' : 'पाणी पुरवठा व महत्त्वाच्या सूचना मिळवा'}
-                    </div>
+                <div className="flex items-center gap-2 font-extrabold text-emerald-950">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                    <LucideIcon name="notifications" className="text-[16px]" />
                   </div>
+                  <span className="text-[13px]">{lang === 'MR' ? 'गाव सूचना व थेट अलर्ट' : 'Village Alerts & Notices'}</span>
+                  {recentAlerts.length > 0 && (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-900">
+                      {recentAlerts.length}
+                    </span>
+                  )}
                 </div>
                 <button
                   type="button"
-                  onClick={handleTogglePush}
-                  disabled={pushLoading}
-                  className={`px-2.5 py-1 rounded-lg text-[10px] font-black shrink-0 transition-all cursor-pointer ${
-                    pushActive
-                      ? 'bg-white border border-emerald-200 text-emerald-800 hover:bg-emerald-50'
-                      : 'bg-emerald-800 text-emerald-100 hover:bg-emerald-900 shadow-2xs'
-                  }`}
+                  onClick={() => setNotifDropdownOpen(false)}
+                  aria-label="Close"
+                  className="w-7 h-7 rounded-full flex items-center justify-center text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors cursor-pointer"
                 >
-                  {pushLoading ? '...' : pushActive ? 'सक्रिय ✓' : 'सुरू करा'}
+                  <LucideIcon name="close" className="text-[16px]" />
                 </button>
               </div>
 
@@ -409,24 +395,51 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
 
               {/* Footer */}
-              <div className="mt-2.5 pt-2 border-t border-[#efe7dc] flex items-center justify-between">
+              <div className="mt-2.5 pt-2 border-t border-[#efe7dc] flex items-center justify-between gap-2">
                 <button
                   type="button"
                   onClick={() => {
                     setActiveNav('announcements');
                     setNotifDropdownOpen(false);
                   }}
-                  className="text-emerald-800 hover:underline font-bold text-[11px] flex items-center gap-1 cursor-pointer"
+                  className="text-emerald-800 hover:text-emerald-950 font-bold text-[11px] flex items-center gap-1.5 cursor-pointer py-1"
                 >
-                  <span>सर्व सूचना व परिपत्रके पहा</span>
+                  <span>{lang === 'MR' ? 'सर्व पहा' : 'View all'}</span>
                   <LucideIcon name="arrow_forward" className="text-[14px]" />
                 </button>
+
+                {/* Push Notification Bell / Bell-with-Cross Toggle Button */}
                 <button
                   type="button"
-                  onClick={() => setNotifDropdownOpen(false)}
-                  className="text-stone-500 hover:text-stone-900 font-bold text-[11px] cursor-pointer"
+                  onClick={handleTogglePush}
+                  disabled={pushLoading}
+                  title={
+                    pushActive
+                      ? (lang === 'MR' ? 'थेट सूचना बंद करा' : 'Turn off alerts')
+                      : (lang === 'MR' ? 'थेट सूचना सुरू करा' : 'Turn on live alerts')
+                  }
+                  aria-label={
+                    pushActive
+                      ? (lang === 'MR' ? 'थेट सूचना बंद करा' : 'Turn off alerts')
+                      : (lang === 'MR' ? 'थेट सूचना सुरू करा' : 'Turn on live alerts')
+                  }
+                  className={`px-2.5 py-1 rounded-xl border transition-all cursor-pointer flex items-center gap-1.5 text-[11px] font-bold touch-manipulation ${
+                    pushLoading ? 'opacity-50 cursor-wait' : ''
+                  } ${
+                    pushActive
+                      ? 'bg-stone-50 border-stone-200 text-stone-600 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200'
+                      : 'bg-emerald-50/90 border-emerald-200 text-emerald-800 hover:bg-emerald-100 hover:border-emerald-300 shadow-2xs'
+                  }`}
                 >
-                  बंद करा
+                  <LucideIcon
+                    name={pushActive ? 'bell_off' : 'bell'}
+                    className={`text-[15px] ${pushActive ? 'text-stone-500' : 'text-emerald-700'}`}
+                  />
+                  <span>
+                    {pushActive
+                      ? (lang === 'MR' ? 'सूचना बंद करा' : 'Mute')
+                      : (lang === 'MR' ? 'सूचना सुरू करा' : 'Alerts')}
+                  </span>
                 </button>
               </div>
             </div>
