@@ -894,7 +894,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
   };
 
   const handleToggleUserStatus = async (user: any) => {
-    if (user.phone === '9999999999') {
+    if (user.phone === '7507732821') {
       alert('मूळ सुपर अॅडमिन खात्याची स्थिती बदलता येणार नाही!');
       return;
     }
@@ -1012,7 +1012,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
   };
 
   const handleDeleteUser = async (userId: string, userName: string, phone: string) => {
-    if (phone === '9999999999') {
+    if (phone === '7507732821') {
       alert('मूळ सुपर अॅडमिन खाते हटवता येणार नाही!');
       return;
     }
@@ -6355,7 +6355,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         const rawRole = (u.roles && u.roles.length > 0) ? String(Array.from(u.roles)[0]).replace('ROLE_', '') : 'CITIZEN';
                         const isSuper = rawRole === 'SUPER_ADMIN';
                         const isAdminUser = rawRole === 'ADMIN';
-                        const isRoot = u.phone === '9999999999';
+                        const isRoot = u.phone === '7507732821';
 
                         return (
                           <tr key={u.id} className="hover:bg-[#fef9ee] transition-colors">
@@ -6801,7 +6801,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                         <label className="block font-bold text-[#1d1b16] mb-1">मोबाईल नंबर</label>
                         <input
                           type="tel"
-                          disabled={editingUser.phone === '9999999999'}
+                          disabled={editingUser.phone === '7507732821'}
                           value={editingUser.phone}
                           onChange={(e) => setEditingUser({ ...editingUser, phone: e.target.value.replace(/\D/g, '') })}
                           className="w-full p-2.5 bg-[#f9f3ea] font-mono rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white disabled:opacity-60"
@@ -6853,7 +6853,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       <div>
                         <label className="block font-bold text-[#1d1b16] mb-1">प्रणाली भूमिका</label>
                         <select
-                          disabled={editingUser.phone === '9999999999'}
+                          disabled={editingUser.phone === '7507732821'}
                           value={editingUser.role}
                           onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
                           className="w-full p-2.5 bg-[#f9f3ea] rounded-xl border border-[#e8e2d9] outline-none focus:border-[#166534] focus:bg-white font-bold text-[#14532d] disabled:opacity-60"
@@ -6869,7 +6869,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
                           type="checkbox"
-                          disabled={editingUser.phone === '9999999999'}
+                          disabled={editingUser.phone === '7507732821'}
                           checked={editingUser.isActive}
                           onChange={(e) => setEditingUser({ ...editingUser, isActive: e.target.checked })}
                           className="w-4 h-4 text-[#166534] rounded"

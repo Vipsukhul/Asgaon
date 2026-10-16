@@ -110,7 +110,7 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void seedSuperAdmin() {
-        String phone = "9999999999";
+        String phone = "7507732821";
         String email = "superadmin@asgaon.digitalgaon.in";
 
         // Managed directly in DB
