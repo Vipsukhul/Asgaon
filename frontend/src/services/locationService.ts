@@ -27,8 +27,8 @@ export const ASGAON_VILLAGE_LANDMARKS: VillageLandmark[] = [
   {
     name: 'Gram Panchayat Bhavan, Asgaon',
     nameMr: 'ग्रामपंचायत भवन, आसगाव',
-    latitude: 20.7850,
-    longitude: 79.6350,
+    latitude: 20.807884,
+    longitude: 79.722796,
     ward: 'Ward 2 (Gaothan)',
     category: 'gov'
   },

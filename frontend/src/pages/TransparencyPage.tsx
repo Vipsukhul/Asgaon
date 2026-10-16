@@ -191,11 +191,20 @@ export const TransparencyPage: React.FC<TransparencyPageProps> = ({ onNavigateHo
 
       {/* 3. Hero Header Banner */}
       <header className="bg-gradient-to-br from-emerald-900 via-emerald-950 to-stone-900 text-white rounded-3xl p-5 sm:p-7 shadow-xl relative overflow-hidden border border-emerald-800">
-        <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
-          <div className="space-y-1.5 max-w-2xl">
+        {/* Decorative Ambient Glows */}
+        <div className="absolute -top-12 -right-12 w-64 h-64 bg-emerald-400/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div className="space-y-2.5 max-w-2xl">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-emerald-200 text-xs font-bold border border-white/20">
-                LGD Code: {lgdCode} • {isMr ? 'पवनी, जि. भंडारा' : 'Pauni, Dist. Bhandara'}
+              <span className="px-3 py-1 rounded-full bg-white/10 text-emerald-200 text-xs font-bold border border-white/20 flex items-center gap-1.5">
+                <span>🏛️</span>
+                <span>LGD Code: {lgdCode} • {isMr ? 'पवनी, जि. भंडारा' : 'Pauni, Dist. Bhandara'}</span>
+              </span>
+              <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-200 text-xs font-bold border border-emerald-400/30 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>{isMr ? 'ई-ग्रामस्वराज अधिकृत पोर्टल' : 'Official eGramSwaraj Portal'}</span>
               </span>
             </div>
 
@@ -203,25 +212,23 @@ export const TransparencyPage: React.FC<TransparencyPageProps> = ({ onNavigateHo
               {isMr ? '१५ वा वित्त आयोग निधी व विकासकामे पारदर्शकता' : '15th Finance Commission & Civil Works Transparency'}
             </h1>
 
-            <p className="text-xs sm:text-sm text-emerald-100 font-medium">
+            <p className="text-xs sm:text-sm text-emerald-100/90 font-medium leading-relaxed">
               {isMr
                 ? 'गावात आलेला निधी, झालेला खर्च आणि मंजूर विकासकामांचा थेट हिशोब.'
                 : 'Direct insight into village grants received, expenditures, and approved projects on ground.'}
             </p>
-
-            
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-wrap items-center gap-2 shrink-0">
+          {/* Action & Portal Buttons */}
+          <div className="flex flex-wrap sm:flex-nowrap lg:flex-col items-stretch gap-2.5 w-full sm:w-auto shrink-0">
             <button
               type="button"
               onClick={() => loadData(true)}
               disabled={isSyncing}
-              className="px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-black flex items-center justify-center gap-1.5 transition-all shadow-md cursor-pointer"
-              title="सरकारी API वरून थेट डेटा अपडेट करा"
+              className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-white text-xs font-bold flex items-center justify-center gap-2 border border-white/20 transition-all cursor-pointer backdrop-blur-xs"
+              title={isMr ? 'सरकारी API वरून थेट डेटा अपडेट करा' : 'Refresh live data from Government API'}
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-amber-300' : 'text-emerald-300'}`} />
               <span>{isSyncing ? (isMr ? 'अद्यतनित होत आहे...' : 'Syncing...') : (isMr ? 'थेट API रिफ्रेश' : 'Sync Live API')}</span>
             </button>
 
@@ -229,10 +236,10 @@ export const TransparencyPage: React.FC<TransparencyPageProps> = ({ onNavigateHo
               href="https://egramswaraj.gov.in"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3.5 py-2 rounded-xl bg-white text-emerald-950 hover:bg-emerald-50 text-xs font-extrabold flex items-center justify-center gap-1.5 transition-all shadow-md cursor-pointer"
+              className="px-4 py-2.5 rounded-xl bg-emerald-700/80 hover:bg-emerald-600 active:scale-95 text-white text-xs font-extrabold flex items-center justify-center gap-2 border border-emerald-500/40 transition-all cursor-pointer shadow-xs"
             >
-              <span>eGramSwaraj</span>
-              <ExternalLink className="w-3 h-3 text-emerald-800" />
+              <span>eGramSwaraj.gov.in</span>
+              <ExternalLink className="w-3.5 h-3.5 text-emerald-200" />
             </a>
           </div>
         </div>
@@ -247,10 +254,7 @@ export const TransparencyPage: React.FC<TransparencyPageProps> = ({ onNavigateHo
           <div className="flex-1 space-y-1 text-xs">
             <div className="flex items-center gap-2">
               <span className="font-heading font-extrabold text-sm text-emerald-950">
-                {isMr ? 'नागरिकांसाठी सोप्या भाषेतील सारांश (Gemini AI सत्यापित)' : 'Civic AI Overview (Gemini Verified)'}
-              </span>
-              <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase">
-                AI Summary
+                {isMr ? 'नागरिकांसाठी सारांश' : 'General Overview'}
               </span>
             </div>
             <p className="text-stone-700 leading-relaxed whitespace-pre-line text-[13px]">

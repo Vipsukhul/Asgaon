@@ -9,7 +9,7 @@ interface LocationPickerMapProps {
   height?: string;
 }
 
-const ASGAON_CENTER: [number, number] = [20.8084579, 79.7242461];
+const ASGAON_CENTER: [number, number] = [20.807884, 79.722796];
 
 export const LocationPickerMap: React.FC<LocationPickerMapProps> = ({
   latitude,

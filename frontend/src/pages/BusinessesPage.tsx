@@ -751,7 +751,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                         type="button"
                         onClick={() => setLocationModalBiz(item)}
                         className="px-2.5 py-1.5 rounded-lg bg-[#fef9ee] hover:bg-[#a63b00] hover:text-white text-[#a63b00] text-[12px] font-bold flex items-center gap-1 border border-[#fed7aa] hover:border-[#a63b00] transition-all shadow-xs"
-                        title={lang === 'MR' ? 'दुकानाचे अचूक स्थान नकाशावर पहा' : 'View shop location on map modal'}
+                        title={lang === 'MR' ? 'नकाशावर पहा' : 'View on map'}
                       >
                         <LucideIcon name="location_on" className="text-[15px]" />
                         <span>{lang === 'MR' ? 'स्थान' : 'Location'}</span>
@@ -765,7 +765,7 @@ export const BusinessesPage: React.FC<BusinessesPageProps> = ({
                           ? 'text-[#c2410c] bg-[#fed7aa]'
                           : 'text-[#707974] hover:text-[#166534] hover:bg-[#f3ede4]'
                       }`}
-                      title={lang === 'MR' ? 'जतन करा (बुकमार्क)' : 'Bookmark this shop'}
+                      title={lang === 'MR' ? 'जतन करा' : 'Bookmark'}
                     >
                       <LucideIcon name={bookmarkedIds.includes(item.id) ? 'bookmark' : 'bookmark_border'} className=" text-[18px]" />
                     </button>

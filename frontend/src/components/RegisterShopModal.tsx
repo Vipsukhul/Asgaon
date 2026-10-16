@@ -12,16 +12,16 @@ interface RegisterShopModalProps {
 }
 
 const ASGAON_PRESETS = [
-  { label: 'निवडा: परिसरातील प्रसिद्ध चौक / खूण', lat: 20.7850, lng: 79.6350, name: '' },
-  { label: '🏛️ ग्रामपंचायत चौक', lat: 20.7850, lng: 79.6350, name: 'Gram Panchayat Chowk' },
-  { label: '🌾 मार्केट यार्ड चौक', lat: 20.7858, lng: 79.6346, name: 'Market Yard Chowk' },
-  { label: '🏫 जि.प. प्राथमिक शाळा, वॉर्ड २', lat: 20.7842, lng: 79.6362, name: 'Near ZP Primary School, Ward 2' },
-  { label: '🚜 बायपास हायवे रोड', lat: 20.7865, lng: 79.6380, name: 'Highway Bypass Road' },
-  { label: '🥛 तलाव रोड दुग्ध संकलन परिसर', lat: 20.7832, lng: 79.6335, name: 'Talav Road Dairy Area' },
-  { label: '🛠️ स्टेशन रोड मार्केट', lat: 20.7870, lng: 79.6320, name: 'Station Road Market' },
-  { label: '🏡 आंबेडकर वॉर्ड १', lat: 20.7820, lng: 79.6360, name: 'Ward No. 1 Ambedkar Ward' },
-  { label: '🛕 विठ्ठल मंदिर परिसर', lat: 20.7860, lng: 79.6370, name: 'Near Vitthal Mandir, Ward 3' },
-  { label: '🌱 पवनी बायपास कृषी केंद्र', lat: 20.7885, lng: 79.6395, name: 'Pauni Bypass Agro Hub' },
+  { label: 'निवडा: परिसरातील प्रसिद्ध चौक / खूण', lat: 20.807884, lng: 79.722796, name: '' },
+  { label: '🏛️ ग्रामपंचायत चौक', lat: 20.807884, lng: 79.722796, name: 'Gram Panchayat Chowk' },
+  { label: '🌾 मार्केट यार्ड चौक', lat: 20.8085, lng: 79.7220, name: 'Market Yard Chowk' },
+  { label: '🏫 जि.प. प्राथमिक शाळा, वॉर्ड २', lat: 20.8065, lng: 79.7240, name: 'Near ZP Primary School, Ward 2' },
+  { label: '🚜 बायपास हायवे रोड', lat: 20.8095, lng: 79.7255, name: 'Highway Bypass Road' },
+  { label: '🥛 तलाव रोड दुग्ध संकलन परिसर', lat: 20.8055, lng: 79.7210, name: 'Talav Road Dairy Area' },
+  { label: '🛠️ स्टेशन रोड मार्केट', lat: 20.8090, lng: 79.7200, name: 'Station Road Market' },
+  { label: '🏡 आंबेडकर वॉर्ड १', lat: 20.8045, lng: 79.7235, name: 'Ward No. 1 Ambedkar Ward' },
+  { label: '🛕 विठ्ठल मंदिर परिसर', lat: 20.8080, lng: 79.7248, name: 'Near Vitthal Mandir, Ward 3' },
+  { label: '🌱 पवनी बायपास कृषी केंद्र', lat: 20.8105, lng: 79.7265, name: 'Pauni Bypass Agro Hub' },
 ];
 
 export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
@@ -44,8 +44,8 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
   const [loading, setLoading] = useState(false);
 
   // Exact location states
-  const [latitude, setLatitude] = useState<number>(20.7850);
-  const [longitude, setLongitude] = useState<number>(79.6350);
+  const [latitude, setLatitude] = useState<number>(20.807884);
+  const [longitude, setLongitude] = useState<number>(79.722796);
   const [locatingGps, setLocatingGps] = useState(false);
   const [gpsStatus, setGpsStatus] = useState<string | null>(null);
   const [showMapPicker, setShowMapPicker] = useState(false);
@@ -279,22 +279,10 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
               <div>
                 <label className="block text-[12px] font-extrabold text-[#166534] flex items-center gap-1">
                   <LucideIcon name="location_on" className="text-[16px] text-[#c2410c]" />
-                  <span>{isMr ? 'नकाशावर दुकानाचे थेट स्थान' : 'Shop Location on Map'}</span>
+                  <span>{isMr ? 'नकाशावर दुकानाचे स्थान' : 'Shop location on map'}</span>
                 </label>
-                <p className="text-[10px] text-[#707974]">
-                  {isMr
-                    ? 'ग्राहकांना थेट नकाशावर दुकान दिसण्यासाठी GPS किंवा नकाशावर जागा निवडा'
-                    : 'Select your exact location so villagers can find your shop easily'}
-                </p>
-              </div>
-
-              {/* Coordinates Pill */}
-              <div className="bg-white px-2 py-0.5 rounded-lg border border-[#e8e2d9] text-[10px] font-bold text-[#166534] shrink-0 self-start sm:self-auto flex items-center gap-1">
-                <LucideIcon name="pin_drop" className="text-[12px] text-[#c2410c]" />
-                <span>{latitude.toFixed(4)}° N, {longitude.toFixed(4)}° E</span>
               </div>
             </div>
-
             {/* Quick Action Buttons */}
             <div className="flex flex-wrap items-center gap-2">
               <button
@@ -304,7 +292,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
                 className="px-3 py-1.5 rounded-lg bg-[#166534] hover:bg-[#052e16] text-white text-[11px] font-bold flex items-center gap-1.5 shadow-xs transition-colors disabled:opacity-50"
               >
                 <LucideIcon name="my_location" className="text-[15px] text-[#a7f3d0]" />
-                <span>{locatingGps ? (isMr ? 'GPS शोधत आहे...' : 'Locating GPS...') : (isMr ? '🎯 माझे थेट GPS स्थान मिळवा' : '🎯 Detect My GPS Location')}</span>
+                <span>{locatingGps ? (isMr ? 'GPS शोधत आहे...' : 'Locating GPS...') : (isMr ? 'स्थान मिळवा' : 'Detect Location')}</span>
               </button>
 
               <button
@@ -446,7 +434,7 @@ export const RegisterShopModal: React.FC<RegisterShopModalProps> = ({
             >
               {loading
                 ? (isMr ? 'नोंदणी होत आहे...' : 'Registering...')
-                : (isMr ? 'दुकान नोंदवा' : 'Publish Free Listing')}
+                : (isMr ? 'दुकान नोंदवा' : 'Publish Listing')}
             </button>
           </div>
         </form>

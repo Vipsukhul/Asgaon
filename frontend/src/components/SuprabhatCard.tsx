@@ -31,6 +31,46 @@ export const SuprabhatCard: React.FC<SuprabhatCardProps> = ({ onExploreMandi }) 
     ? `${today.getDate()} ${marathiMonths[today.getMonth()]} ${today.getFullYear()} (${marathiDays[today.getDay()]})`
     : today.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
+  const getGreetingData = () => {
+    const hour = today.getHours();
+    if (hour >= 5 && hour < 12) {
+      return {
+        icon: '🌅',
+        textMr: 'सुप्रभात आसगाव',
+        textEn: 'Good Morning Asgaon',
+        badgeGradient: 'from-amber-500 to-orange-500',
+        glowColor: 'bg-amber-400/20'
+      };
+    } else if (hour >= 12 && hour < 17) {
+      return {
+        icon: '☀️',
+        textMr: 'शुभ दुपार आसगाव',
+        textEn: 'Good Afternoon Asgaon',
+        badgeGradient: 'from-amber-500 to-yellow-600',
+        glowColor: 'bg-amber-300/25'
+      };
+    } else if (hour >= 17 && hour < 21) {
+      return {
+        icon: '🌇',
+        textMr: 'शुभ संध्याकाळ आसगाव',
+        textEn: 'Good Evening Asgaon',
+        badgeGradient: 'from-orange-500 to-rose-500',
+        glowColor: 'bg-orange-400/20'
+      };
+    } else {
+      return {
+        icon: '🌙',
+        textMr: 'शुभ रात्री आसगाव',
+        textEn: 'Good Night Asgaon',
+        badgeGradient: 'from-indigo-600 to-purple-600',
+        glowColor: 'bg-indigo-400/20'
+      };
+    }
+  };
+
+  const greeting = getGreetingData();
+  const greetingText = isMr ? greeting.textMr : greeting.textEn;
+
   const DAILY_THOUGHTS = [
     { mr: '“शेतकऱ्यांची मेहनत आणि गावाची एकी, हीच खरी आसगावची खरी समृद्धी आहे.”', en: '“Hard work of farmers and unity of the village is the true prosperity of Asgaon.”' },
     { mr: '“शिक्षण आणि स्वाभिमान हीच गावाच्या नव्या पिढीची खरी ताकद आहे — डॉ. बाबासाहेब आंबेडकर.”', en: '“Education and self-respect are the true strength of our next generation.”' },
@@ -50,12 +90,12 @@ export const SuprabhatCard: React.FC<SuprabhatCardProps> = ({ onExploreMandi }) 
 
   const handleShareWhatsApp = () => {
     const shareText = isMr
-      ? `🌅 *सुप्रभात आसगाव!* 🌾\n📅 *तारीख:* ${formattedDate}\n🌤️ *हवामान (पवनी/आसगाव):* ${weatherText}\n🌾 *आजचा भाव (पवनी बाजार):* धान ₹२,५४० | सोयाबीन ₹४,७२०\n💡 *आजचा सुविचार:* ${dailyThought}\n\n👉 *गावाच्या सर्व बातम्या व योजना:* https://asgaon.digital\n#डिजिटल_आसगाव #ग्रामपंचायत`
-      : `🌅 *Good Morning Asgaon!* 🌾\n📅 *Date:* ${formattedDate}\n🌤️ *Weather (Pauni/Asgaon):* ${weatherText}\n🌾 *Pauni Mandi:* Paddy ₹2,540 | Soybean ₹4,720\n💡 *Thought:* ${dailyThought}\n\n👉 *Village Hub:* https://asgaon.digital\n#DigitalAsgaon`;
+      ? `${greeting.icon} *${greetingText}!* 🌾\n📅 *तारीख:* ${formattedDate}\n🌤️ *हवामान (पवनी/आसगाव):* ${weatherText}\n🌾 *आजचा भाव (पवनी बाजार):* धान ₹२,५४० | सोयाबीन ₹४,७२०\n💡 *आजचा सुविचार:* ${dailyThought}\n\n👉 *गावाच्या सर्व बातम्या व योजना:* https://asgaon.digital\n#डिजिटल_आसगाव #ग्रामपंचायत`
+      : `${greeting.icon} *${greetingText}!* 🌾\n📅 *Date:* ${formattedDate}\n🌤️ *Weather (Pauni/Asgaon):* ${weatherText}\n🌾 *Pauni Mandi:* Paddy ₹2,540 | Soybean ₹4,720\n💡 *Thought:* ${dailyThought}\n\n👉 *Village Hub:* https://asgaon.digital\n#DigitalAsgaon`;
 
     if (navigator.share) {
       navigator.share({
-        title: isMr ? 'सुप्रभात आसगाव' : 'Good Morning Asgaon',
+        title: greetingText,
         text: shareText,
         url: window.location.origin
       }).catch(() => {});
@@ -70,16 +110,16 @@ export const SuprabhatCard: React.FC<SuprabhatCardProps> = ({ onExploreMandi }) 
   return (
     <div className="w-full relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500/10 via-emerald-600/5 to-emerald-950/10 border border-amber-200/80 p-5 sm:p-6 shadow-sm">
       {/* Decorative Warm Ambient Glow */}
-      <div className="absolute -top-12 -right-12 w-48 h-48 bg-amber-400/20 rounded-full blur-3xl pointer-events-none" />
+      <div className={`absolute -top-12 -right-12 w-48 h-48 ${greeting.glowColor} rounded-full blur-3xl pointer-events-none`} />
       <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
         {/* Left: Greeting & Thought */}
         <div className="flex-1 space-y-2">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[12px] font-extrabold shadow-xs">
-              <span>🌅</span>
-              <span>{isMr ? 'सुप्रभात आसगाव' : 'Good Morning Asgaon'}</span>
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r ${greeting.badgeGradient} text-white text-[12px] font-extrabold shadow-xs transition-colors duration-300`}>
+              <span>{greeting.icon}</span>
+              <span>{greetingText}</span>
             </span>
 
             <span className="text-xs font-bold text-stone-600 flex items-center gap-1">
