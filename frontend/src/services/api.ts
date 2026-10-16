@@ -477,6 +477,7 @@ export const api = {
   deleteReview: (id: string) => request<any>(`/reviews/${id}`, { method: 'DELETE' }),
 
   // --- Notifications & Broadcasts ---
+  getNotificationStats: () => request<{ pushSubscribers: number; emailRecipients: number }>('/notifications/stats'),
   broadcastNotification: (payload: {
     title: string;
     message: string;

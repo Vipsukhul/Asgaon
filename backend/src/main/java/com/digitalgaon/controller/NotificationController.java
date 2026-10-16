@@ -35,6 +35,17 @@ public class NotificationController {
         return ResponseEntity.ok(ApiResponse.ok("VAPID public key retrieved", Map.of("publicKey", key)));
     }
 
+    @GetMapping("/stats")
+    @Operation(summary = "Get notification audience statistics (push subscribers and email recipients)")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getNotificationStats() {
+        long pushCount = pushService.getSubscriberCount();
+        long emailCount = userRepository.count();
+        return ResponseEntity.ok(ApiResponse.ok("Notification statistics retrieved", Map.of(
+            "pushSubscribers", pushCount,
+            "emailRecipients", emailCount
+        )));
+    }
+
     @PostMapping("/subscribe")
     @Operation(summary = "Register browser push notification subscription")
     public ResponseEntity<ApiResponse<String>> subscribe(@RequestBody Map<String, String> payload) {

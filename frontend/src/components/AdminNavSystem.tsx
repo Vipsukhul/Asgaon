@@ -77,8 +77,6 @@ export const AdminNavSystem: React.FC<AdminNavSystemProps> = ({
   // Dynamic PWA Manifest Swapping for Admin Mode
   useEffect(() => {
     const existingManifest = document.querySelector('link[rel="manifest"]');
-    const originalHref = existingManifest ? existingManifest.getAttribute('href') : '/manifest.json';
-
     if (existingManifest) {
       existingManifest.setAttribute('href', '/admin-manifest.json');
     }
@@ -98,8 +96,9 @@ export const AdminNavSystem: React.FC<AdminNavSystemProps> = ({
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
-      if (existingManifest && originalHref) {
-        existingManifest.setAttribute('href', originalHref);
+      const manifestTag = document.querySelector('link[rel="manifest"]');
+      if (manifestTag) {
+        manifestTag.setAttribute('href', '/manifest.json');
       }
     };
   }, []);

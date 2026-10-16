@@ -1,9 +1,10 @@
 {
   "name": "आसगाव ग्रामपंचायत प्रशासक कक्ष (Asgaon Admin)",
   "short_name": "ग्राम प्रशासक",
+  "id": "/admin",
   "description": "आसगाव ग्रामपंचायत प्रशासकीय नियंत्रण कक्ष, नागरी तक्रार निवारण व शासकीय सेवा व्यवस्थापन",
   "start_url": "/admin",
-  "scope": "/",
+  "scope": "/admin",
   "display": "standalone",
   "background_color": "#0a2e1d",
   "theme_color": "#14532d",

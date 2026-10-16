@@ -19,11 +19,11 @@ export const InstallPwaBanner: React.FC = () => {
       return;
     }
 
-    // Check if user previously dismissed banner in last 3 days
+    // Check if user previously dismissed banner in last 24 hours
     const dismissedAt = localStorage.getItem('asgaon_pwa_dismissed');
     if (dismissedAt) {
-      const threeDays = 3 * 24 * 60 * 60 * 1000;
-      if (Date.now() - Number(dismissedAt) < threeDays) {
+      const oneDay = 24 * 60 * 60 * 1000;
+      if (Date.now() - Number(dismissedAt) < oneDay) {
         return;
       }
     }
@@ -40,9 +40,16 @@ export const InstallPwaBanner: React.FC = () => {
       return () => clearTimeout(timer);
     }
 
+    // Check if deferredPrompt was already captured globally
+    if ((window as any).__deferredPwaPrompt) {
+      setDeferredPrompt((window as any).__deferredPwaPrompt);
+      setIsVisible(true);
+    }
+
     // Android / Chrome / Edge PWA prompt listener
     const handleBeforeInstall = (e: Event) => {
       e.preventDefault();
+      (window as any).__deferredPwaPrompt = e;
       setDeferredPrompt(e);
       // Show install banner
       setIsVisible(true);
@@ -61,14 +68,20 @@ export const InstallPwaBanner: React.FC = () => {
       return;
     }
 
-    if (!deferredPrompt) return;
+    const promptEvent = deferredPrompt || (window as any).__deferredPwaPrompt;
 
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
+    if (!promptEvent) {
+      setShowIosGuide(true);
+      return;
+    }
+
+    promptEvent.prompt();
+    const { outcome } = await promptEvent.userChoice;
     if (outcome === 'accepted') {
       setIsVisible(false);
     }
     setDeferredPrompt(null);
+    (window as any).__deferredPwaPrompt = null;
   };
 
   const handleDismiss = () => {

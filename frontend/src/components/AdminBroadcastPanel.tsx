@@ -1,15 +1,15 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { LucideIcon } from './LucideIcon';
 import { api } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 import { useToast } from '../context/ToastContext';
-import { sendTestPushNotification } from '../services/pushNotifications';
+import { sendTestPushNotification, subscribeUserToPush, isPushSubscribed } from '../services/pushNotifications';
 
 interface AdminBroadcastPanelProps {
   currentUser?: any;
 }
 
-export const AdminBroadcastPanel: React.FC<AdminBroadcastPanelProps> = () => {
+export const AdminBroadcastPanel: React.FC<AdminBroadcastPanelProps> = ({ currentUser }) => {
   const { lang } = useLanguage();
   const toast = useToast();
   const isMr = lang === 'MR';
@@ -29,8 +29,52 @@ export const AdminBroadcastPanel: React.FC<AdminBroadcastPanelProps> = () => {
   const [previewTab, setPreviewTab] = useState<'phone' | 'email'>('phone');
   const [isBroadcasting, setIsBroadcasting] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
+  const [isSubscribingDevice, setIsSubscribingDevice] = useState(false);
+  const [isCurrentDeviceSubscribed, setIsCurrentDeviceSubscribed] = useState(false);
+  const [stats, setStats] = useState<{ pushSubscribers: number; emailRecipients: number }>({
+    pushSubscribers: 0,
+    emailRecipients: 0
+  });
   const [imageFileName, setImageFileName] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Load audience statistics
+  const fetchStats = async () => {
+    try {
+      const res = await api.getNotificationStats();
+      if (res) {
+        setStats({
+          pushSubscribers: Number(res.pushSubscribers || 0),
+          emailRecipients: Number(res.emailRecipients || 0)
+        });
+      }
+    } catch (e) {
+      console.warn('Failed to fetch notification stats', e);
+    }
+  };
+
+  useEffect(() => {
+    fetchStats();
+    isPushSubscribed().then(setIsCurrentDeviceSubscribed);
+  }, []);
+
+  const handleSubscribeThisDevice = async () => {
+    setIsSubscribingDevice(true);
+    try {
+      const res = await subscribeUserToPush(currentUser?.phone, currentUser?.role || 'ADMIN');
+      if (res.success) {
+        toast.success(isMr ? 'हे डिव्हाइस थेट सूचनेसाठी यशस्वीरीत्या नोंदवले!' : 'This device is now subscribed to push notifications!');
+        setIsCurrentDeviceSubscribed(true);
+        await fetchStats();
+      } else {
+        toast.error(res.message);
+      }
+    } catch (err: any) {
+      toast.error(err?.message || (isMr ? 'नोंदणी अयशस्वी.' : 'Subscription failed.'));
+    } finally {
+      setIsSubscribingDevice(false);
+    }
+  };
 
   // Broadcast History (cached in localStorage)
   const [history, setHistory] = useState<any[]>(() => {
@@ -140,7 +184,7 @@ export const AdminBroadcastPanel: React.FC<AdminBroadcastPanelProps> = () => {
         imageUrl: imageUrl,
         mode: deliveryMode,
         timestamp: new Date().toLocaleTimeString(isMr ? 'mr-IN' : 'en-US', { hour: '2-digit', minute: '2-digit' }),
-        sentCount: res?.data?.totalReached || res?.data?.pushSentCount || 1
+        sentCount: res?.totalReached ?? res?.data?.totalReached ?? res?.pushSentCount ?? res?.data?.pushSentCount ?? 0
       };
 
       const updatedHistory = [newRecord, ...history.slice(0, 9)];
@@ -149,11 +193,13 @@ export const AdminBroadcastPanel: React.FC<AdminBroadcastPanelProps> = () => {
         localStorage.setItem('dg_broadcast_history', JSON.stringify(updatedHistory));
       } catch {}
 
+      const totalReached = res?.totalReached ?? res?.data?.totalReached ?? 0;
       toast.success(
         isMr
-          ? `दवंडी प्रसारित झाली! एकूण पोहोच: ${res?.data?.totalReached || 'यशस्वी'}`
-          : `Broadcast dispatched! Reached: ${res?.data?.totalReached || 'Success'}`
+          ? `दवंडी प्रसारित झाली! एकूण पोहोच: ${totalReached}`
+          : `Broadcast dispatched! Reached: ${totalReached}`
       );
+      fetchStats();
 
       // Clean form after broadcast
       setTitle('');
@@ -189,26 +235,72 @@ export const AdminBroadcastPanel: React.FC<AdminBroadcastPanelProps> = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-2xl border border-white/15 text-center">
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            <div className="bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-2xl border border-white/15 text-center min-w-[90px]">
               <div className="text-[10px] text-emerald-200 uppercase font-bold tracking-wider">
-                {isMr ? 'थेट पोहोच' : 'Delivery Speed'}
+                {isMr ? 'पुश ग्राहक' : 'Push Audience'}
               </div>
               <div className="text-sm font-black text-amber-300">
-                ⚡ {isMr ? 'तात्काळ' : 'Instant'}
+                🔔 {stats.pushSubscribers}
               </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-2xl border border-white/15 text-center">
+
+            <div className="bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-2xl border border-white/15 text-center min-w-[90px]">
               <div className="text-[10px] text-emerald-200 uppercase font-bold tracking-wider">
-                {isMr ? 'स्थिती' : 'Service Status'}
+                {isMr ? 'ई-मेल नोंदणी' : 'Email Users'}
               </div>
-              <div className="text-sm font-black text-emerald-300 flex items-center gap-1 justify-center">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                {isMr ? 'सक्रिय' : 'Live'}
+              <div className="text-sm font-black text-emerald-200">
+                ✉️ {stats.emailRecipients}
               </div>
             </div>
+
+            <button
+              type="button"
+              onClick={handleSubscribeThisDevice}
+              disabled={isSubscribingDevice}
+              className={`px-3.5 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs ${
+                isCurrentDeviceSubscribed
+                  ? 'bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 hover:bg-emerald-500/30'
+                  : 'bg-amber-400 hover:bg-amber-300 text-stone-900 border border-amber-300 animate-pulse'
+              }`}
+              title={isCurrentDeviceSubscribed ? (isMr ? 'हे डिव्हाइस नोंदणीकृत आहे' : 'Device subscribed') : (isMr ? 'हे डिव्हाइस थेट सूचनेसाठी जोडा' : 'Subscribe this device')}
+            >
+              <LucideIcon name={isCurrentDeviceSubscribed ? 'check_circle' : 'notifications_active'} className="text-[16px]" />
+              <span>
+                {isSubscribingDevice
+                  ? (isMr ? 'नोंदणी करत आहे...' : 'Registering...')
+                  : isCurrentDeviceSubscribed
+                  ? (isMr ? 'हे डिव्हाइस सक्रिय' : 'Device Subscribed')
+                  : (isMr ? 'हे डिव्हाइस जोडा' : 'Subscribe Device')}
+              </span>
+            </button>
           </div>
         </div>
+
+        {/* 0-Subscriber Alert Box */}
+        {stats.pushSubscribers === 0 && (
+          <div className="mt-4 p-3.5 bg-amber-500/15 border border-amber-400/30 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-amber-100">
+            <div className="flex items-start gap-2.5">
+              <LucideIcon name="info" className="text-amber-300 text-[18px] shrink-0 mt-0.5" />
+              <div className="text-xs">
+                <span className="font-bold text-amber-200">
+                  {isMr ? 'पुश सूचना ग्राहक संख्या शून्य (0) आहे: ' : 'Push Notification Audience is 0: '}
+                </span>
+                {isMr
+                  ? 'पुश सूचना काम करण्यासाठी किमान एका मोबाईल किंवा ब्राऊझरने सूचना परवानगी देणे आवश्यक आहे. चाचणी करण्यासाठी उजवीकडील "हे डिव्हाइस जोडा" वर क्लिक करा.'
+                  : 'Web Push requires at least one browser to permit notifications. Click "Subscribe Device" above to register this browser for instant test alerts.'}
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={handleSubscribeThisDevice}
+              disabled={isSubscribingDevice}
+              className="px-3 py-1.5 bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold text-xs rounded-xl transition-all shrink-0 cursor-pointer"
+            >
+              {isMr ? 'आता सबस्क्राइब करा' : 'Subscribe Now'}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Main Grid: Form on Left, Live Preview on Right */}

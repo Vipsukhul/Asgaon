@@ -1,6 +1,7 @@
 {
   "name": "आसगाव ग्राम माहिती व जनजागृती मंच",
   "short_name": "आसगाव मंच",
+  "id": "/",
   "description": "आसगाव गावकऱ्यांसाठी स्वतंत्र माहिती, शासकीय योजना, कृषी बाजारभाव व नागरी सेवा मंच (पवनी, जि. भंडारा)",
   "start_url": "/",
   "scope": "/",
@@ -29,6 +30,12 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "/asgaon-logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "shortcuts": [

@@ -106,6 +106,10 @@ public class PushNotificationService {
         return this.activePublicKey;
     }
 
+    public long getSubscriberCount() {
+        return subscriptionRepository.count();
+    }
+
     @Transactional
     public PushSubscription subscribe(String endpoint, String p256dhKey, String authKey, String phone, String role) {
         PushSubscription sub = subscriptionRepository.findByEndpoint(endpoint)
