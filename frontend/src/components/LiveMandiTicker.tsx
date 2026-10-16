@@ -1,8 +1,9 @@
 import { LucideIcon } from './LucideIcon';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type { MandiPrice } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 import { MandiTickerSkeleton } from './SkeletonLoaders';
+import { fetchLiveWeather, type LiveWeatherData } from '../services/weatherService';
 
 interface LiveMandiTickerProps {
   prices: MandiPrice[];
@@ -12,6 +13,18 @@ interface LiveMandiTickerProps {
 
 export const LiveMandiTicker: React.FC<LiveMandiTickerProps> = ({ prices, isLoading = false, onViewAllMandi }) => {
   const { lang } = useLanguage();
+  const [weather, setWeather] = useState<LiveWeatherData | null>(null);
+
+  useEffect(() => {
+    fetchLiveWeather().then(setWeather).catch(() => {});
+  }, []);
+
+  const tempDisplay = weather ? `${Math.round(weather.temperature)}°C` : '२९°C';
+  const humidityDisplay = weather ? `${weather.humidity}%` : '४५%';
+  const advisoryDisplay = weather 
+    ? (lang === 'MR' ? weather.advisoryMr : weather.advisoryEn)
+    : (lang === 'MR' ? 'पुढील २४ तास आकाश निरभ्र — काढणी केलेले धान व सोयाबीन सुरक्षित साठवून ठेवा.' : 'Clear skies next 24h — safe for harvesting and grain storage.');
+  const iconDisplay = weather ? weather.weatherIcon : '🌦️';
 
   return (
     <section className="w-full bg-[#faf6ee] rounded-2xl p-4 sm:p-5 shadow-xs mb-10 border border-[#efe7dc]">
@@ -44,16 +57,16 @@ export const LiveMandiTicker: React.FC<LiveMandiTickerProps> = ({ prices, isLoad
       {/* Real-time Weather & Crop Advisory Banner */}
       <div className="mb-3.5 p-3 rounded-xl bg-gradient-to-r from-emerald-900 via-[#14532d] to-emerald-950 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-xs border border-emerald-800">
         <div className="flex items-center gap-2">
-          <span className="text-[16px]">🌦️</span>
+          <span className="text-[16px]">{iconDisplay}</span>
           <div className="text-[12px] font-bold leading-tight">
             <span className="text-amber-300 mr-1.5">{lang === 'MR' ? 'हवामान व शेती सल्ला:' : 'Agri Weather Advisory:'}</span>
-            <span className="text-emerald-100">{lang === 'MR' ? 'पुढील २४ तास आकाश निरभ्र, पाऊस ०% — काढणी केलेले धान व सोयाबीन सुरक्षित साठवून ठेवा.' : 'Clear skies next 24h, 0% rain — safe for harvesting and grain storage.'}</span>
+            <span className="text-emerald-100">{advisoryDisplay}</span>
           </div>
         </div>
         <div className="flex items-center gap-2 text-[11px] text-emerald-200 shrink-0 font-semibold bg-emerald-950/60 px-2.5 py-1 rounded-lg border border-emerald-700/50">
-          <span>📍 {lang === 'MR' ? 'पवनी: २९°C' : 'Pauni: 29°C'}</span>
+          <span>📍 {lang === 'MR' ? `पवनी: ${tempDisplay}` : `Pauni: ${tempDisplay}`}</span>
           <span>•</span>
-          <span>💧 {lang === 'MR' ? 'आर्द्रता: ४५%' : 'Humidity: 45%'}</span>
+          <span>💧 {lang === 'MR' ? `आर्द्रता: ${humidityDisplay}` : `Humidity: ${humidityDisplay}`}</span>
         </div>
       </div>
 

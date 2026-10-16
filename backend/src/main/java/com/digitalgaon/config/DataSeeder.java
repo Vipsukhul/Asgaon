@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -21,11 +22,17 @@ public class DataSeeder implements CommandLineRunner {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final com.digitalgaon.repository.VillageEventRepository eventRepository;
+    private final com.digitalgaon.repository.MandiPriceRepository mandiPriceRepository;
 
-    public DataSeeder(UserRepository userRepository, RoleRepository roleRepository, com.digitalgaon.repository.VillageEventRepository eventRepository) {
+    public DataSeeder(
+            UserRepository userRepository,
+            RoleRepository roleRepository,
+            com.digitalgaon.repository.VillageEventRepository eventRepository,
+            com.digitalgaon.repository.MandiPriceRepository mandiPriceRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.eventRepository = eventRepository;
+        this.mandiPriceRepository = mandiPriceRepository;
     }
 
     @Override
@@ -35,9 +42,50 @@ public class DataSeeder implements CommandLineRunner {
             seedSuperAdmin();
             seedAdmin();
             seedEvents();
+            seedPauniMandiPrices();
         } catch (Exception e) {
             log.error("DataSeeder initialization notice: {}", e.getMessage());
         }
+    }
+
+    private void seedPauniMandiPrices() {
+        // If prices exist, check if they are already Pauni APMC
+        List<com.digitalgaon.model.MandiPrice> existing = mandiPriceRepository.findByMarketNameIgnoreCase("Pauni APMC (पवनी बाजार समिती)");
+        if (!existing.isEmpty()) {
+            return;
+        }
+
+        // Clean out any old dummy/pune data so farmers see their local Pauni APMC rates
+        mandiPriceRepository.deleteAll();
+
+        List<com.digitalgaon.model.MandiPrice> pauniPrices = List.of(
+            createMandiItem("Paddy / धान (भात)", "HMT / Jai Shriram", "Pauni APMC (पवनी बाजार समिती)", new java.math.BigDecimal("2350.00"), new java.math.BigDecimal("2680.00"), new java.math.BigDecimal("2540.00"), "Quintal", new java.math.BigDecimal("35.00")),
+            createMandiItem("Soybean / सोयाबीन", "Yellow Standard (पिवळा)", "Pauni APMC (पवनी बाजार समिती)", new java.math.BigDecimal("4450.00"), new java.math.BigDecimal("4980.00"), new java.math.BigDecimal("4720.00"), "Quintal", new java.math.BigDecimal("40.00")),
+            createMandiItem("Pigeon Pea / तूर (अरहर)", "White / Gavran (पांढरी)", "Pauni APMC (पवनी बाजार समिती)", new java.math.BigDecimal("9800.00"), new java.math.BigDecimal("10850.00"), new java.math.BigDecimal("10350.00"), "Quintal", new java.math.BigDecimal("-50.00")),
+            createMandiItem("Cotton / कापूस", "Medium Staple (मध्यम धागा)", "Pauni APMC (पवनी बाजार समिती)", new java.math.BigDecimal("7200.00"), new java.math.BigDecimal("7750.00"), new java.math.BigDecimal("7520.00"), "Quintal", new java.math.BigDecimal("25.00")),
+            createMandiItem("Bengal Gram / हरभरा (चना)", "Desi / Chafa (चाफा)", "Pauni APMC (पवनी बाजार समिती)", new java.math.BigDecimal("5650.00"), new java.math.BigDecimal("6200.00"), new java.math.BigDecimal("5920.00"), "Quintal", new java.math.BigDecimal("15.00")),
+            createMandiItem("Wheat / गहू", "Lokwan (लोकवन)", "Pauni APMC (पवनी बाजार समिती)", new java.math.BigDecimal("2480.00"), new java.math.BigDecimal("2820.00"), new java.math.BigDecimal("2660.00"), "Quintal", new java.math.BigDecimal("10.00")),
+            createMandiItem("Chili / लाल सुकी मिरची", "Guntur / Vidarbha Special", "Pauni APMC (पवनी बाजार समिती)", new java.math.BigDecimal("16500.00"), new java.math.BigDecimal("21000.00"), new java.math.BigDecimal("18500.00"), "Quintal", new java.math.BigDecimal("120.00")),
+            createMandiItem("Cow Milk / गायीचे दूध", "A2 Gir & Cross, 4.0 Fat", "Asgaon Dairy Center (आसगाव)", new java.math.BigDecimal("40.00"), new java.math.BigDecimal("44.00"), new java.math.BigDecimal("42.00"), "Litre", new java.math.BigDecimal("1.00"))
+        );
+
+        mandiPriceRepository.saveAll(pauniPrices);
+        log.info("Seeded 8 official Pauni APMC (Bhandara) mandi commodity rates successfully.");
+    }
+
+    private com.digitalgaon.model.MandiPrice createMandiItem(String commodity, String variety, String market, java.math.BigDecimal min, java.math.BigDecimal max, java.math.BigDecimal modal, String unit, java.math.BigDecimal change) {
+        com.digitalgaon.model.MandiPrice m = new com.digitalgaon.model.MandiPrice();
+        m.setCommodityName(commodity);
+        m.setVariety(variety);
+        m.setMarketName(market);
+        m.setMinPrice(min);
+        m.setMaxPrice(max);
+        m.setModalPrice(modal);
+        m.setUnit(unit);
+        m.setPriceChange(change);
+        m.setPriceDate(java.time.LocalDate.now());
+        m.setUpdatedAt(OffsetDateTime.now());
+        return m;
     }
 
     private void seedEvents() {

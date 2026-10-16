@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { useLanguage } from '../context/LanguageContext';
+import { fetchLiveWeather, type LiveWeatherData } from '../services/weatherService';
 
 export interface KrishiPageProps {
   mandiPrices?: any[];
@@ -13,6 +14,11 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
   const { lang, t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'mandi' | 'machinery' | 'soil' | 'pest'>('mandi');
   const [dbMachinery, setDbMachinery] = useState<any[]>([]);
+  const [weather, setWeather] = useState<LiveWeatherData | null>(null);
+
+  useEffect(() => {
+    fetchLiveWeather().then(setWeather).catch(() => {});
+  }, []);
 
   useEffect(() => {
     api.getMarketplaceListings('machinery')
@@ -508,35 +514,44 @@ export const KrishiPage: React.FC<KrishiPageProps> = ({ mandiPrices = [], onNavi
           {/* Weather Widget */}
           <div className="bg-white rounded-2xl p-5 border border-[#e8e2d9] shadow-xs">
             <div className="flex items-center justify-between text-[11px] text-[#707974] mb-1">
-              <span>AGRI-WEATHER RADAR</span>
-              <span>Updated: 07:15 AM</span>
+              <span className="font-bold tracking-wider">{lang === 'MR' ? 'कृषी हवामान रडार' : 'AGRI-WEATHER RADAR'}</span>
+              <span>{weather ? `${lang === 'MR' ? 'ताजे' : 'Updated'}: ${weather.updatedAt}` : 'Live'}</span>
             </div>
 
             <div className="flex items-baseline justify-between my-2">
-              <div className="font-heading font-extrabold text-[36px] text-[#166534]">28°C</div>
+              <div className="font-heading font-extrabold text-[36px] text-[#166534]">
+                {weather ? `${Math.round(weather.temperature)}°C` : '२८°C'}
+              </div>
               <div className="text-right">
-                <div className="font-bold text-[13px] text-[#1d1b16]">Asgaon Farm Outskirts</div>
-                <div className="text-[11px] text-[#707974]">Sunny &amp; Clear Sky</div>
+                <div className="font-bold text-[13px] text-[#1d1b16]">
+                  {weather ? (lang === 'MR' ? weather.locationNameMr : weather.locationNameEn) : 'पवनी / आसगाव'}
+                </div>
+                <div className="text-[11px] text-[#707974]">
+                  {weather?.weatherIcon} {weather ? (lang === 'MR' ? weather.weatherTextMr : weather.weatherTextEn) : 'निरभ्र आकाश'}
+                </div>
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-2 bg-[#f9f3ea] p-2.5 rounded-xl border border-[#e8e2d9] text-center text-[11px] mb-3">
               <div>
-                <div className="text-[#707974]">Humidity</div>
-                <div className="font-bold text-[#1d1b16]">62%</div>
+                <div className="text-[#707974]">{lang === 'MR' ? 'आर्द्रता' : 'Humidity'}</div>
+                <div className="font-bold text-[#1d1b16]">{weather ? `${weather.humidity}%` : '५५%'}</div>
               </div>
               <div>
-                <div className="text-[#707974]">Wind NW</div>
-                <div className="font-bold text-[#1d1b16]">8 km/h</div>
+                <div className="text-[#707974]">{lang === 'MR' ? 'वारा' : 'Wind'}</div>
+                <div className="font-bold text-[#1d1b16]">{weather ? `${weather.windSpeed} km/h` : '८ km/h'}</div>
               </div>
               <div>
-                <div className="text-[#707974]">Cloud Cover</div>
-                <div className="font-bold text-[#166534]">Zero</div>
+                <div className="text-[#707974]">{lang === 'MR' ? 'पाऊस शक्यता' : 'Rain Prob.'}</div>
+                <div className="font-bold text-[#166534]">{weather ? `${weather.precipitationProb}%` : '०%'}</div>
               </div>
             </div>
 
-            <div className="text-[11px] text-[#404945]">
-              <strong>Irrigation Advisory:</strong> Safe to irrigate crops today. Canal delivery on schedule.
+            <div className="text-[11px] text-[#404945] leading-relaxed">
+              <strong className="text-emerald-950">{lang === 'MR' ? 'सिंचन व शेती सल्ला: ' : 'Irrigation Advisory: '}</strong>
+              {weather 
+                ? (lang === 'MR' ? weather.advisoryMr : weather.advisoryEn)
+                : (lang === 'MR' ? 'पिकांना पाणी देण्यासाठी अनुकूल हवामान. सिंचन व साठवणूक सुरक्षित चालू ठेवा.' : 'Safe to irrigate crops today. Canal delivery on schedule.')}
             </div>
           </div>
 

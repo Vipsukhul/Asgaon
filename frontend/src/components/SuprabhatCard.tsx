@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LucideIcon } from './LucideIcon';
 import { useLanguage } from '../context/LanguageContext';
 import { useToast } from '../context/ToastContext';
 import { Share2, Check } from 'lucide-react';
+import { fetchLiveWeather, type LiveWeatherData } from '../services/weatherService';
 
 interface SuprabhatCardProps {
   onExploreMandi?: () => void;
@@ -12,6 +13,11 @@ export const SuprabhatCard: React.FC<SuprabhatCardProps> = ({ onExploreMandi }) 
   const { lang } = useLanguage();
   const { showToast } = useToast();
   const [copied, setCopied] = useState(false);
+  const [weather, setWeather] = useState<LiveWeatherData | null>(null);
+
+  useEffect(() => {
+    fetchLiveWeather().then(setWeather).catch(() => {});
+  }, []);
 
   const isMr = lang === 'MR';
 
@@ -38,10 +44,14 @@ export const SuprabhatCard: React.FC<SuprabhatCardProps> = ({ onExploreMandi }) 
   const thoughtIndex = today.getDate() % DAILY_THOUGHTS.length;
   const dailyThought = isMr ? DAILY_THOUGHTS[thoughtIndex].mr : DAILY_THOUGHTS[thoughtIndex].en;
 
+  const weatherText = weather 
+    ? `${weather.weatherIcon} ${Math.round(weather.temperature)}°C, ${isMr ? weather.weatherTextMr : weather.weatherTextEn} • ${isMr ? 'पाऊस' : 'Rain'} ${weather.precipitationProb}%`
+    : '🌤️ २९°C, निरभ्र आकाश • पाऊस ०%';
+
   const handleShareWhatsApp = () => {
     const shareText = isMr
-      ? `🌅 *सुप्रभात आसगाव!* 🌾\n📅 *तारीख:* ${formattedDate}\n🌤️ *हवामान:* २९°C, निरभ्र आकाश • पाऊस ०%\n🌾 *आजचा भाव (पवनी बाजार):* धान ₹२,३५० | सोयाबीन ₹४,८२०\n💡 *आजचा सुविचार:* ${dailyThought}\n\n👉 *गावाच्या सर्व बातम्या व योजना:* https://asgaon.digital\n#डिजिटल_आसगाव #ग्रामपंचायत`
-      : `🌅 *Good Morning Asgaon!* 🌾\n📅 *Date:* ${formattedDate}\n🌤️ *Weather:* 29°C, Clear Sky • 0% Rain\n🌾 *Pauni Mandi:* Paddy ₹2,350 | Soybean ₹4,820\n💡 *Thought:* ${dailyThought}\n\n👉 *Village Hub:* https://asgaon.digital\n#DigitalAsgaon`;
+      ? `🌅 *सुप्रभात आसगाव!* 🌾\n📅 *तारीख:* ${formattedDate}\n🌤️ *हवामान (पवनी/आसगाव):* ${weatherText}\n🌾 *आजचा भाव (पवनी बाजार):* धान ₹२,५४० | सोयाबीन ₹४,७२०\n💡 *आजचा सुविचार:* ${dailyThought}\n\n👉 *गावाच्या सर्व बातम्या व योजना:* https://asgaon.digital\n#डिजिटल_आसगाव #ग्रामपंचायत`
+      : `🌅 *Good Morning Asgaon!* 🌾\n📅 *Date:* ${formattedDate}\n🌤️ *Weather (Pauni/Asgaon):* ${weatherText}\n🌾 *Pauni Mandi:* Paddy ₹2,540 | Soybean ₹4,720\n💡 *Thought:* ${dailyThought}\n\n👉 *Village Hub:* https://asgaon.digital\n#DigitalAsgaon`;
 
     if (navigator.share) {
       navigator.share({
@@ -85,8 +95,12 @@ export const SuprabhatCard: React.FC<SuprabhatCardProps> = ({ onExploreMandi }) 
           {/* Quick Weather & Mandi Snapshot Chips */}
           <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] sm:text-[12px] font-semibold text-stone-700">
             <span className="inline-flex items-center gap-1 bg-white/90 border border-amber-200 px-2.5 py-1 rounded-lg shadow-2xs">
-              <span>🌤️</span>
-              <span>{isMr ? 'पवनी हवामान: २९°C (निरभ्र)' : 'Weather: 29°C (Clear)'}</span>
+              <span>{weather?.weatherIcon || '🌤️'}</span>
+              <span>
+                {weather
+                  ? (isMr ? `पवनी हवामान: ${Math.round(weather.temperature)}°C (${weather.weatherTextMr})` : `Weather: ${Math.round(weather.temperature)}°C (${weather.weatherTextEn})`)
+                  : (isMr ? 'पवनी हवामान: २९°C (निरभ्र)' : 'Weather: 29°C (Clear)')}
+              </span>
             </span>
 
             <span 
@@ -94,7 +108,7 @@ export const SuprabhatCard: React.FC<SuprabhatCardProps> = ({ onExploreMandi }) 
               className="inline-flex items-center gap-1 bg-white/90 border border-emerald-200 px-2.5 py-1 rounded-lg shadow-2xs hover:border-emerald-500 cursor-pointer text-emerald-900 transition-colors"
             >
               <span>🌾</span>
-              <span>{isMr ? 'धान भाव: ₹२,३५०/क्विं ↗' : 'Paddy: ₹2,350/Qtl ↗'}</span>
+              <span>{isMr ? 'धान भाव (पवनी): ₹२,५४०/क्विं ↗' : 'Paddy (Pauni): ₹2,540/Qtl ↗'}</span>
             </span>
           </div>
         </div>
