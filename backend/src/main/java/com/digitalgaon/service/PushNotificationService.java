@@ -2,10 +2,13 @@ package com.digitalgaon.service;
 
 import com.digitalgaon.model.PushSubscription;
 import com.digitalgaon.repository.PushSubscriptionRepository;
+import nl.martijndwars.webpush.Encoding;
 import nl.martijndwars.webpush.Notification;
 import nl.martijndwars.webpush.PushService;
 import nl.martijndwars.webpush.Utils;
-import org.apache.http.HttpResponse;
+import org.apache.http.Header;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.util.EntityUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +17,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.annotation.PostConstruct;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.Security;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.List;
@@ -27,6 +35,10 @@ public class PushNotificationService {
     private static final Logger log = LoggerFactory.getLogger(PushNotificationService.class);
 
     private final PushSubscriptionRepository subscriptionRepository;
+    private final HttpClient httpClient = HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_1_1)
+            .connectTimeout(Duration.ofSeconds(10))
+            .build();
 
     @Value("${vapid.public-key:}")
     private String configuredPublicKey;
@@ -158,16 +170,32 @@ public class PushNotificationService {
                     jsonPayload.getBytes(StandardCharsets.UTF_8)
                 );
 
-                HttpResponse response = pushService.send(notification);
-                int status = response.getStatusLine().getStatusCode();
+                HttpPost post = pushService.preparePost(notification, Encoding.AES128GCM);
+                byte[] bodyBytes = post.getEntity() != null ? EntityUtils.toByteArray(post.getEntity()) : new byte[0];
+
+                HttpRequest.Builder reqBuilder = HttpRequest.newBuilder()
+                    .uri(URI.create(post.getURI().toString()))
+                    .timeout(Duration.ofSeconds(10))
+                    .POST(HttpRequest.BodyPublishers.ofByteArray(bodyBytes));
+
+                for (Header header : post.getAllHeaders()) {
+                    if (!header.getName().equalsIgnoreCase("content-length") &&
+                        !header.getName().equalsIgnoreCase("host")) {
+                        reqBuilder.header(header.getName(), header.getValue());
+                    }
+                }
+
+                HttpResponse<String> response = httpClient.send(reqBuilder.build(), HttpResponse.BodyHandlers.ofString());
+                int status = response.statusCode();
                 if (status == 200 || status == 201) {
                     sentCount++;
+                    log.info("Push delivered successfully to: {}", sub.getEndpoint());
                 } else if (status == 404 || status == 410) {
                     // Subscription expired or unregistered
                     subscriptionRepository.delete(sub);
                     log.info("Removed expired subscription endpoint: {}", sub.getEndpoint());
                 } else {
-                    log.warn("Push to {} returned status: {}", sub.getEndpoint(), status);
+                    log.warn("Push to {} returned status: {} body: {}", sub.getEndpoint(), status, response.body());
                 }
             } catch (Exception e) {
                 log.warn("Push delivery error for endpoint {}: {}", sub.getEndpoint(), e.getMessage());
