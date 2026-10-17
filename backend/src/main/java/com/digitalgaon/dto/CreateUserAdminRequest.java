@@ -11,6 +11,7 @@ public class CreateUserAdminRequest {
     private String role;
     private Boolean isActive;
     private Boolean isVerified;
+    private String allowedModules;
 
     public CreateUserAdminRequest() {}
 
@@ -43,4 +44,7 @@ public class CreateUserAdminRequest {
 
     public Boolean getIsVerified() { return isVerified; }
     public void setIsVerified(Boolean isVerified) { this.isVerified = isVerified; }
+
+    public String getAllowedModules() { return allowedModules; }
+    public void setAllowedModules(String allowedModules) { this.allowedModules = allowedModules; }
 }

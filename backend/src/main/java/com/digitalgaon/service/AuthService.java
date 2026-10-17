@@ -74,6 +74,7 @@ public class AuthService {
                 .preferredLanguage(user.getPreferredLanguage())
                 .villageName(user.getVillageName())
                 .roles(roles)
+                .allowedModules(user.getAllowedModules())
                 .build();
     }
 
@@ -132,6 +133,7 @@ public class AuthService {
                 .preferredLanguage(user.getPreferredLanguage())
                 .villageName(user.getVillageName())
                 .roles(roles.stream().map(Role::getName).collect(Collectors.toSet()))
+                .allowedModules(user.getAllowedModules())
                 .build();
     }
 
@@ -297,6 +299,7 @@ public class AuthService {
                 .preferredLanguage(user.getPreferredLanguage())
                 .villageName(user.getVillageName())
                 .roles(user.getRoles().stream().map(Role::getName).collect(Collectors.toSet()))
+                .allowedModules(user.getAllowedModules())
                 .build();
     }
 }

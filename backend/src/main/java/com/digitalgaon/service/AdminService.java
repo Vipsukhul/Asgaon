@@ -90,6 +90,7 @@ public class AdminService {
                 u.getIsVerified(),
                 u.getIsActive(),
                 u.getRoles().stream().map(Role::getName).collect(Collectors.toSet()),
+                u.getAllowedModules(),
                 u.getCreatedAt()
         );
     }
@@ -138,6 +139,12 @@ public class AdminService {
             targetRole = "ROLE_" + targetRole;
         }
         final String roleName = targetRole;
+        if (req.getAllowedModules() != null) {
+            user.setAllowedModules(req.getAllowedModules().trim());
+        } else if (targetRole.contains("ADMIN")) {
+            user.setAllowedModules("overview,reviews,notices,water,schemes,complaints,contacts,projects,broadcast");
+        }
+
         Role role = roleRepository.findByName(roleName)
                 .orElseGet(() -> roleRepository.save(new Role(roleName, "System assigned " + roleName + " role")));
 
@@ -189,6 +196,9 @@ public class AdminService {
         }
         if (req.getIsVerified() != null) {
             user.setIsVerified(req.getIsVerified());
+        }
+        if (req.getAllowedModules() != null) {
+            user.setAllowedModules(req.getAllowedModules().trim());
         }
         if (req.getRole() != null && !req.getRole().isBlank()) {
             String targetRole = req.getRole().trim().toUpperCase();

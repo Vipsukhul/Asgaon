@@ -15,6 +15,7 @@ import { AnnouncementListSkeleton, TableSkeleton, EnterpriseCardSkeleton } from 
 import {
   AdminManagementSection,
   getAllowedModulesForUser,
+  ADMIN_MODULES_LIST,
   type AdminModuleId
 } from '../components/AdminManagementSection';
 import {
@@ -1041,12 +1042,42 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
   const isSuperAdmin = currentUser.role === 'SUPER_ADMIN' || currentUser.role === 'ROLE_SUPER_ADMIN';
   const isAdmin = isSuperAdmin || currentUser.role === 'ADMIN' || currentUser.role === 'ROLE_ADMIN';
 
-  // Resolved list of modules permitted for this user
-  const allowedModules = getAllowedModulesForUser(currentUser.phone, currentUser.role);
+  // Preview mode: Allows Super Admin to view the dashboard and menus exactly as a specific admin would see it
+  const [previewAdminPhone, setPreviewAdminPhone] = useState<string | null>(null);
+
+  const effectivePhone = previewAdminPhone || currentUser.phone;
+  const effectiveRole = previewAdminPhone ? 'ADMIN' : currentUser.role;
+  const effectiveIsSuperAdmin = isSuperAdmin && !previewAdminPhone;
+
+  // Resolved list of modules permitted for this user (reactive state)
+  const [allowedModules, setAllowedModules] = useState<AdminModuleId[]>(() =>
+    getAllowedModulesForUser(effectivePhone, effectiveRole)
+  );
+
+  // Sync permitted modules whenever user, preview, or permissions change
+  useEffect(() => {
+    const refreshModules = () => {
+      const fresh = getAllowedModulesForUser(effectivePhone, effectiveRole);
+      setAllowedModules(fresh);
+    };
+
+    refreshModules();
+
+    const handlePermissionsUpdated = () => {
+      refreshModules();
+    };
+
+    window.addEventListener('dg:admin-permissions-updated', handlePermissionsUpdated);
+    window.addEventListener('storage', handlePermissionsUpdated);
+    return () => {
+      window.removeEventListener('dg:admin-permissions-updated', handlePermissionsUpdated);
+      window.removeEventListener('storage', handlePermissionsUpdated);
+    };
+  }, [effectivePhone, effectiveRole]);
 
   const isTabAllowed = (tabId: string) => {
-    if (tabId === 'admin_management') return isSuperAdmin;
-    if (isSuperAdmin) return true;
+    if (tabId === 'admin_management') return effectiveIsSuperAdmin;
+    if (effectiveIsSuperAdmin) return true;
     return allowedModules.includes(tabId as AdminModuleId);
   };
 
@@ -1056,7 +1087,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
       const fallbackTab = (allowedModules[0] || 'overview') as any;
       setActiveTab(fallbackTab);
     }
-  }, [currentUser.phone, currentUser.role, activeTab]);
+  }, [effectivePhone, effectiveRole, activeTab, allowedModules, effectiveIsSuperAdmin]);
 
   // Load all data (Only when authenticated as Admin / Super Admin)
   const loadData = () => {
@@ -1955,7 +1986,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
         activeTab={activeTab}
         onSelectTab={(tabId) => setActiveTab(tabId as any)}
         currentUser={currentUser}
-        isSuperAdmin={isSuperAdmin}
+        isSuperAdmin={effectiveIsSuperAdmin}
         isTabAllowed={isTabAllowed}
         badges={{
           complaints: complaints.filter((c) => c.status !== 'RESOLVED' && c.status !== 'REJECTED').length,
@@ -1988,12 +2019,47 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
                 <h1 className="font-heading font-black text-sm sm:text-base text-[#14532d]">
                   आसगाव ग्राम माहिती व प्रशासन केंद्र
                 </h1>
-                
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+            {/* Super Admin Switcher to Preview Restricted Admin Menus */}
+            {isSuperAdmin && (
+              <div className="flex items-center gap-1.5 bg-[#f6f2ea] border border-[#d8d1c5] rounded-xl px-2.5 py-1 shadow-2xs">
+                <span className="text-[11px] font-bold text-[#14532d] flex items-center gap-1">
+                  <LucideIcon name="visibility" className="text-[13px]" />
+                  <span className="hidden sm:inline">मेनू दृश्य:</span>
+                </span>
+                <select
+                  value={previewAdminPhone || ''}
+                  onChange={(e) => setPreviewAdminPhone(e.target.value || null)}
+                  className="bg-white text-xs font-semibold text-[#1d1b16] rounded-lg px-2 py-1 border border-[#cadbcf] outline-none cursor-pointer focus:border-[#14532d]"
+                  title="इतर अॅडमिन्सच्या अधिकारांनुसार मेनू तपासा"
+                >
+                  <option value="">सर्व सुपर अॅडमिन मेनू ({ADMIN_MODULES_LIST.length} मॉड्यूल्स)</option>
+                  <optgroup label="इतर अॅडमिन्सचे दृश्य तपासा">
+                    {users
+                      .filter((u) => {
+                        const r = (u.roles && u.roles[0]) || u.role || '';
+                        return (r.includes('ADMIN') || r === 'ADMIN') && u.phone !== '7507732821';
+                      })
+                      .map((adm) => (
+                        <option key={adm.phone || adm.id} value={adm.phone}>
+                          {adm.fullName} ({adm.phone})
+                        </option>
+                      ))}
+                    {!users.some((u) => u.phone === '9822104500') && (
+                      <option value="9822104500">ग्रामसेवक एस. एन. जाधव (9822104500)</option>
+                    )}
+                    {!users.some((u) => u.phone === '9604331589') && (
+                      <option value="9604331589">विपुल सुखदेवे (9604331589)</option>
+                    )}
+                  </optgroup>
+                </select>
+              </div>
+            )}
+
             <Breadcrumb
               items={[
                 { label: t('nav_home'), onClick: onExit },
@@ -2012,6 +2078,36 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onLoginAsAdmi
             )}
           </div>
         </div>
+
+        {/* Active Preview Banner (Shown when Super Admin is previewing an admin's role) */}
+        {previewAdminPhone && (
+          <div className="bg-gradient-to-r from-amber-50 via-emerald-50 to-amber-50 border-2 border-amber-400 rounded-2xl p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold text-base shadow-xs shrink-0">
+                👁️
+              </div>
+              <div>
+                <p className="text-xs font-bold text-amber-950 flex items-center gap-1.5">
+                  <span>प्रशासक दृश्य पूर्वावलोकन सक्रिय (Admin View Preview Mode)</span>
+                  <span className="px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 text-[10px] font-black">
+                    {allowedModules.length} मॉड्यूल्स अनुमत
+                  </span>
+                </p>
+                <p className="text-[11px] text-amber-900/80">
+                  सध्या मेनू आणि पाने <strong>{users.find((u) => u.phone === previewAdminPhone)?.fullName || previewAdminPhone}</strong> यांच्या वाटप केलेल्या अधिकारांनुसार दाखवली जात आहेत.
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setPreviewAdminPhone(null)}
+              className="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition-all shadow-xs shrink-0 cursor-pointer flex items-center gap-1.5"
+            >
+              <LucideIcon name="close" className="text-sm" />
+              <span>सुपर अॅडमिन दृश्यावर परत या</span>
+            </button>
+          </div>
+        )}
 
       {/* TAB 1: OVERVIEW */}
       {activeTab === 'overview' && (

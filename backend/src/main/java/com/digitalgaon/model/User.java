@@ -52,6 +52,9 @@ public class User {
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 
+    @Column(name = "allowed_modules", columnDefinition = "TEXT")
+    private String allowedModules;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_roles",
@@ -108,6 +111,9 @@ public class User {
 
     public OffsetDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(OffsetDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public String getAllowedModules() { return allowedModules; }
+    public void setAllowedModules(String allowedModules) { this.allowedModules = allowedModules; }
 
     public Set<Role> getRoles() { return roles; }
     public void setRoles(Set<Role> roles) { this.roles = roles; }

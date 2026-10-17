@@ -715,35 +715,42 @@ export const AdminNavSystem: React.FC<AdminNavSystemProps> = ({
           MOBILE BOTTOM QUICK ACCESS DOCK (Visible on screens < md)
       ─────────────────────────────────────────────────────────────────── */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#e8e2d9] px-2 py-1 flex items-center justify-around shadow-lg">
-        {[
-          { id: 'overview', icon: 'analytics', label: 'आढावा' },
-          { id: 'complaints', icon: 'report_problem', label: 'तक्रारी', badge: badges.complaints },
-          { id: 'broadcast', icon: 'cell_tower', label: 'दवंडी' },
-          { id: 'users', icon: 'group', label: 'नागरिक', badge: badges.users }
-        ].map((btn) => {
-          const isActive = activeTab === btn.id;
-          return (
-            <button
-              key={btn.id}
-              type="button"
-              onClick={() => onSelectTab(btn.id)}
-              className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition-all relative ${
-                isActive ? 'text-[#14532d] font-bold' : 'text-[#707974] font-medium'
-              }`}
-            >
-              <div className="relative">
-                <LucideIcon name={btn.icon} className={`text-[20px] ${isActive ? 'scale-110' : ''}`} />
-                {btn.badge !== undefined && btn.badge !== null && btn.badge !== 0 && (
-                  <span className="absolute -top-1 -right-2 px-1 py-0.2 rounded-full bg-red-500 text-white text-[8px] font-black min-w-[14px] text-center">
-                    {btn.badge}
-                  </span>
-                )}
-              </div>
-              <span className="text-[10px] mt-0.5">{btn.label}</span>
-              {isActive && <span className="w-1 h-1 rounded-full bg-[#14532d] mt-0.5" />}
-            </button>
-          );
-        })}
+        {(() => {
+          const quickCandidates = [
+            { id: 'overview', icon: 'analytics', label: 'आढावा' },
+            { id: 'complaints', icon: 'report_problem', label: 'तक्रारी', badge: badges.complaints },
+            { id: 'broadcast', icon: 'cell_tower', label: 'दवंडी' },
+            { id: 'water', icon: 'water_drop', label: 'पाणी' },
+            { id: 'notices', icon: 'campaign', label: 'सूचना' },
+            { id: 'schemes', icon: 'assignment', label: 'योजना' },
+            { id: 'users', icon: 'group', label: 'नागरिक', badge: badges.users }
+          ];
+          const allowedQuick = quickCandidates.filter((btn) => isTabAllowed(btn.id)).slice(0, 4);
+          return allowedQuick.map((btn) => {
+            const isActive = activeTab === btn.id;
+            return (
+              <button
+                key={btn.id}
+                type="button"
+                onClick={() => onSelectTab(btn.id)}
+                className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition-all relative ${
+                  isActive ? 'text-[#14532d] font-bold' : 'text-[#707974] font-medium'
+                }`}
+              >
+                <div className="relative">
+                  <LucideIcon name={btn.icon} className={`text-[20px] ${isActive ? 'scale-110' : ''}`} />
+                  {btn.badge !== undefined && btn.badge !== null && btn.badge !== 0 && (
+                    <span className="absolute -top-1 -right-2 px-1 py-0.2 rounded-full bg-red-500 text-white text-[8px] font-black min-w-[14px] text-center">
+                      {btn.badge}
+                    </span>
+                  )}
+                </div>
+                <span className="text-[10px] mt-0.5">{btn.label}</span>
+                {isActive && <span className="w-1 h-1 rounded-full bg-[#14532d] mt-0.5" />}
+              </button>
+            );
+          });
+        })()}
 
         {/* 5th Button: Open Full Drawer */}
         <button

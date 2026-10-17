@@ -329,14 +329,72 @@ export const getAllowedModulesForUser = (
   }
 
   const cleanPhone = (userPhone || '').trim();
+  const digitsOnly = cleanPhone.replace(/[^0-9]/g, '').slice(-10);
+
+  // 1. Check permissionsMap in localStorage (most immediate updates)
   const permissionsMap = getStoredPermissionsMap();
-  if (cleanPhone && permissionsMap[cleanPhone]) {
+  if (cleanPhone && permissionsMap[cleanPhone] && permissionsMap[cleanPhone].length > 0) {
     return permissionsMap[cleanPhone];
   }
+  if (digitsOnly && permissionsMap[digitsOnly] && permissionsMap[digitsOnly].length > 0) {
+    return permissionsMap[digitsOnly];
+  }
 
+  // 2. Check logged-in user session in localStorage (dg_user) if it matches target phone
+  if (typeof window !== 'undefined') {
+    try {
+      const savedUserStr = localStorage.getItem('dg_user');
+      if (savedUserStr) {
+        const u = JSON.parse(savedUserStr);
+        const uDigits = (u.phone || '').replace(/[^0-9]/g, '').slice(-10);
+        if (!userPhone || uDigits === digitsOnly) {
+          if (u.allowedModules && typeof u.allowedModules === 'string') {
+            const parsed = u.allowedModules
+              .split(',')
+              .map((s: string) => s.trim())
+              .filter(Boolean) as AdminModuleId[];
+            if (parsed.length > 0) return parsed;
+          } else if (Array.isArray(u.allowedModules) && u.allowedModules.length > 0) {
+            return u.allowedModules as AdminModuleId[];
+          }
+        }
+      }
+    } catch {}
+  }
+
+  // 3. Check cached users list from backend (dg_users_cache)
+  if (typeof window !== 'undefined') {
+    try {
+      const usersCache = localStorage.getItem('dg_users_cache');
+      if (usersCache) {
+        const list = JSON.parse(usersCache);
+        if (Array.isArray(list)) {
+          const found = list.find((u: any) => {
+            const p = (u.phone || '').replace(/[^0-9]/g, '').slice(-10);
+            return p === digitsOnly;
+          });
+          if (found && found.allowedModules) {
+            if (typeof found.allowedModules === 'string') {
+              const parsed = found.allowedModules
+                .split(',')
+                .map((s: string) => s.trim())
+                .filter(Boolean) as AdminModuleId[];
+              if (parsed.length > 0) return parsed;
+            } else if (Array.isArray(found.allowedModules) && found.allowedModules.length > 0) {
+              return found.allowedModules as AdminModuleId[];
+            }
+          }
+        }
+      }
+    } catch {}
+  }
+
+  // 4. Check managed admins storage
   const admins = getStoredManagedAdmins();
   const matched = admins.find(
-    (a) => a.phone === userPhone || a.phone.replace(/[^0-9]/g, '') === cleanPhone.replace(/[^0-9]/g, '')
+    (a) =>
+      a.phone === userPhone ||
+      (a.phone && a.phone.replace(/[^0-9]/g, '').slice(-10) === digitsOnly)
   );
 
   if (matched && Array.isArray(matched.allowedModules) && matched.allowedModules.length > 0) {
@@ -555,16 +613,38 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
   };
 
   // Save Permissions to Admin
-  const handleSavePermissions = () => {
+  const handleSavePermissions = async () => {
     if (!selectedAdmin) return;
 
     const cleanPhone = (selectedAdmin.phone || '').trim();
+    const digitsOnly = cleanPhone.replace(/[^0-9]/g, '').slice(-10);
     const newMap = {
       ...permissionsMap,
-      [cleanPhone]: selectedAdmin.allowedModules
+      [cleanPhone]: selectedAdmin.allowedModules,
+      [digitsOnly]: selectedAdmin.allowedModules
     };
     setPermissionsMap(newMap);
     saveStoredPermissionsMap(newMap);
+
+    // 1. Persist directly to PostgreSQL database via Admin API
+    try {
+      if (selectedAdmin.id) {
+        await api.updateAdminUser(selectedAdmin.id, {
+          allowedModules: selectedAdmin.allowedModules.join(',')
+        });
+      }
+    } catch (e: any) {
+      console.warn('Could not persist allowed_modules to backend DB:', e.message);
+    }
+
+    // 2. Dispatch global event so AdminPage and AdminNavSystem update IMMEDIATELY in real-time
+    window.dispatchEvent(new CustomEvent('dg:admin-permissions-updated', {
+      detail: {
+        phone: cleanPhone,
+        digitsOnly,
+        allowedModules: selectedAdmin.allowedModules
+      }
+    }));
 
     if (onAuditLog) {
       onAuditLog(
@@ -574,6 +654,7 @@ export const AdminManagementSection: React.FC<AdminManagementSectionProps> = ({
     }
     setIsEditingPermissions(false);
     showFeedback(`✅ ${selectedAdmin.fullName} यांचे प्रवेश अधिकार यशस्वीरीत्या जतन केले!`);
+    onRefreshUsers?.();
   };
 
   // Toggle Active/Inactive

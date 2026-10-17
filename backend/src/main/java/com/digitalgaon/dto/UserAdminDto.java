@@ -15,12 +15,13 @@ public class UserAdminDto {
     private Boolean isVerified;
     private Boolean isActive;
     private Set<String> roles;
+    private String allowedModules;
     private OffsetDateTime createdAt;
 
     public UserAdminDto() {}
 
     public UserAdminDto(UUID id, String fullName, String phone, String email, String villageName,
-                        String wardNumber, String occupation, Boolean isVerified, Boolean isActive, Set<String> roles, OffsetDateTime createdAt) {
+                        String wardNumber, String occupation, Boolean isVerified, Boolean isActive, Set<String> roles, String allowedModules, OffsetDateTime createdAt) {
         this.id = id;
         this.fullName = fullName;
         this.phone = phone;
@@ -31,6 +32,7 @@ public class UserAdminDto {
         this.isVerified = isVerified;
         this.isActive = isActive;
         this.roles = roles;
+        this.allowedModules = allowedModules;
         this.createdAt = createdAt;
     }
 
@@ -63,6 +65,9 @@ public class UserAdminDto {
 
     public Set<String> getRoles() { return roles; }
     public void setRoles(Set<String> roles) { this.roles = roles; }
+
+    public String getAllowedModules() { return allowedModules; }
+    public void setAllowedModules(String allowedModules) { this.allowedModules = allowedModules; }
 
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(OffsetDateTime createdAt) { this.createdAt = createdAt; }

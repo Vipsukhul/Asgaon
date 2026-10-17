@@ -17,11 +17,12 @@ public class AuthResponse {
     private String preferredLanguage;
     private String villageName;
     private Set<String> roles;
+    private String allowedModules;
 
     public AuthResponse() {}
 
     @Builder
-    public AuthResponse(String token, String tokenType, UUID userId, String fullName, String phone, String email, String preferredLanguage, String villageName, Set<String> roles) {
+    public AuthResponse(String token, String tokenType, UUID userId, String fullName, String phone, String email, String preferredLanguage, String villageName, Set<String> roles, String allowedModules) {
         this.token = token;
         this.tokenType = tokenType != null ? tokenType : "Bearer";
         this.userId = userId;
@@ -31,5 +32,6 @@ public class AuthResponse {
         this.preferredLanguage = preferredLanguage;
         this.villageName = villageName;
         this.roles = roles;
+        this.allowedModules = allowedModules;
     }
 }

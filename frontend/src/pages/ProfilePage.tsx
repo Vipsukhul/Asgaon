@@ -20,6 +20,7 @@ export interface UserProfileData {
   landHolding?: string;
   shopName?: string;
   preferredLanguage?: 'MR' | 'EN';
+  allowedModules?: string | string[];
 }
 
 interface ProfilePageProps {

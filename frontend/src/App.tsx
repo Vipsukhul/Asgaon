@@ -230,7 +230,8 @@ export function App() {
           isLoggedIn: true,
           avatarInitials: name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase() || 'GC',
           profileImage: u.profileImage || '',
-          occupation: u.occupation || 'Asgaon Citizen'
+          occupation: u.occupation || 'Asgaon Citizen',
+          allowedModules: u.allowedModules || ''
         };
       } catch {
         // ignore
@@ -588,6 +589,14 @@ export function App() {
     const initials = name
       ? name.trim().split(' ').map((n) => n[0]).join('').substring(0, 2).toUpperCase()
       : (role.substring(0, 2).toUpperCase());
+    const savedUserStr = localStorage.getItem('dg_user');
+    let savedAllowedModules: string | undefined = undefined;
+    if (savedUserStr) {
+      try {
+        const parsed = JSON.parse(savedUserStr);
+        savedAllowedModules = parsed.allowedModules;
+      } catch {}
+    }
     const updated: UserProfileData = {
       fullName: name || (role === 'SUPER_ADMIN' ? 'Chief Super Admin' : role === 'ADMIN' ? 'Gram Sevak S. N. Jadhav' : 'Google Citizen'),
       phone: phone || '',
@@ -596,11 +605,13 @@ export function App() {
       village: 'Asgaon, Pauni (PIN 441910)',
       isLoggedIn: true,
       avatarInitials: initials || 'GA',
-      occupation: role === 'SUPER_ADMIN' ? 'Chief Super Administrator' : role === 'ADMIN' ? 'Gram Panchayat Administrator' : role === 'FARMER' ? 'Farmer & Cultivator' : role === 'BUSINESS_OWNER' ? 'Local Merchant / Shopkeeper' : 'Asgaon Citizen'
+      occupation: role === 'SUPER_ADMIN' ? 'Chief Super Administrator' : role === 'ADMIN' ? 'Gram Panchayat Administrator' : role === 'FARMER' ? 'Farmer & Cultivator' : role === 'BUSINESS_OWNER' ? 'Local Merchant / Shopkeeper' : 'Asgaon Citizen',
+      allowedModules: savedAllowedModules
     };
     setCurrentUser(updated);
     localStorage.setItem('dg_user', JSON.stringify({
       ...updated,
+      allowedModules: savedAllowedModules,
       email: email || ''
     }));
   };
