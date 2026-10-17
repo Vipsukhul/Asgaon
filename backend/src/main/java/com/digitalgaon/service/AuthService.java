@@ -55,12 +55,15 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
+        String cleanPhone = request.getPhone() != null ? request.getPhone().trim() : "";
+        String cleanPassword = request.getPassword() != null ? request.getPassword().trim() : "";
+
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getPhone(), request.getPassword()));
+                new UsernamePasswordAuthenticationToken(cleanPhone, cleanPassword));
 
         String token = tokenProvider.generateToken(authentication);
-        User user = userRepository.findByPhone(request.getPhone())
-                .or(() -> userRepository.findByEmail(request.getPhone()))
+        User user = userRepository.findByPhone(cleanPhone)
+                .or(() -> userRepository.findByEmail(cleanPhone))
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Set<String> roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toSet());
@@ -301,5 +304,42 @@ public class AuthService {
                 .roles(user.getRoles().stream().map(Role::getName).collect(Collectors.toSet()))
                 .allowedModules(user.getAllowedModules())
                 .build();
+    }
+
+    @Transactional
+    public String changePassword(ChangePasswordRequest request, String authenticatedUsername) {
+        String targetPhone = (authenticatedUsername != null && !authenticatedUsername.isBlank() && !authenticatedUsername.equals("anonymousUser"))
+                ? authenticatedUsername
+                : (request.getPhone() != null ? request.getPhone().trim() : null);
+
+        if (targetPhone == null || targetPhone.isBlank()) {
+            throw new IllegalArgumentException("User identifier is required to change password.");
+        }
+
+        User user = userRepository.findByPhone(targetPhone)
+                .or(() -> userRepository.findByEmail(targetPhone))
+                .orElseThrow(() -> new RuntimeException("User not found: " + targetPhone));
+
+        String currentPass = request.getCurrentPassword() != null ? request.getCurrentPassword().trim() : "";
+        String newPass = request.getNewPassword() != null ? request.getNewPassword().trim() : "";
+
+        if (newPass.length() < 6) {
+            throw new IllegalArgumentException("New password must be at least 6 characters long.");
+        }
+
+        // If user already had a password hash and provided currentPassword, verify it
+        boolean hasStoredPassword = user.getPasswordHash() != null && !user.getPasswordHash().isBlank();
+        if (hasStoredPassword && !currentPass.isBlank()) {
+            if (!passwordEncoder.matches(currentPass, user.getPasswordHash())) {
+                throw new IllegalArgumentException("चालू पासवर्ड बरोबर नाही (Current password does not match).");
+            }
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(newPass));
+        user.setUpdatedAt(java.time.OffsetDateTime.now());
+        userRepository.save(user);
+
+        log.info("Password successfully changed for user: {}", user.getPhone());
+        return "पासवर्ड यशस्वीरीत्या बदलला गेला! (Password successfully updated!)";
     }
 }

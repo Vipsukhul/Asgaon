@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,16 +25,19 @@ public class DataSeeder implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final com.digitalgaon.repository.VillageEventRepository eventRepository;
     private final com.digitalgaon.repository.MandiPriceRepository mandiPriceRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public DataSeeder(
             UserRepository userRepository,
             RoleRepository roleRepository,
             com.digitalgaon.repository.VillageEventRepository eventRepository,
-            com.digitalgaon.repository.MandiPriceRepository mandiPriceRepository) {
+            com.digitalgaon.repository.MandiPriceRepository mandiPriceRepository,
+            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.eventRepository = eventRepository;
         this.mandiPriceRepository = mandiPriceRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -161,30 +166,35 @@ public class DataSeeder implements CommandLineRunner {
         String phone = "7507732821";
         String email = "superadmin@asgaon.digitalgaon.in";
 
-        // Managed directly in DB
-        if (userRepository.findByPhone(phone).isPresent() || userRepository.findByEmail(email).isPresent()) {
-            return;
-        }
-
         Role superAdminRole = createRoleIfMissing("ROLE_SUPER_ADMIN", "Master civic coordinator");
         Role adminRole = createRoleIfMissing("ROLE_ADMIN", "Gram Panchayat administrator");
 
-        User superAdmin = new User();
-        superAdmin.setFullName("Asgaon Chief Super Admin");
-        superAdmin.setPhone(phone);
-        superAdmin.setEmail(email);
-        superAdmin.setPasswordHash("");
-        superAdmin.setVillageName("Asgaon");
-        superAdmin.setWardNumber("Gram Sachivalaya");
-        superAdmin.setPreferredLanguage("en");
-        superAdmin.setIsVerified(true);
-        superAdmin.setIsActive(true);
-        superAdmin.setUpdatedAt(OffsetDateTime.now());
+        User superAdmin = userRepository.findByPhone(phone)
+                .or(() -> userRepository.findByEmail(email))
+                .orElse(null);
 
-        Set<Role> roles = new HashSet<>();
+        if (superAdmin == null) {
+            superAdmin = new User();
+            superAdmin.setFullName("Asgaon Chief Super Admin");
+            superAdmin.setPhone(phone);
+            superAdmin.setEmail(email);
+            superAdmin.setVillageName("Asgaon");
+            superAdmin.setWardNumber("Gram Sachivalaya");
+            superAdmin.setPreferredLanguage("en");
+            superAdmin.setIsVerified(true);
+            superAdmin.setIsActive(true);
+            superAdmin.setCreatedAt(java.time.OffsetDateTime.now());
+        }
+
+        if (superAdmin.getPasswordHash() == null || superAdmin.getPasswordHash().isBlank()) {
+            superAdmin.setPasswordHash(passwordEncoder.encode("Asgaon@123"));
+        }
+
+        Set<Role> roles = new HashSet<>(superAdmin.getRoles() != null ? superAdmin.getRoles() : Collections.emptySet());
         roles.add(superAdminRole);
         roles.add(adminRole);
         superAdmin.setRoles(roles);
+        superAdmin.setUpdatedAt(java.time.OffsetDateTime.now());
 
         userRepository.save(superAdmin);
     }
@@ -193,28 +203,33 @@ public class DataSeeder implements CommandLineRunner {
         String phone = "9822104500";
         String email = "admin@asgaon.digitalgaon.in";
 
-        // Managed directly in DB
-        if (userRepository.findByPhone(phone).isPresent() || userRepository.findByEmail(email).isPresent()) {
-            return;
-        }
-
         Role adminRole = createRoleIfMissing("ROLE_ADMIN", "Gram Panchayat administrator");
 
-        User admin = new User();
-        admin.setFullName("Gram Sevak S. N. Jadhav");
-        admin.setPhone(phone);
-        admin.setEmail(email);
-        admin.setPasswordHash("");
-        admin.setVillageName("Asgaon");
-        admin.setWardNumber("Ward 2 (Gaothan)");
-        admin.setPreferredLanguage("mr");
-        admin.setIsVerified(true);
-        admin.setIsActive(true);
-        admin.setUpdatedAt(OffsetDateTime.now());
+        User admin = userRepository.findByPhone(phone)
+                .or(() -> userRepository.findByEmail(email))
+                .orElse(null);
 
-        Set<Role> roles = new HashSet<>();
+        if (admin == null) {
+            admin = new User();
+            admin.setFullName("Gram Sevak S. N. Jadhav");
+            admin.setPhone(phone);
+            admin.setEmail(email);
+            admin.setVillageName("Asgaon");
+            admin.setWardNumber("Ward 2 (Gaothan)");
+            admin.setPreferredLanguage("mr");
+            admin.setIsVerified(true);
+            admin.setIsActive(true);
+            admin.setCreatedAt(java.time.OffsetDateTime.now());
+        }
+
+        if (admin.getPasswordHash() == null || admin.getPasswordHash().isBlank()) {
+            admin.setPasswordHash(passwordEncoder.encode("Asgaon@123"));
+        }
+
+        Set<Role> roles = new HashSet<>(admin.getRoles() != null ? admin.getRoles() : Collections.emptySet());
         roles.add(adminRole);
         admin.setRoles(roles);
+        admin.setUpdatedAt(java.time.OffsetDateTime.now());
 
         userRepository.save(admin);
     }

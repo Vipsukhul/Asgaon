@@ -84,4 +84,20 @@ public class AuthController {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
+
+    @PostMapping("/change-password")
+    @Operation(summary = "Change or set user account password")
+    public ResponseEntity<ApiResponse<String>> changePassword(
+            @Valid @RequestBody ChangePasswordRequest request,
+            org.springframework.security.core.Authentication authentication) {
+        try {
+            String authenticatedUser = (authentication != null && authentication.isAuthenticated())
+                    ? authentication.getName()
+                    : null;
+            String msg = authService.changePassword(request, authenticatedUser);
+            return ResponseEntity.ok(ApiResponse.ok(msg, "PASSWORD_UPDATED"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
 }

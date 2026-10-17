@@ -300,6 +300,12 @@ export const api = {
       body: JSON.stringify(payload),
     });
   },
+  changePassword: (payload: { currentPassword?: string; newPassword: string; phone?: string }) => {
+    return request<any>('/auth/change-password', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
 
   // Admin Services
   getAdminStats: () => {

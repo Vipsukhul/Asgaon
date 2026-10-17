@@ -1,10 +1,7 @@
 package com.digitalgaon.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Data;
 
-@Data
 public class LoginRequest {
     @NotBlank(message = "Phone number is required")
     private String phone;
@@ -14,9 +11,24 @@ public class LoginRequest {
 
     public LoginRequest() {}
 
-    @Builder
     public LoginRequest(String phone, String password) {
         this.phone = phone;
+        this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
         this.password = password;
     }
 }

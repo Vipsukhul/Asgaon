@@ -93,6 +93,65 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   const [editOccupation, setEditOccupation] = useState(currentUser.occupation || 'Farmer / Cultivator');
   const [editLang, setEditLang] = useState<'MR' | 'EN'>(currentUser.preferredLanguage || lang);
 
+  // Change Password state
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+  const [currentPasswordInput, setCurrentPasswordInput] = useState('');
+  const [newPasswordInput, setNewPasswordInput] = useState('');
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordSubmitting, setPasswordSubmitting] = useState(false);
+  const [passwordSuccessMessage, setPasswordSuccessMessage] = useState('');
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+
+  const handleChangePasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordErrorMessage('');
+    setPasswordSuccessMessage('');
+
+    if (!newPasswordInput.trim()) {
+      setPasswordErrorMessage(isMr ? 'कृपया नवीन पासवर्ड प्रविष्ट करा.' : 'Please enter new password.');
+      return;
+    }
+
+    if (newPasswordInput.trim().length < 6) {
+      setPasswordErrorMessage(isMr ? 'नवीन पासवर्ड किमान ६ अक्षरांचा असावा.' : 'New password must be at least 6 characters.');
+      return;
+    }
+
+    if (newPasswordInput !== confirmPasswordInput) {
+      setPasswordErrorMessage(isMr ? 'नवीन पासवर्ड आणि पुष्टी पासवर्ड जुळत नाहीत.' : 'New password and confirmation do not match.');
+      return;
+    }
+
+    setPasswordSubmitting(true);
+    try {
+      const res = await api.changePassword({
+        phone: currentUser.phone,
+        currentPassword: currentPasswordInput.trim(),
+        newPassword: newPasswordInput.trim()
+      });
+
+      const successMsg = res?.message || (isMr ? 'पासवर्ड यशस्वीरीत्या अद्यतनित केला गेला!' : 'Password updated successfully!');
+      setPasswordSuccessMessage(successMsg);
+      toast.success(successMsg, isMr ? 'यशस्वी' : 'Success');
+      setCurrentPasswordInput('');
+      setNewPasswordInput('');
+      setConfirmPasswordInput('');
+      setTimeout(() => {
+        setIsChangePasswordOpen(false);
+        setPasswordSuccessMessage('');
+      }, 2500);
+    } catch (err: any) {
+      const errText = err?.message || (isMr ? 'पासवर्ड बदलताना अडचण आली. कृपया चालू पासवर्ड तपासा.' : 'Failed to change password. Please check your current password.');
+      setPasswordErrorMessage(errText);
+      toast.error(errText, isMr ? 'त्रुटी' : 'Error');
+    } finally {
+      setPasswordSubmitting(false);
+    }
+  };
+
   // SMS Subscriptions state
   const [mandiSms, setMandiSms] = useState(true);
   const [weatherAlerts, setWeatherAlerts] = useState(true);
@@ -810,6 +869,173 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 </button>
               </div>
             </div>
+
+            {/* 3. Account Security & Change Password Section */}
+            <div id="change-password-section" className="bg-white rounded-3xl p-6 sm:p-7 border border-[#e8e2d9] shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div>
+                  <h3 className="font-heading font-extrabold text-[17px] text-[#166534] flex items-center gap-2">
+                    <LucideIcon name="lock" className="text-[#166534]" />
+                    <span>{isMr ? 'खाते सुरक्षा व पासवर्ड व्यवस्थापन' : 'Security & Password Settings'}</span>
+                  </h3>
+                  <p className="text-[12px] text-[#707974] mt-0.5">
+                    {isMr
+                      ? 'नवीन पासवर्ड तयार करा किंवा बदला. यामुळे तुम्हाला कोणत्याही डिव्हाइसवर मोबाईल नंबरने सहज लॉगिन करता येईल.'
+                      : 'Set or update your portal account password to seamlessly sign in with your phone number on any device.'}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsChangePasswordOpen(!isChangePasswordOpen)}
+                  className="px-3.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-300 transition-all cursor-pointer flex items-center gap-1.5 self-start sm:self-auto shadow-2xs"
+                >
+                  <LucideIcon name={isChangePasswordOpen ? 'expand_less' : 'key'} className="text-[15px]" />
+                  <span>{isChangePasswordOpen ? (isMr ? 'फॉर्म बंद करा' : 'Hide Form') : (isMr ? 'पासवर्ड बदला' : 'Change Password')}</span>
+                </button>
+              </div>
+
+              {/* Collapsible / Expandable Password Form */}
+              {isChangePasswordOpen ? (
+                <form onSubmit={handleChangePasswordSubmit} className="mt-4 pt-4 border-t border-[#f3ede4] flex flex-col gap-4">
+                  {passwordSuccessMessage && (
+                    <div className="p-3 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold flex items-center gap-2">
+                      <LucideIcon name="check_circle" className="text-[18px] text-emerald-600 shrink-0" />
+                      <span>{passwordSuccessMessage}</span>
+                    </div>
+                  )}
+
+                  {passwordErrorMessage && (
+                    <div className="p-3 rounded-xl bg-red-50 text-red-700 border border-red-200 text-xs font-bold flex items-center gap-2">
+                      <LucideIcon name="error" className="text-[18px] shrink-0" />
+                      <span>{passwordErrorMessage}</span>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Current Password Field (Optional for Google SSO users) */}
+                    <div className="sm:col-span-2 flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs font-bold text-[#2d3330]">
+                          {isMr ? 'चालू पासवर्ड (Current Password)' : 'Current Password'}
+                        </label>
+                        <span className="text-[10px] text-[#707974]">
+                          {isMr ? '(गुगलने नोंदणी असल्यास रिकामे ठेवावे)' : '(Leave blank if signed in via Google)'}
+                        </span>
+                      </div>
+                      <div className="relative">
+                        <input
+                          type={showCurrentPassword ? 'text' : 'password'}
+                          value={currentPasswordInput}
+                          onChange={(e) => setCurrentPasswordInput(e.target.value)}
+                          placeholder={isMr ? 'चालू पासवर्ड प्रविष्ट करा (असल्यास)' : 'Enter current password (if set)'}
+                          className="w-full py-2.5 pl-3.5 pr-10 text-xs bg-[#fdfbf7] rounded-xl border border-[#cadbcf] focus:border-[#166534] outline-none"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#707974] hover:text-[#166534] cursor-pointer"
+                        >
+                          <LucideIcon name={showCurrentPassword ? 'visibility_off' : 'visibility'} className="text-[16px]" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* New Password Field */}
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-bold text-[#2d3330]">
+                        {isMr ? 'नवीन पासवर्ड (New Password) *' : 'New Password *'}
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showNewPassword ? 'text' : 'password'}
+                          value={newPasswordInput}
+                          onChange={(e) => setNewPasswordInput(e.target.value)}
+                          placeholder={isMr ? 'किमान ६ अक्षरे' : 'At least 6 characters'}
+                          required
+                          className="w-full py-2.5 pl-3.5 pr-10 text-xs bg-[#fdfbf7] rounded-xl border border-[#cadbcf] focus:border-[#166534] outline-none"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowNewPassword(!showNewPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#707974] hover:text-[#166534] cursor-pointer"
+                        >
+                          <LucideIcon name={showNewPassword ? 'visibility_off' : 'visibility'} className="text-[16px]" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Confirm Password Field */}
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-bold text-[#2d3330]">
+                        {isMr ? 'नवीन पासवर्ड पुष्टी करा *' : 'Confirm New Password *'}
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          value={confirmPasswordInput}
+                          onChange={(e) => setConfirmPasswordInput(e.target.value)}
+                          placeholder={isMr ? 'तोच पासवर्ड पुन्हा प्रविष्ट करा' : 'Re-enter new password'}
+                          required
+                          className="w-full py-2.5 pl-3.5 pr-10 text-xs bg-[#fdfbf7] rounded-xl border border-[#cadbcf] focus:border-[#166534] outline-none"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#707974] hover:text-[#166534] cursor-pointer"
+                        >
+                          <LucideIcon name={showConfirmPassword ? 'visibility_off' : 'visibility'} className="text-[16px]" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-end gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsChangePasswordOpen(false);
+                        setPasswordErrorMessage('');
+                      }}
+                      className="px-4 py-2 rounded-xl text-xs font-bold text-[#707974] hover:bg-[#f3ede4] transition-all cursor-pointer"
+                    >
+                      {isMr ? 'रद्द करा' : 'Cancel'}
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={passwordSubmitting}
+                      className="px-5 py-2.5 rounded-xl bg-[#166534] hover:bg-[#0f4322] text-white text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-2 disabled:opacity-50"
+                    >
+                      {passwordSubmitting ? (
+                        <>
+                          <LucideIcon name="sync" className="text-sm animate-spin" />
+                          <span>{isMr ? 'जतन होत आहे...' : 'Updating...'}</span>
+                        </>
+                      ) : (
+                        <>
+                          <LucideIcon name="check" className="text-sm" />
+                          <span>{isMr ? 'पासवर्ड जतन करा' : 'Save Password'}</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <div className="p-3.5 bg-[#f9f3ea] rounded-2xl border border-[#e8e2d9] flex items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-2.5 text-[#55605a]">
+                    <LucideIcon name="verified_user" className="text-[18px] text-[#166534]" />
+                    <span>{isMr ? 'पासवर्ड सुरक्षित एनक्रिप्टेड आहे (BCrypt)' : 'Password is secure & encrypted (BCrypt)'}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsChangePasswordOpen(true)}
+                    className="font-bold text-[#166534] hover:underline cursor-pointer flex items-center gap-1"
+                  >
+                    <span>{isMr ? 'बदला / सेट करा' : 'Change / Set'}</span>
+                    <LucideIcon name="arrow_forward" className="text-xs" />
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Right Column: Digital Citizen Smart Card & Quick Action Hub */}
@@ -942,6 +1168,24 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       <LucideIcon name="cell_tower" className="text-base" />
                     </div>
                     <span>{isMr ? 'पुश सूचना चाचणी घ्या' : 'Test Device Push Alerts'}</span>
+                  </div>
+                  <LucideIcon name="arrow_forward" className="text-stone-400 text-sm" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsChangePasswordOpen(true);
+                    const el = document.getElementById('change-password-section');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="w-full p-3 rounded-xl border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50/50 text-stone-800 hover:text-emerald-950 flex items-center justify-between transition-all cursor-pointer shadow-2xs"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center border border-emerald-200">
+                      <LucideIcon name="key" className="text-base" />
+                    </div>
+                    <span>{isMr ? 'पासवर्ड बदला / सेट करा' : 'Change / Set Password'}</span>
                   </div>
                   <LucideIcon name="arrow_forward" className="text-stone-400 text-sm" />
                 </button>
